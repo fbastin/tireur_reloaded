@@ -441,11 +441,19 @@ function initDropdowns() {
     if (defaultCalIdx === -1) defaultCalIdx = 0;
     calSelect.value = defaultCalIdx;
 
-    let defaultProjIdx = GRT_DB.projectiles.findIndex(p => p.gdia === '9.02' || p.gdia === '9.03' || p.gdia.startsWith('9'));
+    // Défaut : une vraie balle de 9 mm Luger (Ø 9,02/9,03, masse pistolet) et
+    // non n'importe quel calibre commençant par « 9 » (qui attrapait une balle
+    // de 9,52 mm / 353 gr ELR → surpression à l'ouverture).
+    let defaultProjIdx = GRT_DB.projectiles.findIndex(p =>
+        (p.gdia === '9.02' || p.gdia === '9.03') && parseFloat(p.gmass) >= 90 && parseFloat(p.gmass) <= 160);
+    if (defaultProjIdx === -1) defaultProjIdx = GRT_DB.projectiles.findIndex(p => p.gdia === '9.02' || p.gdia === '9.03');
     if (defaultProjIdx === -1) defaultProjIdx = 0;
     projSelect.value = defaultProjIdx;
 
-    let defaultPowderIdx = GRT_DB.powders.findIndex(p => p.mname.includes('Winchester') || p.pname.includes('231'));
+    // Défaut : une poudre vive adaptée au 9 mm (sinon une poudre lente de
+    // carabine brûle de façon incomplète en canon court → avertissement).
+    let defaultPowderIdx = GRT_DB.powders.findIndex(p => p.pname.includes('Red Dot') || p.pname.includes('231'));
+    if (defaultPowderIdx === -1) defaultPowderIdx = GRT_DB.powders.findIndex(p => parseFloat(p.Ba) > 1.5);
     if (defaultPowderIdx === -1) defaultPowderIdx = 0;
     powderSelect.value = defaultPowderIdx;
 
@@ -469,7 +477,11 @@ function loadCaliber() {
     const maxCharge = (vH2o * 0.9).toFixed(1); // logical max powder weight
     chargeSlider.max = maxCharge;
     chargeSlider.min = (maxCharge * 0.1).toFixed(1);
-    chargeSlider.value = (maxCharge * 0.4).toFixed(1);
+    // Charge de départ adaptée à la vivacité : une poudre vive (Ba élevé)
+    // atteint la pression nominale avec bien moins de masse qu'une poudre lente.
+    const selPowderBa = parseFloat((GRT_DB.powders[document.getElementById('powderSelect').value] || {}).Ba) || 0.3;
+    const fillFrac = selPowderBa > 1.5 ? 0.30 : 0.40;
+    chargeSlider.value = (maxCharge * fillFrac).toFixed(1);
     chargeInput.value = chargeSlider.value;
     
     // Setup barrel length sliders
@@ -1108,7 +1120,7 @@ function printLadder() {
                 <div class="info-row"><strong>L.H.T (COAL):</strong> ${document.getElementById('coalInput').value} mm | <strong>Canon:</strong> ${document.getElementById('barrelInput').value} mm</div>
             </div>
             ${tableHtml}
-            <script>window.print(); setTimeout(() => window.close(), 500);</script>
+            <script>window.print(); setTimeout(() => window.close(), 500);<\/script>
         </body>
         </html>
     `);
