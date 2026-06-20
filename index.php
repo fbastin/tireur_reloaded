@@ -167,6 +167,9 @@ function calc(){
      yaxis2:{title:'Vitesse (m/s)',overlaying:'y',side:'right',rangemode:'tozero'}},
     {displayModeBar:false,responsive:true});
 }
+// Ouvre la note « Comment ça marche » si on arrive via #howto (lien profond depuis le guide)
+(function(){function openHowto(){if(location.hash==='#howto'){var d=document.getElementById('howto');if(d){d.open=true;d.scrollIntoView();}}}
+window.addEventListener('hashchange',openHowto);openHowto();})();
 </script>
 
 <?php include '../../foot.php'; ?>
