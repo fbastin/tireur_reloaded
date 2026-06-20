@@ -113,7 +113,7 @@ Promise.all([
   Object.keys(CAL).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;cs.appendChild(o);});
   cs.value='308 Win.';
   const ps=document.getElementById('pwd');
-  const pLabel=(k)=>{const g=PWD[k].mfg||'',n=/^RS\d/.test(k)?k.slice(2):k;return (g?g+' ':'')+n;};
+  const pLabel=(k)=>{const p=PWD[k];return (p.mfg?p.mfg+' ':'')+(p.name||k);};
   Object.keys(PWD).sort((a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true})).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);ps.appendChild(o);});
   ps.value='RS52';
   onCart(); calc();
