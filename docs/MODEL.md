@@ -183,6 +183,17 @@ reported LOPO RMS. The estimator loads these at runtime.
 - This is an **estimation aid, not a load-development authority**. Always verify any
   charge against official manufacturer data.
 
+### Independent cross-check (QuickLOAD)
+
+As an out-of-sample, cross-tool check, the estimator was compared with a
+**QuickLOAD** report for **6.5 Creedmoor / Vihtavuori N160 / 143 gr ELD-X**
+(24.4″ barrel). N160 is a Vihtavuori powder added by its constants only, with **no
+VV calibration** (coefficients fitted on Reload Swiss). Across the charge ladder the
+muzzle-velocity agreement is **within ~3.5 %**, and at the nominal charge (42.3 gr)
+QuickLOAD gives 784 m/s / 3102 bar versus 759 m/s / 3036 bar here — **−3.2 % / −2.1 %**.
+This supports the cross-brand generalization claim (§4) against an independent
+reference.
+
 ## 7. Data provenance and licensing
 
 - **Component database** (powder $Q_\mathrm{ex}$, $B_a$, $\rho_b$; cartridge

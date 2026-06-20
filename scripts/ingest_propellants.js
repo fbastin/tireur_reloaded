@@ -35,7 +35,7 @@ function keyFor(mname, pname) {
 }
 
 let added = 0, kept = 0, conflicts = 0, skipped = 0;
-const files = fs.readdirSync(folder).filter((f) => f.toLowerCase().endsWith('.propellant'));
+const files = fs.readdirSync(folder).filter((f) => /\.propellant(\.xml)?$/i.test(f));
 for (const f of files) {
   const xml = fs.readFileSync(path.join(folder, f), 'utf8');
   if (mfgFilter && !dec(get(xml, 'mname')).toLowerCase().includes(mfgFilter)) { skipped++; continue; }
