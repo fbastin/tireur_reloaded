@@ -191,8 +191,11 @@ As an out-of-sample, cross-tool check, the estimator was compared with a
 VV calibration** (coefficients fitted on Reload Swiss). Across the charge ladder the
 muzzle-velocity agreement is **within ~3.5 %**, and at the nominal charge (42.3 gr)
 QuickLOAD gives 784 m/s / 3102 bar versus 759 m/s / 3036 bar here — **−3.2 % / −2.1 %**.
-This supports the cross-brand generalization claim (§4) against an independent
-reference.
+A second QuickLOAD report for the same load confirms velocity (778.8 m/s, **−3.0 %**)
+but lists 3342 bar — i.e. **QuickLOAD's own two runs disagree by ~8 % on pressure**.
+The estimator sits just below both, consistent with treating pressure as indicative.
+Velocity agreement (~3 %) supports the cross-brand generalization claim (§4) against
+an independent reference.
 
 ## 7. Data provenance and licensing
 
