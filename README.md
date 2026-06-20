@@ -4,8 +4,14 @@ A web tool that estimates **muzzle velocity** and (indicatively) **peak chamber
 pressure** for handloads, plus an approximate pressure/velocity curve.
 
 It uses an open **energy–efficiency model** calibrated on manufacturer data, rather
-than a proprietary internal-ballistics solver. See **[`docs/MODEL.md`](docs/MODEL.md)**
-for the formal model, its unknowns, and the calibration procedure.
+than a proprietary internal-ballistics solver.
+
+## Documentation
+
+- **[`docs/MODEL.md`](docs/MODEL.md)** — formal model, its unknowns, calibration summary.
+- **[`docs/CALIBRATION.md`](docs/CALIBRATION.md)** — detailed extraction & calibration pipeline.
+- **[`docs/DATA_FORMAT.md`](docs/DATA_FORMAT.md)** — schemas of all data files.
+- **[`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)** — add powders/cartridges/data, re-fit.
 
 > ⚠️ **Not a safety authority.** Pressure is indicative only; a load truly above the
 > CIP limit can appear "safe". Always verify any charge against official manufacturer
@@ -23,7 +29,9 @@ data/
   powders.json         Reload Swiss powders: Qex, vivacity Ba, bulk density
   model_coefficients.json   Fitted η_b, η_p coefficients (published, derived)
   reference_loads.json      Small cited test fixture
-docs/MODEL.md          Formal model description
+scripts/               Calibration pipeline (01_parse_guide, 02_build_dataset,
+                       03_fit_and_validate) — see docs/CALIBRATION.md
+docs/                  MODEL, CALIBRATION, DATA_FORMAT, CONTRIBUTING
 legacy/                Former Gordon's Reloading Tool clone (thermodynamic ODE,
                        indicative, kept for exploration only)
 ```

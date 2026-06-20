@@ -1,7 +1,9 @@
 {
-  "_doc": "Coefficients derives (publiables) du modele energie-efficacite — Estimateur de balistique interieure. Cales sur le Guide Reload Swiss 2025 (cite), 1700 charges / 14 poudres RS / 54 cartouches. Donnees brutes NON redistribuees (EULA).",
+  "_doc": "Derived (publishable) coefficients of the energy-efficiency model. Calibrated on a manufacturer guide; raw load tables are NOT redistributed (EULA).",
   "_date": "2026-06-20",
-  "_credit": "Base de composants derivee de Gordon's Reloading Tool (Gordon, decede) et communaute (zen/grt_databases, CC0).",
+  "_credit": "Component database derived from Gordon's Reloading Tool (Gordon, deceased) and the community (zen/grt_databases, CC0 1.0).",
+  "_n_records": 1700,
+  "_n_powders": 14,
   "eta_b": {
     "features": [
       "1",
@@ -9,12 +11,12 @@
       "Ba"
     ],
     "coef": [
-      0.16276,
-      0.12183,
+      0.16275,
+      0.12184,
       0.018
     ],
     "lopo_v_rms_pct": 9.8,
-    "note": "prior froid vitesse; s'affine a ~5% si ancre, ~exact avec 2 points perso"
+    "note": "cold prior; ~5% when anchored on a cartridge x powder, near-exact with user's own chrono"
   },
   "eta_p": {
     "features": [
@@ -28,6 +30,6 @@
       -0.22385
     ],
     "lopo_P_rms_pct": 16,
-    "note": "Re=1+A*course/Vchambre; pression INDICATIVE (output faible)"
+    "note": "Re = 1 + A*travel/V0; pressure is INDICATIVE only"
   }
 }

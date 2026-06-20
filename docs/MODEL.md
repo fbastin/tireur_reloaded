@@ -193,6 +193,12 @@ reported LOPO RMS. The estimator loads these at runtime.
 - **Manufacturer load tables** (Reload Swiss Guide 2025) are used for calibration
   only and are **not redistributed**.
 
+## See also
+
+- [`CALIBRATION.md`](CALIBRATION.md) — detailed extraction & calibration pipeline.
+- [`DATA_FORMAT.md`](DATA_FORMAT.md) — data file schemas.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — adding powders, cartridges, data.
+
 ## References
 
 1. Reload Swiss — *Reloading Guide 2025* (joint $v_0$ + $P_\max$ load data).
