@@ -56,6 +56,21 @@ for (const pw of powders) {
 }
 const lopoV = rms(ev), lopoP = rms(ep);
 
+// --- fallback "effective energy" model (no Qex/Ba) : E_eff = a + b·(fill/100) ---
+// For powders where Qex/Ba are unknown (e.g. only bulk density available), the
+// tool predicts v0 from a fitted effective specific energy E_eff = η_b·Qex (J/kg),
+// since E_eff is near-universal across smokeless powders.
+for (const r of D) { const m = r.m_gr * G2KG, C = r.C_gr * G2KG; r.Eeff = (m + C / 3) * r.v0 * r.v0 / (2 * C); }
+const featE = (r) => [1, r.fill / 100];
+const v0Eeff = (r, ee) => { const m = r.m_gr * G2KG, C = r.C_gr * G2KG; return Math.sqrt(2 * ee * C / (m + C / 3)); };
+let eeErr = [];
+for (const pw of powders) {
+  const tr = D.filter((r) => r.powder !== pw), te = D.filter((r) => r.powder === pw);
+  const we = ols(tr, featE, 'Eeff');
+  for (const r of te) eeErr.push((v0Eeff(r, dot(we, featE(r))) - r.v0) / r.v0 * 100);
+}
+const lopoEeff = rms(eeErr);
+
 // --- per cartridge × powder leave-one-out (anchored velocity) ---
 // Within one powder, Ba is constant (collinear with the intercept), so the
 // anchored model uses fill only: η_b = a + b·(fill/100).
@@ -71,7 +86,7 @@ for (const pts of Object.values(grp)) {
 }
 
 // --- final fit on all data + write published coefficients ---
-const wb = ols(D, featB, 'eta_b'), wp = ols(D, featP, 'eta_p');
+const wb = ols(D, featB, 'eta_b'), wp = ols(D, featP, 'eta_p'), we = ols(D, featE, 'Eeff');
 const coef = {
   _doc: 'Derived (publishable) coefficients of the energy-efficiency model. Calibrated on a manufacturer guide; raw load tables are NOT redistributed (EULA).',
   _date: new Date().toISOString().slice(0, 10),
@@ -79,12 +94,14 @@ const coef = {
   _n_records: D.length, _n_powders: powders.length,
   eta_b: { features: ['1', 'fill/100', 'Ba'], coef: wb.map((x) => +x.toFixed(5)), lopo_v_rms_pct: +lopoV.toFixed(1), note: "cold prior; ~5% when anchored on a cartridge x powder, near-exact with user's own chrono" },
   eta_p: { features: ['1', 'fill/100', 'ln(Re)'], coef: wp.map((x) => +x.toFixed(5)), lopo_P_rms_pct: +lopoP.toFixed(1), note: 'Re = 1 + A*travel/V0; pressure is INDICATIVE only' },
+  e_eff: { features: ['1', 'fill/100'], coef: we.map((x) => +x.toFixed(0)), unit: 'J/kg', lopo_v_rms_pct: +lopoEeff.toFixed(1), note: 'FALLBACK when Qex/Ba unknown: v0 = sqrt(2*E_eff*C/m_e); needs only bulk density (for fill). Same accuracy as eta_b path.' },
 };
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2));
 
 console.log(`records ${D.length} | powders ${powders.length}`);
 console.log(`η_b = ${wb.map((x) => x.toFixed(4))}  (1, fill/100, Ba)`);
 console.log(`η_p = ${wp.map((x) => x.toFixed(4))}  (1, fill/100, lnRe)`);
-console.log(`LOPO (cold)     : v ${lopoV.toFixed(1)}%  | P ${lopoP.toFixed(1)}%`);
+console.log(`E_eff = ${we.map((x) => x.toFixed(0))}  J/kg  (1, fill/100)  [fallback, no Qex/Ba]`);
+console.log(`LOPO (cold)     : v ${lopoV.toFixed(1)}%  | P ${lopoP.toFixed(1)}%  | E_eff fallback v ${lopoEeff.toFixed(1)}%`);
 console.log(`anchored LOO    : v ${rms(av).toFixed(1)}%  (${av.length} pts)`);
 console.log(`-> ${d('model_coefficients.json')}  (published)`);

@@ -62,6 +62,15 @@ $\eta_b$ is **geometry-free** — it depends only on masses, energy and burn
 completeness — which is why velocity can be modelled across cartridges without bore
 geometry.
 
+**Hybrid fallback (no $Q_\mathrm{ex}$/$B_a$).** Since the *effective* specific energy
+$E_\mathrm{eff} = \eta_b\,Q_\mathrm{ex}$ is near-universal across smokeless powders
+(≈ 1.1 MJ/kg, CV ~17 %), a powder with only its bulk density known can be predicted
+from a fitted $E_\mathrm{eff} = a + b\,(\varphi/100)$:
+$v_0 = \sqrt{2\,E_\mathrm{eff}\,C / m_e}$. Leave-one-powder-out shows this matches the
+$\eta_b$ path (**10.1 % vs 9.8 %**) — the GRT-specific constants add almost nothing at
+cold start. The tool uses the $\eta_b$ path when $Q_\mathrm{ex}$ and $B_a$ are present,
+and the $E_\mathrm{eff}$ fallback otherwise (coefficients in `model_coefficients.json`).
+
 ### 3.2 Peak pressure — piezometric efficiency $\eta_p$
 
 The **piezometric efficiency** relates the (work-equivalent) mean pressure to the

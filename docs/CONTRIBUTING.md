@@ -16,16 +16,26 @@ If you open a PR, double-check `git status` shows no `*.local.json`.
 
 ## Add a powder
 
-Edit `data/powders.json`:
+Edit `data/powders.json`. Two cases:
 
+**Full entry** (preferred, from a GRT `.propellant` export):
 ```jsonc
-"RS62": { "Qex": 3722, "Ba": 0.4102, "pcd": 964 }
+"RS62": { "Qex": 3722, "Ba": 0.4102, "pcd": 964, "mfg": "Reload Swiss" }
 ```
 
+**Minimal / fallback entry** (only bulk density known, e.g. from a public spec sheet):
+```jsonc
+"1680": { "pcd": 960, "mfg": "Accurate" }
+```
+With `Qex`/`Ba` absent, the tool uses the **`e_eff` fallback** — same cold-start
+accuracy (~10 %), so a powder can be added from **bulk density alone**.
+
 - `Qex` (kJ/kg), `Ba` (vivacity), `pcd` (bulk density, kg/m³) come from the
-  GRT-derived component database (`*.propellant` files: fields `Qex`, `Ba`, `pcd`).
-- Use the manufacturer's exact short name as the key (must match the calibration
-  guide's powder column, e.g. `RS62`).
+  GRT-derived component database (`*.propellant` files). `pcd` is also published
+  by most spec sheets; `Qex`/`Ba` essentially only from GRT.
+- `mfg` sets the display label. Key = product name (must match the calibration
+  guide's powder column if you also add load data, e.g. `RS62`).
+- Bulk import: `node scripts/ingest_propellants.js <folder> [--mfg <name>]`.
 
 ## Add a cartridge
 

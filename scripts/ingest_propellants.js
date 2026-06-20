@@ -41,8 +41,10 @@ for (const f of files) {
   if (mfgFilter && !dec(get(xml, 'mname')).toLowerCase().includes(mfgFilter)) { skipped++; continue; }
   const Qex = parseFloat(get(xml, 'Qex')), Ba = parseFloat(get(xml, 'Ba')), pcd = parseFloat(get(xml, 'pcd'));
   if (!(Qex > 0 && Ba > 0 && pcd > 0)) { skipped++; continue; }
+  const mname = dec(get(xml, 'mname'));
   const key = keyFor(get(xml, 'mname'), get(xml, 'pname'));
   const next = { Qex, Ba, pcd };
+  if (mname) next.mfg = mname;
   const cur = pj.powders[key];
   if (!cur) { pj.powders[key] = next; added++; }
   else if (cur.Qex === Qex && cur.Ba === Ba && cur.pcd === pcd) { kept++; }

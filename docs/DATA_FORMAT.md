@@ -35,13 +35,23 @@ Propellant constants, from the GRT-derived component database.
 {
   "powders": {
     "RS52": {
-      "Qex": 3920,    // specific energy / heat of explosion (kJ/kg)
-      "Ba": 0.5163,   // vivacity coefficient
-      "pcd": 949      // bulk (pour) density (kg/m³)
+      "Qex": 3920,          // specific energy / heat of explosion (kJ/kg)
+      "Ba": 0.5163,         // vivacity coefficient
+      "pcd": 949,           // bulk (pour) density (kg/m³)
+      "mfg": "Reload Swiss" // manufacturer (display label)
+    },
+    "1680": {               // HYBRID fallback entry: only bulk density known
+      "pcd": 960,           // -> velocity via the e_eff fallback (no Qex/Ba needed)
+      "mfg": "Accurate"
     }
   }
 }
 ```
+
+`Qex` + `Ba` are optional. If both are present, the tool uses the η_b path; if
+they are absent (only `pcd`), it falls back to the **`e_eff`** model — same
+accuracy (~10 % cold), and a powder can be added from bulk density alone. `mfg`
+sets the dropdown label (key kept as the product name).
 
 ### `model_coefficients.json`
 
@@ -62,6 +72,12 @@ The published output of calibration. Loaded by the estimator at runtime.
     "coef":     [0.8868, 0.0515, -0.2239],
     "lopo_P_rms_pct": 16.0,
     "note": "Re = 1 + A*travel/V0; pressure is INDICATIVE only"
+  },
+  "e_eff": {                                 // fallback when Qex/Ba unknown
+    "features": ["1", "fill/100"],
+    "coef":     [927679, 214304],            // J/kg ; v0 = sqrt(2*E_eff*C/m_e)
+    "unit": "J/kg",
+    "lopo_v_rms_pct": 10.1
   }
 }
 ```

@@ -54,7 +54,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 <div class="vm-grid">
   <div class="vm-panel">
     <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();calc()"></select></div>
-    <div class="vm-field"><label>Poudre (Reload Swiss)</label><select id="pwd" onchange="calc()"></select></div>
+    <div class="vm-field"><label>Poudre</label><select id="pwd" onchange="calc()"></select></div>
     <div class="vm-field"><label>Masse de balle (gr)</label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
     <div class="vm-field"><label>Charge (gr)</label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
     <div class="vm-field"><label>Longueur de canon (mm)</label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
@@ -113,7 +113,7 @@ Promise.all([
   Object.keys(CAL).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;cs.appendChild(o);});
   cs.value='308 Win.';
   const ps=document.getElementById('pwd');
-  const pLabel=(k)=>/^RS\d/.test(k) ? 'Reload Swiss '+k.slice(2) : 'Vihtavuori '+k;
+  const pLabel=(k)=>{const g=PWD[k].mfg||'',n=/^RS\d/.test(k)?k.slice(2):k;return (g?g+' ':'')+n;};
   Object.keys(PWD).sort((a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true})).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);ps.appendChild(o);});
   ps.value='RS52';
   onCart(); calc();
@@ -135,10 +135,16 @@ function calc(){
   const fill=(Cg/pcd)/cart.case_vol_cm3*100;            // %
   const caseVol=cart.case_vol_cm3*1e-6;                  // m³
   const Re=1+(A*travel)/caseVol;
-  // η à froid (coefficients dérivés)
-  const eta_b=lin(COEF.eta_b.coef,[1,fill/100,pw.Ba]);
+  // à froid : chemin principal Qex/Ba si dispo, sinon repli énergie effective E_eff
   const eta_p=lin(COEF.eta_p.coef,[1,fill/100,Math.log(Re)]);
-  let v0=Math.sqrt(2*eta_b*C*pw.Qex*1000/m_e), anchored=false;
+  let v0, anchored=false, viaEeff=false, eta_b=null;
+  if(pw.Qex && pw.Ba){
+    eta_b=lin(COEF.eta_b.coef,[1,fill/100,pw.Ba]);
+    v0=Math.sqrt(2*eta_b*C*pw.Qex*1000/m_e);
+  } else {
+    const Eeff=lin(COEF.e_eff.coef,[1,fill/100]);       // J/kg (Qex/Ba inconnus)
+    v0=Math.sqrt(2*Eeff*C/m_e); viaEeff=true;
+  }
   if(vmeas>0){v0=vmeas;anchored=true;}                  // ancrage utilisateur
   const Pmax=0.5*m_e*v0*v0/(eta_p*A*travel)/1e5;         // bar (depuis v0 retenu)
   // affichage
@@ -148,10 +154,11 @@ function calc(){
   tag.textContent=anchored?'ancrée (vos données)':'à froid ±10%';
   tag.className='vm-tag'+(anchored?' anchored':'');
   document.getElementById('derived').textContent=
-    `Remplissage ${fill.toFixed(0)} %  ·  rapport de détente ${Re.toFixed(1)}  ·  η_b ${eta_b.toFixed(3)}  ·  η_p ${eta_p.toFixed(3)}`;
+    `Remplissage ${fill.toFixed(0)} %  ·  rapport de détente ${Re.toFixed(1)}  ·  ${viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3)}  ·  η_p ${eta_p.toFixed(3)}`;
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
   if(fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
   else if(fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
+  if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
   document.getElementById('warn').textContent=w;
   // courbe Le Duc (couche 3)
   const ld=VelocityModel.leDuc(v0,Pmax,m,C,d,travel);
