@@ -46,6 +46,8 @@ This roadmap outlines the development plan for the web-based Gordon's Reloading 
 
 ## Phase 6: Validation & calibration du solveur (EN COURS)
 
+> Initiative plus large (théorie sourcée, doc de validation, modèle empirique « Voie A », guide données utilisateur) : voir **`docs/balistique_interieure_roadmap.md`** dans le dépôt principal.
+
 Validation contre des données fabricant publiées (Reload Swiss Guide 2025, poudres RS validées Qlty 0,9–0,95) :
 
 | Charge de référence | Δ vitesse | Δ pression | combustion |
