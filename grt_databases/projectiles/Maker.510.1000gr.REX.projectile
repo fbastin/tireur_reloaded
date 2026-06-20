@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Maker" />
+    <var name="pname" value="REX" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".510" />
+    <var name="gdia" value="12.95" />
+    <var name="glen" value="63.30" />
+    <var name="gmass" value="1000.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="12.95" />
+    <var name="gtailDiaB" value="12.45" />
+    <var name="gtailh" value="7.11" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.770" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="H2H2B1D1N1" />
+    <var name="cdate" value="2025-04-03" />
+    <var name="cby" value="Airwolf" />
+    <var name="mdate" value="2025-04-03" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="https%3A%2F%2Fmakerbullets.com%2Fproddetail.php%3Fprod%3D5101000S%0D%0DDetail%20of%20side%3A%20https%3A%2F%2Fi.imgur.com%2Fls1Bpxi.jpeg%0DDetail%20of%20tip%3A%20https%3A%2F%2Fi.imgur.com%2F0Hj2hNO.jpeg%0DNext%20to%2055gr%20.224%20bullet%3A%20https%3A%2F%2Fi.imgur.com%2FPg1VaTN.jpeg%0D650gr%20M33%20.510%20%3E%201000gr%20REX%20.510%20%3E%20300gr%20TTSX%20.458%20%3E%20500gr%20Campro%20.458%3A%20https%3A%2F%2Fi.imgur.com%2F2JWupxX.jpeg%0D%0DThis%20is%20the%20Maker%201000%20grain%20projectile%20intended%20for%2050%20BMG%20and%20510%20Whisper.%20%20It%20is%20part%20of%20the%20%22rapidly%20expanding%20%28REX%29%22%20line%20of%20projectiles%20that%20are%20designed%20to%20expand%20at%20subsonic%20velocities.%0D%0DMeasured%20lengths%20in%20inches%3A%0D2.4920%0D2.4950%0D2.4910%0D2.4930%0D2.4910%0D2.4945%0D2.4925%0D2.4925%0D2.4915%0D2.4940%0D2.4920%0D2.4940%0D2.4930%0D%0DMeasured%20weights%20in%20grains%3A%0D1000.08%0D1002.26%0D1002.48%0D1000.08%0D1002.52%0D1001.34%0D1002.10%0D1000.78%0D1002.36%0D1000.42%0D1001.02%0D1001.80%0D1000.54" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

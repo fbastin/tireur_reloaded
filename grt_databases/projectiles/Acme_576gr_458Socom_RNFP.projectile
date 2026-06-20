@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="acme" />
+    <var name="pname" value="576gr%20Socom%20RNFP" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".458" />
+    <var name="gdia" value="11.66" />
+    <var name="glen" value="34.67" />
+    <var name="gmass" value="576.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="0.00" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="0.00" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.330" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2023-10-01" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2023-10-03" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Coated%20lead%20round%20nose%20flat%20point.%20BC%20is%20estimate%20from%20similar%20rounds." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Maker" />
+    <var name="pname" value="9mm%20REX%20subsonic" />
+    <var name="lotid" value="2023" />
+    <var name="caliber" value=".355" />
+    <var name="gdia" value="9.02" />
+    <var name="glen" value="20.32" />
+    <var name="gmass" value="135.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="8.51" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="2.79" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.000" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="D2H2B2S1N2" />
+    <var name="cdate" value="2023-08-16" />
+    <var name="cby" value="Abso" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Initial%20pressure%20unknown." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

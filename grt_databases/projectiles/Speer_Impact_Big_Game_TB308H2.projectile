@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Speer" />
+    <var name="pname" value="Impact%20Big%20Game%20TB308H2" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="36.04" />
+    <var name="gmass" value="190.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.80" />
+    <var name="gtailDiaB" value="6.63" />
+    <var name="gtailh" value="4.61" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.591" />
+    <var name="g7bc" value="0.294" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2026-04-08" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Speer%20Impact%20Big%20Game%20190gr.%20Bonded%20Bullet.%20SKU%3A%20TB308H2%20Recommended%20Twist%20Rate%201%3A11%20or%20faster." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

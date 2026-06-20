@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Maker" />
+    <var name="pname" value="REX" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".338" />
+    <var name="gdia" value="8.59" />
+    <var name="glen" value="51.87" />
+    <var name="gmass" value="350.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="8.53" />
+    <var name="gtailDiaB" value="7.32" />
+    <var name="gtailh" value="6.22" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="27.10" />
+    <var name="g1bc" value="0.530" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="B2H2B1D1N1" />
+    <var name="cdate" value="2022-12-21" />
+    <var name="cby" value="Airwolf" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="https%3A%2F%2Fmakerbullets.com%2Fproddetail.php%3Fprod%3D8.6350SUB" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

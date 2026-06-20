@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Berry%27s%20Bullets" />
+    <var name="pname" value="155%20Plated%20Flat%20Nose" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".400" />
+    <var name="gdia" value="10.19" />
+    <var name="glen" value="13.31" />
+    <var name="gmass" value="155.0" />
+    <var name="gpressure" value="150" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="0.00" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="0.00" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.106" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="%3F%3FF%3FF2%3F4%3F%3F" />
+    <var name="cdate" value="2026-01-09" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2026-01-09" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="import" />
+    <var name="origin" value="" />
+    <var name="descr" value="" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

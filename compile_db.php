@@ -4,7 +4,7 @@
  * Parses XML files without requiring SimpleXMLElement.
  */
 
-$dbPath = dirname(__DIR__) . '/grt_databases';
+$dbPath = __DIR__ . '/grt_databases';  // base regroupée dans le dépôt (CC0 zen + communauté GRT)
 $outputFile = __DIR__ . '/grt_db.json';
 
 $database = [
@@ -79,14 +79,8 @@ if (is_dir($calibersDir)) {
         }
     }
 }
-// Include the template caliber in the root of grt_databases
-$rootCaliber = $dbPath . '/template_9 mm Luger (9 mm Para(bellum), 9 x 19 (mm)).caliber';
-if (file_exists($rootCaliber)) {
-    $parsed = parseGrtXmlRegex($rootCaliber);
-    if (!empty($parsed)) {
-        $database['calibers'][] = $parsed;
-    }
-}
+// (Le calibre 9 mm Luger est désormais un fichier normal dans calibers/ —
+//  plus de cas particulier « template » à la racine.)
 
 // 2. Scan projectiles
 $projectilesDir = $dbPath . '/projectiles';

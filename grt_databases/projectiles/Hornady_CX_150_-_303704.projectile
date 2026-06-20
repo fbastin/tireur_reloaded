@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="CX%20150%20-%20303704" />
+    <var name="lotid" value="5.13.2025%20-%202240268" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="34.02" />
+    <var name="gmass" value="150.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.82" />
+    <var name="gtailDiaB" value="6.88" />
+    <var name="gtailh" value="4.09" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.418" />
+    <var name="g7bc" value="0.210" />
+    <var name="gUBCS" value="H2B1B2C1N2" />
+    <var name="cdate" value="2025-04-06" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2025-05-13" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Measured%20length%20of%20all%2050%3B%20Standard%20deviation%20-%2099%25%20were%201.3395%22%20%2B%2F-%200.005%22%20with%20only%20a%20few%20outliers%3B%20measured%20boattail%20as%20well.%0DLeft%20IP%20at%20default%3B%20GRT%20estimates%20IP%20of%206527%20psi%20for%20solid%20copper%20projectile.%20-%20Dewey" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

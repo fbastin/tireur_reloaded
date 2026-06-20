@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Sierra" />
+    <var name="pname" value="HP%20MK%202231" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="41.25" />
+    <var name="gmass" value="200.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.80" />
+    <var name="gtailDiaB" value="5.70" />
+    <var name="gtailh" value="6.10" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.715" />
+    <var name="g7bc" value="0.357" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2024-04-19" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2024-04-19" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Sierra%20claims%20G1%20BC%20%3D%20.715%20above%202000%20fps.%20%20.695%20between%201250%20and%202000%20fps%2C%20and%20.660%20below%201720%20fps.%0DBullet%20length%20derived%20from%20picture%20scaling.%20%20Boattail%20left%20at%20%232230%20dimensions." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

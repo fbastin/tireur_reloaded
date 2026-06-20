@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Berger" />
+    <var name="pname" value="Long%20Range%20Hybrid%20Target" />
+    <var name="lotid" value="4176" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="44.73" />
+    <var name="gmass" value="245.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.82" />
+    <var name="gtailDiaB" value="6.43" />
+    <var name="gtailh" value="5.66" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.845" />
+    <var name="g7bc" value="0.425" />
+    <var name="gUBCS" value="T0H2B2S4N4" />
+    <var name="cdate" value="2026-02-01" />
+    <var name="cby" value="Airwolf" />
+    <var name="mdate" value="2026-02-01" />
+    <var name="mby" value="grtuser" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="OAL%28in%29%09Wt%28gn%29%09BT-OAL%28in%29%09BTBase%28in%29%0D1.7690%09244.96%090.2600%09%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%200.2100%0D1.7630%09244.94%09%09%0D1.7695%09244.94%09%09%0D1.7715%09244.88%09%09%0D1.7655%09244.90%09%09%0D1.7630%09244.96%09%09%0D1.7685%09244.88%09%09%0D1.7690%09244.92%09%09%0D1.7710%09244.94%09%09%0D1.7755%09245.06%09%09%0D%0Dhttps%3A%2F%2Fthescienceofaccuracy.com%2Fwp-content%2Fuploads%2F2024%2F01%2F308cal245grLRHT3.pdf%0D%0DValues%20entered%20into%20projectile%20profile%20from%20bullet%20drawing%20in%20above%20PDF.%20%20Measurements%20from%2010%20samples.%0D%0Dhttps%3A%2F%2Fbergerbullets.com%2Fproduct%2F30-caliber-245-grain-long-range-hybrid-target-rifle-bullet%2F" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

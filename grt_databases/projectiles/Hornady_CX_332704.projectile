@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="CX%20332704" />
+    <var name="lotid" value="2220693" />
+    <var name="caliber" value=".338" />
+    <var name="gdia" value="8.59" />
+    <var name="glen" value="36.37" />
+    <var name="gmass" value="185.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="8.56" />
+    <var name="gtailDiaB" value="7.32" />
+    <var name="gtailh" value="4.06" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.407" />
+    <var name="g7bc" value="0.206" />
+    <var name="gUBCS" value="B2B1B1D1N1" />
+    <var name="cdate" value="2022-11-28" />
+    <var name="cby" value="Airwolf" />
+    <var name="mdate" value="2022-11-28" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="https%3A%2F%2Fwww.hornady.com%2Fbullets%2Frifle%2F338-cal-.338-185-gr-cx%23%21%2F%0D%0DMeasurements%20with%20SPi%2015-998-8%20calibrated%2009%2F22%0D%0DOAL%3A%0D1.432%0D1.4305%0D1.436%0D1.4305%0D1.4305%0D1.4325%0D1.431%0D1.431%0D1.433%0D1.4315%0D%0DAvg%3A%201.43185%0D%0DStart%20of%20BT%3A%200.337%0DEnd%20of%20BT%3A%200.288%0DBT%20Length%3A%200.160%0D%0DTip%3A%200.18%0DBase%20of%20tip%3A%200.32" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

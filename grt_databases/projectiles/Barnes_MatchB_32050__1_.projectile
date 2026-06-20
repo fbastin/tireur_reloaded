@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Barnes" />
+    <var name="pname" value="MatchB%2032050" />
+    <var name="lotid" value="2024" />
+    <var name="caliber" value=".224" />
+    <var name="gdia" value="5.69" />
+    <var name="glen" value="25.22" />
+    <var name="gmass" value="77.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="5.69" />
+    <var name="gtailDiaB" value="5.08" />
+    <var name="gtailh" value="3.94" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.352" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="T0H%3FB2C4N4" />
+    <var name="cdate" value="2024-09-22" />
+    <var name="cby" value="Reddtigger" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Barnes%20Match%20Burner%2077%20grain%20Bulk%20Purchased.%20Length%20is%20an%20average%20of%2010%20random%20%20variance%20as%20much%20as%20.006.%20CTBO%20was%20much%20better." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

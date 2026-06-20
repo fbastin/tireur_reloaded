@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Lee" />
+    <var name="pname" value="356-147-TC" />
+    <var name="lotid" value="Lee%202023" />
+    <var name="caliber" value=".356" />
+    <var name="gdia" value="9.04" />
+    <var name="glen" value="16.76" />
+    <var name="gmass" value="147.0" />
+    <var name="gpressure" value="80" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="0.00" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="0.00" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.127" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2023-10-18" />
+    <var name="cby" value="DrRick" />
+    <var name="mdate" value="2023-05-26" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Lee%20.356%20147%20Grain%20Truncated%20Cone%20Cast%20Bullet" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

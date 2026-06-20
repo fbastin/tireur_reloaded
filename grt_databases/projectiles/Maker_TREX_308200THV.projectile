@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Maker" />
+    <var name="pname" value="TREX%20308200THV" />
+    <var name="lotid" value="SKU%20308-200g-HV-T-Rex" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="39.34" />
+    <var name="gmass" value="200.0" />
+    <var name="gpressure" value="448" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.82" />
+    <var name="gtailDiaB" value="6.60" />
+    <var name="gtailh" value="4.78" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.625" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="H2B1B2D1N2" />
+    <var name="cdate" value="2023-08-16" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2023-08-17" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Bearing%20Length%3A%200.718.%0BThese%20projectiles%20prefer%20a%20.050%20or%20greater%20bullet%20jump%20according%20to%20MFG." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

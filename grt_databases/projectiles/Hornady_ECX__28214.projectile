@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="ECX" />
+    <var name="lotid" value="28214" />
+    <var name="caliber" value=".284" />
+    <var name="gdia" value="7.21" />
+    <var name="glen" value="33.53" />
+    <var name="gmass" value="150.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="0.00" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="0.00" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.287" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2025-04-30" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Projectile%20made%20using%20measurements%20off%20of%20xxlreloading.com%20and%20hornady.com%20for%20what%20measurements%20they%20provided.%0D%0D" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

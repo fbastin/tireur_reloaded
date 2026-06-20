@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="Match%20BTHP" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".338" />
+    <var name="gdia" value="8.59" />
+    <var name="glen" value="43.59" />
+    <var name="gmass" value="300.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="8.59" />
+    <var name="gtailDiaB" value="7.01" />
+    <var name="gtailh" value="5.49" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.000" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="T0H1B2S4N4" />
+    <var name="cdate" value="2025-03-23" />
+    <var name="cby" value="Airwolf" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Bourrelet%20length%20%3D%200.700%22%0DTip%20to%20base%20of%20ogive%20%3D%200.766%22%0DAppears%20to%20have%20a%20secant%20or%20hybrid%20ogive.%20%20May%20require%20seating%20depth%20tuning.%0DDetail%20picture%20of%20bullet%3A%20https%3A%2F%2Fi.imgur.com%2FtsoeZtn.jpeg%0DBullet%20is%20not%20listed%20on%20the%20Hornady%20site%20at%20the%20time%20of%20this%20file%20creation.%20%20These%20were%20samples%20sent%20to%20me%20from%20an%20online%20retailer%20that%20received%20them%20from%20Hornady.%0DG1%20and%20G7%20is%20unknown." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

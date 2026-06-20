@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hammer" />
+    <var name="pname" value=".338%20Cal-128gr%20Stone%20Hammer" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".338" />
+    <var name="gdia" value="8.59" />
+    <var name="glen" value="22.35" />
+    <var name="gmass" value="128.0" />
+    <var name="gpressure" value="200" />
+    <var name="gfriction" value="-83" />
+    <var name="gtailDiaA" value="8.58" />
+    <var name="gtailDiaB" value="7.91" />
+    <var name="gtailh" value="3.20" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.213" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2026-03-10" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="From%20Hammer%20Drawings" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

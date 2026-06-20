@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Nosler" />
+    <var name="pname" value="Accubond%20LR%2054827" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".277" />
+    <var name="gdia" value="7.04" />
+    <var name="glen" value="38.33" />
+    <var name="gmass" value="165.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.00" />
+    <var name="gtailDiaB" value="6.00" />
+    <var name="gtailh" value="6.00" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.620" />
+    <var name="g7bc" value="0.312" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2025-12-25" />
+    <var name="cby" value="thouse" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

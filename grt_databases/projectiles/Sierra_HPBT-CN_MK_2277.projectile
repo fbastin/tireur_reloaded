@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Sierra" />
+    <var name="pname" value="HPBT-CN%20MK%202277" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="33.95" />
+    <var name="gmass" value="177.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.80" />
+    <var name="gtailDiaB" value="5.70" />
+    <var name="gtailh" value="4.70" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.545" />
+    <var name="g7bc" value="0.271" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2025-05-16" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2025-05-16" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Based%20on%20HPBT%20MK%202275%0D30%20CAL%20177%20GR%20HPBT%2FCN%20MATCHKING%20%28SMK%29%0DSKU%3A%202277C%0DProjectile%20length%3A%201.33675%20Average%20OAL%20length%20of%20twenty%20randomly%20picked%20out%20of%20500%20box" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

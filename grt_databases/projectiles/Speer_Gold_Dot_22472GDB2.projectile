@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Speer" />
+    <var name="pname" value="Gold%20Dot%2022472GDB2" />
+    <var name="lotid" value="2021" />
+    <var name="caliber" value=".224" />
+    <var name="gdia" value="5.69" />
+    <var name="glen" value="23.52" />
+    <var name="gmass" value="72.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="5.69" />
+    <var name="gtailDiaB" value="4.32" />
+    <var name="gtailh" value="2.03" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.411" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="D2L1R2S4N4" />
+    <var name="cdate" value="2023-08-06" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2023-08-06" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="From%20Speer%20website.%20%20https%3A%2F%2Fwww.speer.com%2Fbullets%2Frifle_bullets%2Fgold_dot_rifle_component_bullet%2F19-22475GDB2.html" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

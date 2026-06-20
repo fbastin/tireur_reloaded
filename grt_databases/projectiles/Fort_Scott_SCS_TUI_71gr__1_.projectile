@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Fort%20Scott" />
+    <var name="pname" value="SCS%20TUI" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".312" />
+    <var name="gdia" value="7.92" />
+    <var name="glen" value="14.06" />
+    <var name="gmass" value="71.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.89" />
+    <var name="gtailDiaB" value="6.25" />
+    <var name="gtailh" value="1.88" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.000" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="D0T7B2S1N2" />
+    <var name="cdate" value="2023-09-05" />
+    <var name="cby" value="M57tok1776" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

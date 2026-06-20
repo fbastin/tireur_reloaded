@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Fort%20Scott" />
+    <var name="pname" value="175%20Gr%20SP2" />
+    <var name="lotid" value="09%2F03%2F2023" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="38.86" />
+    <var name="gmass" value="175.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.82" />
+    <var name="gtailDiaB" value="5.75" />
+    <var name="gtailh" value="33.11" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.575" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="H0T1B2S1N2" />
+    <var name="cdate" value="2023-09-03" />
+    <var name="cby" value="M57tok1776%20%28aka%20E%3DMC%5E2%281776%29%29" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="Initial%20measurements%2C%20but%20Length%2FDepth%20measurement%20does%20not%20seem%20correct.%20Revising" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Cutting%20Edge" />
+    <var name="pname" value="CutEDGE-LZR416550MAXGEN2" />
+    <var name="lotid" value="Submitted%20by%20Cutting%20Edge%2009%2F07%2F2023" />
+    <var name="caliber" value=".416" />
+    <var name="gdia" value="10.57" />
+    <var name="glen" value="64.92" />
+    <var name="gmass" value="550.0" />
+    <var name="gpressure" value="200" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="10.55" />
+    <var name="gtailDiaB" value="8.61" />
+    <var name="gtailh" value="7.92" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="1.024" />
+    <var name="g7bc" value="0.525" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2023-11-06" />
+    <var name="cby" value="" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

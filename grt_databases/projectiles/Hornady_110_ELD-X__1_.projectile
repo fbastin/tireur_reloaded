@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="110%20ELD-X" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".257" />
+    <var name="gdia" value="6.53" />
+    <var name="glen" value="31.09" />
+    <var name="gmass" value="110.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="6.50" />
+    <var name="gtailDiaB" value="5.10" />
+    <var name="gtailh" value="3.30" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.465" />
+    <var name="g7bc" value="0.234" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2023-08-11" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2023-08-11" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="https%3A%2F%2Fwww.hornady.com%2Fbullets%2Frifle%2F25-cal-.257-110-gr-eld-x%23%21%2F%23specs" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

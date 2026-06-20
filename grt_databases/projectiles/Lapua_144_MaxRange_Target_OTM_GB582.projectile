@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Lapua" />
+    <var name="pname" value="144%20MaxRange%20Target%20OTM%20GB582" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".264" />
+    <var name="gdia" value="6.71" />
+    <var name="glen" value="34.94" />
+    <var name="gmass" value="144.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="6.62" />
+    <var name="gtailDiaB" value="5.46" />
+    <var name="gtailh" value="5.26" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.670" />
+    <var name="g7bc" value="0.335" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2025-12-11" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="import" />
+    <var name="origin" value="" />
+    <var name="descr" value="Came%20out%20spring%202025." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Sierra" />
+    <var name="pname" value=".277%20175%20gr%20%20TMK%20%234475" />
+    <var name="lotid" value="%23%204475" />
+    <var name="caliber" value=".277" />
+    <var name="gdia" value="7.04" />
+    <var name="glen" value="41.48" />
+    <var name="gmass" value="175.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.04" />
+    <var name="gtailDiaB" value="5.59" />
+    <var name="gtailh" value="4.06" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.633" />
+    <var name="g7bc" value="0.315" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2026-01-18" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2026-01-18" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="From%20Sierra%20URL%20https%3A%2F%2Fsierrabullets.com%2F270-cal-175-gr-tipped-gameking-tgk%2F%0Dand%20from%20Tuffy%20on%20GRT%20Discord%20%22I%27m%20getting%20.160%20bt%20length%2C%20.220%20%40%20the%20base%20of%20the%20boattail.%20%20Projectile%20length%20is%201.633%22" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

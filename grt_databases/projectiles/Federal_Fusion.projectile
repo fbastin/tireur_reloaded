@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Federal" />
+    <var name="pname" value="Fusion" />
+    <var name="lotid" value="01.12.2019" />
+    <var name="caliber" value=".308" />
+    <var name="gdia" value="7.82" />
+    <var name="glen" value="28.96" />
+    <var name="gmass" value="165.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.40" />
+    <var name="gtailDiaB" value="6.20" />
+    <var name="gtailh" value="1.60" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.446" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="H2S1B2S4N5" />
+    <var name="cdate" value="2025-04-24" />
+    <var name="cby" value="Redneck300" />
+    <var name="mdate" value="" />
+    <var name="mby" value="grtuser" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="As%20supplied%20by%20Redneck300." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

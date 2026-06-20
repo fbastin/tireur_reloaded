@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="ELD-M" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".243" />
+    <var name="gdia" value="6.17" />
+    <var name="glen" value="33.68" />
+    <var name="gmass" value="109.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="6.17" />
+    <var name="gtailDiaB" value="4.93" />
+    <var name="gtailh" value="4.83" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.546" />
+    <var name="g7bc" value="0.280" />
+    <var name="gUBCS" value="T0B1B2S4N2" />
+    <var name="cdate" value="2025-03-22" />
+    <var name="cby" value="Airwolf" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="The%20Hornady%20109gr%20ELD-M%20is%20sold%20exclusively%20by%20GA%20Precision%20and%20is%20a%20Hornady%20110gr%20A-Tip%20with%20a%20plastic%20tip.%20%20The%20projectile%20length%2C%20G1%2C%20and%20G7%20data%20is%20from%20the%20Applied%20Ballistics%20Quantum%20application.%20%20The%20boat%20tail%20length%20and%20diameters%20were%20measured%20manually.%20%20The%20bullet%20most%20likely%20has%20a%20minimum%20expansion%20velocity%20of%20approximately%201600%20fps%2C%20which%20is%20the%20same%20as%20the%20A-Tip.%0D%0DThe%20bullets%20can%20be%20purchased%20from%20the%20following%20link%3A%20https%3A%2F%2Fwww.gaprecision.net%2Fhornady-6mm-109-gr-eld-m-bullets.html%0DMore%20information%20can%20be%20found%20here%3A%20https%3A%2F%2Fwww.hornady.com%2Fbullets%2Frifle%2F6mm-.243-109-gr-eld-match-500%23%21%2F" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="MP-Molds" />
+    <var name="pname" value="452-200HP" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".452" />
+    <var name="gdia" value="11.48" />
+    <var name="glen" value="14.80" />
+    <var name="gmass" value="200.0" />
+    <var name="gpressure" value="80" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="0.00" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="0.00" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="8.00" />
+    <var name="g1bc" value="0.000" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="T2H2F1%3F4N1" />
+    <var name="cdate" value="2026-01-09" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="import" />
+    <var name="origin" value="" />
+    <var name="descr" value="MP-Mould%20452-200HP%0Dhttps%3A%2F%2Fwww.mp-molds.com%2Fen%2Fproduct%2Fmp-452-200-hp-4-cav%2F%3Fv%3Defad7abb323e" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

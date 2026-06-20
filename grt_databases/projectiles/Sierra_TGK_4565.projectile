@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Sierra" />
+    <var name="pname" value="TGK%204565" />
+    <var name="lotid" value="JBM" />
+    <var name="caliber" value=".284" />
+    <var name="gdia" value="7.21" />
+    <var name="glen" value="37.97" />
+    <var name="gmass" value="165.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="7.20" />
+    <var name="gtailDiaB" value="5.10" />
+    <var name="gtailh" value="3.60" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.510" />
+    <var name="g7bc" value="0.255" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2024-03-08" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value=".610%20%40%202600%20fps%20and%20above%20.510%20between%201320%20and%202600%20fps%20.450%20%40%201320%20fps%20and%20below" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

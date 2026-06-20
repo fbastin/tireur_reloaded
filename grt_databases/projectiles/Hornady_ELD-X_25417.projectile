@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="ELD-X" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".257" />
+    <var name="gdia" value="6.53" />
+    <var name="glen" value="35.94" />
+    <var name="gmass" value="128.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="6.53" />
+    <var name="gtailDiaB" value="5.46" />
+    <var name="gtailh" value="4.34" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.633" />
+    <var name="g7bc" value="0.319" />
+    <var name="gUBCS" value="H2B1B2S4N1" />
+    <var name="cdate" value="2026-04-20" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="import" />
+    <var name="origin" value="" />
+    <var name="descr" value="Supplied%20by%20Austin%20Bushman%20ITE" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

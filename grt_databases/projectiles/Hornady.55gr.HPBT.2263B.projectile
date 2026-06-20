@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Hornady" />
+    <var name="pname" value="HPBT%202263B" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".224" />
+    <var name="gdia" value="5.69" />
+    <var name="glen" value="19.30" />
+    <var name="gmass" value="55.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="5.66" />
+    <var name="gtailDiaB" value="5.08" />
+    <var name="gtailh" value="1.52" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.254" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="T2H2B2C4N1" />
+    <var name="cdate" value="2023-08-22" />
+    <var name="cby" value="airwolf" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="https%3A%2F%2Fwww.hornady.com%2Fbullets%2Frifle%2F22-cal-.224-55-gr-hp%23%21%2F" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

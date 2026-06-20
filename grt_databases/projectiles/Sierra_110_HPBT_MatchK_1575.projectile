@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Sierra" />
+    <var name="pname" value="HPBT%20MatchK%201575" />
+    <var name="lotid" value="2026%2F05%2F26" />
+    <var name="caliber" value=".243" />
+    <var name="gdia" value="6.17" />
+    <var name="glen" value="34.16" />
+    <var name="gmass" value="110.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="4.95" />
+    <var name="gtailDiaB" value="6.17" />
+    <var name="gtailh" value="6.10" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.617" />
+    <var name="g7bc" value="0.304" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2026-05-27" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2026-05-27" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="BC%20from%20Sierra%20website%0DHeel%20dimensions%20from%20Kilo%20Bravo%20stock%20on%20hand." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>
