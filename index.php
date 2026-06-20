@@ -76,6 +76,29 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 <a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>. Pour explorer les courbes de combustion :
 <a href="/reloading/tireur_reloaded/legacy/">simulateur GRT</a> (indicatif, hérité).</p>
 
+<details class="vm-howto" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
+<summary style="cursor:pointer;font-weight:600;">Comment ça marche&nbsp;?</summary>
+<div style="font-size:0.9rem;">
+<p>L'estimateur n'effectue <strong>aucune simulation de combustion</strong> et n'utilise pas la « fonction de forme » propriétaire des logiciels fermés. Il repose sur deux <strong>efficacités</strong> physiquement interprétables, <strong>calées sur des données fabricant</strong>&nbsp;:</p>
+<ul>
+<li>la <strong>vitesse</strong> découle de l'énergie de la poudre via l'efficacité balistique η<sub>b</sub>&nbsp;;</li>
+<li>la <strong>pression</strong> d'une efficacité piézométrique η<sub>p</sub> (sortie <strong>la plus incertaine</strong>, donnée à titre indicatif).</li>
+</ul>
+<p>La précision se resserre selon ce que vous lui fournissez&nbsp;:</p>
+<ul>
+<li><strong>à froid</strong> (cartouche + poudre + charge)&nbsp;: vitesse à <strong>±10&nbsp;%</strong>&nbsp;;</li>
+<li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: <strong>~5&nbsp;%</strong>&nbsp;;</li>
+<li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: <strong>quasi-exact</strong>.</li>
+</ul>
+<p>Catalogue de poudres actuel&nbsp;: gamme <strong>Reload Swiss</strong> (d'autres marques viendront de leurs propres guides).</p>
+<p><strong>Pour aller plus loin&nbsp;:</strong>
+<a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
+<a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limites</a> ·
+<a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données</a> ·
+<a href="https://github.com/fbastin/tireur_reloaded/blob/main/docs/MODEL.md" target="_blank" rel="noopener">description formelle du modèle (EN)</a>.</p>
+</div>
+</details>
+
 </div>
 
 <script>
