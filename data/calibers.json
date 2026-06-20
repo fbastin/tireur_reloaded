@@ -1,0 +1,275 @@
+{
+  "_doc": "Dimensions standard (CIP/SAAMI, domaine public) : bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss.",
+  "calibers": {
+    "308 Win.": {
+      "bore_mm": 7.82,
+      "case_mm": 51.18,
+      "case_vol_cm3": 2.981
+    },
+    "9 mm Luger": {
+      "bore_mm": 9.02,
+      "case_mm": 19.15,
+      "case_vol_cm3": 0.563
+    },
+    "7 x 64": {
+      "bore_mm": 7.24,
+      "case_mm": 64,
+      "case_vol_cm3": 3.798
+    },
+    "6.5 Creedmoor": {
+      "bore_mm": 6.71,
+      "case_mm": 48.77,
+      "case_vol_cm3": 2.967
+    },
+    "30-06 Spring.": {
+      "bore_mm": 7.82,
+      "case_mm": 63.35,
+      "case_vol_cm3": 3.877
+    },
+    "9.3 x 62": {
+      "bore_mm": 9.3,
+      "case_mm": 62,
+      "case_vol_cm3": 3.97
+    },
+    "300 Win. Mag.": {
+      "bore_mm": 7.82,
+      "case_mm": 66.55,
+      "case_vol_cm3": 5.157
+    },
+    "7.5 x 55 Swiss": {
+      "bore_mm": 7.77,
+      "case_mm": 55.6,
+      "case_vol_cm3": 3.718
+    },
+    "243 Win.": {
+      "bore_mm": 6.17,
+      "case_mm": 51.94,
+      "case_vol_cm3": 3.189
+    },
+    "7 x 57": {
+      "bore_mm": 7.24,
+      "case_mm": 57,
+      "case_vol_cm3": 3.357
+    },
+    "7 Rem. Mag.": {
+      "bore_mm": 7.24,
+      "case_mm": 64.77,
+      "case_vol_cm3": 5.099
+    },
+    "45 ACP (Auto)": {
+      "bore_mm": 11.48,
+      "case_mm": 22.81,
+      "case_vol_cm3": 1.126
+    },
+    "223 Rem.": {
+      "bore_mm": 5.7,
+      "case_mm": 44.7,
+      "case_vol_cm3": 1.804
+    },
+    "357 Magnum": {
+      "bore_mm": 9.07,
+      "case_mm": 32.77,
+      "case_vol_cm3": 1.12
+    },
+    "44 Rem. Mag.": {
+      "bore_mm": 10.92,
+      "case_mm": 32.61,
+      "case_vol_cm3": 1.56
+    },
+    "300 PRC": {
+      "bore_mm": 7.82,
+      "case_mm": 65.02,
+      "case_vol_cm3": 5.571
+    },
+    "6.5 x 55 SE": {
+      "bore_mm": 6.71,
+      "case_mm": 55,
+      "case_vol_cm3": 3.419
+    },
+    "38 Special": {
+      "bore_mm": 9.07,
+      "case_mm": 29.34,
+      "case_vol_cm3": 1.032
+    },
+    "38 Super Auto": {
+      "bore_mm": 9.07,
+      "case_mm": 22.94,
+      "case_vol_cm3": 0.79
+    },
+    "8 x 57 IRS": {
+      "bore_mm": 8.2,
+      "case_mm": 57,
+      "case_vol_cm3": 3.557
+    },
+    "222 Rem.": {
+      "bore_mm": 5.7,
+      "case_mm": 43.18,
+      "case_vol_cm3": 1.61
+    },
+    "270 Win.": {
+      "bore_mm": 7.04,
+      "case_mm": 64.51,
+      "case_vol_cm3": 4.112
+    },
+    "6.5 PRC": {
+      "bore_mm": 6.71,
+      "case_mm": 51.81,
+      "case_vol_cm3": 3.948
+    },
+    "9.3 x 64 Brenneke": {
+      "bore_mm": 9.3,
+      "case_mm": 64,
+      "case_vol_cm3": 4.82
+    },
+    "260 Rem.": {
+      "bore_mm": 6.71,
+      "case_mm": 53,
+      "case_vol_cm3": 2.995
+    },
+    "375 H&H Mag.": {
+      "bore_mm": 9.53,
+      "case_mm": 72,
+      "case_vol_cm3": 5.154
+    },
+    "6 XC": {
+      "bore_mm": 6.17,
+      "case_mm": 48,
+      "case_vol_cm3": 2.871
+    },
+    "8 x 57 IS": {
+      "bore_mm": 8.2,
+      "case_mm": 57,
+      "case_vol_cm3": 3.489
+    },
+    "8 x 68 S": {
+      "bore_mm": 8.2,
+      "case_mm": 67.5,
+      "case_vol_cm3": 5.059
+    },
+    "30 R Blaser": {
+      "bore_mm": 7.82,
+      "case_mm": 60.5,
+      "case_vol_cm3": 4.438
+    },
+    "338 Lapua Mag.": {
+      "bore_mm": 8.61,
+      "case_mm": 69.2,
+      "case_vol_cm3": 6.389
+    },
+    "338 Win. Mag.": {
+      "bore_mm": 8.61,
+      "case_mm": 63.5,
+      "case_vol_cm3": 4.684
+    },
+    "444 Marlin": {
+      "bore_mm": 10.9,
+      "case_mm": 56.64,
+      "case_vol_cm3": 3.316
+    },
+    "45 - 70 Govt.": {
+      "bore_mm": 11.63,
+      "case_mm": 53.5,
+      "case_vol_cm3": 3.301
+    },
+    "22 Hornet": {
+      "bore_mm": 5.7,
+      "case_mm": 35.56,
+      "case_vol_cm3": 0.665
+    },
+    "300 AAC BLK": {
+      "bore_mm": 7.82,
+      "case_mm": 34.7,
+      "case_vol_cm3": 1.044
+    },
+    "10 mm Auto": {
+      "bore_mm": 10.17,
+      "case_mm": 25.2,
+      "case_vol_cm3": 0.879
+    },
+    "22-250 Rem.": {
+      "bore_mm": 5.7,
+      "case_mm": 48.56,
+      "case_vol_cm3": 2.736
+    },
+    "45 Colt": {
+      "bore_mm": 11.48,
+      "case_mm": 32.61,
+      "case_vol_cm3": 1.837
+    },
+    "9 mm Browning court": {
+      "bore_mm": 9.02,
+      "case_mm": 17.27,
+      "case_vol_cm3": 0.434
+    },
+    "30-30 Win.": {
+      "bore_mm": 7.82,
+      "case_mm": 51.82,
+      "case_vol_cm3": 2.168
+    },
+    "6.5 x 47 Lapua": {
+      "bore_mm": 6.71,
+      "case_mm": 47,
+      "case_vol_cm3": 2.843
+    },
+    "5.6 x 50 R Mag.": {
+      "bore_mm": 5.7,
+      "case_mm": 50,
+      "case_vol_cm3": 1.9
+    },
+    "7.62 x 39": {
+      "bore_mm": 7.85,
+      "case_mm": 38.7,
+      "case_vol_cm3": 1.77
+    },
+    "7.62 x 54 R": {
+      "bore_mm": 7.92,
+      "case_mm": 53.7,
+      "case_vol_cm3": 3.65
+    },
+    "7 -08 Rem.": {
+      "bore_mm": 7.24,
+      "case_mm": 51.94,
+      "case_vol_cm3": 2.717
+    },
+    "10.3 x 60 R": {
+      "bore_mm": 10.3,
+      "case_mm": 60,
+      "case_vol_cm3": 4.786
+    },
+    "40 S&W": {
+      "bore_mm": 10.17,
+      "case_mm": 21.59,
+      "case_vol_cm3": 0.648
+    },
+    "270 WSM": {
+      "bore_mm": 7.04,
+      "case_mm": 53.34,
+      "case_vol_cm3": 4.499
+    },
+    "303 British": {
+      "bore_mm": 7.92,
+      "case_mm": 56.44,
+      "case_vol_cm3": 3.09
+    },
+    "6 Norma BR": {
+      "bore_mm": 6.17,
+      "case_mm": 38.55,
+      "case_vol_cm3": 2.172
+    },
+    "300 WSM": {
+      "bore_mm": 7.82,
+      "case_mm": 53.34,
+      "case_vol_cm3": 4.597
+    },
+    "338 Norma Mag.": {
+      "bore_mm": 8.61,
+      "case_mm": 63.3,
+      "case_vol_cm3": 6.159
+    },
+    "9.3 x 74 R": {
+      "bore_mm": 9.3,
+      "case_mm": 74,
+      "case_vol_cm3": 4.616
+    }
+  }
+}

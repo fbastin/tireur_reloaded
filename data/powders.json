@@ -1,0 +1,85 @@
+{
+  "_doc": "Constantes poudres (Reload Swiss, Vihtavuori) : Qex (kJ/kg) energie specifique, Ba vivacite, pcd (kg/m3) densite de remplissage. Cles = nom produit (RSnn = Reload Swiss ; sinon Vihtavuori). Source: base de composants GRT (Gordon, decede) + communaute (zen/grt_databases, CC0).",
+  "powders": {
+    "N120": {
+      "Qex": 3700,
+      "Ba": 0.8509,
+      "pcd": 870
+    },
+    "N160": {
+      "Qex": 3650,
+      "Ba": 0.4514,
+      "pcd": 920
+    },
+    "RS12": {
+      "Qex": 4020,
+      "Ba": 2.5935,
+      "pcd": 616
+    },
+    "RS14": {
+      "Qex": 3200,
+      "Ba": 3.147,
+      "pcd": 316
+    },
+    "RS20": {
+      "Qex": 4100,
+      "Ba": 2.5181,
+      "pcd": 617
+    },
+    "RS24": {
+      "Qex": 4370,
+      "Ba": 1.746,
+      "pcd": 825
+    },
+    "RS30": {
+      "Qex": 4010,
+      "Ba": 1.0005,
+      "pcd": 811
+    },
+    "RS36": {
+      "Qex": 3930,
+      "Ba": 0.8621,
+      "pcd": 899
+    },
+    "RS40": {
+      "Qex": 3990,
+      "Ba": 0.6542,
+      "pcd": 938
+    },
+    "RS50": {
+      "Qex": 3800,
+      "Ba": 0.5479,
+      "pcd": 957
+    },
+    "RS52": {
+      "Qex": 3920,
+      "Ba": 0.5163,
+      "pcd": 949
+    },
+    "RS60": {
+      "Qex": 4000,
+      "Ba": 0.5004,
+      "pcd": 976
+    },
+    "RS62": {
+      "Qex": 3722,
+      "Ba": 0.4102,
+      "pcd": 964
+    },
+    "RS70": {
+      "Qex": 3950,
+      "Ba": 0.3698,
+      "pcd": 980
+    },
+    "RS76": {
+      "Qex": 3850,
+      "Ba": 0.3176,
+      "pcd": 990
+    },
+    "RS80": {
+      "Qex": 3770,
+      "Ba": 0.2983,
+      "pcd": 998
+    }
+  }
+}

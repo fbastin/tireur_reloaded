@@ -1,0 +1,35 @@
+{
+  "_doc": "Derived (publishable) coefficients of the energy-efficiency model. Calibrated on a manufacturer guide; raw load tables are NOT redistributed (EULA).",
+  "_date": "2026-06-20",
+  "_credit": "Component database derived from Gordon's Reloading Tool (Gordon, deceased) and the community (zen/grt_databases, CC0 1.0).",
+  "_n_records": 1700,
+  "_n_powders": 14,
+  "eta_b": {
+    "features": [
+      "1",
+      "fill/100",
+      "Ba"
+    ],
+    "coef": [
+      0.16275,
+      0.12184,
+      0.018
+    ],
+    "lopo_v_rms_pct": 9.8,
+    "note": "cold prior; ~5% when anchored on a cartridge x powder, near-exact with user's own chrono"
+  },
+  "eta_p": {
+    "features": [
+      "1",
+      "fill/100",
+      "ln(Re)"
+    ],
+    "coef": [
+      0.8868,
+      0.05155,
+      -0.22385
+    ],
+    "lopo_P_rms_pct": 16,
+    "note": "Re = 1 + A*travel/V0; pressure is INDICATIVE only"
+  }
+}
