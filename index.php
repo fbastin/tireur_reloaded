@@ -183,6 +183,7 @@ include '../../header.php';
         (effet d'un changement de charge, de poudre, de canon…), puis <strong>vérifiez toute charge dans les données officielles du fabricant
         ou dans l'application GRT</strong> avant tout tir.
         <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Pourquoi&nbsp;? &mdash; validation &amp; limites &rarr;</a>
+        <br><strong>Pour une vitesse fiable</strong>, pr&eacute;f&eacute;rez l'<a href="/techniques/balistique/velocite.php">estimateur empirique</a> (ancr&eacute; sur vos mesures).
     </div>
 
     <!-- Warnings Container -->
