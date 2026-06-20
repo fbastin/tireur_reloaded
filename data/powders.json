@@ -1,105 +1,3181 @@
 {
-  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg) + Ba (vivacite) + pcd (kg/m3). Chemin de REPLI (Qex/Ba absents): pcd seul -> modele E_eff (coef e_eff de model_coefficients.json). mfg = fabricant (etiquetage). Cles = nom produit. Sources: base GRT (.propellant) + densites publiques.",
+  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles).",
   "powders": {
-    "1680": {
+    "20N29": {
+      "mfg": "Vihtavuori",
+      "name": "20N29",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 990
+    },
+    "24N41": {
+      "mfg": "Vihtavuori",
+      "name": "24N41",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 970
+    },
+    "3N37": {
+      "mfg": "Vihtavuori",
+      "name": "3N37",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 720
+    },
+    "3N38": {
+      "mfg": "Vihtavuori",
+      "name": "3N38",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 730
+    },
+    "ADI AP100": {
+      "mfg": "ADI",
+      "name": "AP100",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 635
+    },
+    "ADI AP50N": {
+      "mfg": "ADI",
+      "name": "AP50N",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 536
+    },
+    "ADI AP70N": {
+      "mfg": "ADI",
+      "name": "AP70N",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 655
+    },
+    "ADI APS150": {
+      "mfg": "ADI",
+      "name": "APS150",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "ADI APS250": {
+      "mfg": "ADI",
+      "name": "APS250",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "ADI APS350": {
+      "mfg": "ADI",
+      "name": "APS350",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "ADI APS450": {
+      "mfg": "ADI",
+      "name": "APS450",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "ADI APS550": {
+      "mfg": "ADI",
+      "name": "APS550",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "ADI APS650": {
+      "mfg": "ADI",
+      "name": "APS650",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "ADI APS950": {
+      "mfg": "ADI",
+      "name": "APS950",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "ADI AR 2201": {
+      "mfg": "ADI",
+      "name": "AR 2201",
+      "base": "Double"
+    },
+    "ADI AR 2205": {
+      "mfg": "ADI",
+      "name": "AR 2205",
+      "base": "Single",
+      "energy_Jg": 941,
+      "pcd": 890
+    },
+    "ADI AR 2206": {
+      "mfg": "ADI",
+      "name": "AR 2206",
+      "base": "Single"
+    },
+    "ADI AR 2206H": {
+      "mfg": "ADI",
+      "name": "AR 2206H",
+      "base": "Single",
+      "energy_Jg": 960,
+      "pcd": 930
+    },
+    "ADI AR 2207": {
+      "mfg": "ADI",
+      "name": "AR 2207",
+      "base": "Single",
+      "pcd": 860
+    },
+    "ADI AR 2208": {
+      "mfg": "ADI",
+      "name": "AR 2208",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 936,
+      "pcd": 900
+    },
+    "ADI AR 2209": {
+      "mfg": "ADI",
+      "name": "AR 2209",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 932,
+      "pcd": 990
+    },
+    "ADI AR 2210": {
+      "mfg": "ADI",
+      "name": "AR 2210",
+      "base": "Single",
+      "type": "Spherical"
+    },
+    "ADI AR 2213, AR 2213SC": {
+      "mfg": "ADI",
+      "name": "AR 2213, AR 2213SC",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 920,
+      "pcd": 930
+    },
+    "ADI AR 2217": {
+      "mfg": "ADI",
+      "name": "AR 2217",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 903,
+      "pcd": 920
+    },
+    "ADI AR 2218": {
+      "mfg": "ADI",
+      "name": "AR 2218",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 980
+    },
+    "ADI AR 2219": {
+      "mfg": "ADI",
+      "name": "AR 2219",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 889,
+      "pcd": 940
+    },
+    "ADI AR 2225": {
+      "mfg": "ADI",
+      "name": "AR 2225",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 925
+    },
+    "ADI AS30N": {
+      "mfg": "ADI",
+      "name": "AS30N",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 475
+    },
+    "ADI AS50N": {
+      "mfg": "ADI",
+      "name": "AS50N",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "ADI AS85N": {
+      "mfg": "ADI",
+      "name": "AS85N",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "ADI BM2": {
+      "mfg": "ADI",
+      "name": "BM2",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 877,
+      "pcd": 980
+    },
+    "ADI BM8208": {
+      "mfg": "ADI",
+      "name": "BM8208",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "ADI Benchmark 8208": {
+      "mfg": "ADI",
+      "name": "Benchmark 8208",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "ADI Trail Boss": {
+      "mfg": "ADI",
+      "name": "Trail Boss",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "Accurate 11FS": {
+      "mfg": "Accurate",
+      "name": "11FS",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Accurate 1680": {
+      "name": "1680",
+      "mfg": "Accurate",
       "pcd": 960,
-      "mfg": "Accurate"
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 932
+    },
+    "Accurate 2015BR": {
+      "mfg": "Accurate",
+      "name": "2015BR",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 908,
+      "pcd": 962
+    },
+    "Accurate 2200": {
+      "mfg": "Accurate",
+      "name": "2200",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 934
+    },
+    "Accurate 2230": {
+      "mfg": "Accurate",
+      "name": "2230",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 886,
+      "pcd": 986
+    },
+    "Accurate 2230-C": {
+      "mfg": "Accurate",
+      "name": "2230-C",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate 2230-S": {
+      "mfg": "Accurate",
+      "name": "2230-S",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate 2460": {
+      "mfg": "Accurate",
+      "name": "2460",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 879,
+      "pcd": 996
+    },
+    "Accurate 2495": {
+      "mfg": "Accurate",
+      "name": "2495",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 913
+    },
+    "Accurate 2520": {
+      "mfg": "Accurate",
+      "name": "2520",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3700,
+      "pcd": 970
+    },
+    "Accurate 2700": {
+      "mfg": "Accurate",
+      "name": "2700",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 955
+    },
+    "Accurate 3100": {
+      "mfg": "Accurate",
+      "name": "3100",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 860,
+      "pcd": 920
+    },
+    "Accurate 4064": {
+      "mfg": "Accurate",
+      "name": "4064",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3850,
+      "pcd": 900
+    },
+    "Accurate 4100": {
+      "mfg": "Accurate",
+      "name": "4100",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Accurate 4350": {
+      "mfg": "Accurate",
+      "name": "4350",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 896,
+      "pcd": 920
+    },
+    "Accurate 5744": {
+      "mfg": "Accurate",
+      "name": "5744",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 929,
+      "pcd": 860
+    },
+    "Accurate 8700": {
+      "mfg": "Accurate",
+      "name": "8700",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 960
+    },
+    "Accurate DP-2200": {
+      "mfg": "Accurate",
+      "name": "DP-2200",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate DP-68": {
+      "mfg": "Accurate",
+      "name": "DP-68",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate DP-73": {
+      "mfg": "Accurate",
+      "name": "DP-73",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate DP-74": {
+      "mfg": "Accurate",
+      "name": "DP-74",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate DP-79": {
+      "mfg": "Accurate",
+      "name": "DP-79",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate DP-85": {
+      "mfg": "Accurate",
+      "name": "DP-85",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate DP-86": {
+      "mfg": "Accurate",
+      "name": "DP-86",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Accurate LT-30": {
+      "mfg": "Accurate",
+      "name": "LT-30",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 1027,
+      "pcd": 980
+    },
+    "Accurate LT-32": {
+      "mfg": "Accurate",
+      "name": "LT-32",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 908,
+      "pcd": 906
+    },
+    "Accurate Magpro": {
+      "mfg": "Accurate",
+      "name": "Magpro",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 978
+    },
+    "Accurate Nitro 100": {
+      "mfg": "Accurate",
+      "name": "Nitro 100",
+      "base": "Double",
+      "type": "Flake",
+      "energy_Jg": 1168,
+      "pcd": 480
+    },
+    "Accurate Nitro 100NF": {
+      "mfg": "Accurate",
+      "name": "Nitro 100NF",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Accurate No. 2": {
+      "mfg": "Accurate",
+      "name": "No. 2",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1072,
+      "pcd": 650
+    },
+    "Accurate No. 5": {
+      "mfg": "Accurate",
+      "name": "No. 5",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1003,
+      "pcd": 950
+    },
+    "Accurate No. 7": {
+      "mfg": "Accurate",
+      "name": "No. 7",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1006,
+      "pcd": 999
+    },
+    "Accurate No.9": {
+      "mfg": "Accurate",
+      "name": "No.9",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 955,
+      "pcd": 986
+    },
+    "Accurate Solo 1000": {
+      "mfg": "Accurate",
+      "name": "Solo 1000",
+      "base": "Single",
+      "type": "Flake",
+      "energy_Jg": 1015,
+      "pcd": 510
+    },
+    "Accurate Solo 1250": {
+      "mfg": "Accurate",
+      "name": "Solo 1250",
+      "base": "Single",
+      "type": "Flake",
+      "energy_Jg": 972,
+      "pcd": 550
+    },
+    "Accurate TCM": {
+      "mfg": "Accurate",
+      "name": "TCM",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Alliant 20/28": {
+      "mfg": "Alliant",
+      "name": "20/28",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Alliant 2000": {
+      "mfg": "Alliant",
+      "name": "2000",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Alliant 2400": {
+      "mfg": "Alliant",
+      "name": "2400",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 873
+    },
+    "Alliant 410": {
+      "mfg": "Alliant",
+      "name": "410",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Alliant AR Comp": {
+      "mfg": "Alliant",
+      "name": "AR Comp",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 890
+    },
+    "Alliant American Select": {
+      "mfg": "Alliant",
+      "name": "American Select",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Alliant BE-86": {
+      "mfg": "Alliant",
+      "name": "BE-86",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Alliant Blue Dot": {
+      "mfg": "Alliant",
+      "name": "Blue Dot",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 750
+    },
+    "Alliant Bullseye": {
+      "mfg": "Alliant",
+      "name": "Bullseye",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 610
+    },
+    "Alliant Clay Dot": {
+      "mfg": "Alliant",
+      "name": "Clay Dot",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Alliant Extra-Lite": {
+      "mfg": "Alliant",
+      "name": "Extra-Lite",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Alliant Green Dot": {
+      "mfg": "Alliant",
+      "name": "Green Dot",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Alliant Herco": {
+      "mfg": "Alliant",
+      "name": "Herco",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 580
+    },
+    "Alliant Powder Pro 300-MP": {
+      "mfg": "Alliant",
+      "name": "Powder Pro 300-MP",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Alliant Power Pistol": {
+      "mfg": "Alliant",
+      "name": "Power Pistol",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 730
+    },
+    "Alliant Power Pro 1200-R": {
+      "mfg": "Alliant",
+      "name": "Power Pro 1200-R",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Alliant Power Pro 2000-MR": {
+      "mfg": "Alliant",
+      "name": "Power Pro 2000-MR",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Alliant Power Pro 4000-MR": {
+      "mfg": "Alliant",
+      "name": "Power Pro 4000-MR",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Alliant Power Pro Varmit": {
+      "mfg": "Alliant",
+      "name": "Power Pro Varmit",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Alliant Pro Reach": {
+      "mfg": "Alliant",
+      "name": "Pro Reach",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Alliant Promo": {
+      "mfg": "Alliant",
+      "name": "Promo",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Alliant Red Dot": {
+      "mfg": "Alliant",
+      "name": "Red Dot",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 500
+    },
+    "Alliant Reloder 10X": {
+      "mfg": "Alliant",
+      "name": "Reloder 10X",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 868
+    },
+    "Alliant Reloder 12": {
+      "mfg": "Alliant",
+      "name": "Reloder 12"
+    },
+    "Alliant Reloder 15": {
+      "mfg": "Alliant",
+      "name": "Reloder 15",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 3990,
+      "pcd": 920
+    },
+    "Alliant Reloder 15.5": {
+      "mfg": "Alliant",
+      "name": "Reloder 15.5",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 905
+    },
+    "Alliant Reloder 16": {
+      "mfg": "Alliant",
+      "name": "Reloder 16",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 896
+    },
+    "Alliant Reloder 17": {
+      "mfg": "Alliant",
+      "name": "Reloder 17",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 965
+    },
+    "Alliant Reloder 19": {
+      "mfg": "Alliant",
+      "name": "Reloder 19",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "Alliant Reloder 22": {
+      "mfg": "Alliant",
+      "name": "Reloder 22",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 930
+    },
+    "Alliant Reloder 23": {
+      "mfg": "Alliant",
+      "name": "Reloder 23",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "Alliant Reloder 25": {
+      "mfg": "Alliant",
+      "name": "Reloder 25",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 915
+    },
+    "Alliant Reloder 26": {
+      "mfg": "Alliant",
+      "name": "Reloder 26",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 989
+    },
+    "Alliant Reloder 33": {
+      "mfg": "Alliant",
+      "name": "Reloder 33",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 998
+    },
+    "Alliant Reloder 50": {
+      "mfg": "Alliant",
+      "name": "Reloder 50",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 995
+    },
+    "Alliant Reloder 7": {
+      "mfg": "Alliant",
+      "name": "Reloder 7",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 890
+    },
+    "Alliant Sport Pistol": {
+      "mfg": "Alliant",
+      "name": "Sport Pistol",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 680
+    },
+    "Alliant Steel": {
+      "mfg": "Alliant",
+      "name": "Steel",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Alliant Unique": {
+      "mfg": "Alliant",
+      "name": "Unique",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 593
+    },
+    "Alliant e3": {
+      "mfg": "Alliant",
+      "name": "e3",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 480
+    },
+    "Baschieri & Pellagri AL32": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "AL32",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri BP100": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP100",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 884,
+      "pcd": 550
+    },
+    "Baschieri & Pellagri BP102": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP102",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Baschieri & Pellagri BP103": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP103",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Baschieri & Pellagri BP106": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP106",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 855,
+      "pcd": 990
+    },
+    "Baschieri & Pellagri BP107": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP107",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 884,
+      "pcd": 990
+    },
+    "Baschieri & Pellagri BP108": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP108",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Baschieri & Pellagri BP109": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "BP109",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 908,
+      "pcd": 970
+    },
+    "Baschieri & Pellagri F2X24": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "F2X24",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 480
+    },
+    "Baschieri & Pellagri F2X28": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "F2X28",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 500
+    },
+    "Baschieri & Pellagri F2X32": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "F2X32",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri F2X36": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "F2X36",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri G2000X24": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "G2000X24",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 480
+    },
+    "Baschieri & Pellagri G2000X28": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "G2000X28",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 500
+    },
+    "Baschieri & Pellagri G3000": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "G3000",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri GP32": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "GP32",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri M410": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "M410",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 650
+    },
+    "Baschieri & Pellagri M410/2": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "M410/2",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 650
+    },
+    "Baschieri & Pellagri M92S": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "M92S",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 580
+    },
+    "Baschieri & Pellagri MBX32": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "MBX32",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri MBX36": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "MBX36",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 530
+    },
+    "Baschieri & Pellagri MG2": {
+      "mfg": "Baschieri & Pellagri",
+      "name": "MG2",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 570
+    },
+    "Commonside Elcho 17": {
+      "mfg": "Commonside",
+      "name": "Elcho 17",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 970
+    },
+    "Commonside TR140": {
+      "mfg": "Commonside",
+      "name": "TR140",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 950
+    },
+    "Hodgdon BL-C(2)": {
+      "mfg": "Hodgdon",
+      "name": "BL-C(2)",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3990,
+      "pcd": 995
+    },
+    "Hodgdon Benchmark": {
+      "mfg": "Hodgdon",
+      "name": "Benchmark",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 900,
+      "pcd": 906
+    },
+    "Hodgdon CFE BLK": {
+      "mfg": "Hodgdon",
+      "name": "CFE BLK",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 932,
+      "pcd": 1050
+    },
+    "Hodgdon CFE Pistol": {
+      "mfg": "Hodgdon",
+      "name": "CFE Pistol",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 932,
+      "pcd": 638
+    },
+    "Hodgdon CFE-223": {
+      "mfg": "Hodgdon",
+      "name": "CFE-223",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 908,
+      "pcd": 1003
+    },
+    "Hodgdon Clays": {
+      "mfg": "Hodgdon",
+      "name": "Clays",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 475
+    },
+    "Hodgdon H1000": {
+      "mfg": "Hodgdon",
+      "name": "H1000",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 903,
+      "pcd": 920
+    },
+    "Hodgdon H100V": {
+      "mfg": "Hodgdon",
+      "name": "H100V",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 890
+    },
+    "Hodgdon H110": {
+      "mfg": "Hodgdon",
+      "name": "H110",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 960,
+      "pcd": 970
+    },
+    "Hodgdon H322": {
+      "mfg": "Hodgdon",
+      "name": "H322",
+      "type": "Extruded",
+      "energy_Jg": 889,
+      "pcd": 940
+    },
+    "Hodgdon H335": {
+      "mfg": "Hodgdon",
+      "name": "H335",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 908,
+      "pcd": 1010
+    },
+    "Hodgdon H380": {
+      "mfg": "Hodgdon",
+      "name": "H380",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3970,
+      "pcd": 940
+    },
+    "Hodgdon H414": {
+      "mfg": "Hodgdon",
+      "name": "H414",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 971
+    },
+    "Hodgdon H4198": {
+      "mfg": "Hodgdon",
+      "name": "H4198",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 932,
+      "pcd": 870
+    },
+    "Hodgdon H4227": {
+      "mfg": "Hodgdon",
+      "name": "H4227",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 927,
+      "pcd": 890
+    },
+    "Hodgdon H4350": {
+      "mfg": "Hodgdon",
+      "name": "H4350",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 932,
+      "pcd": 990
+    },
+    "Hodgdon H450": {
+      "mfg": "Hodgdon",
+      "name": "H450",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon H4831, H4831C": {
+      "mfg": "Hodgdon",
+      "name": "H4831, H4831C",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 920,
+      "pcd": 930
+    },
+    "Hodgdon H4895": {
+      "mfg": "Hodgdon",
+      "name": "H4895",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 920,
+      "pcd": 964
+    },
+    "Hodgdon H50BMG": {
+      "mfg": "Hodgdon",
+      "name": "H50BMG",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 934
+    },
+    "Hodgdon H870": {
+      "mfg": "Hodgdon",
+      "name": "H870",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon HP-38": {
+      "mfg": "Hodgdon",
+      "name": "HP-38",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 790
+    },
+    "Hodgdon HS-5": {
+      "mfg": "Hodgdon",
+      "name": "HS-5",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon HS-6": {
+      "mfg": "Hodgdon",
+      "name": "HS-6",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 910
+    },
+    "Hodgdon HS-7": {
+      "mfg": "Hodgdon",
+      "name": "HS-7",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Hi-Skor 700X": {
+      "mfg": "Hodgdon",
+      "name": "Hi-Skor 700X",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Hodgdon Hi-Skor 800X": {
+      "mfg": "Hodgdon",
+      "name": "Hi-Skor 800X",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Hodgdon High Gun": {
+      "mfg": "Hodgdon",
+      "name": "High Gun",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Hybrid 100V": {
+      "mfg": "Hodgdon",
+      "name": "Hybrid 100V",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Hodgdon IMR 800X": {
+      "mfg": "Hodgdon",
+      "name": "IMR 800X",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Hodgdon International": {
+      "mfg": "Hodgdon",
+      "name": "International",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Leverevolution": {
+      "mfg": "Hodgdon",
+      "name": "Leverevolution",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 920
+    },
+    "Hodgdon Lil Gun": {
+      "mfg": "Hodgdon",
+      "name": "Lil Gun",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Long Shot": {
+      "mfg": "Hodgdon",
+      "name": "Long Shot",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 940
+    },
+    "Hodgdon PB": {
+      "mfg": "Hodgdon",
+      "name": "PB",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Hodgdon Perfect Pattern": {
+      "mfg": "Hodgdon",
+      "name": "Perfect Pattern",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Hodgdon Retumbo": {
+      "mfg": "Hodgdon",
+      "name": "Retumbo",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "Hodgdon Superformance": {
+      "mfg": "Hodgdon",
+      "name": "Superformance",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Titegroup": {
+      "mfg": "Hodgdon",
+      "name": "Titegroup",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 817
+    },
+    "Hodgdon Titewad": {
+      "mfg": "Hodgdon",
+      "name": "Titewad",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Trail Boss": {
+      "mfg": "Hodgdon",
+      "name": "Trail Boss",
+      "base": "Single",
+      "type": "Flake",
+      "pcd": 310
+    },
+    "Hodgdon US869": {
+      "mfg": "Hodgdon",
+      "name": "US869",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Hodgdon Universal": {
+      "mfg": "Hodgdon",
+      "name": "Universal",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 591
+    },
+    "Hodgdon Varget": {
+      "mfg": "Hodgdon",
+      "name": "Varget",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 4050,
+      "pcd": 890
+    },
+    "IMR 3031": {
+      "mfg": "IMR",
+      "name": "3031",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3880,
+      "pcd": 860
+    },
+    "IMR 4007 SSC": {
+      "mfg": "IMR",
+      "name": "4007 SSC",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "IMR 4064": {
+      "mfg": "IMR",
+      "name": "4064",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3880,
+      "pcd": 900
+    },
+    "IMR 4166": {
+      "mfg": "IMR",
+      "name": "4166",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 881
+    },
+    "IMR 4198": {
+      "mfg": "IMR",
+      "name": "4198",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 825
+    },
+    "IMR 4227": {
+      "mfg": "IMR",
+      "name": "4227",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 890
+    },
+    "IMR 4320": {
+      "mfg": "IMR",
+      "name": "4320",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3890
+    },
+    "IMR 4350": {
+      "mfg": "IMR",
+      "name": "4350",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "IMR 4451": {
+      "mfg": "IMR",
+      "name": "4451",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 909
+    },
+    "IMR 4475": {
+      "mfg": "IMR",
+      "name": "4475",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "IMR 4759": {
+      "mfg": "IMR",
+      "name": "4759",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "IMR 4831": {
+      "mfg": "IMR",
+      "name": "4831",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 881
+    },
+    "IMR 4895": {
+      "mfg": "IMR",
+      "name": "4895",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 4080,
+      "pcd": 920
+    },
+    "IMR 4955": {
+      "mfg": "IMR",
+      "name": "4955",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 895
+    },
+    "IMR 7828SC": {
+      "mfg": "IMR",
+      "name": "7828SC",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 945
+    },
+    "IMR 7977": {
+      "mfg": "IMR",
+      "name": "7977",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 910
+    },
+    "IMR 8133": {
+      "mfg": "IMR",
+      "name": "8133",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "IMR 8208 XBR": {
+      "mfg": "IMR",
+      "name": "8208 XBR",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "IMR 8208M": {
+      "mfg": "IMR",
+      "name": "8208M",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "IMR 8577M": {
+      "mfg": "IMR",
+      "name": "8577M",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "IMR Blue": {
+      "mfg": "IMR",
+      "name": "Blue",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "IMR Green": {
+      "mfg": "IMR",
+      "name": "Green",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 491
+    },
+    "IMR IMR 700X": {
+      "mfg": "IMR",
+      "name": "IMR 700X",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "IMR Red": {
+      "mfg": "IMR",
+      "name": "Red",
+      "base": "Double",
+      "type": "Flake",
+      "pcd": 491
+    },
+    "IMR SR 4756": {
+      "mfg": "IMR",
+      "name": "SR 4756",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "IMR SR 7625": {
+      "mfg": "IMR",
+      "name": "SR 7625",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "IMR Target": {
+      "mfg": "IMR",
+      "name": "Target",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "IMR Unequal": {
+      "mfg": "IMR",
+      "name": "Unequal",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Lovex D013": {
+      "mfg": "Lovex",
+      "name": "D013",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Lovex D032": {
+      "mfg": "Lovex",
+      "name": "D032",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 650
+    },
+    "Lovex D036": {
+      "mfg": "Lovex",
+      "name": "D036",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Lovex D037.1": {
+      "mfg": "Lovex",
+      "name": "D037.1",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 980
+    },
+    "Lovex D037.2": {
+      "mfg": "Lovex",
+      "name": "D037.2",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 980
+    },
+    "Lovex D060": {
+      "mfg": "Lovex",
+      "name": "D060",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 870
+    },
+    "Lovex D063": {
+      "mfg": "Lovex",
+      "name": "D063",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1000
+    },
+    "Lovex D073.4": {
+      "mfg": "Lovex",
+      "name": "D073.4",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 986
+    },
+    "Lovex D073.5": {
+      "mfg": "Lovex",
+      "name": "D073.5",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 987
+    },
+    "Lovex D073.6": {
+      "mfg": "Lovex",
+      "name": "D073.6",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3700,
+      "pcd": 1000
+    },
+    "Lovex D100-1": {
+      "mfg": "Lovex",
+      "name": "D100-1",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1000
+    },
+    "Lovex S011": {
+      "mfg": "Lovex",
+      "name": "S011",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 624
+    },
+    "Lovex S015": {
+      "mfg": "Lovex",
+      "name": "S015",
+      "base": "Single",
+      "type": "Flake",
+      "pcd": 500
+    },
+    "Lovex S020": {
+      "mfg": "Lovex",
+      "name": "S020",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 640
+    },
+    "Lovex S030": {
+      "mfg": "Lovex",
+      "name": "S030",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Lovex S035": {
+      "mfg": "Lovex",
+      "name": "S035",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "Lovex S040": {
+      "mfg": "Lovex",
+      "name": "S040",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 820
+    },
+    "Lovex S053": {
+      "mfg": "Lovex",
+      "name": "S053",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 825
+    },
+    "Lovex S060": {
+      "mfg": "Lovex",
+      "name": "S060",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 895
+    },
+    "Lovex S062": {
+      "mfg": "Lovex",
+      "name": "S062",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3850,
+      "pcd": 900
+    },
+    "Lovex S065": {
+      "mfg": "Lovex",
+      "name": "S065",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3850,
+      "pcd": 900
+    },
+    "Lovex S070": {
+      "mfg": "Lovex",
+      "name": "S070",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "Lovex S071": {
+      "mfg": "Lovex",
+      "name": "S071",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 870
+    },
+    "Maxam CSB 1": {
+      "mfg": "Maxam",
+      "name": "CSB 1",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 545
+    },
+    "Maxam CSB 10": {
+      "mfg": "Maxam",
+      "name": "CSB 10",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 355
+    },
+    "Maxam CSB 1M": {
+      "mfg": "Maxam",
+      "name": "CSB 1M",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 585
+    },
+    "Maxam CSB 2": {
+      "mfg": "Maxam",
+      "name": "CSB 2",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 560
+    },
+    "Maxam CSB 3": {
+      "mfg": "Maxam",
+      "name": "CSB 3",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 530
+    },
+    "Maxam CSB 4": {
+      "mfg": "Maxam",
+      "name": "CSB 4",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 520
+    },
+    "Maxam CSB 5": {
+      "mfg": "Maxam",
+      "name": "CSB 5",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 500
+    },
+    "Maxam CSB 6": {
+      "mfg": "Maxam",
+      "name": "CSB 6",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 480
+    },
+    "Maxam CSB 8": {
+      "mfg": "Maxam",
+      "name": "CSB 8",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 390
+    },
+    "Maxam GSB 146": {
+      "mfg": "Maxam",
+      "name": "GSB 146",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 700
+    },
+    "Maxam PSB+ 1": {
+      "mfg": "Maxam",
+      "name": "PSB+ 1",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 570
+    },
+    "Maxam PSB+ 2": {
+      "mfg": "Maxam",
+      "name": "PSB+ 2",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 580
+    },
+    "Maxam PSB+ 2SP": {
+      "mfg": "Maxam",
+      "name": "PSB+ 2SP",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 580
+    },
+    "Maxam PSB+ 3": {
+      "mfg": "Maxam",
+      "name": "PSB+ 3",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 560
+    },
+    "Maxam PSB+ 5": {
+      "mfg": "Maxam",
+      "name": "PSB+ 5",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 530
+    },
+    "Maxam PSB+ 6": {
+      "mfg": "Maxam",
+      "name": "PSB+ 6",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 480
+    },
+    "Maxam SSB+150": {
+      "mfg": "Maxam",
+      "name": "SSB+150",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 545
+    },
+    "Military CMR 170": {
+      "mfg": "Military",
+      "name": "CMR 170",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military CMR100": {
+      "mfg": "Military",
+      "name": "CMR100",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Military CMR100 REACH": {
+      "mfg": "Military",
+      "name": "CMR100 REACH",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Military CR 8136": {
+      "mfg": "Military",
+      "name": "CR 8136",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military GD2495SSC": {
+      "mfg": "Military",
+      "name": "GD2495SSC",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military GD3100SSC": {
+      "mfg": "Military",
+      "name": "GD3100SSC",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military GD338SSC": {
+      "mfg": "Military",
+      "name": "GD338SSC",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military GD4064SSC": {
+      "mfg": "Military",
+      "name": "GD4064SSC",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military GD4350SSC": {
+      "mfg": "Military",
+      "name": "GD4350SSC",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military GD5744": {
+      "mfg": "Military",
+      "name": "GD5744",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military OBP 250": {
+      "mfg": "Military",
+      "name": "OBP 250",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military OBP 390": {
+      "mfg": "Military",
+      "name": "OBP 390",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military OBP 716": {
+      "mfg": "Military",
+      "name": "OBP 716",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military OBP 718X": {
+      "mfg": "Military",
+      "name": "OBP 718X",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 226": {
+      "mfg": "Military",
+      "name": "SMP 226",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 698": {
+      "mfg": "Military",
+      "name": "SMP 698",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military SMP 703": {
+      "mfg": "Military",
+      "name": "SMP 703",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 704": {
+      "mfg": "Military",
+      "name": "SMP 704",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 705": {
+      "mfg": "Military",
+      "name": "SMP 705",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 715": {
+      "mfg": "Military",
+      "name": "SMP 715",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military SMP 735": {
+      "mfg": "Military",
+      "name": "SMP 735",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military SMP 744": {
+      "mfg": "Military",
+      "name": "SMP 744",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 764": {
+      "mfg": "Military",
+      "name": "SMP 764",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military SMP 835": {
+      "mfg": "Military",
+      "name": "SMP 835",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 835T": {
+      "mfg": "Military",
+      "name": "SMP 835T",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 837": {
+      "mfg": "Military",
+      "name": "SMP 837",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 842": {
+      "mfg": "Military",
+      "name": "SMP 842",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 842T": {
+      "mfg": "Military",
+      "name": "SMP 842T",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 843": {
+      "mfg": "Military",
+      "name": "SMP 843",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 843X": {
+      "mfg": "Military",
+      "name": "SMP 843X",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 849": {
+      "mfg": "Military",
+      "name": "SMP 849",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 849T": {
+      "mfg": "Military",
+      "name": "SMP 849T",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military SMP 860": {
+      "mfg": "Military",
+      "name": "SMP 860",
+      "base": "Double"
+    },
+    "Military SS8000": {
+      "mfg": "Military",
+      "name": "SS8000",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Military WC 296": {
+      "mfg": "Military",
+      "name": "WC 296",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 297": {
+      "mfg": "Military",
+      "name": "WC 297"
+    },
+    "Military WC 670": {
+      "mfg": "Military",
+      "name": "WC 670",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military WC 685": {
+      "mfg": "Military",
+      "name": "WC 685",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 687": {
+      "mfg": "Military",
+      "name": "WC 687"
+    },
+    "Military WC 693": {
+      "mfg": "Military",
+      "name": "WC 693",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 732 Type 1": {
+      "mfg": "Military",
+      "name": "WC 732 Type 1",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 740": {
+      "mfg": "Military",
+      "name": "WC 740",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military WC 747": {
+      "mfg": "Military",
+      "name": "WC 747",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military WC 749": {
+      "mfg": "Military",
+      "name": "WC 749",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military WC 750": {
+      "mfg": "Military",
+      "name": "WC 750",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 814": {
+      "mfg": "Military",
+      "name": "WC 814",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 818": {
+      "mfg": "Military",
+      "name": "WC 818",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 827": {
+      "mfg": "Military",
+      "name": "WC 827"
+    },
+    "Military WC 844": {
+      "mfg": "Military",
+      "name": "WC 844",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 844T": {
+      "mfg": "Military",
+      "name": "WC 844T",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 846": {
+      "mfg": "Military",
+      "name": "WC 846"
+    },
+    "Military WC 846S": {
+      "mfg": "Military",
+      "name": "WC 846S",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 846T": {
+      "mfg": "Military",
+      "name": "WC 846T",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WC 856": {
+      "mfg": "Military",
+      "name": "WC 856"
+    },
+    "Military WC 857": {
+      "mfg": "Military",
+      "name": "WC 857"
+    },
+    "Military WC 860": {
+      "mfg": "Military",
+      "name": "WC 860",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military WC 860T": {
+      "mfg": "Military",
+      "name": "WC 860T"
+    },
+    "Military WC 862": {
+      "mfg": "Military",
+      "name": "WC 862"
+    },
+    "Military WC 870": {
+      "mfg": "Military",
+      "name": "WC 870",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WCR 845": {
+      "mfg": "Military",
+      "name": "WCR 845",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WCR 845S": {
+      "mfg": "Military",
+      "name": "WCR 845S",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WCR 845ST": {
+      "mfg": "Military",
+      "name": "WCR 845ST",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WPR 260": {
+      "mfg": "Military",
+      "name": "WPR 260",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WPR 270": {
+      "mfg": "Military",
+      "name": "WPR 270",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military WPR 293": {
+      "mfg": "Military",
+      "name": "WPR 293",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military XPR09G0": {
+      "mfg": "Military",
+      "name": "XPR09G0",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military XPR11G": {
+      "mfg": "Military",
+      "name": "XPR11G",
+      "base": "Double",
+      "type": "Flake"
+    },
+    "Military XPR4196": {
+      "mfg": "Military",
+      "name": "XPR4196",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military XPR4364SSC": {
+      "mfg": "Military",
+      "name": "XPR4364SSC",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Military, OEM SMP 289": {
+      "mfg": "Military, OEM",
+      "name": "SMP 289",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military, OEM SMP 297": {
+      "mfg": "Military, OEM",
+      "name": "SMP 297",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military, OEM SMP 745": {
+      "mfg": "Military, OEM",
+      "name": "SMP 745",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military, OEM SMP 746": {
+      "mfg": "Military, OEM",
+      "name": "SMP 746",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Military, OEM WPR 289": {
+      "mfg": "Military, OEM",
+      "name": "WPR 289",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military, OEM WPR 289S": {
+      "mfg": "Military, OEM",
+      "name": "WPR 289S",
+      "base": "Double",
+      "type": "Ball"
+    },
+    "Military, OEM WPT 101": {
+      "mfg": "Military, OEM",
+      "name": "WPT 101",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "N105": {
+      "mfg": "Vihtavuori",
+      "name": "N105",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 730
+    },
+    "N110": {
+      "mfg": "Vihtavuori",
+      "name": "N110",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 800
     },
     "N120": {
       "Qex": 3700,
       "Ba": 0.8509,
       "pcd": 870,
-      "mfg": "Vihtavuori"
+      "mfg": "Vihtavuori",
+      "name": "N120",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "N130": {
+      "mfg": "Vihtavuori",
+      "name": "N130",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 870
+    },
+    "N133": {
+      "mfg": "Vihtavuori",
+      "name": "N133",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 870
+    },
+    "N135": {
+      "mfg": "Vihtavuori",
+      "name": "N135",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 870
+    },
+    "N140": {
+      "mfg": "Vihtavuori",
+      "name": "N140",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3720,
+      "pcd": 910
+    },
+    "N150": {
+      "mfg": "Vihtavuori",
+      "name": "N150",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3780,
+      "pcd": 910
     },
     "N160": {
       "Qex": 3650,
       "Ba": 0.4514,
       "pcd": 920,
-      "mfg": "Vihtavuori"
+      "mfg": "Vihtavuori",
+      "name": "N160",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "N165": {
+      "mfg": "Vihtavuori",
+      "name": "N165",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "N170": {
+      "mfg": "Vihtavuori",
+      "name": "N170",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 960
+    },
+    "N310": {
+      "mfg": "Vihtavuori",
+      "name": "N310",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 560
+    },
+    "N320": {
+      "mfg": "Vihtavuori",
+      "name": "N320",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 550
+    },
+    "N32C": {
+      "mfg": "Vihtavuori",
+      "name": "N32C",
+      "base": "Single",
+      "type": "Flake",
+      "pcd": 459
+    },
+    "N330": {
+      "mfg": "Vihtavuori",
+      "name": "N330",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 620
+    },
+    "N340": {
+      "mfg": "Vihtavuori",
+      "name": "N340",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 620
+    },
+    "N350": {
+      "mfg": "Vihtavuori",
+      "name": "N350",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 660
+    },
+    "N3SH": {
+      "mfg": "Vihtavuori",
+      "name": "N3SH",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "N530": {
+      "mfg": "Vihtavuori",
+      "name": "N530",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 4100,
+      "pcd": 930
+    },
+    "N540": {
+      "mfg": "Vihtavuori",
+      "name": "N540",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 4100,
+      "pcd": 940
+    },
+    "N550": {
+      "mfg": "Vihtavuori",
+      "name": "N550",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 4050,
+      "pcd": 940
+    },
+    "N555": {
+      "mfg": "Vihtavuori",
+      "name": "N555",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "N560": {
+      "mfg": "Vihtavuori",
+      "name": "N560",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 4020,
+      "pcd": 960
+    },
+    "N565": {
+      "mfg": "Vihtavuori",
+      "name": "N565",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 960
+    },
+    "N568": {
+      "mfg": "Vihtavuori",
+      "name": "N568",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 965
+    },
+    "N570": {
+      "mfg": "Vihtavuori",
+      "name": "N570",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 960
+    },
+    "Norma 1010": {
+      "mfg": "Norma",
+      "name": "1010",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Norma 200": {
+      "mfg": "Norma",
+      "name": "200",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Norma 201": {
+      "mfg": "Norma",
+      "name": "201",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "Norma 202": {
+      "mfg": "Norma",
+      "name": "202",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 905
+    },
+    "Norma 203B": {
+      "mfg": "Norma",
+      "name": "203B",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "Norma 204": {
+      "mfg": "Norma",
+      "name": "204",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 950
+    },
+    "Norma 205": {
+      "mfg": "Norma",
+      "name": "205",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Norma 217": {
+      "mfg": "Norma",
+      "name": "217",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 906
+    },
+    "Norma MRP": {
+      "mfg": "Norma",
+      "name": "MRP",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 960
+    },
+    "Norma MRP2": {
+      "mfg": "Norma",
+      "name": "MRP2",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Norma Magnum": {
+      "mfg": "Norma",
+      "name": "Magnum",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 1002
+    },
+    "Norma R1": {
+      "mfg": "Norma",
+      "name": "R1",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Norma R123": {
+      "mfg": "Norma",
+      "name": "R123",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Norma URP": {
+      "mfg": "Norma",
+      "name": "URP",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 910
+    },
+    "OEM OBP 244": {
+      "mfg": "OEM",
+      "name": "OBP 244",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "OEM OBP 248": {
+      "mfg": "OEM",
+      "name": "OBP 248",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "OEM OBP 513": {
+      "mfg": "OEM",
+      "name": "OBP 513",
+      "base": "Double",
+      "type": "Spherical"
     },
     "RS12": {
       "Qex": 4020,
       "Ba": 2.5935,
       "pcd": 616,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "12",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS14": {
       "Qex": 3200,
       "Ba": 3.147,
       "pcd": 316,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "14",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS20": {
       "Qex": 4100,
       "Ba": 2.5181,
       "pcd": 617,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "20",
+      "base": "Single",
+      "type": "Flake"
     },
     "RS24": {
       "Qex": 4370,
       "Ba": 1.746,
       "pcd": 825,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "24",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS30": {
       "Qex": 4010,
       "Ba": 1.0005,
       "pcd": 811,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "30",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS36": {
       "Qex": 3930,
       "Ba": 0.8621,
       "pcd": 899,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "36",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS40": {
       "Qex": 3990,
       "Ba": 0.6542,
       "pcd": 938,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "40",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS50": {
       "Qex": 3800,
       "Ba": 0.5479,
       "pcd": 957,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "50",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS52": {
       "Qex": 3920,
       "Ba": 0.5163,
       "pcd": 949,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "52",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS60": {
       "Qex": 4000,
       "Ba": 0.5004,
       "pcd": 976,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "60",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS62": {
       "Qex": 3722,
       "Ba": 0.4102,
       "pcd": 964,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "62",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS70": {
       "Qex": 3950,
       "Ba": 0.3698,
       "pcd": 980,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "70",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS76": {
       "Qex": 3850,
       "Ba": 0.3176,
       "pcd": 990,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "76",
+      "base": "Single",
+      "type": "Extruded"
     },
     "RS80": {
       "Qex": 3770,
       "Ba": 0.2983,
       "pcd": 998,
-      "mfg": "Reload Swiss"
+      "mfg": "Reload Swiss",
+      "name": "80",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Ramshot Big Game": {
+      "mfg": "Ramshot",
+      "name": "Big Game",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 980
+    },
+    "Ramshot Competition": {
+      "mfg": "Ramshot",
+      "name": "Competition",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Ramshot Enforcer": {
+      "mfg": "Ramshot",
+      "name": "Enforcer",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 940
+    },
+    "Ramshot Hunter": {
+      "mfg": "Ramshot",
+      "name": "Hunter",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Ramshot LRT": {
+      "mfg": "Ramshot",
+      "name": "LRT",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 992
+    },
+    "Ramshot Magnum": {
+      "mfg": "Ramshot",
+      "name": "Magnum",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1002
+    },
+    "Ramshot Silhouette": {
+      "mfg": "Ramshot",
+      "name": "Silhouette",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 800
+    },
+    "Ramshot TAC": {
+      "mfg": "Ramshot",
+      "name": "TAC",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3950,
+      "pcd": 992
+    },
+    "Ramshot True Blue": {
+      "mfg": "Ramshot",
+      "name": "True Blue",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 935
+    },
+    "Ramshot Wild Boar": {
+      "mfg": "Ramshot",
+      "name": "Wild Boar",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 983
+    },
+    "Ramshot X-Terminator": {
+      "mfg": "Ramshot",
+      "name": "X-Terminator",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 975
+    },
+    "Ramshot Zip": {
+      "mfg": "Ramshot",
+      "name": "Zip",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 775
+    },
+    "Rottweil P804": {
+      "mfg": "Rottweil",
+      "name": "P804",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 720
+    },
+    "Rottweil P805": {
+      "mfg": "Rottweil",
+      "name": "P805",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 455
+    },
+    "Rottweil P806": {
+      "mfg": "Rottweil",
+      "name": "P806",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 920
+    },
+    "Rottweil R901": {
+      "mfg": "Rottweil",
+      "name": "R901",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 874
+    },
+    "Rottweil R902": {
+      "mfg": "Rottweil",
+      "name": "R902",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 887
+    },
+    "Rottweil R903": {
+      "mfg": "Rottweil",
+      "name": "R903",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 910
+    },
+    "Rottweil R904": {
+      "mfg": "Rottweil",
+      "name": "R904",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 907
+    },
+    "Rottweil R905": {
+      "mfg": "Rottweil",
+      "name": "R905",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 913
+    },
+    "Shooters World AR Plus": {
+      "mfg": "Shooters World",
+      "name": "AR Plus",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 986
+    },
+    "Shooters World Auto Pistol": {
+      "mfg": "Shooters World",
+      "name": "Auto Pistol",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Shooters World Blackout": {
+      "mfg": "Shooters World",
+      "name": "Blackout",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1000
+    },
+    "Shooters World Buffalo Rifle": {
+      "mfg": "Shooters World",
+      "name": "Buffalo Rifle",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 870
+    },
+    "Shooters World Clean Shot": {
+      "mfg": "Shooters World",
+      "name": "Clean Shot",
+      "base": "Double",
+      "type": "Extruded",
+      "pcd": 650
+    },
+    "Shooters World Heavy Pistol": {
+      "mfg": "Shooters World",
+      "name": "Heavy Pistol",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 980
+    },
+    "Shooters World Long Rifle": {
+      "mfg": "Shooters World",
+      "name": "Long Rifle",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "Shooters World Major Pistol": {
+      "mfg": "Shooters World",
+      "name": "Major Pistol",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 980
+    },
+    "Shooters World Match Rifle": {
+      "mfg": "Shooters World",
+      "name": "Match Rifle",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1000
+    },
+    "Shooters World Precision": {
+      "mfg": "Shooters World",
+      "name": "Precision",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 895
+    },
+    "Shooters World SOCOM": {
+      "mfg": "Shooters World",
+      "name": "SOCOM",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 990
+    },
+    "Shooters World SW 4350": {
+      "mfg": "Shooters World",
+      "name": "SW 4350",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 900
+    },
+    "Shooters World SW50BMG": {
+      "mfg": "Shooters World",
+      "name": "SW50BMG",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1000
+    },
+    "Shooters World Tactical Rifle": {
+      "mfg": "Shooters World",
+      "name": "Tactical Rifle",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1000
+    },
+    "Shooters World Ultimate Pistol": {
+      "mfg": "Shooters World",
+      "name": "Ultimate Pistol",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 920
+    },
+    "SomChem MP200": {
+      "mfg": "SomChem",
+      "name": "MP200",
+      "type": "Flake",
+      "pcd": 977
+    },
+    "SomChem MS200": {
+      "mfg": "SomChem",
+      "name": "MS200",
+      "type": "Flake",
+      "pcd": 979
+    },
+    "SomChem S121": {
+      "mfg": "SomChem",
+      "name": "S121",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1082,
+      "pcd": 987
+    },
+    "SomChem S221": {
+      "mfg": "SomChem",
+      "name": "S221",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1092,
+      "pcd": 960
+    },
+    "SomChem S265": {
+      "mfg": "SomChem",
+      "name": "S265",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 1030,
+      "pcd": 1003
+    },
+    "SomChem S321": {
+      "mfg": "SomChem",
+      "name": "S321",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1019,
+      "pcd": 1022
+    },
+    "SomChem S335": {
+      "mfg": "SomChem",
+      "name": "S335",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 996,
+      "pcd": 1023
+    },
+    "SomChem S341": {
+      "mfg": "SomChem",
+      "name": "S341",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1007,
+      "pcd": 1030
+    },
+    "SomChem S355": {
+      "mfg": "SomChem",
+      "name": "S355",
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 991,
+      "pcd": 1017
+    },
+    "SomChem S361": {
+      "mfg": "SomChem",
+      "name": "S361",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 1001,
+      "pcd": 1032
+    },
+    "SomChem S365": {
+      "mfg": "SomChem",
+      "name": "S365",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 1015,
+      "pcd": 1010
+    },
+    "SomChem S385": {
+      "mfg": "SomChem",
+      "name": "S385",
+      "base": "Double",
+      "type": "Extruded",
+      "energy_Jg": 999,
+      "pcd": 1019
+    },
+    "Vectan A0": {
+      "mfg": "Vectan",
+      "name": "A0",
+      "base": "Single",
+      "type": "Flake",
+      "pcd": 590
+    },
+    "Vectan A1": {
+      "mfg": "Vectan",
+      "name": "A1",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "Vectan AS": {
+      "mfg": "Vectan",
+      "name": "AS",
+      "base": "Single",
+      "type": "Flake"
+    },
+    "Vectan BA 10": {
+      "mfg": "Vectan",
+      "name": "BA 10",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 515
+    },
+    "Vectan BA 6 1/2": {
+      "mfg": "Vectan",
+      "name": "BA 6 1/2",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 755
+    },
+    "Vectan BA 7 1/2": {
+      "mfg": "Vectan",
+      "name": "BA 7 1/2",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 675
+    },
+    "Vectan BA 9": {
+      "mfg": "Vectan",
+      "name": "BA 9",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 638
+    },
+    "Vectan BA 9 1/2": {
+      "mfg": "Vectan",
+      "name": "BA 9 1/2",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 595
+    },
+    "Vectan SP 10": {
+      "mfg": "Vectan",
+      "name": "SP 10",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 983
+    },
+    "Vectan SP 11": {
+      "mfg": "Vectan",
+      "name": "SP 11",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Vectan SP 12": {
+      "mfg": "Vectan",
+      "name": "SP 12",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Vectan SP 13": {
+      "mfg": "Vectan",
+      "name": "SP 13",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 940
+    },
+    "Vectan SP 2": {
+      "mfg": "Vectan",
+      "name": "SP 2",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Vectan SP 3": {
+      "mfg": "Vectan",
+      "name": "SP 3",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Vectan SP 7": {
+      "mfg": "Vectan",
+      "name": "SP 7",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3765,
+      "pcd": 987
+    },
+    "Vectan SP 8": {
+      "mfg": "Vectan",
+      "name": "SP 8",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Vectan SP 9": {
+      "mfg": "Vectan",
+      "name": "SP 9",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Vectan Tubal 2000": {
+      "mfg": "Vectan",
+      "name": "Tubal 2000",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Vectan Tubal 3000": {
+      "mfg": "Vectan",
+      "name": "Tubal 3000",
+      "base": "Single",
+      "type": "Extruded",
+      "pcd": 800
+    },
+    "Vectan Tubal 5000": {
+      "mfg": "Vectan",
+      "name": "Tubal 5000",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Vectan Tubal 7000": {
+      "mfg": "Vectan",
+      "name": "Tubal 7000",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Vectan Tubal 8000": {
+      "mfg": "Vectan",
+      "name": "Tubal 8000",
+      "base": "Single",
+      "type": "Extruded"
+    },
+    "Winchester 230": {
+      "mfg": "Winchester",
+      "name": "230",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester 231": {
+      "mfg": "Winchester",
+      "name": "231",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 790
+    },
+    "Winchester 244": {
+      "mfg": "Winchester",
+      "name": "244",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester 296": {
+      "mfg": "Winchester",
+      "name": "296",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 860
+    },
+    "Winchester 572": {
+      "mfg": "Winchester",
+      "name": "572",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 800
+    },
+    "Winchester 748": {
+      "mfg": "Winchester",
+      "name": "748",
+      "base": "Double",
+      "type": "Spherical",
+      "energy_Jg": 3840,
+      "pcd": 971
+    },
+    "Winchester 760": {
+      "mfg": "Winchester",
+      "name": "760",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 971
+    },
+    "Winchester 785": {
+      "mfg": "Winchester",
+      "name": "785",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester Autocomp": {
+      "mfg": "Winchester",
+      "name": "Autocomp",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester StaBall 6.5": {
+      "mfg": "Winchester",
+      "name": "StaBall 6.5",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 990
+    },
+    "Winchester StaBall HD": {
+      "mfg": "Winchester",
+      "name": "StaBall HD",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 950
+    },
+    "Winchester StaBall Match": {
+      "mfg": "Winchester",
+      "name": "StaBall Match",
+      "base": "Double",
+      "type": "Spherical",
+      "pcd": 1050
+    },
+    "Winchester Supreme 780": {
+      "mfg": "Winchester",
+      "name": "Supreme 780",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WAA Lite": {
+      "mfg": "Winchester",
+      "name": "WAA Lite",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WFL AALite": {
+      "mfg": "Winchester",
+      "name": "WFL AALite",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WMR": {
+      "mfg": "Winchester",
+      "name": "WMR",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WSF Super-Field": {
+      "mfg": "Winchester",
+      "name": "WSF Super-Field",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WSH Super-Handicap": {
+      "mfg": "Winchester",
+      "name": "WSH Super-Handicap",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WST": {
+      "mfg": "Winchester",
+      "name": "WST",
+      "base": "Double",
+      "type": "Spherical"
+    },
+    "Winchester WXR": {
+      "mfg": "Winchester",
+      "name": "WXR",
+      "base": "Double",
+      "type": "Extruded"
+    },
+    "Winchester WinClean 244": {
+      "mfg": "Winchester",
+      "name": "WinClean 244",
+      "base": "Double",
+      "type": "Spherical"
     }
   }
 }
