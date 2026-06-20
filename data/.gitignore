@@ -1,0 +1,4 @@
+# Données brutes fabricant (Reload Swiss Guide 2025) — usage LOCAL de calibration
+# uniquement. Ne PAS redistribuer (EULA). Seuls les coefficients dérivés du
+# modèle (η_b, η_p) + la citation sont publiés. Cf. docs/balistique_interieure_roadmap.md
+*.local.json

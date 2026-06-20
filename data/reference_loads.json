@@ -1,0 +1,26 @@
+{
+  "_source": "Reload Swiss Guide 2025 (propellants.co.uk). Charges/v0/Pmax appariés, canon d'épreuve. Données fabricant citées — usage de validation, pas de redistribution massive.",
+  "_columns": "m_gr=masse balle (gr), C_gr=charge (gr), v0=vitesse (m/s), Pmax_bar=pression (bar), fill=taux de remplissage (%), d_mm=calibre, barrel_mm=canon, case_mm=étui, Qex_kJkg=énergie spécifique poudre (base GRT)",
+  "powders": {
+    "RS52": { "d_mm": 7.82, "barrel_mm": 600, "case_mm": 51.18, "Qex_kJkg": 3920, "Ba": 0.5163 },
+    "RS12": { "d_mm": 9.02, "barrel_mm": 122, "case_mm": 19.15, "Qex_kJkg": 4020, "Ba": 2.5935 }
+  },
+  "loads": [
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 130, "C_gr": 38.6, "v0": 766, "Pmax_bar": 2301, "fill": 84 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 130, "C_gr": 47.5, "v0": 928, "Pmax_bar": 3548, "fill": 104 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 150, "C_gr": 34.0, "v0": 662, "Pmax_bar": 2020, "fill": 79 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 150, "C_gr": 45.1, "v0": 861, "Pmax_bar": 3536, "fill": 104 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 155, "C_gr": 37.5, "v0": 699, "Pmax_bar": 2023, "fill": 82 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 155, "C_gr": 46.5, "v0": 873, "Pmax_bar": 3655, "fill": 101 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 148, "C_gr": 39.7, "v0": 718, "Pmax_bar": 2066, "fill": 91 },
+    { "cartridge": ".308 Win", "powder": "RS52", "m_gr": 148, "C_gr": 45.7, "v0": 854, "Pmax_bar": 3251, "fill": 104 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 115, "C_gr": 3.5, "v0": 290, "Pmax_bar": 1180, "fill": 75 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 115, "C_gr": 4.3, "v0": 346, "Pmax_bar": 2188, "fill": 92 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 100, "C_gr": 3.5, "v0": 298, "Pmax_bar": 833, "fill": 53 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 100, "C_gr": 4.5, "v0": 390, "Pmax_bar": 2122, "fill": 68 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 90, "C_gr": 4.5, "v0": 366, "Pmax_bar": 1369, "fill": 85 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 90, "C_gr": 5.1, "v0": 413, "Pmax_bar": 2196, "fill": 97 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 95, "C_gr": 4.2, "v0": 319, "Pmax_bar": 958, "fill": 68 },
+    { "cartridge": "9mm Luger", "powder": "RS12", "m_gr": 95, "C_gr": 5.2, "v0": 399, "Pmax_bar": 1985, "fill": 86 }
+  ]
+}
