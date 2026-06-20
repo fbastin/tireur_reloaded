@@ -182,6 +182,7 @@ include '../../header.php';
         Une charge réellement <em>au-dessus</em> de la limite CIP peut donc s'afficher « sûre ». Utilisez-le pour comprendre les <em>tendances</em>
         (effet d'un changement de charge, de poudre, de canon…), puis <strong>vérifiez toute charge dans les données officielles du fabricant
         ou dans l'application GRT</strong> avant tout tir.
+        <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Pourquoi&nbsp;? &mdash; validation &amp; limites &rarr;</a>
     </div>
 
     <!-- Warnings Container -->
