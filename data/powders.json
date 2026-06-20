@@ -1,6 +1,11 @@
 {
-  "_doc": "Constantes poudres Reload Swiss : Qex (kJ/kg) energie specifique, Ba vivacite, pcd (kg/m3) densite de remplissage. Source: base de composants GRT (Gordon, decede) + communaute (zen/grt_databases, CC0).",
+  "_doc": "Constantes poudres (Reload Swiss, Vihtavuori) : Qex (kJ/kg) energie specifique, Ba vivacite, pcd (kg/m3) densite de remplissage. Cles = nom produit (RSnn = Reload Swiss ; sinon Vihtavuori). Source: base de composants GRT (Gordon, decede) + communaute (zen/grt_databases, CC0).",
   "powders": {
+    "N120": {
+      "Qex": 3700,
+      "Ba": 0.8509,
+      "pcd": 870
+    },
     "RS12": {
       "Qex": 4020,
       "Ba": 2.5935,

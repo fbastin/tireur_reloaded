@@ -90,7 +90,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 <li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: <strong>~5&nbsp;%</strong>&nbsp;;</li>
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: <strong>quasi-exact</strong>.</li>
 </ul>
-<p>Catalogue de poudres actuel&nbsp;: gamme <strong>Reload Swiss</strong> (d'autres marques viendront de leurs propres guides).</p>
+<p>Catalogue de poudres actuel&nbsp;: gamme <strong>Reload Swiss</strong> et <strong>Vihtavuori</strong> (en cours d'extension depuis les guides fabricant).</p>
 <p><strong>Pour aller plus loin&nbsp;:</strong>
 <a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limites</a> ·
@@ -114,7 +114,8 @@ Promise.all([
   Object.keys(CAL).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;cs.appendChild(o);});
   cs.value='308 Win.';
   const ps=document.getElementById('pwd');
-  Object.keys(PWD).sort((a,b)=>parseInt(a.slice(2))-parseInt(b.slice(2))).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k.replace('RS','RS ');ps.appendChild(o);});
+  const pLabel=(k)=>/^RS\d/.test(k) ? 'Reload Swiss '+k.slice(2) : 'Vihtavuori '+k;
+  Object.keys(PWD).sort((a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true})).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);ps.appendChild(o);});
   ps.value='RS52';
   onCart(); calc();
 });
