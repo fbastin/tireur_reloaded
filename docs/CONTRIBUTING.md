@@ -28,7 +28,10 @@ Edit `data/powders.json`. Two cases:
 "1680": { "pcd": 960, "mfg": "Accurate" }
 ```
 With `Qex`/`Ba` absent, the tool uses the **`e_eff` fallback** — same cold-start
-accuracy (~10 %), so a powder can be added from **bulk density alone**.
+accuracy (~10 %). **`pcd` itself is optional**: it only drives the fill ratio
+(domain warnings + the pressure term), not the velocity (fill defaults to a nominal
+100 % when absent). So the minimum to get a velocity estimate is just a name + `mfg`;
+add `pcd` to also get fill warnings and a better pressure.
 
 - `Qex` (kJ/kg), `Ba` (vivacity), `pcd` (bulk density, kg/m³) come from the
   GRT-derived component database (`*.propellant` files). `pcd` is also published

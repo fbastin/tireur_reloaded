@@ -71,6 +71,12 @@ $\eta_b$ path (**10.1 % vs 9.8 %**) — the GRT-specific constants add almost no
 cold start. The tool uses the $\eta_b$ path when $Q_\mathrm{ex}$ and $B_a$ are present,
 and the $E_\mathrm{eff}$ fallback otherwise (coefficients in `model_coefficients.json`).
 
+In the fallback, **bulk density `pcd` is optional**: it enters only through the fill
+ratio, which feeds the domain warnings and the (weak) pressure term — *not* the
+velocity (a constant $E_\mathrm{eff}$ scores 10.05 % LOPO vs 10.06 % with the fill
+term). When `pcd` is absent, fill defaults to a nominal 100 %, so a velocity estimate
+needs only charge and bullet mass.
+
 ### 3.2 Peak pressure — piezometric efficiency $\eta_p$
 
 The **piezometric efficiency** relates the (work-equivalent) mean pressure to the

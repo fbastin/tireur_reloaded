@@ -131,18 +131,20 @@ function calc(){
   if(!(m_gr>0&&C_gr>0&&bbl>cart.case_mm)) return;
   const m=m_gr*G, C=C_gr*G, m_e=m+C/3;
   const d=cart.bore_mm/1000, A=Math.PI*d*d/4, travel=(bbl-cart.case_mm)/1000;
-  const Cg=C_gr*0.06479891, pcd=pw.pcd/1000;
-  const fill=(Cg/pcd)/cart.case_vol_cm3*100;            // %
+  const Cg=C_gr*0.06479891;                             // charge (g)
+  const hasPcd=pw.pcd>0;                                 // densité bulk optionnelle
   const caseVol=cart.case_vol_cm3*1e-6;                  // m³
-  const Re=1+(A*travel)/caseVol;
+  const Re=1+(A*travel)/caseVol;                         // indépendant de pcd
+  const fill = hasPcd ? (Cg/(pw.pcd/1000))/cart.case_vol_cm3*100 : null;
+  const fillFrac = hasPcd ? fill/100 : 1.0;             // nominal 100 % si pcd inconnu
   // à froid : chemin principal Qex/Ba si dispo, sinon repli énergie effective E_eff
-  const eta_p=lin(COEF.eta_p.coef,[1,fill/100,Math.log(Re)]);
+  const eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
   let v0, anchored=false, viaEeff=false, eta_b=null;
   if(pw.Qex && pw.Ba){
-    eta_b=lin(COEF.eta_b.coef,[1,fill/100,pw.Ba]);
+    eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
     v0=Math.sqrt(2*eta_b*C*pw.Qex*1000/m_e);
   } else {
-    const Eeff=lin(COEF.e_eff.coef,[1,fill/100]);       // J/kg (Qex/Ba inconnus)
+    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]);       // J/kg (Qex/Ba inconnus)
     v0=Math.sqrt(2*Eeff*C/m_e); viaEeff=true;
   }
   if(vmeas>0){v0=vmeas;anchored=true;}                  // ancrage utilisateur
@@ -153,11 +155,13 @@ function calc(){
   const tag=document.getElementById('o_vtag');
   tag.textContent=anchored?'ancrée (vos données)':'à froid ±10%';
   tag.className='vm-tag'+(anchored?' anchored':'');
+  const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
   document.getElementById('derived').textContent=
-    `Remplissage ${fill.toFixed(0)} %  ·  rapport de détente ${Re.toFixed(1)}  ·  ${viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3)}  ·  η_p ${eta_p.toFixed(3)}`;
+    `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3)}  ·  η_p ${eta_p.toFixed(3)}`;
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
-  if(fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
-  else if(fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
+  if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
+  else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
+  if(!hasPcd) w='Densité bulk inconnue : remplissage et pression approximés (nominal). '+w;
   if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
   document.getElementById('warn').textContent=w;
   // courbe Le Duc (couche 3)

@@ -48,10 +48,13 @@ Propellant constants, from the GRT-derived component database.
 }
 ```
 
-`Qex` + `Ba` are optional. If both are present, the tool uses the η_b path; if
-they are absent (only `pcd`), it falls back to the **`e_eff`** model — same
-accuracy (~10 % cold), and a powder can be added from bulk density alone. `mfg`
-sets the dropdown label (key kept as the product name).
+All powder fields are optional. With `Qex`+`Ba`, the tool uses the η_b path;
+otherwise it falls back to the **`e_eff`** model (same ~10 % cold accuracy).
+**`pcd` is optional too**: it only feeds the fill ratio (domain warnings + the
+pressure term), **not the velocity** — if absent, fill is taken at a nominal 100 %.
+So a powder can be added from bulk density, or even **from its name alone** (velocity
+only, no fill warnings, rougher pressure). `mfg` sets the dropdown label (key =
+product name).
 
 ### `model_coefficients.json`
 
