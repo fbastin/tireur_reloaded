@@ -43,3 +43,26 @@ This roadmap outlines the development plan for the web-based Gordon's Reloading 
 - [x] Add unit toggle buttons (imperial vs. metric) matching the site's layout.
 - [x] Implement offline capability using a Service Worker for standalone use on the shooting range.
 - [x] Write detailed user guides and tooltips for reloading safety.
+
+## Phase 6: Validation & calibration du solveur (EN COURS)
+
+Validation contre des données fabricant publiées (Reload Swiss Guide 2025, poudres RS validées Qlty 0,9–0,95) :
+
+| Charge de référence | Δ vitesse | Δ pression | combustion |
+|---|---|---|---|
+| .308 Win / RS52 / 130 gr (min 38,6 gr) | −26 % | −36 % | 62 % |
+| .308 Win / RS52 / 130 gr (max 47,5 gr) | −22 % | −24 % | 70 % |
+| 9 mm Luger / RS12 / 115 gr (max 4,3 gr) | −17 % | **+1 %** | 88 % |
+
+**Constats :**
+- Le solveur **sous-estime systématiquement la vitesse (~15–26 %)**.
+- Sur le cas 9 mm, le **pic de pression est juste (+1 %)** alors que la vitesse est −17 % → la courbe P(x) est **trop pointue** (aire ∫P·dx trop faible : ~0,21·pic contre ~0,30 mesuré). Défaut **structurel** de partage d'énergie / forme de combustion, pas seulement de vivacité.
+- Une recherche à 3 paramètres (échelle de vivacité `kBa`, exposant de pression `n` dans `dz/dt = kBa·Ba·P^n·φ`, perte thermique `beta`) **ne descend pas sous ~16 % de RMS** : aucun jeu de paramètres ne cale simultanément v et P sur les trois charges. ⇒ une simple recalibration paramétrique est insuffisante.
+
+**À faire (correctif de fond, non paramétrique) :**
+- [ ] Aligner la **loi de combustion / fonction de forme** sur la formulation exacte de GRT (l'outil est un clone GRT) — origine probable de la « pointe » de pression (loi linéaire en P vs loi réelle avec exposant + progressivité).
+- [ ] Revoir le **partage d'énergie** (perte thermique, énergie résiduelle des gaz en bouche, gradient de Lagrange) qui sous-alimente la balle.
+- [ ] Re-valider sur ≥ 5 charges (pistolet + carabine) après correctif.
+- ⚠️ Tant que non calibré : outil **indicatif/pédagogique**, ne pas développer de charges réelles sur ses seules valeurs.
+
+**Déjà corrigé :** COAL/enfoncement par défaut (utilise la longueur max CIP `L6` ; l'ancienne estimation `gtailh+2` donnait 2 mm pour une balle à base plate → COAL irréaliste qui faussait volume et pression).

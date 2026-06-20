@@ -507,12 +507,16 @@ function loadProjectile() {
     document.getElementById('bulletDiaInput').value = activeProjectile.gdia;
     document.getElementById('pStartInput').value = activeProjectile.gpressure || 150;
     
-    // Recalculate seating depth and COAL limits
-    // COAL = L3 (case length) + glen (bullet len) - depth (seating depth)
+    // COAL par défaut = longueur max CIP de la cartouche (champ L6) quand elle est
+    // connue ; on en déduit l'enfoncement. L'ancienne estimation gtailh+2 donnait
+    // 2 mm pour une balle à base plate (gtailh "0.00" est truthy en JS) → COAL
+    // irréaliste (ex. 32 mm en 9 mm, max 29,69) qui faussait le volume/pression.
     const caseLen = parseFloat(activeCaliber.L3);
     const bulletLen = parseFloat(activeProjectile.glen);
-    const defaultDepth = activeProjectile.gtailh ? parseFloat(activeProjectile.gtailh) + 2.0 : 5.0; // estimate
-    
+    const maxCOAL = parseFloat(activeCaliber.L6) || 0;
+    let defaultDepth = maxCOAL > 0 ? (caseLen + bulletLen - maxCOAL) : bulletLen * 0.5;
+    if (!(defaultDepth >= 1.0)) defaultDepth = Math.max(1.0, bulletLen * 0.4); // garde-fou
+
     document.getElementById('depthInput').value = defaultDepth.toFixed(2);
     document.getElementById('coalInput').value = (caseLen + bulletLen - defaultDepth).toFixed(2);
     
