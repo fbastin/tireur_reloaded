@@ -109,6 +109,23 @@ Empirically the two unknowns are bounded and stable, but not constant:
 | $\eta_b$ | ≈ 0.29 | ~17 % | rises with fill ratio; weak powder dependence |
 | $\eta_p$ | ≈ 0.45 | ~21 % | falls with expansion ratio $\ln R_e$ |
 
+### Design note — why only bullet mass (not a full projectile database)
+
+QuickLOAD/GRT take detailed projectile inputs (length, bearing surface, seating).
+This model deliberately uses **only bullet mass**, because:
+
+- friction / engraving / bearing-surface losses are **absorbed empirically** into
+  η_b, η_p (they are not modelled, by design);
+- the only extra lever a projectile selection would give is a bullet-specific
+  **chamber volume V0** (via seating depth) → fill ratio and Re.
+
+Measured empirically on the calibration set (1700 loads), using each load's *exact*
+V0 instead of the per-cartridge median changes the error by only **+0.12 pts RMS on
+velocity** (9.56→9.44 %) and **+0.52 pts on pressure** (16.11→15.59 %) — negligible
+against the model's intrinsic scatter. A QuickLOAD-style projectile database would
+add inputs and a recalibration burden for no measurable accuracy gain here. Mass
+stays the single bullet input.
+
 ## 5. Calibration procedure
 
 ### 5.1 Data
