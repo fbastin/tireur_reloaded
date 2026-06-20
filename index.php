@@ -73,8 +73,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 </div>
 
 <p class="vm-note" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
-<a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>. Pour explorer les courbes de combustion :
-<a href="/reloading/tireur_reloaded/legacy/">simulateur GRT</a> (indicatif, hérité).</p>
+<a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>.</p>
 
 <details id="howto" class="vm-howto" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;">Comment ça marche&nbsp;?</summary>
