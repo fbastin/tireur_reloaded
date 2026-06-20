@@ -31,6 +31,8 @@ include '../../header.php';
 .vm-bar { height:8px; border-radius:4px; background:var(--color-border); overflow:hidden; margin:0.25rem 0; }
 .vm-bar > span { display:block; height:100%; background:#9aa0a6; }
 .vm-bar.warn > span { background:#e67e22; } .vm-bar.danger > span { background:#c0392b; }
+.vm-print { background:var(--color-accent); color:#fff; border:none; border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
+@media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 1fr; } .vm-panel { border:none; background:#fff; } }
 </style>
 
 <div id="cadre">
@@ -59,6 +61,8 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
 
+<div class="vm-noprint" style="text-align:right;margin-bottom:0.3rem;"><button type="button" class="vm-print" onclick="window.print()">&#128424;&nbsp;Imprimer</button></div>
+
 <div class="vm-grid">
   <div class="vm-panel">
     <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();calc()"></select></div>
@@ -82,10 +86,10 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
   </div>
 </div>
 
-<p class="vm-note" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
+<p class="vm-note vm-noprint" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
 <a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>.</p>
 
-<details id="howto" class="vm-howto" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
+<details id="howto" class="vm-howto vm-noprint" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;">Comment ça marche&nbsp;?</summary>
 <div style="font-size:0.9rem;">
 <p>L'estimateur n'effectue <strong>aucune simulation de combustion</strong> et n'utilise pas la « fonction de forme » propriétaire des logiciels fermés. Il repose sur deux <strong>efficacités</strong> physiquement interprétables, <strong>calées sur des données fabricant</strong>&nbsp;:</p>
