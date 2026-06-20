@@ -31,5 +31,18 @@
     ],
     "lopo_P_rms_pct": 16,
     "note": "Re = 1 + A*travel/V0; pressure is INDICATIVE only"
+  },
+  "e_eff": {
+    "features": [
+      "1",
+      "fill/100"
+    ],
+    "coef": [
+      927679,
+      214304
+    ],
+    "unit": "J/kg",
+    "lopo_v_rms_pct": 10.1,
+    "note": "FALLBACK when Qex/Ba unknown: v0 = sqrt(2*E_eff*C/m_e); needs only bulk density (for fill). Same accuracy as eta_b path."
   }
 }
