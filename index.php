@@ -204,14 +204,17 @@ function calc(){
   if(!ld){Plotly.purge('plot');return;}
   const xs=[],vs=[],ps=[];
   for(let i=0;i<=100;i++){const x=travel*i/100;xs.push(x*1000);vs.push(ld.v(x));ps.push(ld.P_bar(x));}
-  const yTop=Math.max(Math.max.apply(null,ps), pcip||0)*1.08;
+  const yTop=Math.max(Math.max.apply(null,ps), pcip||0)*1.12;
   const lay={margin:{t:10,r:55,l:55,b:40},legend:{orientation:'h'},
      xaxis:{title:'Course de la balle (mm)'},
      yaxis:{title:'Pression (bar)',rangemode:'tozero',range:[0,yTop]},
      yaxis2:{title:'Vitesse (m/s)',overlaying:'y',side:'right',rangemode:'tozero'}};
   if(pcip){
-    lay.shapes=[{type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pcip,y1:pcip,line:{color:'#c0392b',width:1.5,dash:'dot'}}];
-    lay.annotations=[{xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pcip,yanchor:'bottom',text:'Limite CIP '+pcip+' bar',showarrow:false,font:{size:10,color:'#c0392b'}}];
+    lay.shapes=[
+      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcip,y1:yTop,fillcolor:'rgba(192,57,43,0.10)',line:{width:0},layer:'below'},
+      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pcip,y1:pcip,line:{color:'#c0392b',width:2.5,dash:'dash'},layer:'above'}
+    ];
+    lay.annotations=[{xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pcip,yanchor:'bottom',text:'<b>Limite CIP '+pcip+' bar</b>',showarrow:false,font:{size:11,color:'#c0392b'},bgcolor:'rgba(255,255,255,0.75)'}];
   }
   Plotly.react('plot',[
     {x:xs,y:ps,name:'Pression (bar)',yaxis:'y',line:{color:'#c0392b'}},
