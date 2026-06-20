@@ -76,7 +76,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 <a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>. Pour explorer les courbes de combustion :
 <a href="/reloading/tireur_reloaded/legacy/">simulateur GRT</a> (indicatif, hérité).</p>
 
-<details class="vm-howto" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
+<details id="howto" class="vm-howto" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;">Comment ça marche&nbsp;?</summary>
 <div style="font-size:0.9rem;">
 <p>L'estimateur n'effectue <strong>aucune simulation de combustion</strong> et n'utilise pas la « fonction de forme » propriétaire des logiciels fermés. Il repose sur deux <strong>efficacités</strong> physiquement interprétables, <strong>calées sur des données fabricant</strong>&nbsp;:</p>
