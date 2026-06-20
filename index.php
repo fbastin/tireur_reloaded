@@ -60,6 +60,18 @@ include '../../header.php';
     border: 1px solid #2ecc71;
     color: #2ecc71;
 }
+.grt-disclaimer {
+    background: rgba(231, 76, 60, 0.08);
+    border: 1px solid #e74c3c;
+    border-left: 4px solid #e74c3c;
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--color-text);
+}
+.grt-disclaimer strong { color: #c0392b; }
 
 /* Tabs for Charts */
 .grt-tabs {
@@ -160,6 +172,17 @@ include '../../header.php';
     <h1>Gordon's Reloading Tool (GRT) — Ballistique Interne</h1>
     <p>Simulateur thermodynamique de combustion et pression. Les calculs physiques s'effectuent localement et en temps réel dans votre navigateur. 
     Pour compléter vos analyses, consultez notre <a href="/techniques/balistique/">Guide de Balistique Extérieure</a> et le manuel de rechargement complet <a href="/reloading/The_Art_of_the_Precision_Rifle.pdf" target="_blank">The Art of the Precision Rifle (PDF)</a>.</p>
+
+    <!-- Avertissement permanent : l'outil sous-estime pression et vitesse (validation
+         contre données fabricant). Voir ROADMAP.md, Phase 6. Ne JAMAIS développer une
+         charge sur ces seules valeurs. -->
+    <div class="grt-disclaimer noprint">
+        <strong><i class="li-alert-triangle"></i> Outil indicatif &amp; pédagogique — ne pas l'utiliser pour développer des charges réelles.</strong>
+        Le modèle interne <strong>sous-estime la pression (de l'ordre de 25–35 %) et la vitesse (~15–25 %)</strong> par rapport aux données fabricant.
+        Une charge réellement <em>au-dessus</em> de la limite CIP peut donc s'afficher « sûre ». Utilisez-le pour comprendre les <em>tendances</em>
+        (effet d'un changement de charge, de poudre, de canon…), puis <strong>vérifiez toute charge dans les données officielles du fabricant
+        ou dans l'application GRT</strong> avant tout tir.
+    </div>
 
     <!-- Warnings Container -->
     <div id="pressureWarning" class="grt-warning-box"></div>
