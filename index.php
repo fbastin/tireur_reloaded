@@ -23,6 +23,14 @@ include '../../header.php';
 .vm-note { font-size:0.82rem; color:var(--color-text-light); }
 .vm-tag { display:inline-block; font-size:0.72rem; padding:0.1rem 0.5rem; border-radius:10px; background:var(--color-border); color:var(--color-text-light); }
 .vm-tag.anchored { background:#2E5A1C; color:#fff; }
+.vm-alert { border-radius:var(--radius); padding:0.55rem 0.9rem; font-size:0.9rem; margin-bottom:0.8rem; }
+.vm-alert.danger { background:#fdecea; border:1px solid #e74c3c; border-left:5px solid #c0392b; color:#7d241c; }
+.vm-alert.warn { background:#fef5e7; border:1px solid #e67e22; border-left:5px solid #e67e22; color:#7e5109; }
+.vm-out.danger { color:#c0392b; }
+.vm-out.warn { color:#e67e22; }
+.vm-bar { height:8px; border-radius:4px; background:var(--color-border); overflow:hidden; margin:0.25rem 0; }
+.vm-bar > span { display:block; height:100%; background:#9aa0a6; }
+.vm-bar.warn > span { background:#e67e22; } .vm-bar.danger > span { background:#c0392b; }
 </style>
 
 <div id="cadre">
@@ -63,9 +71,11 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
     <p class="vm-note" id="derived"></p>
   </div>
   <div class="vm-panel">
+    <div id="danger" class="vm-alert" style="display:none;"></div>
     <div class="vm-kpi">
       <div><div class="vm-out"><span id="o_v">—</span> <small>m/s</small></div><small>vitesse <span id="o_vtag" class="vm-tag">à froid ±10%</span></small></div>
-      <div><div class="vm-out"><span id="o_p">—</span> <small>bar</small></div><small>pression <span class="vm-tag">indicative</span></small></div>
+      <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small>bar</small></div><small>pression <span class="vm-tag">indicative</span> <span id="o_pcip"></span></small>
+        <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
     </div>
     <div id="plot" style="width:100%;height:330px;"></div>
     <p class="vm-note" id="warn"></p>
@@ -89,7 +99,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 <li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: <strong>~5&nbsp;%</strong>&nbsp;;</li>
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: <strong>quasi-exact</strong>.</li>
 </ul>
-<p>Catalogue de poudres actuel&nbsp;: gamme <strong>Reload Swiss</strong> et <strong>Vihtavuori</strong> (en cours d'extension depuis les guides fabricant).</p>
+<p>Catalogue&nbsp;: <strong>~480 poudres</strong> (Reload Swiss et Vihtavuori calibrées&nbsp;; autres marques en repli énergie effective). Les situations à risque (<strong>surpression vs limite CIP, surremplissage</strong>) sont signalées en couleur — à titre indicatif.</p>
 <p><strong>Pour aller plus loin&nbsp;:</strong>
 <a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limites</a> ·
@@ -152,6 +162,27 @@ function calc(){
   // affichage
   document.getElementById('o_v').textContent=v0.toFixed(0);
   document.getElementById('o_p').textContent=Pmax.toFixed(0);
+  // --- situations dangereuses (surpression / surremplissage), affichage proéminent ---
+  const pcip=cart.pmax_cip_bar||null, pct=pcip?Pmax/pcip*100:null;
+  let lvl='ok'; const al=[];
+  if(pct!=null){
+    if(pct>100){al.push(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite CIP (${pcip} bar)`);lvl='danger';}
+    else if(pct>=85){al.push(`Pression proche de la limite CIP (${pct.toFixed(0)} %)`);lvl='warn';}
+  }
+  if(hasPcd){
+    if(fill>110){al.push(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`);lvl='danger';}
+    else if(fill>105){al.push(`Charge comprimée (${fill.toFixed(0)} %)`);if(lvl!=='danger')lvl='warn';}
+    else if(fill<55){al.push(`Charge très faible (${fill.toFixed(0)} %)`);if(lvl!=='danger')lvl='warn';}
+  }
+  const dz=document.getElementById('danger');
+  if(al.length){dz.style.display='block';dz.className='vm-alert '+(lvl==='danger'?'danger':'warn');
+    dz.innerHTML=`<strong>${lvl==='danger'?'⛔ DANGER':'⚠ Attention'}</strong> — ${al.join(' · ')}. <em>Estimation indicative — confirmez dans les données fabricant.</em>`;}
+  else dz.style.display='none';
+  document.getElementById('pbox').className='vm-out'+(pct==null?'':(pct>100?' danger':pct>=85?' warn':''));
+  document.getElementById('o_pcip').textContent = pct!=null ? `· ${pct.toFixed(0)} % CIP` : '(limite CIP non renseignée)';
+  const pbar=document.getElementById('pbar');
+  if(pct!=null){pbar.style.display='block';pbar.className='vm-bar'+(pct>100?' danger':pct>=85?' warn':'');pbar.firstElementChild.style.width=Math.min(pct,100)+'%';}
+  else pbar.style.display='none';
   const tag=document.getElementById('o_vtag');
   tag.textContent=anchored?'ancrée (vos données)':'à froid ±10%';
   tag.className='vm-tag'+(anchored?' anchored':'');

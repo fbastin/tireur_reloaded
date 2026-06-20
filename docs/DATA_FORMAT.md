@@ -14,9 +14,11 @@ cartridge labels used by the calibration guide.
 {
   "calibers": {
     "308 Win.": {
-      "bore_mm": 7.82,        // groove/bullet diameter -> bore area A = πd²/4
-      "case_mm": 51.18,       // case length -> bullet travel L = barrel − case
-      "case_vol_cm3": 2.981   // effective chamber volume (see note)
+      "bore_mm": 7.82,         // groove/bullet diameter -> bore area A = πd²/4
+      "case_mm": 51.18,        // case length -> bullet travel L = barrel − case
+      "case_vol_cm3": 2.981,   // effective chamber volume (see note)
+      "pmax_cip_bar": 4150     // CIP/SAAMI max pressure (bar) — drives the overpressure
+                               // warning; nominal/indicative, omitted if uncertain
     }
   }
 }
