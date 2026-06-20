@@ -452,7 +452,9 @@ function initDropdowns() {
 
     // Défaut : une poudre vive adaptée au 9 mm (sinon une poudre lente de
     // carabine brûle de façon incomplète en canon court → avertissement).
-    let defaultPowderIdx = GRT_DB.powders.findIndex(p => p.pname.includes('Red Dot') || p.pname.includes('231'));
+    let defaultPowderIdx = GRT_DB.powders.findIndex(p => p.pname.includes('Clays'));
+    if (defaultPowderIdx === -1) defaultPowderIdx = GRT_DB.powders.findIndex(p => p.pname.includes('231'));
+    if (defaultPowderIdx === -1) defaultPowderIdx = GRT_DB.powders.findIndex(p => p.pname.includes('Red Dot'));
     if (defaultPowderIdx === -1) defaultPowderIdx = GRT_DB.powders.findIndex(p => parseFloat(p.Ba) > 1.5);
     if (defaultPowderIdx === -1) defaultPowderIdx = 0;
     powderSelect.value = defaultPowderIdx;
@@ -480,7 +482,7 @@ function loadCaliber() {
     // Charge de départ adaptée à la vivacité : une poudre vive (Ba élevé)
     // atteint la pression nominale avec bien moins de masse qu'une poudre lente.
     const selPowderBa = parseFloat((GRT_DB.powders[document.getElementById('powderSelect').value] || {}).Ba) || 0.3;
-    const fillFrac = selPowderBa > 1.5 ? 0.30 : 0.40;
+    const fillFrac = selPowderBa > 1.5 ? 0.28 : 0.40;
     chargeSlider.value = (maxCharge * fillFrac).toFixed(1);
     chargeInput.value = chargeSlider.value;
     
