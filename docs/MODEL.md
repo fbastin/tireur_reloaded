@@ -229,6 +229,14 @@ The estimator sits just below both, consistent with treating pressure as indicat
 Velocity agreement (~3 %) supports the cross-brand generalization claim (§4) against
 an independent reference.
 
+A larger cross-check against the **Western Powders guide** (1248 Accurate/Ramshot
+max loads, cartridge + bore verified) gives **velocity RMS 8.7 %** (Accurate 8.4 %,
+Ramshot 9.2 %) — confirming cross-brand generalization of the velocity model — but
+**pressure RMS 32.6 % with a −19 % bias**: the η_p model (calibrated on Reload Swiss)
+does **not** generalize across brands and **under-predicts pressure**. This is the
+quantified basis for treating pressure as *indicative only* and for never showing a
+"safe" verdict (a load at the real CIP limit can read ~80 % here).
+
 ## 7. Data provenance and licensing
 
 - **Component database** (powder $Q_\mathrm{ex}$, $B_a$, $\rho_b$; cartridge
