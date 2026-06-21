@@ -40,9 +40,10 @@ for (const line of lines) {
   const m = d.match(SIX), bm = d.match(/^(\d{1,3})/);
   if (m && bm && cart) {
     const bullet = +bm[1];
+    const desc = d.slice(bm[1].length, d.length - m[0].length).replace(/[*]/g, '');   // maker+type (despacé)
     if (bullet > 10 && bullet < 800) rows.push({
       cartridge: cart, bore_mm: bore, barrel_mm: barrel, powder,
-      bullet_gr: bullet, charge_gr: num(m[3]), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]),
+      bullet_gr: bullet, bullet_desc: desc, charge_gr: num(m[3]), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]),
     });
   }
   prev = line;

@@ -38,11 +38,11 @@
       "fill/100"
     ],
     "coef": [
-      927679,
-      214304
+      1106352,
+      77418
     ],
     "unit": "J/kg",
-    "lopo_v_rms_pct": 10.1,
-    "note": "FALLBACK when Qex/Ba unknown: v0 = sqrt(2*E_eff*C/m_e); needs only bulk density (for fill). Same accuracy as eta_b path."
+    "lopo_v_rms_pct": 6.6,
+    "note": "FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé multi-marques (Reload Swiss + Accurate/Ramshot)."
   }
 }

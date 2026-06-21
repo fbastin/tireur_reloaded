@@ -137,9 +137,16 @@ This model deliberately uses **only bullet mass**, because:
 Measured empirically on the calibration set (1700 loads), using each load's *exact*
 V0 instead of the per-cartridge median changes the error by only **+0.12 pts RMS on
 velocity** (9.56→9.44 %) and **+0.52 pts on pressure** (16.11→15.59 %) — negligible
-against the model's intrinsic scatter. A QuickLOAD-style projectile database would
-add inputs and a recalibration burden for no measurable accuracy gain here. Mass
-stays the single bullet input.
+against the model's intrinsic scatter.
+
+**Re-checked on the larger Western set** (Accurate/Ramshot, with COAL + bullet type):
+COAL/seating still barely moves velocity (8.7→8.6 %, ~1 pt on pressure, r ≈ 0.24).
+Velocity residuals *do* differ by bullet category (bias −4 % soft/tip/mono … −9 %
+FMJ/plinking, ~5 pt spread) — but that spread is mostly the **brand bias** (fixed by
+the multi-brand $E_\mathrm{eff}$) and the **pistol/rifle class** confound, not pure
+construction; and any genuine per-combo effect is **already captured by the anchors**
+(`anchors.json`) where data exists. A per-bullet-type input would add a control for a
+~2-3 pt, confounded residual. Mass stays the single bullet input.
 
 ## 5. Calibration procedure
 
@@ -166,9 +173,12 @@ $$\eta_b = \beta_0 + \beta_1\,\tfrac{\varphi}{100} + \beta_2\,B_a,
 \qquad
 \eta_p = \gamma_0 + \gamma_1\,\tfrac{\varphi}{100} + \gamma_2\,\ln R_e.$$
 
-Current fitted coefficients ($\eta_b$/$E_\mathrm{eff}$ on Reload Swiss; $\eta_p$
-recalibrated **multi-brand** on Reload Swiss + Accurate/Ramshot to remove the
-cross-brand bias — see `scripts/fit_pressure_multibrand.js`):
+Current fitted coefficients ($\eta_b$ on Reload Swiss; the fallback $E_\mathrm{eff}$
+and $\eta_p$ recalibrated **multi-brand** on Reload Swiss + Accurate/Ramshot to remove
+the cross-brand bias — see `scripts/fit_pressure_multibrand.js`). Multi-brand
+$E_\mathrm{eff} = 1\,106\,352 + 77\,418\,(\varphi/100)$ J/kg cuts the fallback velocity
+bias from $-5\%$ to $-3\%$ on Accurate/Ramshot (RS/VV are unaffected — they use the
+$\eta_b$ path).
 
 $$\eta_b = 0.1628 + 0.1218\,\tfrac{\varphi}{100} + 0.0180\,B_a,$$
 $$\eta_p = 0.7741 + 0.1481\,\tfrac{\varphi}{100} - 0.2196\,\ln R_e.$$

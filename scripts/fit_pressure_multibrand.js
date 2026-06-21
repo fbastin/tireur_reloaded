@@ -21,8 +21,10 @@ const pcdIdx = {}; for (const k of Object.keys(PWD)) if (PWD[k].pcd) pcdIdx[norm
 // --- build η_p records: {fill, Re, eta_p, brand} ---
 const rec = [];
 // Reload Swiss (already computed)
-for (const r of JSON.parse(fs.readFileSync(d('rs_dataset.local.json'))))
-  rec.push({ fill: r.fill, Re: r.Re, eta_p: r.eta_p, brand: 'ReloadSwiss' });
+for (const r of JSON.parse(fs.readFileSync(d('rs_dataset.local.json')))) {
+  const m = r.m_gr * G, C = r.C_gr * G;
+  rec.push({ fill: r.fill, Re: r.Re, eta_p: r.eta_p, eeff: (m + C / 3) * r.v0 * r.v0 / (2 * C), brand: 'ReloadSwiss' });
+}
 // Western (Accurate/Ramshot)
 let wUsed = 0;
 for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
@@ -36,7 +38,7 @@ for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
   const fill = (r.charge_gr * GR2G / (pcd / 1000)) / ca.case_vol_cm3 * 100;
   const Re = 1 + (A * L) / (ca.case_vol_cm3 * 1e-6);
   const eta_p = 0.5 * me * v0 * v0 / (Pmax * A * L);
-  rec.push({ fill, Re, eta_p, brand: r.powder.split(' ')[0] });
+  rec.push({ fill, Re, eta_p, eeff: me * v0 * v0 / (2 * C), brand: r.powder.split(' ')[0] });
   wUsed++;
 }
 
@@ -62,11 +64,22 @@ for (const [nm, set] of [['RS', rs], ['Western', we], ['ALL', rec]]) {
   console.log(`  ${nm}: Pmax RMS ${rms(eo).toFixed(1)}%→${rms(en).toFixed(1)}%  | biais ${bias(eo).toFixed(1)}%→${bias(en).toFixed(1)}%`);
 }
 
+// --- E_eff (velocity fallback) multi-brand ---
+const featE = (r) => [1, r.fill / 100];
+const oldE = JSON.parse(fs.readFileSync(d('model_coefficients.json'))).e_eff.coef;
+const neuE = ols(rec, featE, 'eeff');
+const vErr = (set, w) => set.map((r) => (Math.sqrt(dot(w, featE(r)) / r.eeff) - 1) * 100);
+console.log(`E_eff OLD ${oldE.map((x) => Math.round(x))}  ->  NEW ${neuE.map((x) => Math.round(x))}`);
+for (const [nm, set] of [['RS', rs], ['Western', we]]) { const eo = vErr(set, oldE), en = vErr(set, neuE); console.log(`  ${nm}: v(E_eff) RMS ${rms(eo).toFixed(1)}%→${rms(en).toFixed(1)}% | biais ${bias(eo).toFixed(1)}%→${bias(en).toFixed(1)}%`); }
+
 // write back
 const coef = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
 coef.eta_p.coef = neu.map((x) => +x.toFixed(5));
 coef.eta_p.note = 'Re = 1 + A*travel/V0; pression INDICATIVE. Calé multi-marques (Reload Swiss + Accurate/Ramshot) ; sous-estimation résiduelle possible.';
 coef.eta_p.lopo_P_rms_pct = +rms(pErr(rec, neu)).toFixed(1);
+coef.e_eff.coef = neuE.map((x) => +x.toFixed(0));
+coef.e_eff.note = 'FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé multi-marques (Reload Swiss + Accurate/Ramshot).';
+coef.e_eff.lopo_v_rms_pct = +rms(vErr(we, neuE)).toFixed(1);
 coef._date = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2) + '\n');
 console.log('-> model_coefficients.json (eta_p mis à jour)');
