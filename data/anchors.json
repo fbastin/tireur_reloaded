@@ -1306,6 +1306,31 @@
    "n": 5,
    "np": 0.4544
   },
+  "204 Ruger|Accurate LT-32": {
+   "eeff": 1076961,
+   "n": 4,
+   "np": 0.3558
+  },
+  "204 Ruger|Ramshot X-Terminator": {
+   "eeff": 1114146,
+   "n": 3,
+   "np": 0.4268
+  },
+  "204 Ruger|Accurate 2230": {
+   "eeff": 1114146,
+   "n": 3,
+   "np": 0.4268
+  },
+  "204 Ruger|Accurate 2460": {
+   "eeff": 1056457,
+   "n": 5,
+   "np": 0.4136
+  },
+  "204 Ruger|Ramshot TAC": {
+   "eeff": 1117444,
+   "n": 3,
+   "np": 0.4381
+  },
   "222 Rem.|Accurate 5744": {
    "eeff": 1306636,
    "n": 6,
@@ -1396,6 +1421,16 @@
    "n": 5,
    "np": 0.4362
   },
+  "223 WSSM|Ramshot Big Game": {
+   "eeff": 1026740,
+   "n": 4,
+   "np": 0.4663
+  },
+  "223 WSSM|Ramshot Hunter": {
+   "eeff": 997137,
+   "n": 5,
+   "np": 0.4947
+  },
   "6mm PPC|Accurate 5744": {
    "eeff": 1455492,
    "n": 6,
@@ -1430,6 +1465,16 @@
    "eeff": 1140954,
    "n": 17,
    "np": 0.4797
+  },
+  "6 mm Remington|Accurate 4064": {
+   "eeff": 1170840,
+   "n": 4,
+   "np": 0.4837
+  },
+  "6 mm Remington|Ramshot Big Game": {
+   "eeff": 1110584,
+   "n": 6,
+   "np": 0.4641
   },
   "250 Savage|Accurate 2230": {
    "eeff": 1218986,
@@ -1563,6 +1608,11 @@
    "n": 23,
    "np": 0.475
   },
+  "270 Weatherby Magnum|Accurate 4350": {
+   "eeff": 1126933,
+   "n": 3,
+   "np": 0.4684
+  },
   "7 -08 Rem.|Accurate 2700": {
    "eeff": 1192453,
    "n": 4,
@@ -1587,6 +1637,28 @@
    "eeff": 1083409,
    "n": 3,
    "np": 0.4667
+  },
+  "7mm WSM|Accurate 4350": {
+   "eeff": 1207099,
+   "n": 5,
+   "np": 0.4913
+  },
+  "7mm WSM|Ramshot Hunter": {
+   "eeff": 1134548,
+   "n": 6,
+   "np": 0.4963
+  },
+  "7mm WSM|Ramshot Enforcer": {
+   "eeff": 1675270,
+   "n": 4,
+   "np": 0.218,
+   "mhr": -14.3,
+   "mhflag": true
+  },
+  "7mm WSM|Accurate 4100": {
+   "eeff": 1648179,
+   "n": 6,
+   "np": 0.2216
   },
   "300 AAC BLK|Accurate 2460": {
    "eeff": 1233258,
@@ -1702,6 +1774,11 @@
    "eeff": 1258113,
    "n": 14,
    "np": 0.4594
+  },
+  "300 Weatherby Magnum|Ramshot Magnum": {
+   "eeff": 1068174,
+   "n": 6,
+   "np": 0.5531
   },
   "300 PRC|Accurate 5744": {
    "eeff": 1503217,
@@ -2239,6 +2316,11 @@
    "n": 8,
    "np": 0.4845
   },
+  "240 Weatherby Magnum|Accurate 4350": {
+   "eeff": 1095103,
+   "n": 4,
+   "np": 0.4807
+  },
   "257 Roberts|Ramshot Big Game": {
    "eeff": 1127243,
    "n": 3,
@@ -2418,6 +2500,22 @@
    "n": 16,
    "np": 0.521,
    "mhr": 5.4
+  },
+  "30 Carbine|Accurate No.9": {
+   "eeff": 1711706,
+   "n": 7,
+   "np": 0.2226
+  },
+  "30 Carbine|Ramshot Enforcer": {
+   "eeff": 1606226,
+   "n": 6,
+   "np": 0.2593,
+   "mhr": 3.2
+  },
+  "30 Carbine|Accurate 4100": {
+   "eeff": 1606226,
+   "n": 6,
+   "np": 0.2593
   },
   "30-30 Win.|Accurate 5744": {
    "eeff": 1531212,
@@ -2614,6 +2712,18 @@
    "n": 4,
    "np": 0.2788
   },
+  "204 Ruger|N530": {
+   "eeff": 1113868,
+   "n": 6
+  },
+  "204 Ruger|N133": {
+   "eeff": 1084329,
+   "n": 4
+  },
+  "204 Ruger|N140": {
+   "eeff": 1014336,
+   "n": 4
+  },
   "22 Hornet|N110": {
    "eeff": 1407526,
    "n": 8
@@ -2621,6 +2731,18 @@
   "22 Hornet|N120": {
    "eeff": 1157423,
    "n": 4
+  },
+  "221 Remington Fireball|N120": {
+   "eeff": 1143071,
+   "n": 8
+  },
+  "221 Remington Fireball|N130": {
+   "eeff": 1057700,
+   "n": 8
+  },
+  "221 Remington Fireball|N133": {
+   "eeff": 1012058,
+   "n": 6
   },
   "224 Valkyrie|N133": {
    "eeff": 1197232,
@@ -2734,6 +2856,30 @@
   },
   "22 Nosler|N555": {
    "eeff": 1098894,
+   "n": 4
+  },
+  "223 WSSM|N530": {
+   "eeff": 1090655,
+   "n": 4
+  },
+  "223 WSSM|N135": {
+   "eeff": 1053359,
+   "n": 4
+  },
+  "223 WSSM|N140": {
+   "eeff": 1020439,
+   "n": 6
+  },
+  "22 PPC-USA|N130": {
+   "eeff": 1239753,
+   "n": 4
+  },
+  "22 PPC-USA|N133": {
+   "eeff": 1216936,
+   "n": 4
+  },
+  "22 PPC-USA|N135": {
+   "eeff": 1214740,
    "n": 4
   },
   "22-250 Rem.|N130": {
@@ -2928,6 +3074,46 @@
    "eeff": 1132270,
    "n": 8
   },
+  "6 mm Remington|N140": {
+   "eeff": 1135415,
+   "n": 6
+  },
+  "6 mm Remington|N540": {
+   "eeff": 1135358,
+   "n": 6
+  },
+  "6 mm Remington|N150": {
+   "eeff": 1132963,
+   "n": 8
+  },
+  "6 mm Remington|N550": {
+   "eeff": 1136748,
+   "n": 6
+  },
+  "6 mm Remington|N160": {
+   "eeff": 1075562,
+   "n": 4
+  },
+  "6 mm Remington|N165": {
+   "eeff": 1006934,
+   "n": 4
+  },
+  "240 Weatherby Magnum|N150": {
+   "eeff": 1029057,
+   "n": 4
+  },
+  "240 Weatherby Magnum|N550": {
+   "eeff": 1045769,
+   "n": 8
+  },
+  "240 Weatherby Magnum|N160": {
+   "eeff": 1002119,
+   "n": 10
+  },
+  "240 Weatherby Magnum|N165": {
+   "eeff": 992014,
+   "n": 6
+  },
   "25-06 Remington|N140": {
    "eeff": 1215819,
    "n": 14
@@ -3005,6 +3191,42 @@
    "eeff": 1068878,
    "n": 8
   },
+  "6.8 Western|N555": {
+   "eeff": 1107862,
+   "n": 4
+  },
+  "6.8 Western|N160": {
+   "eeff": 1078441,
+   "n": 6
+  },
+  "6.8 Western|N165": {
+   "eeff": 1060076,
+   "n": 10
+  },
+  "6.8 Western|N560": {
+   "eeff": 1100453,
+   "n": 10
+  },
+  "6.8 Western|N565": {
+   "eeff": 1069174,
+   "n": 8
+  },
+  "6.8 Western|N170": {
+   "eeff": 1017998,
+   "n": 8
+  },
+  "6.8 Western|N568": {
+   "eeff": 997148,
+   "n": 8
+  },
+  "6.8 Western|N570": {
+   "eeff": 1061202,
+   "n": 8
+  },
+  "6.8 Western|24N41": {
+   "eeff": 946163,
+   "n": 4
+  },
   "270 WSM|N160": {
    "eeff": 1036377,
    "n": 6,
@@ -3046,6 +3268,18 @@
   "270 Win.|N565": {
    "eeff": 1067287,
    "n": 4
+  },
+  "270 Weatherby Magnum|N160": {
+   "eeff": 1020260,
+   "n": 6
+  },
+  "270 Weatherby Magnum|N165": {
+   "eeff": 983138,
+   "n": 8
+  },
+  "270 Weatherby Magnum|N560": {
+   "eeff": 1040618,
+   "n": 6
   },
   "7 -08 Rem.|N135": {
    "eeff": 1316908,
@@ -3107,6 +3341,26 @@
   "7 x 57|N160": {
    "eeff": 1030868,
    "n": 4
+  },
+  "7 x 57 R|N140": {
+   "eeff": 1069437,
+   "n": 6
+  },
+  "7 x 57 R|N150": {
+   "eeff": 1081742,
+   "n": 14
+  },
+  "7 x 57 R|N540": {
+   "eeff": 1137899,
+   "n": 8
+  },
+  "7 x 57 R|N550": {
+   "eeff": 1084046,
+   "n": 8
+  },
+  "7 x 57 R|N160": {
+   "eeff": 993080,
+   "n": 10
   },
   "7 x 64|N540": {
    "eeff": 1223184,
@@ -3185,6 +3439,18 @@
    "eeff": 1084416,
    "n": 6
   },
+  "7mm WSM|N160": {
+   "eeff": 1122671,
+   "n": 10
+  },
+  "7mm WSM|N165": {
+   "eeff": 1069424,
+   "n": 8
+  },
+  "7mm WSM|N560": {
+   "eeff": 1118908,
+   "n": 8
+  },
   "7 Rem. Mag.|N160": {
    "eeff": 1103232,
    "n": 18,
@@ -3201,6 +3467,18 @@
   "7 Rem. Mag.|N170": {
    "eeff": 1036782,
    "n": 8
+  },
+  "7mm Weatherby Magnum|N160": {
+   "eeff": 1058222,
+   "n": 8
+  },
+  "7mm Weatherby Magnum|N560": {
+   "eeff": 1061001,
+   "n": 8
+  },
+  "7mm Weatherby Magnum|N165": {
+   "eeff": 1033126,
+   "n": 6
   },
   "7mm PRC|N555": {
    "eeff": 1113558,
@@ -3236,6 +3514,22 @@
   },
   "7mm PRC|24N41": {
    "eeff": 982702,
+   "n": 4
+  },
+  "7mm RUM|N560": {
+   "eeff": 1012376,
+   "n": 8
+  },
+  "7mm RUM|N170": {
+   "eeff": 984995,
+   "n": 6
+  },
+  "7mm RUM|N570": {
+   "eeff": 1013130,
+   "n": 6
+  },
+  "30 Carbine|N110": {
+   "eeff": 1473768,
    "n": 4
   },
   "300 AAC BLK|N105": {
@@ -3549,6 +3843,34 @@
    "eeff": 1018993,
    "n": 14
   },
+  "300 Weatherby Magnum|N160": {
+   "eeff": 1092239,
+   "n": 8
+  },
+  "300 Weatherby Magnum|N165": {
+   "eeff": 1069018,
+   "n": 6
+  },
+  "300 Lapua Magnum|N160": {
+   "eeff": 1087516,
+   "n": 6
+  },
+  "300 Lapua Magnum|N560": {
+   "eeff": 1081017,
+   "n": 16
+  },
+  "300 Lapua Magnum|N170": {
+   "eeff": 1028716,
+   "n": 12
+  },
+  "300 Lapua Magnum|24N41": {
+   "eeff": 1023528,
+   "n": 8
+  },
+  "300 Lapua Magnum|N165": {
+   "eeff": 1028890,
+   "n": 10
+  },
   "300 Rem. Ultra Mag.|N165": {
    "eeff": 1012829,
    "n": 10
@@ -3730,6 +4052,18 @@
    "eeff": 1190953,
    "n": 4
   },
+  "416 Rigby|N160": {
+   "eeff": 1112616,
+   "n": 10
+  },
+  "416 Rigby|N165": {
+   "eeff": 1078427,
+   "n": 10
+  },
+  "416 Rigby|N560": {
+   "eeff": 1085997,
+   "n": 10
+  },
   "444 Marlin|N120": {
    "eeff": 1402474,
    "n": 6,
@@ -3753,6 +4087,38 @@
   },
   "45 - 70 Govt.|N133": {
    "eeff": 1130784,
+   "n": 4
+  },
+  "458 Winchester Magnum|N130": {
+   "eeff": 1476035,
+   "n": 8
+  },
+  "458 Winchester Magnum|N133": {
+   "eeff": 1435356,
+   "n": 4
+  },
+  "458 Winchester Magnum|N530": {
+   "eeff": 1380088,
+   "n": 6
+  },
+  "458 Winchester Magnum|N135": {
+   "eeff": 1297227,
+   "n": 4
+  },
+  "7mm BR Remington|N120": {
+   "eeff": 1224093,
+   "n": 10
+  },
+  "7mm BR Remington|N130": {
+   "eeff": 1198903,
+   "n": 10
+  },
+  "7mm BR Remington|N133": {
+   "eeff": 1161124,
+   "n": 8
+  },
+  "7mm BR Remington|N135": {
+   "eeff": 1148615,
    "n": 4
   },
   "9 mm Luger|N310": {
@@ -3785,6 +4151,18 @@
   },
   "9 mm Luger|N105": {
    "eeff": 1244591,
+   "n": 4
+  },
+  "9 x 23 Winchester|N340": {
+   "eeff": 1625211,
+   "n": 4
+  },
+  "9 x 23 Winchester|N350": {
+   "eeff": 1401976,
+   "n": 4
+  },
+  "9 x 23 Winchester|3N37": {
+   "eeff": 1495161,
    "n": 4
   },
   "357 SIG|N340": {
@@ -4023,6 +4401,22 @@
    "eeff": 575025,
    "n": 10
   },
+  "45 Winchester Magnum|N350": {
+   "eeff": 1462373,
+   "n": 4
+  },
+  "45 Winchester Magnum|3N37": {
+   "eeff": 1641717,
+   "n": 8
+  },
+  "45 Winchester Magnum|N105": {
+   "eeff": 1494338,
+   "n": 4
+  },
+  "45 Winchester Magnum|N110": {
+   "eeff": 1357053,
+   "n": 6
+  },
   "454 Casull|3N37": {
    "eeff": 1593321,
    "n": 8
@@ -4038,6 +4432,22 @@
   "45 ACP (Auto)|N110": {
    "eeff": 1010489,
    "n": 16
+  },
+  "50 AE|N105": {
+   "eeff": 1463268,
+   "n": 10
+  },
+  "50 AE|N110": {
+   "eeff": 1309884,
+   "n": 10
+  },
+  "50 AE|N120": {
+   "eeff": 854068,
+   "n": 6
+  },
+  "50 AE|3N38": {
+   "eeff": 1596518,
+   "n": 6
   }
  }
 }

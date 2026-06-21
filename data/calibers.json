@@ -507,7 +507,9 @@
     "6mm PPC": {
       "type": "rifle",
       "aliases": [
-        "6 PPC"
+        "6 PPC",
+        "6 mm PPC-USA",
+        "6mm PPC-USA"
       ],
       "bore_mm": 6.17,
       "case_mm": 38.5,
@@ -675,6 +677,151 @@
       "bore_mm": 7.24,
       "case_mm": 65.0,
       "case_vol_cm3": 3.743
+    },
+    "6.8 Western": {
+      "type": "rifle",
+      "bore_mm": 7.04,
+      "case_mm": 51.3,
+      "case_vol_cm3": 4.294
+    },
+    "300 Lapua Magnum": {
+      "type": "rifle",
+      "bore_mm": 7.82,
+      "case_mm": 69.73,
+      "case_vol_cm3": 6.25
+    },
+    "6 mm Remington": {
+      "type": "rifle",
+      "bore_mm": 6.17,
+      "case_mm": 56.7,
+      "case_vol_cm3": 3.261
+    },
+    "50 AE": {
+      "type": "handgun",
+      "aliases": [
+        "50 Action Express"
+      ],
+      "bore_mm": 12.7,
+      "case_mm": 32.6,
+      "case_vol_cm3": 3.412
+    },
+    "240 Weatherby Magnum": {
+      "type": "rifle",
+      "bore_mm": 6.17,
+      "case_mm": 63.4,
+      "case_vol_cm3": 3.73
+    },
+    "416 Rigby": {
+      "type": "rifle",
+      "bore_mm": 10.57,
+      "case_mm": 73.66,
+      "case_vol_cm3": 6.463
+    },
+    "204 Ruger": {
+      "type": "rifle",
+      "bore_mm": 5.18,
+      "case_mm": 47.0,
+      "case_vol_cm3": 1.853
+    },
+    "30 Carbine": {
+      "type": "rifle",
+      "bore_mm": 7.82,
+      "case_mm": 32.8,
+      "case_vol_cm3": 1.05
+    },
+    "270 Weatherby Magnum": {
+      "type": "rifle",
+      "bore_mm": 7.04,
+      "case_mm": 65.0,
+      "case_vol_cm3": 5.413
+    },
+    "7mm RUM": {
+      "type": "rifle",
+      "aliases": [
+        "7mm Remington Ultra Magnum"
+      ],
+      "bore_mm": 7.21,
+      "case_mm": 72.4,
+      "case_vol_cm3": 6.098
+    },
+    "458 Winchester Magnum": {
+      "type": "rifle",
+      "bore_mm": 11.63,
+      "case_mm": 63.5,
+      "case_vol_cm3": 5.214
+    },
+    "221 Remington Fireball": {
+      "type": "rifle",
+      "bore_mm": 5.69,
+      "case_mm": 35.6,
+      "case_vol_cm3": 1.331
+    },
+    "7mm Weatherby Magnum": {
+      "type": "rifle",
+      "bore_mm": 7.21,
+      "case_mm": 64.7,
+      "case_vol_cm3": 5.23
+    },
+    "45 Winchester Magnum": {
+      "type": "handgun",
+      "bore_mm": 11.5,
+      "case_mm": 30.4,
+      "case_vol_cm3": 1.89
+    },
+    "223 WSSM": {
+      "type": "rifle",
+      "aliases": [
+        "223 Winchester Super Short Magnum"
+      ],
+      "bore_mm": 5.69,
+      "case_mm": 42.4,
+      "case_vol_cm3": 3.038
+    },
+    "300 Weatherby Magnum": {
+      "type": "rifle",
+      "bore_mm": 7.82,
+      "case_mm": 71.8,
+      "case_vol_cm3": 5.602
+    },
+    "9 x 23 Winchester": {
+      "type": "handgun",
+      "bore_mm": 9.04,
+      "case_mm": 22.86,
+      "case_vol_cm3": 0.8
+    },
+    "7 x 57 R": {
+      "type": "rifle",
+      "bore_mm": 7.24,
+      "case_mm": 57.0,
+      "case_vol_cm3": 3.209
+    },
+    "7mm WSM": {
+      "type": "rifle",
+      "aliases": [
+        "7 mm WSM",
+        "7mm Winchester Short Magnum"
+      ],
+      "bore_mm": 7.21,
+      "case_mm": 53.3,
+      "case_vol_cm3": 4.539
+    },
+    "7mm BR Remington": {
+      "type": "rifle",
+      "aliases": [
+        "7 mm BR Remington"
+      ],
+      "bore_mm": 7.21,
+      "case_mm": 38.6,
+      "case_vol_cm3": 2.248
+    },
+    "22 PPC-USA": {
+      "type": "rifle",
+      "aliases": [
+        "22 PPC"
+      ],
+      "bore_mm": 5.69,
+      "case_mm": 38.5,
+      "case_vol_cm3": 2.048
     }
   }
 }
