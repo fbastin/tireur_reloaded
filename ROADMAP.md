@@ -1,5 +1,13 @@
 # Gordon's Reloading Tool (GRT) Clone — Roadmap
 
+> ⚠️ **ARCHIVED / HISTORICAL.** This roadmap describes the original **thermodynamic ODE
+> solver** (the "GRT clone", now in `legacy/`). The project has since **moved away from that
+> burn-rate ODE** to the open **energy–efficiency model** (calibrated on manufacturer data),
+> because faithfully reproducing GRT's unpublished form function plateaued at ~16 % RMS and
+> under-predicted pressure/velocity. The current model, its calibration and limitations are
+> documented in **[`docs/MODEL.md`](docs/MODEL.md)**; this file is kept only for the history
+> of the legacy solver and should **not** be read as the active plan.
+
 This roadmap outlines the development plan for the web-based Gordon's Reloading Tool (GRT) clone on Tireur.org. The tool will feature a thermodynamic internal ballistics solver, a compiled components database, and interactive real-time visualization.
 
 ---
