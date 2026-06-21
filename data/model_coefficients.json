@@ -1,6 +1,6 @@
 {
   "_doc": "Derived (publishable) coefficients of the energy-efficiency model. Calibrated on a manufacturer guide; raw load tables are NOT redistributed (EULA).",
-  "_date": "2026-06-20",
+  "_date": "2026-06-21",
   "_credit": "Component database derived from Gordon's Reloading Tool (Gordon, deceased) and the community (zen/grt_databases, CC0 1.0).",
   "_n_records": 1700,
   "_n_powders": 14,
@@ -25,12 +25,12 @@
       "ln(Re)"
     ],
     "coef": [
-      0.8868,
-      0.05155,
-      -0.22385
+      0.77406,
+      0.14812,
+      -0.21955
     ],
-    "lopo_P_rms_pct": 16,
-    "note": "Re = 1 + A*travel/V0; pressure is INDICATIVE only"
+    "lopo_P_rms_pct": 17.5,
+    "note": "Re = 1 + A*travel/V0; pression INDICATIVE. Calé multi-marques (Reload Swiss + Accurate/Ramshot) ; sous-estimation résiduelle possible."
   },
   "e_eff": {
     "features": [
