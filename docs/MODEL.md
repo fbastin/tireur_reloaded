@@ -76,6 +76,19 @@ $\eta_b$ is **geometry-free** — it depends only on masses, energy and burn
 completeness — which is why velocity can be modelled across cartridges without bore
 geometry.
 
+> **Theoretical grounding (not just curve-fitting).** This definition is *not* an ad-hoc
+> empirical convenience: it is exactly the muzzle-energy relation of the classical
+> closed-form **Mayer–Hart** lumped model (Corner [2]; Mayer & Hart [7]). Their Eq. (22)
+> can be written $E_m = C\,Q_\mathrm{ex}\cdot\eta_b^{\mathrm{MH}}$ with
+> $\eta_b^{\mathrm{MH}} = 1 - e^{-(\gamma-1)r}\,[1-(\gamma-1)\varphi]^{-1}$ — i.e. the same
+> "fixed fraction of the chemical energy reaches the muzzle" structure, with an analytic
+> expression for that fraction in terms of the expansion ratio $r$ and loading $\varphi$.
+> We replace that analytic fraction (which needs per-powder $\gamma$, covolume and the
+> Mayer–Hart constants we do not have) by a **data-calibrated $\eta_b$**. Mayer–Hart is thus
+> the **theoretical scaffold of the retained approach**; the calibration supplies the
+> constants it would otherwise require. Full derivation and the numerical check
+> ($E_k/(C Q_\mathrm{ex})=0.285\approx\eta_b$) are in **Appendix A**.
+
 **Hybrid fallback (no $Q_\mathrm{ex}$/$B_a$).** Since the *effective* specific energy
 $E_\mathrm{eff} = \eta_b\,Q_\mathrm{ex}$ is near-universal across smokeless powders
 (≈ 1.1 MJ/kg, CV ~17 %), a powder with only its bulk density known can be predicted
@@ -363,7 +376,7 @@ is therefore treated as irreducible at the global cold-start level; the lever fo
 
 ## Appendix A. Mayer–Hart closed-form model (explored)
 
-The review [6] highlights the **Mayer–Hart** lumped model (BRL, 1945) — the only
+The review [6] highlights the **Mayer–Hart** lumped model (Mayer & Hart, 1945 [7]) — the only
 classical model giving *closed-form* expressions for peak pressure and muzzle energy.
 We examined whether it can serve as an **independent thermochemical cross-check** for our
 efficiencies. The relevant forms (review Eqs. 21–22, in our symbols) are:
@@ -393,8 +406,8 @@ $P_q$, and the naïve Noble–Abel constant-volume pressure $P_q=\lambda C/(V_0-
 1 for 93/1700 RS loads (mean 0.77), and even on the 960 loads with $b\Delta<0.85$ the
 resulting $P_{\max}^{\mathrm{MH}}$ over-predicts by **+282 % (RMS 356 %)**. The real $P_q,\varphi,r$
 encode the bullet travel to all-burnt and the true peak position — definitions the review
-does **not** provide; they require the primary source (Corner 1950 [2] / the Mayer–Hart BRL
-report).
+does **not** provide; they require the primary sources: Mayer & Hart 1945 [7] (the
+closed-form constants) and Corner 1950 [2] (the full lumped-parameter derivation).
 
 **Verdict.** Mayer–Hart is valuable as a **theoretical justification** for the η_b/η_p
 formulation (it derives the same energy-fraction structure we calibrate), and is a
@@ -413,7 +426,9 @@ Implementing it faithfully is logged as future work, not a current dependency.
 ## References
 
 1. Reload Swiss — *Reloading Guide 2025* (joint $v_0$ + $P_\max$ load data).
-2. Corner, *Theory of the Interior Ballistics of Guns* (1950).
+2. J. Corner, *Theory of the Interior Ballistics of Guns*, John Wiley & Sons, New York;
+   Chapman & Hall, London, 1950 (viii + 442 pp.). Contains the lumped-parameter theory
+   and the Mayer–Hart-type closed-form solution.
 3. Carlucci & Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*.
 4. Le Duc, empirical $v(x)$ velocity–travel relation.
 5. zen/grt_databases (CC0 1.0) — community GRT component data.
@@ -422,3 +437,6 @@ Implementing it faithfully is logged as future work, not a current dependency.
    doi:10.1016/j.dt.2024.05.004 (open access). Classifies lumped-parameter vs CFD
    models; documents Baer–Frankle, IBHVG2, STANAG 4367, Mayer–Hart; notes the
    small-calibre gap.
+7. J. R. Mayer & B. I. Hart, *Simplified Equations of Interior Ballistics*, Journal of
+   the Franklin Institute, vol. 240, no. 5, Nov. 1945, pp. 401–411. Primary source for
+   the closed-form $P_\max$ / muzzle-energy expressions and the constants $P_q,\varphi,r$.
