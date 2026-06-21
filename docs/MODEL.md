@@ -439,6 +439,33 @@ out of validity envelope) and so does **not** lift the §6.1 pressure ceiling: l
 model it ultimately ties pressure to firing-calibrated constants. Net value delivered:
 theoretical grounding + a reproducible velocity check; no change to the production model.
 
+The guard built on Direction A (`scripts/build_anchors.js`, fields `mhr`/`mhflag` per anchor)
+needs a per-powder $Q_\mathrm{ex}$, available for only the powders with measured thermochemistry.
+
+## Appendix B. Extending the guard: Qex interpolation (explored, rejected) vs real import
+
+The Mayer–Hart guard (Appendix A) covers only powders with a known specific energy
+$Q_\mathrm{ex}$. We explored **interpolating $Q_\mathrm{ex}$ by powder family** to extend it to
+the ~450 catalogue powders that carry only a bulk density. **Verdict: too coarse — rejected.**
+On 35 GRT powders with measured $Q_\mathrm{ex}$ spanning both families:
+
+- by **base**: single 3834 vs double 4067 kJ/kg — a ~6 % mean gap, *smaller* than the
+  within-family scatter (σ ≈ 7 %); by **type** only "flake" stands out (~4350). Family
+  explains little.
+- the real blocker is **$\gamma$**: the guard uses $\lambda=Q_\mathrm{ex}(\gamma-1)$, and the
+  measured $\gamma$ ranges **1.14–1.27**, so $(\gamma-1)$ varies ~2×. Guessing both
+  $Q_\mathrm{ex}$ (±7 %) and $\gamma$ for a catalogue powder gives a $\lambda$ error of
+  20–30 % → ~10–15 % velocity noise, which **swamps** the guard's 12-pt (2σ) threshold.
+
+So interpolated thermochemistry cannot feed the guard reliably. Instead we **import the real
+$Q_\mathrm{ex}$** from the GRT `.propellant` files (`scripts/import_grt_qex.js`, CC0 source),
+which carry measured $Q_\mathrm{ex}$, $\gamma$ and covolume. This added 8 powders
+(Accurate Magpro, Alliant Reloder 15 / Red Dot, Hodgdon Clays / Superformance,
+Ramshot Enforcer, Winchester StaBall Match / HD) and extended the guard from 171 to **179
+anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it is most useful.
+**Import is Qex-only by design** (not $B_a$), so the production velocity path is unchanged
+(η_b needs both); the sole effect is wider guard coverage with *real*, not guessed, constants.
+
 ## See also
 
 - [`CALIBRATION.md`](CALIBRATION.md) — detailed extraction & calibration pipeline.

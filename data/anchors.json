@@ -1136,7 +1136,9 @@
   "357 Magnum|Ramshot Enforcer": {
    "eeff": 1408629,
    "np": 0.6956,
-   "n": 6
+   "n": 6,
+   "mhr": -10.1,
+   "mhflag": true
   },
   "357 Magnum|Accurate 5744": {
    "eeff": 1143595,
@@ -1431,7 +1433,8 @@
   "300 PRC|Accurate Magpro": {
    "eeff": 1127570,
    "np": 0.5201,
-   "n": 4
+   "n": 4,
+   "mhr": 2.5
   },
   "300 PRC|Ramshot Magnum": {
    "eeff": 1105837,
@@ -1446,7 +1449,8 @@
   "338 Lapua Mag.|Accurate Magpro": {
    "eeff": 1211536,
    "np": 0.46,
-   "n": 23
+   "n": 23,
+   "mhr": 2.8
   },
   "338 Lapua Mag.|Ramshot Magnum": {
    "eeff": 1188343,
@@ -1611,7 +1615,8 @@
   "38 Special|Ramshot Enforcer": {
    "eeff": 985730,
    "np": 0.3848,
-   "n": 7
+   "n": 7,
+   "mhr": 6.7
   },
   "357 Maximum|Accurate 4100": {
    "eeff": 1516699,
@@ -1681,7 +1686,8 @@
   "41 Rem. Mag.|Ramshot Enforcer": {
    "eeff": 1313655,
    "np": 0.3391,
-   "n": 20
+   "n": 20,
+   "mhr": -4.4
   },
   "41 Rem. Mag.|Ramshot Competition": {
    "eeff": 1586483,
@@ -1726,7 +1732,8 @@
   "475 Linebaugh|Ramshot Enforcer": {
    "eeff": 1377377,
    "np": 0.4639,
-   "n": 18
+   "n": 18,
+   "mhr": -5.3
   },
   "475 Linebaugh|Accurate 5744": {
    "eeff": 1261121,
@@ -1851,7 +1858,8 @@
   "6.5 PRC|Accurate Magpro": {
    "eeff": 1099802,
    "np": 0.4928,
-   "n": 3
+   "n": 3,
+   "mhr": 4.6
   },
   "270 Win.|Ramshot Big Game": {
    "eeff": 1209134,
@@ -1896,7 +1904,8 @@
   "270 WSM|Accurate Magpro": {
    "eeff": 1118375,
    "np": 0.5213,
-   "n": 6
+   "n": 6,
+   "mhr": 2.9
   },
   "270 WSM|Accurate 2460": {
    "eeff": 1346654,

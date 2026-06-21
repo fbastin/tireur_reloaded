@@ -412,6 +412,7 @@
       "pcd": 906
     },
     "Accurate Magpro": {
+      "Qex": 3880,
       "mfg": "Accurate",
       "name": "Magpro",
       "base": "Double",
@@ -621,6 +622,7 @@
       "type": "Extruded"
     },
     "Alliant Red Dot": {
+      "Qex": 4538,
       "mfg": "Alliant",
       "name": "Red Dot",
       "base": "Double",
@@ -639,6 +641,7 @@
       "name": "Reloder 12"
     },
     "Alliant Reloder 15": {
+      "Qex": 3990,
       "mfg": "Alliant",
       "name": "Reloder 15",
       "base": "Double",
@@ -960,6 +963,7 @@
       "pcd": 1003
     },
     "Hodgdon Clays": {
+      "Qex": 4250,
       "mfg": "Hodgdon",
       "name": "Clays",
       "base": "Double",
@@ -1180,6 +1184,7 @@
       "pcd": 920
     },
     "Hodgdon Superformance": {
+      "Qex": 3900,
       "mfg": "Hodgdon",
       "name": "Superformance",
       "base": "Double",
@@ -2574,6 +2579,7 @@
       "type": "Spherical"
     },
     "Ramshot Enforcer": {
+      "Qex": 4005,
       "mfg": "Ramshot",
       "name": "Enforcer",
       "base": "Double",
@@ -3110,6 +3116,7 @@
       "pcd": 990
     },
     "Winchester StaBall HD": {
+      "Qex": 3800,
       "mfg": "Winchester",
       "name": "StaBall HD",
       "base": "Double",
@@ -3117,6 +3124,7 @@
       "pcd": 950
     },
     "Winchester StaBall Match": {
+      "Qex": 3700,
       "mfg": "Winchester",
       "name": "StaBall Match",
       "base": "Double",
