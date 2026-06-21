@@ -249,8 +249,9 @@ function calc(){
   const pbar=document.getElementById('pbar');
   if(pct!=null){pbar.style.display='block';pbar.className='vm-bar'+(pct>100?' danger':pct>=85?' warn':'');pbar.firstElementChild.style.width=Math.min(pct,100)+'%';}
   else pbar.style.display='none';
+  const ancFlag = !!(anc && anc.mhflag);                 // couple fabricant atypique (garde-fou Mayer-Hart)
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?'ancrée (vos données)':dataAnchor?'ancrée fabricant ~5%':'à froid ±10%';
+  tag.textContent=anchored?'ancrée (vos données)':dataAnchor?(ancFlag?'ancrée fabricant (à vérifier)':'ancrée fabricant ~5%'):'à froid ±10%';
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
   const mode = anchored?'mesure perso' : dataAnchor?`ancré fabricant (n=${anc.n})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
@@ -261,6 +262,7 @@ function calc(){
   else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
   if(!hasPcd) w='Densité bulk inconnue : remplissage et pression approximés (nominal). '+w;
   if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
+  if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
   document.getElementById('warn').textContent=w;
   // courbe Le Duc (couche 3)
   const ld=VelocityModel.leDuc(v0,Pmax,m,C,d,travel);

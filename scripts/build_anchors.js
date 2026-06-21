@@ -26,18 +26,39 @@ const matchCal = (name) => calIdx[norm(name)] || calIdx[norm(stripVariant(name))
 // Lignes parasites du guide (en-têtes de spec, pas des cartouches).
 const isJunkCart = (s) => /\bpsi\b|specification|standard saami/i.test(String(s));
 
-const groups = {};   // "calKey|pwdKey" -> [{eeff, np}]
-function add(calKey, pwdKey, eeff, np) {
+// --- Garde-fou de cohérence Mayer-Hart (cross-check vitesse, voir scripts/mayer_hart_crosscheck.js) ---
+// Prédit v0 depuis le Pmax MESURÉ + thermochimie (Qex) + géométrie, sans η_b/η_p. Un résidu
+// de groupe très atypique signale un couple (v0,Pmax) fabricant douteux. Nécessite Qex.
+const RHO_P = 1600, MH_GAMMA = 1.20;
+function mhResidual(ca, m_gr, C_gr, v0_ms, Pmax_bar, Qex) {
+  if (!(Qex > 0 && v0_ms > 0 && Pmax_bar > 0)) return null;
+  const m = m_gr * G, C = C_gr * G, meff = m + C / 3;
+  const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (ca._bbl - ca.case_mm) / 1000;
+  const v0free = ca.case_vol_cm3 * 1e-6 - C / RHO_P; if (!(v0free > 0 && L > 0)) return null;
+  const lam = Qex * 1000 * (MH_GAMMA - 1);
+  const pq = Math.E * Pmax_bar * 1e5 * (1 + 0.75 * (MH_GAMMA - 1));
+  const phi = (C * lam / v0free) / (2 * pq);
+  const rr = Math.log((v0free + A * L) / v0free);
+  if ((MH_GAMMA - 1) * phi >= 1) return null;
+  const Em = (C * lam / (MH_GAMMA - 1)) * (1 - Math.exp(-(MH_GAMMA - 1) * rr) / (1 - (MH_GAMMA - 1) * phi));
+  if (!(Em > 0)) return null;
+  return (Math.sqrt(2 * Em / meff) / v0_ms - 1) * 100;
+}
+
+const groups = {};   // "calKey|pwdKey" -> [{eeff, np, mhr}]
+function add(calKey, pwdKey, eeff, np, mhr) {
   if (!calKey || !pwdKey) return;
   const k = calKey + '|' + pwdKey;
-  (groups[k] = groups[k] || []).push({ eeff, np });
+  (groups[k] = groups[k] || []).push({ eeff, np, mhr });
 }
 
 // Reload Swiss (cartridge/powder already match our keys; eta_p known; compute E_eff)
 for (const r of JSON.parse(fs.readFileSync(d('rs_dataset.local.json')))) {
+  const ck = calIdx[norm(r.cartridge)];
   const m = r.m_gr * G, C = r.C_gr * G;
   const eeff = (m + C / 3) * r.v0 * r.v0 / (2 * C);
-  add(calIdx[norm(r.cartridge)], pwdIdx[norm(r.powder)] || r.powder, eeff, r.eta_p);
+  const mhr = ck ? mhResidual({ ...CAL[ck], _bbl: r.barrel_mm }, r.m_gr, r.C_gr, r.v0, r.Pmax, r.Qex) : null;
+  add(ck, pwdIdx[norm(r.powder)] || r.powder, eeff, r.eta_p, mhr);
 }
 // Western (Accurate/Ramshot) — match keys, bore guard
 for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
@@ -49,7 +70,8 @@ for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
   const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
   const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
   const v0 = r.v0_fps * 0.3048, Pmax = r.Pmax_psi * 0.0689476 * 1e5;
-  add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L));
+  const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
+  add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr);
 }
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
@@ -58,6 +80,9 @@ const looErr = [];
 for (const [k, arr] of Object.entries(groups)) {
   if (arr.length < 3) continue;                       // need a few loads
   anchors[k] = { eeff: Math.round(mean(arr.map((x) => x.eeff))), np: +mean(arr.map((x) => x.np)).toFixed(4), n: arr.length };
+  // résidu MH moyen du groupe (si ≥3 charges avec Qex)
+  const mhrs = arr.map((x) => x.mhr).filter((v) => v != null);
+  if (mhrs.length >= 3) anchors[k].mhr = +mean(mhrs).toFixed(1);
   kept++;
   // leave-one-out on E_eff -> velocity relative error (~ proportional, /2 for sqrt)
   for (let i = 0; i < arr.length; i++) {
@@ -66,7 +91,23 @@ for (const [k, arr] of Object.entries(groups)) {
   }
 }
 const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
-const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA).', _date: new Date().toISOString().slice(0, 10), anchors };
+
+// Garde-fou MH : flag les ancres dont le résidu MH s'écarte de >2σ de la cohorte (couple
+// (v0,Pmax) fabricant atypique). Seuil relatif à la moyenne (le biais systématique ~+5 %
+// de la direction A n'est pas un défaut de groupe).
+const covered = Object.values(anchors).filter((a) => a.mhr != null).map((a) => a.mhr);
+let flagged = 0;
+if (covered.length > 5) {
+  const gm = mean(covered), gsd = Math.sqrt(mean(covered.map((x) => (x - gm) ** 2)));
+  const thr = 2 * gsd;
+  for (const a of Object.values(anchors)) {
+    if (a.mhr == null) continue;
+    if (Math.abs(a.mhr - gm) > thr) { a.mhflag = true; flagged++; }
+  }
+  console.log(`garde-fou MH : ${covered.length} ancres couvertes (Qex) | moyenne ${gm.toFixed(1)}% σ ${gsd.toFixed(1)}% | ${flagged} flaguées (|écart|>${thr.toFixed(0)}pts)`);
+}
+
+const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
 console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}%`);
 console.log('-> data/anchors.json');

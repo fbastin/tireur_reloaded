@@ -108,9 +108,18 @@ When the selected combo is present, the tool refines from ~10 % (cold) to ~5 %.
 ```jsonc
 {
   "anchors": {
-    "308 Win.|RS52": { "eeff": 1206044, "np": 0.4479, "n": 40 }
+    "308 Win.|RS52":   { "eeff": 1206044, "np": 0.4479, "n": 40, "mhr": 3.5 },
+    "22 Hornet|RS30":  { "eeff": 757000,  "np": 0.1916, "n": 10, "mhr": 22.7, "mhflag": true }
     // key = "<caliberKey>|<powderKey>" ; eeff = mean effective energy (J/kg);
-    // np = mean η_p ; n = number of reference loads. Built by scripts/build_anchors.js
+    // np = mean η_p ; n = number of reference loads. Built by scripts/build_anchors.js.
+    //
+    // Mayer–Hart consistency guard (only on combos whose powder has Qex):
+    //   mhr    = group mean of the MH velocity residual (%) — MH predicts v0 from the
+    //            measured Pmax + thermochemistry; it gauges whether the (v0,Pmax) pair is
+    //            self-consistent. Cohort mean ≈ +5 % (systematic, not a defect).
+    //   mhflag = true when |mhr − cohort mean| > 2σ — the manufacturer pair is atypical,
+    //            so the anchored *pressure* is less trustworthy. The UI then shows
+    //            "ancrée fabricant (à vérifier)" and a caution note. Velocity is unaffected.
   }
 }
 ```
