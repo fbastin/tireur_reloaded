@@ -40,6 +40,20 @@ add `pcd` to also get fill warnings and a better pressure.
   guide's powder column if you also add load data, e.g. `RS62`).
 - Bulk import: `node scripts/ingest_propellants.js <folder> [--mfg <name>]`.
 
+**Importing `Qex` from GRT `.propellant` files** (extends the Mayer–Hart anchor guard,
+[MODEL.md](MODEL.md) Appendix A/B). Drop the `.propellant` file(s) into
+`legacy/grt_databases/powders/`, then:
+```sh
+node scripts/import_grt_qex.js --write   # adds REAL Qex to matching powders that lack it
+node scripts/build_anchors.js            # recomputes anchors + mhr/mhflag guard
+```
+`import_grt_qex.js` adds **`Qex` only** (not `Ba`) on purpose: the η_b velocity path needs
+*both*, so a Qex-only powder stays on the `e_eff` fallback — i.e. **production predictions
+are unchanged**, only the consistency guard gains coverage. If you instead want such a
+powder to use the η_b path, add its real `Ba` too — but note the η_b coefficients were fit
+on single-base Reload Swiss, so doing this for double-base powders is a **production change
+that must be re-validated** (LOPO/anchors), not a free win.
+
 ## Add a cartridge
 
 Edit `data/calibers.json`. The key must be the **exact** label used by the
