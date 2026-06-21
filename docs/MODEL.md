@@ -28,11 +28,11 @@ propellant **form function** and an **energy-partition model** that are propriet
 were never published (the GRT author is deceased). Attempts to calibrate the open
 burn-rate ODE against published data plateaued at ~16 % RMS because a single burn
 process couples velocity and pressure into an inconsistent ("over-peaked") pressure
-curve. (The closed-form **Mayer–Hart** lumped model [6] — analytic $P_\max$ and
-muzzle-energy expressions — is the closest published analogue to the η_b/η_p approach
-used here and is a candidate independent cross-check for the powders where the
-thermochemical constants are known; it is not a remedy for the brand/measurement
-pressure scatter, which is a data limit, see §6.)
+curve. (The closed-form **Mayer–Hart** lumped model [2,7] is the closest published analogue
+to the η_b/η_p approach used here; we implemented it as an independent cross-check — it
+corroborates the velocity coupling at ~9 % RMS but is itself out of its formal validity
+envelope for smokeless small-arms loads and is not a remedy for the pressure scatter. See
+Appendix A and §6.)
 
 The energy–efficiency formulation sidesteps this by **decoupling** the velocity and
 pressure predictions into two physically interpretable efficiencies that are
@@ -83,11 +83,12 @@ geometry.
 > $\eta_b^{\mathrm{MH}} = 1 - e^{-(\gamma-1)r}\,[1-(\gamma-1)\varphi]^{-1}$ — i.e. the same
 > "fixed fraction of the chemical energy reaches the muzzle" structure, with an analytic
 > expression for that fraction in terms of the expansion ratio $r$ and loading $\varphi$.
-> We replace that analytic fraction (which needs per-powder $\gamma$, covolume and the
-> Mayer–Hart constants we do not have) by a **data-calibrated $\eta_b$**. Mayer–Hart is thus
-> the **theoretical scaffold of the retained approach**; the calibration supplies the
-> constants it would otherwise require. Full derivation and the numerical check
-> ($E_k/(C Q_\mathrm{ex})=0.285\approx\eta_b$) are in **Appendix A**.
+> We replace that analytic fraction by a **data-calibrated $\eta_b$**. Computing it per-load
+> from the Mayer–Hart constants instead is possible (we implemented it, Appendix A) but needs
+> per-powder thermochemistry *and* a measured pressure, and is no more accurate (~9 % RMS) —
+> so Mayer–Hart serves as the **theoretical scaffold of the retained approach** while the
+> calibration supplies the working constants. Full derivation, the numerical check
+> ($E_k/(C Q_\mathrm{ex})=0.285\approx\eta_b$) and a runnable cross-check are in **Appendix A**.
 
 **Hybrid fallback (no $Q_\mathrm{ex}$/$B_a$).** Since the *effective* specific energy
 $E_\mathrm{eff} = \eta_b\,Q_\mathrm{ex}$ is near-universal across smokeless powders
@@ -385,8 +386,15 @@ $$P_{\max}^{\,\mathrm{MH}} = \frac{P_q}{e}\,\Bigl[1+\tfrac34(\gamma-1)\Bigr]^{-1
 \qquad
 E_m^{\,\mathrm{MH}} = \frac{C\lambda}{\gamma-1}\Bigl(1 - e^{-(\gamma-1)r}\,[1-(\gamma-1)\varphi]^{-1}\Bigr),$$
 
-with $\lambda$ the specific force (impetus), and $P_q,\varphi,r$ "analytic constants from
-the weapon and charge".
+with $\lambda$ the specific force (impetus), and $P_q,\varphi,r$ analytic constants. The
+primary source [7] defines them (its Eqs. 8, 28, 29, 30) — with $v_0$ the **free volume**
+(case minus solid propellant, MH assuming covolume = charge volume):
+
+$$p_c=\frac{C\lambda}{v_0},\quad p_q=e\,P_\max\bigl[1+\tfrac34(\gamma-1)\bigr],\quad
+\varphi=\frac{p_c}{2p_q},\quad r=\ln\frac{v_0+AL}{v_0}.$$
+
+The burn-rate constant $q$ (our $B_a$) is **eliminated** by reading $p_q$ from a *measured*
+pressure (Eq. 28), so the link can be tested without it.
 
 **Finding 1 — Eq. 22 *is* our $\eta_b$, in closed form.** Since $\lambda=Q_\mathrm{ex}(\gamma-1)$,
 the prefactor $C\lambda/(\gamma-1)=C\,Q_\mathrm{ex}$ is the total chemical energy, so Eq. 22
@@ -400,22 +408,36 @@ is bounded near 0.29 and predicts it should depend on the **expansion ratio** ($
 *not* reduce cross-cartridge $\eta_b$ error — Mayer–Hart's $r$-dependence is a same-gun
 charge-ladder effect, largely absorbed into the per-cartridge scatter.)
 
-**Finding 2 — Eq. 21 is not usable from the review alone.** The peak-pressure formula needs
-$P_q$, and the naïve Noble–Abel constant-volume pressure $P_q=\lambda C/(V_0-bC)$ is
-**singular at smokeless rifle loading densities**: the covolume term $b\Delta=bC/V_0$ exceeds
-1 for 93/1700 RS loads (mean 0.77), and even on the 960 loads with $b\Delta<0.85$ the
-resulting $P_{\max}^{\mathrm{MH}}$ over-predicts by **+282 % (RMS 356 %)**. The real $P_q,\varphi,r$
-encode the bullet travel to all-burnt and the true peak position — definitions the review
-does **not** provide; they require the primary sources: Mayer & Hart 1945 [7] (the
-closed-form constants) and Corner 1950 [2] (the full lumped-parameter derivation).
+**Finding 2 — implemented and run** (`scripts/mayer_hart_crosscheck.js`, 1700 RS loads with
+$Q_\mathrm{ex}$, $\gamma=1.20$). With the primary-source constants the link is now computable
+two ways, each using thermochemistry + geometry + *one* measured value, and **never** our
+$\eta_b/\eta_p$:
 
-**Verdict.** Mayer–Hart is valuable as a **theoretical justification** for the η_b/η_p
-formulation (it derives the same energy-fraction structure we calibrate), and is a
-**candidate independent cross-check** for the 16 powders with known thermochemistry —
-*conditional* on obtaining the full $P_q,\varphi,r$ definitions and per-powder $\gamma$,
-covolume and flame temperature. It is **not** a remedy for the data-limited pressure scatter
-(§6.1): being another lumped model calibrated on firing data, it inherits the same ceiling.
-Implementing it faithfully is logged as future work, not a current dependency.
+| Direction | Predict | Bias | RMS |
+|---|---|---|---|
+| A | $v_0$ from **measured $P_\max$** | **+5.0 %** | **8.7 %** |
+| B | $P_\max$ from **measured $v_0$** | −13.5 % | 41.2 % |
+
+Direction A — an independent thermochemical velocity prediction — corroborates the model at
+**~9 % RMS** (≈ our $\eta_b$ cold-start), confirming that the $(v_0,P_\max)$ coupling the two
+efficiencies jointly encode is the one the 1945 theory derives. Direction B (pressure from
+velocity) is **poor (~41 % RMS)**: inverting Eq. 34 for $\varphi$ amplifies noise, so MH is
+*not* a usable independent pressure estimator in this regime.
+
+**The validity envelope quantifies the small-calibre gap.** MH's closed form is formally valid
+only for $\varphi\le 1/(2\gamma)\approx0.4$ (Eq. 33′). Modern smokeless small-arms loads sit far
+outside it — mean $\varphi=0.81$, with **94 % of RS loads violating $\varphi\le0.4$** — because
+their loading density dwarfs the 1945 artillery regime the theory was built for. This is
+exactly the "small-calibre gap" the review [6] flags, here made numerical: the classical
+closed form degrades gracefully on velocity (Direction A still ~9 %) but cannot be trusted on
+pressure for our cartridges.
+
+**Verdict.** Mayer–Hart is confirmed as the **theoretical scaffold** of the retained approach
+(Finding 1) and gives a *working independent velocity cross-check* (Direction A) — a genuine,
+non-circular corroboration. It is **not** an independent pressure estimator here (Direction B,
+out of validity envelope) and so does **not** lift the §6.1 pressure ceiling: like every lumped
+model it ultimately ties pressure to firing-calibrated constants. Net value delivered:
+theoretical grounding + a reproducible velocity check; no change to the production model.
 
 ## See also
 
