@@ -266,7 +266,9 @@ function calc(){
   document.getElementById('warn').textContent=w;
   // courbe Le Duc (couche 3)
   const ld=VelocityModel.leDuc(v0,Pmax,m,C,d,travel);
-  if(!ld){Plotly.purge('plot');return;}
+  if(!ld){Plotly.purge('plot');
+    document.getElementById('warn').textContent='Courbe pression/vitesse indisponible : paramètres hors domaine du modèle Le Duc (combinaison inhabituelle). Les estimations chiffrées ci-dessus restent valides. '+w;
+    return;}
   const xs=[],vs=[],ps=[];
   for(let i=0;i<=100;i++){const x=travel*i/100;xs.push(frMm(x*1000,U.bbl.cur));vs.push(frMs(ld.v(x),U.v.cur));ps.push(frBar(ld.P_bar(x),U.p.cur));}
   const pcipD=pcip?frBar(pcip,U.p.cur):null;
