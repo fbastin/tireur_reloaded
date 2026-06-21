@@ -172,7 +172,15 @@ Promise.all([
 ]).then(([cal,pwd,coef,anc])=>{
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{};
   const cs=document.getElementById('cart');
-  Object.keys(CAL).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;cs.appendChild(o);});
+  const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
+  const groups=[['Armes longues','rifle'],['Armes de poing','handgun']];
+  groups.forEach(([label,type])=>{
+    const keys=Object.keys(CAL).filter(k=>(CAL[k].type||'rifle')===type).sort(byName);
+    if(!keys.length) return;
+    const og=document.createElement('optgroup'); og.label=label;
+    keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;og.appendChild(o);});
+    cs.appendChild(og);
+  });
   cs.value='308 Win.';
   const ps=document.getElementById('pwd');
   const pLabel=(k)=>{const p=PWD[k];return (p.mfg?p.mfg+' ':'')+(p.name||k);};
@@ -182,7 +190,7 @@ Promise.all([
 });
 function onCart(){ // défaut canon selon type (pistolet court)
   const c=CAL[document.getElementById('cart').value]; if(!c)return;
-  const bbl_mm = c.case_mm<30 ? 122 : 600;
+  const bbl_mm = c.type==='handgun' ? 122 : 600;
   document.getElementById('bbl').value = U.bbl.cur==='in' ? frMm(bbl_mm,'in').toFixed(1) : bbl_mm;
 }
 function lin(coef,feats){return coef.reduce((s,w,i)=>s+w*feats[i],0);}
