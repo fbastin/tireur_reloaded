@@ -166,10 +166,16 @@ $$\eta_b = \beta_0 + \beta_1\,\tfrac{\varphi}{100} + \beta_2\,B_a,
 \qquad
 \eta_p = \gamma_0 + \gamma_1\,\tfrac{\varphi}{100} + \gamma_2\,\ln R_e.$$
 
-Current fitted coefficients (all RS data):
+Current fitted coefficients ($\eta_b$/$E_\mathrm{eff}$ on Reload Swiss; $\eta_p$
+recalibrated **multi-brand** on Reload Swiss + Accurate/Ramshot to remove the
+cross-brand bias — see `scripts/fit_pressure_multibrand.js`):
 
 $$\eta_b = 0.1628 + 0.1218\,\tfrac{\varphi}{100} + 0.0180\,B_a,$$
-$$\eta_p = 0.8868 + 0.0515\,\tfrac{\varphi}{100} - 0.2239\,\ln R_e.$$
+$$\eta_p = 0.7741 + 0.1481\,\tfrac{\varphi}{100} - 0.2196\,\ln R_e.$$
+
+The multi-brand $\eta_p$ centres the bias (RS $+5\%$, Accurate/Ramshot $-7\%$, overall
+$\approx 0\%$; RMS ~17.5 %) instead of favouring Reload Swiss — pressure stays
+indicative.
 
 Adding further features (e.g. $Q_\mathrm{ex}$, charge/bullet ratio, expansion ratio
 in $\eta_b$) improves the in-sample fit but **degrades generalization** and is
