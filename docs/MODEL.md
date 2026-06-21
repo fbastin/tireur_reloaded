@@ -274,6 +274,19 @@ vivacity ($B_a$ exists for only 16 of 469 powders). Pressure therefore stays
 **indicative only**, with no "safe" verdict ever shown — note the fix moves the estimate
 *upward* (less under-estimation), i.e. in the safer direction for a CIP check.
 
+**Why the η_p residual is not closed by a brand or feature term (tested).** The split is
+structural — RS actual η_p ≈ 0.447 vs Accurate/Ramshot ≈ 0.407 (~10 %) — and survives the
+pistol/rifle split (RS rifle 0.456 vs Western rifle 0.405). Leave-one-**brand**-out shows
+no fix generalizes: adding $\ln(\text{loading density})$ leaves the in-sample bias and
+**blows up** LOBO RMS (20.7 → 37.9 %); a pistol term gives LOBO RMS 122 %; an explicit
+brand dummy corrects in-sample but by construction does not transfer to the other brand
+(LOBO) and is undefined for the ~450 powders with no joint data; equal-brand weighting
+moves Western only −7.1 → −6.1 %. The most likely cause is a **pressure-measurement-method
+offset** (RS reports **CIP**; Accurate/Ramshot report **SAAMI** — different protocols give
+different numbers for the same round), which no physical model can reconcile. The residual
+is therefore treated as irreducible at the global cold-start level; the lever for it is
+**anchoring** (§5.5, per-cartridge×powder `np`), not a richer global η_p.
+
 ## 7. Data provenance and licensing
 
 - **Component database** (powder $Q_\mathrm{ex}$, $B_a$, $\rho_b$; cartridge
