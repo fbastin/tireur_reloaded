@@ -73,6 +73,9 @@
     },
     "7 Rem. Mag.": {
       "type": "rifle",
+      "aliases": [
+        "7mm Remington Magnum"
+      ],
       "bore_mm": 7.24,
       "case_mm": 64.77,
       "case_vol_cm3": 5.099,
@@ -118,6 +121,10 @@
     },
     "6.5 x 55 SE": {
       "type": "rifle",
+      "aliases": [
+        "6.5 x 55mm Swedish Mauser",
+        "6.5x55 Swedish"
+      ],
       "bore_mm": 6.71,
       "case_mm": 55,
       "case_vol_cm3": 3.419,
@@ -132,6 +139,9 @@
     },
     "38 Super Auto": {
       "type": "handgun",
+      "aliases": [
+        "38 Super"
+      ],
       "bore_mm": 9.07,
       "case_mm": 22.94,
       "case_vol_cm3": 0.79,

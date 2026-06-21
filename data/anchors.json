@@ -1078,6 +1078,31 @@
    "np": 0.3959,
    "n": 25
   },
+  "38 Super Auto|Accurate No. 2": {
+   "eeff": 1425649,
+   "np": 0.3365,
+   "n": 3
+  },
+  "38 Super Auto|Ramshot Silhouette": {
+   "eeff": 1395805,
+   "np": 0.4105,
+   "n": 8
+  },
+  "38 Super Auto|Ramshot True Blue": {
+   "eeff": 1295438,
+   "np": 0.3814,
+   "n": 8
+  },
+  "38 Super Auto|Accurate No. 5": {
+   "eeff": 1297846,
+   "np": 0.4033,
+   "n": 8
+  },
+  "38 Super Auto|Accurate No. 7": {
+   "eeff": 1176021,
+   "np": 0.4562,
+   "n": 6
+  },
   "357 SIG|Ramshot Zip": {
    "eeff": 1417632,
    "np": 0.4198,
@@ -1850,6 +1875,32 @@
    "np": 0.4241,
    "n": 5
   },
+  "6.5 x 55 SE|Accurate 2700": {
+   "eeff": 1143866,
+   "np": 0.4337,
+   "n": 5
+  },
+  "6.5 x 55 SE|Accurate 4350": {
+   "eeff": 1118586,
+   "np": 0.4186,
+   "n": 6
+  },
+  "6.5 x 55 SE|Ramshot Hunter": {
+   "eeff": 1132094,
+   "np": 0.4374,
+   "n": 10
+  },
+  "6.5 x 55 SE|Accurate Magpro": {
+   "eeff": 1036345,
+   "np": 0.4466,
+   "n": 5,
+   "mhr": 8.6
+  },
+  "6.5 x 55 SE|Ramshot Magnum": {
+   "eeff": 1003084,
+   "np": 0.4393,
+   "n": 5
+  },
   "6.5 PRC|Accurate 4350": {
    "eeff": 1159518,
    "np": 0.4674,
@@ -1926,6 +1977,17 @@
    "eeff": 1227580,
    "np": 0.4224,
    "n": 11
+  },
+  "7 Rem. Mag.|Accurate 4350": {
+   "eeff": 1113241,
+   "np": 0.4768,
+   "n": 25
+  },
+  "7 Rem. Mag.|Accurate Magpro": {
+   "eeff": 1021877,
+   "np": 0.521,
+   "n": 16,
+   "mhr": 5.4
   },
   "30-30 Win.|Accurate 5744": {
    "eeff": 1531212,
