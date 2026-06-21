@@ -897,6 +897,36 @@
    "np": 0.3959,
    "n": 25
   },
+  "357 SIG|Ramshot Zip": {
+   "eeff": 1417632,
+   "np": 0.4198,
+   "n": 3
+  },
+  "357 SIG|Accurate No. 2": {
+   "eeff": 1190511,
+   "np": 0.5602,
+   "n": 16
+  },
+  "357 SIG|Accurate Solo 1000": {
+   "eeff": 1415011,
+   "np": 0.6024,
+   "n": 4
+  },
+  "357 SIG|Ramshot Silhouette": {
+   "eeff": 1213819,
+   "np": 0.8029,
+   "n": 15
+  },
+  "357 SIG|Ramshot True Blue": {
+   "eeff": 1112231,
+   "np": 0.7141,
+   "n": 16
+  },
+  "357 SIG|Accurate No. 5": {
+   "eeff": 1044666,
+   "np": 0.69,
+   "n": 21
+  },
   "357 Magnum|Ramshot Zip": {
    "eeff": 1514990,
    "np": 0.393,
@@ -936,6 +966,16 @@
    "eeff": 1097482,
    "np": 0.9079,
    "n": 6
+  },
+  "357 Maximum|Accurate 5744": {
+   "eeff": 1171118,
+   "np": 0.3639,
+   "n": 3
+  },
+  "357 Maximum|Accurate 1680": {
+   "eeff": 1069268,
+   "np": 0.4923,
+   "n": 3
   },
   "40 S&W|Accurate Nitro 100NF": {
    "eeff": 1626461,
@@ -1077,6 +1117,56 @@
    "np": 0.3706,
    "n": 7
   },
+  "6.5 Grendel|Accurate LT-30": {
+   "eeff": 1235079,
+   "np": 0.3312,
+   "n": 4
+  },
+  "6.5 Grendel|Accurate LT-32": {
+   "eeff": 1223930,
+   "np": 0.3432,
+   "n": 4
+  },
+  "6.5 Grendel|Accurate 2200": {
+   "eeff": 1339408,
+   "np": 0.3906,
+   "n": 11
+  },
+  "6.5 Grendel|Ramshot X-Terminator": {
+   "eeff": 1262898,
+   "np": 0.3943,
+   "n": 9
+  },
+  "6.5 Grendel|Accurate 2230": {
+   "eeff": 1262898,
+   "np": 0.3943,
+   "n": 9
+  },
+  "6.5 Grendel|Accurate 2460": {
+   "eeff": 1266917,
+   "np": 0.3944,
+   "n": 5
+  },
+  "6.5 Grendel|Accurate 4064": {
+   "eeff": 1272176,
+   "np": 0.4699,
+   "n": 5
+  },
+  "6.5 Grendel|Ramshot Big Game": {
+   "eeff": 1272235,
+   "np": 0.507,
+   "n": 5
+  },
+  "6.5 Grendel|Accurate 2700": {
+   "eeff": 1248144,
+   "np": 0.5145,
+   "n": 5
+  },
+  "6.5 Grendel|Ramshot Hunter": {
+   "eeff": 1224742,
+   "np": 0.5315,
+   "n": 4
+  },
   "260 Rem.|Ramshot Big Game": {
    "eeff": 1178334,
    "np": 0.4267,
@@ -1091,6 +1181,36 @@
    "eeff": 1207662,
    "np": 0.4155,
    "n": 3
+  },
+  "30 T/C|Ramshot X-Terminator": {
+   "eeff": 1439473,
+   "np": 0.3704,
+   "n": 25
+  },
+  "30 T/C|Accurate 2230": {
+   "eeff": 1433067,
+   "np": 0.3663,
+   "n": 5
+  },
+  "30 T/C|Accurate 2200": {
+   "eeff": 1498346,
+   "np": 0.3407,
+   "n": 5
+  },
+  "30 T/C|Accurate 2460": {
+   "eeff": 1460345,
+   "np": 0.3402,
+   "n": 15
+  },
+  "30 T/C|Ramshot TAC": {
+   "eeff": 1422008,
+   "np": 0.3616,
+   "n": 38
+  },
+  "30 T/C|Accurate 2520": {
+   "eeff": 1442893,
+   "np": 0.3543,
+   "n": 8
   },
   "30-06 Spring.|Ramshot TAC": {
    "eeff": 1318945,
@@ -1171,6 +1291,41 @@
    "eeff": 1286195,
    "np": 0.4156,
    "n": 4
+  },
+  "458 SOCOM|Accurate 5744": {
+   "eeff": 1386253,
+   "np": 0.3547,
+   "n": 21
+  },
+  "458 SOCOM|Accurate 1680": {
+   "eeff": 1283419,
+   "np": 0.3139,
+   "n": 7
+  },
+  "458 SOCOM|Accurate LT-30": {
+   "eeff": 1197064,
+   "np": 0.4298,
+   "n": 11
+  },
+  "458 SOCOM|Accurate LT-32": {
+   "eeff": 1229811,
+   "np": 0.4393,
+   "n": 8
+  },
+  "458 SOCOM|Accurate 2200": {
+   "eeff": 1231187,
+   "np": 0.509,
+   "n": 11
+  },
+  "458 SOCOM|Ramshot X-Terminator": {
+   "eeff": 1348493,
+   "np": 0.432,
+   "n": 16
+  },
+  "458 SOCOM|Accurate 2230": {
+   "eeff": 1341881,
+   "np": 0.4303,
+   "n": 12
   },
   "9 mm Browning court|Accurate Nitro 100NF": {
    "eeff": 1334038,
@@ -1276,6 +1431,136 @@
    "eeff": 985730,
    "np": 0.3848,
    "n": 7
+  },
+  "357 Maximum|Accurate 4100": {
+   "eeff": 1516699,
+   "np": 0.2013,
+   "n": 14
+  },
+  "357 Maximum|Accurate Solo 1000": {
+   "eeff": 1516633,
+   "np": 0.1196,
+   "n": 3
+  },
+  "357 Maximum|Accurate No. 2": {
+   "eeff": 1396180,
+   "np": 0.1239,
+   "n": 18
+  },
+  "357 Maximum|Ramshot Silhouette": {
+   "eeff": 1306009,
+   "np": 0.1417,
+   "n": 19
+  },
+  "357 Maximum|Ramshot True Blue": {
+   "eeff": 1196681,
+   "np": 0.1458,
+   "n": 19
+  },
+  "357 Maximum|Accurate No. 7": {
+   "eeff": 1128766,
+   "np": 0.1871,
+   "n": 13
+  },
+  "357 Maximum|Accurate No.9": {
+   "eeff": 997736,
+   "np": 0.2042,
+   "n": 8
+  },
+  "41 Rem. Mag.|Ramshot True Blue": {
+   "eeff": 1160857,
+   "np": 0.2355,
+   "n": 49
+  },
+  "41 Rem. Mag.|Accurate No. 5": {
+   "eeff": 1090331,
+   "np": 0.2632,
+   "n": 49
+  },
+  "41 Rem. Mag.|Accurate No. 7": {
+   "eeff": 1199285,
+   "np": 0.2702,
+   "n": 19
+  },
+  "41 Rem. Mag.|Accurate No.9": {
+   "eeff": 1178785,
+   "np": 0.3093,
+   "n": 25
+  },
+  "41 Rem. Mag.|Accurate TCM": {
+   "eeff": 1502030,
+   "np": 0.3215,
+   "n": 12
+  },
+  "41 Rem. Mag.|Accurate 4100": {
+   "eeff": 1182916,
+   "np": 0.3907,
+   "n": 15
+  },
+  "41 Rem. Mag.|Ramshot Enforcer": {
+   "eeff": 1313655,
+   "np": 0.3391,
+   "n": 20
+  },
+  "41 Rem. Mag.|Ramshot Competition": {
+   "eeff": 1586483,
+   "np": 0.1831,
+   "n": 21
+  },
+  "41 Rem. Mag.|Ramshot Zip": {
+   "eeff": 1399883,
+   "np": 0.2224,
+   "n": 23
+  },
+  "41 Rem. Mag.|Accurate Solo 1000": {
+   "eeff": 1488251,
+   "np": 0.2101,
+   "n": 26
+  },
+  "41 Rem. Mag.|Accurate No. 2": {
+   "eeff": 1436544,
+   "np": 0.2167,
+   "n": 20
+  },
+  "41 Rem. Mag.|Ramshot Silhouette": {
+   "eeff": 1265873,
+   "np": 0.2527,
+   "n": 23
+  },
+  "41 Rem. Mag.|Accurate 5744": {
+   "eeff": 663425,
+   "np": 0.3882,
+   "n": 3
+  },
+  "475 Linebaugh|Accurate No.9": {
+   "eeff": 1520628,
+   "np": 0.3875,
+   "n": 11
+  },
+  "475 Linebaugh|Accurate 4100": {
+   "eeff": 1449963,
+   "np": 0.4023,
+   "n": 8
+  },
+  "475 Linebaugh|Ramshot Enforcer": {
+   "eeff": 1377377,
+   "np": 0.4639,
+   "n": 18
+  },
+  "475 Linebaugh|Accurate 5744": {
+   "eeff": 1261121,
+   "np": 0.518,
+   "n": 40
+  },
+  "475 Linebaugh|Accurate 1680": {
+   "eeff": 1137163,
+   "np": 0.6374,
+   "n": 16
+  },
+  "475 Linebaugh|Accurate No. 2": {
+   "eeff": 1387153,
+   "np": 0.4757,
+   "n": 3
   },
   "22 Hornet|Ramshot Enforcer": {
    "eeff": 1368939,
@@ -1402,6 +1687,56 @@
    "np": 0.4627,
    "n": 7
   },
+  "270 WSM|Accurate 5744": {
+   "eeff": 1459102,
+   "np": 0.4375,
+   "n": 3
+  },
+  "270 WSM|Accurate 4064": {
+   "eeff": 1246032,
+   "np": 0.4344,
+   "n": 7
+  },
+  "270 WSM|Accurate 2700": {
+   "eeff": 1126487,
+   "np": 0.4487,
+   "n": 8
+  },
+  "270 WSM|Accurate 4350": {
+   "eeff": 1201755,
+   "np": 0.4853,
+   "n": 11
+  },
+  "270 WSM|Ramshot Hunter": {
+   "eeff": 1142730,
+   "np": 0.4915,
+   "n": 8
+  },
+  "270 WSM|Accurate Magpro": {
+   "eeff": 1118375,
+   "np": 0.5213,
+   "n": 6
+  },
+  "270 WSM|Accurate 2460": {
+   "eeff": 1346654,
+   "np": 0.4035,
+   "n": 6
+  },
+  "270 WSM|Accurate 2495": {
+   "eeff": 1328351,
+   "np": 0.3877,
+   "n": 12
+  },
+  "270 WSM|Accurate 2520": {
+   "eeff": 1325906,
+   "np": 0.4036,
+   "n": 4
+  },
+  "270 WSM|Ramshot Big Game": {
+   "eeff": 1227580,
+   "np": 0.4224,
+   "n": 11
+  },
   "30-30 Win.|Accurate 5744": {
    "eeff": 1531212,
    "np": 0.3332,
@@ -1467,6 +1802,21 @@
    "np": 0.4445,
    "n": 6
   },
+  "300 WSM|Accurate 5744": {
+   "eeff": 1546841,
+   "np": 0.4142,
+   "n": 3
+  },
+  "300 WSM|Accurate 4064": {
+   "eeff": 1303178,
+   "np": 0.4302,
+   "n": 14
+  },
+  "300 WSM|Ramshot Big Game": {
+   "eeff": 1254359,
+   "np": 0.4565,
+   "n": 18
+  },
   "300 Win. Mag.|Accurate 2700": {
    "eeff": 1222417,
    "np": 0.4822,
@@ -1521,6 +1871,31 @@
    "eeff": 1292488,
    "np": 0.437,
    "n": 7
+  },
+  "35 Remington|Accurate 5744": {
+   "eeff": 1272434,
+   "np": 0.2634,
+   "n": 3
+  },
+  "35 Remington|Accurate 2230": {
+   "eeff": 1345395,
+   "np": 0.3637,
+   "n": 16
+  },
+  "35 Remington|Accurate 2460": {
+   "eeff": 1344281,
+   "np": 0.3748,
+   "n": 16
+  },
+  "35 Remington|Accurate 2495": {
+   "eeff": 1443637,
+   "np": 0.3693,
+   "n": 9
+  },
+  "35 Remington|Accurate 2520": {
+   "eeff": 1378348,
+   "np": 0.3805,
+   "n": 13
   },
   "444 Marlin|Ramshot X-Terminator": {
    "eeff": 1112516,

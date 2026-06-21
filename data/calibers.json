@@ -1,5 +1,5 @@
 {
-  "_doc": "Dimensions standard (CIP/SAAMI, domaine public) : bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression CIP/SAAMI (bar), valeur nominale indicative (absente si incertaine).",
+  "_doc": "Dimensions standard (CIP/SAAMI, domaine public) : bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression CIP/SAAMI (bar), valeur nominale indicative (absente si incertaine). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine ~0.87, pistolet ~0.66) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur).",
   "calibers": {
     "308 Win.": {
       "type": "rifle",
@@ -343,6 +343,9 @@
     },
     "270 WSM": {
       "type": "rifle",
+      "aliases": [
+        "270 Winchester Short Magnum"
+      ],
       "bore_mm": 7.04,
       "case_mm": 53.34,
       "case_vol_cm3": 4.499,
@@ -363,6 +366,9 @@
     },
     "300 WSM": {
       "type": "rifle",
+      "aliases": [
+        "300 Winchester Short Magnum"
+      ],
       "bore_mm": 7.82,
       "case_mm": 53.34,
       "case_vol_cm3": 4.597,
@@ -381,6 +387,76 @@
       "case_mm": 74,
       "case_vol_cm3": 4.616,
       "pmax_cip_bar": 3900
+    },
+    "41 Rem. Mag.": {
+      "type": "handgun",
+      "aliases": [
+        "41 Remington Magnum"
+      ],
+      "bore_mm": 10.41,
+      "case_mm": 32.8,
+      "case_vol_cm3": 1.404,
+      "pmax_cip_bar": 2480
+    },
+    "357 Maximum": {
+      "type": "handgun",
+      "aliases": [
+        "357 Maximum-T/C",
+        "357 Rem Max",
+        "357 Remington Maximum"
+      ],
+      "bore_mm": 9.07,
+      "case_mm": 40.8,
+      "case_vol_cm3": 1.64,
+      "pmax_cip_bar": 2760
+    },
+    "30 T/C": {
+      "type": "rifle",
+      "aliases": [
+        "30 Thompson Center"
+      ],
+      "bore_mm": 7.82,
+      "case_mm": 48.77,
+      "case_vol_cm3": 3.034,
+      "pmax_cip_bar": 4250
+    },
+    "475 Linebaugh": {
+      "type": "handgun",
+      "bore_mm": 12.06,
+      "case_mm": 36.0,
+      "case_vol_cm3": 3.481,
+      "pmax_cip_bar": 3450
+    },
+    "458 SOCOM": {
+      "type": "rifle",
+      "bore_mm": 11.63,
+      "case_mm": 40.0,
+      "case_vol_cm3": 3.604,
+      "pmax_cip_bar": 2410
+    },
+    "357 SIG": {
+      "type": "handgun",
+      "bore_mm": 9.02,
+      "case_mm": 21.97,
+      "case_vol_cm3": 0.518,
+      "pmax_cip_bar": 2760
+    },
+    "35 Remington": {
+      "type": "rifle",
+      "bore_mm": 9.09,
+      "case_mm": 48.8,
+      "case_vol_cm3": 3.618,
+      "pmax_cip_bar": 2310
+    },
+    "6.5 Grendel": {
+      "type": "rifle",
+      "aliases": [
+        "6.5 Grendel AR-15"
+      ],
+      "bore_mm": 6.71,
+      "case_mm": 38.7,
+      "case_vol_cm3": 2.785,
+      "pmax_cip_bar": 3585
     }
   }
 }
