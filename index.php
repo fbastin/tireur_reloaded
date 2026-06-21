@@ -115,14 +115,15 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 </div>
 
 <script>
-let CAL={}, PWD={}, COEF={};
+let CAL={}, PWD={}, COEF={}, ANCH={};
 const G=6.479891e-5;
 Promise.all([
   fetch('data/calibers.json').then(r=>r.json()),
   fetch('data/powders.json').then(r=>r.json()),
   fetch('data/model_coefficients.json').then(r=>r.json()),
-]).then(([cal,pwd,coef])=>{
-  CAL=cal.calibers; PWD=pwd.powders; COEF=coef;
+  fetch('data/anchors.json').then(r=>r.json()).catch(()=>({anchors:{}})),
+]).then(([cal,pwd,coef,anc])=>{
+  CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{};
   const cs=document.getElementById('cart');
   Object.keys(CAL).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;cs.appendChild(o);});
   cs.value='308 Win.';
@@ -151,17 +152,22 @@ function calc(){
   const Re=1+(A*travel)/caseVol;                         // indépendant de pcd
   const fill = hasPcd ? (Cg/(pw.pcd/1000))/cart.case_vol_cm3*100 : null;
   const fillFrac = hasPcd ? fill/100 : 1.0;             // nominal 100 % si pcd inconnu
-  // à froid : chemin principal Qex/Ba si dispo, sinon repli énergie effective E_eff
-  const eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
-  let v0, anchored=false, viaEeff=false, eta_b=null;
-  if(pw.Qex && pw.Ba){
+  // priorité : mesure utilisateur > ancrage fabricant (couple connu) > à froid
+  const anc=ANCH[document.getElementById('cart').value+'|'+document.getElementById('pwd').value]||null;
+  let v0, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
+  if(vmeas>0){
+    v0=vmeas; anchored=true;
+    eta_p=anc?anc.np:lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
+  } else if(anc){                                        // données fabricant pour ce couple
+    v0=Math.sqrt(2*anc.eeff*C/m_e); eta_p=anc.np; dataAnchor=true;
+  } else if(pw.Qex && pw.Ba){
+    eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
     eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
     v0=Math.sqrt(2*eta_b*C*pw.Qex*1000/m_e);
-  } else {
-    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]);       // J/kg (Qex/Ba inconnus)
-    v0=Math.sqrt(2*Eeff*C/m_e); viaEeff=true;
+  } else {                                               // repli énergie effective E_eff
+    eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
+    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); v0=Math.sqrt(2*Eeff*C/m_e); viaEeff=true;
   }
-  if(vmeas>0){v0=vmeas;anchored=true;}                  // ancrage utilisateur
   const Pmax=0.5*m_e*v0*v0/(eta_p*A*travel)/1e5;         // bar (depuis v0 retenu)
   // affichage
   document.getElementById('o_v').textContent=v0.toFixed(0);
@@ -188,11 +194,12 @@ function calc(){
   if(pct!=null){pbar.style.display='block';pbar.className='vm-bar'+(pct>100?' danger':pct>=85?' warn':'');pbar.firstElementChild.style.width=Math.min(pct,100)+'%';}
   else pbar.style.display='none';
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?'ancrée (vos données)':'à froid ±10%';
-  tag.className='vm-tag'+(anchored?' anchored':'');
+  tag.textContent=anchored?'ancrée (vos données)':dataAnchor?'ancrée fabricant ~5%':'à froid ±10%';
+  tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
+  const mode = anchored?'mesure perso' : dataAnchor?`ancré fabricant (n=${anc.n})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
   document.getElementById('derived').textContent=
-    `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3)}  ·  η_p ${eta_p.toFixed(3)}`;
+    `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}`;
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
   if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
   else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';

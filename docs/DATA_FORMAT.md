@@ -90,6 +90,21 @@ The published output of calibration. Loaded by the estimator at runtime.
 To evaluate: `η = Σ coef[i] · feature[i]`, where `features` names the terms in order
 (`"1"` = intercept, `"fill/100"` = fill ratio /100, `"Ba"`, `"ln(Re)"`).
 
+### `anchors.json`
+
+Per-(cartridge×powder) **anchor coefficients** (derived means, not raw load tables).
+When the selected combo is present, the tool refines from ~10 % (cold) to ~5 %.
+
+```jsonc
+{
+  "anchors": {
+    "308 Win.|RS52": { "eeff": 1206044, "np": 0.4479, "n": 40 }
+    // key = "<caliberKey>|<powderKey>" ; eeff = mean effective energy (J/kg);
+    // np = mean η_p ; n = number of reference loads. Built by scripts/build_anchors.js
+  }
+}
+```
+
 ### `reference_loads.json`
 
 Small cited fixture used by `energy_model.test.js` (regression test). Contains a
