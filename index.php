@@ -173,7 +173,8 @@ Promise.all([
   fetch('data/powders.json').then(r=>r.json()),
   fetch('data/model_coefficients.json').then(r=>r.json()),
   fetch('data/anchors.json').then(r=>r.json()).catch(()=>({anchors:{}})),
-]).then(([cal,pwd,coef,anc])=>{
+  fetch('data/burn_rate_chart.txt').then(r=>r.text()).catch(()=>''),   // classement vitesse de combustion (optionnel)
+]).then(([cal,pwd,coef,anc,brTxt])=>{
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{};
   const cs=document.getElementById('cart');
   const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
@@ -188,7 +189,16 @@ Promise.all([
   cs.value='308 Win.';
   const ps=document.getElementById('pwd');
   const pLabel=(k)=>{const p=PWD[k];return (p.mfg?p.mfg+' ':'')+(p.name||k);};
-  Object.keys(PWD).sort((a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true})).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);ps.appendChild(o);});
+  // rang de vitesse de combustion (rapide -> lente) depuis burn_rate_chart.txt
+  const pnorm=(s)=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
+  const pIdx={}; Object.keys(PWD).forEach(k=>{const p=PWD[k];pIdx[pnorm(k)]=k;pIdx[pnorm((p.mfg||'')+(p.name||''))]=k;pIdx[pnorm(p.name||'')]=k;});
+  const brRank={}; (brTxt||'').split('\n').map(s=>s.trim()).filter(s=>s&&!s.startsWith('#')).forEach((nm,i)=>{const k=pIdx[pnorm(nm)]; if(k!=null&&brRank[k]==null) brRank[k]=i;});
+  const ranked=Object.keys(PWD).filter(k=>brRank[k]!=null).sort((a,b)=>brRank[a]-brRank[b]);
+  const rest=Object.keys(PWD).filter(k=>brRank[k]==null).sort((a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true}));
+  const addPwdGroup=(label,keys)=>{ if(!keys.length)return; const og=document.createElement('optgroup'); og.label=label;
+    keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);og.appendChild(o);}); ps.appendChild(og); };
+  addPwdGroup('Par vitesse de combustion (rapide → lente)', ranked);
+  addPwdGroup(ranked.length?'Autres poudres (A → Z)':'Poudres (A → Z)', rest);
   ps.value='RS52';
   onCart(); calc();
 });
