@@ -38,7 +38,7 @@ for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
   const fill = (r.charge_gr * GR2G / (pcd / 1000)) / ca.case_vol_cm3 * 100;
   const Re = 1 + (A * L) / (ca.case_vol_cm3 * 1e-6);
   const eta_p = 0.5 * me * v0 * v0 / (Pmax * A * L);
-  rec.push({ fill, Re, eta_p, eeff: me * v0 * v0 / (2 * C), brand: r.powder.split(' ')[0] });
+  rec.push({ fill, Re, eta_p, eeff: me * v0 * v0 / (2 * C), brand: r.powder.split(' ')[0], v0, C, me, A, L, Pmax_bar: Pmax / 1e5 });
   wUsed++;
 }
 
@@ -64,22 +64,42 @@ for (const [nm, set] of [['RS', rs], ['Western', we], ['ALL', rec]]) {
   console.log(`  ${nm}: Pmax RMS ${rms(eo).toFixed(1)}%→${rms(en).toFixed(1)}%  | biais ${bias(eo).toFixed(1)}%→${bias(en).toFixed(1)}%`);
 }
 
-// --- E_eff (velocity fallback) multi-brand ---
-const featE = (r) => [1, r.fill / 100];
+// --- E_eff (repli vitesse) : calé sur la CLIENTÈLE du repli, PAS multi-marques ---
+// En production, les poudres avec Qex/Ba (RS, VV) passent par la voie η_b et n'utilisent
+// JAMAIS E_eff. Or eeff moyen RS ≈ 1.11 MJ/kg vs sans-Qex/Ba (Western) ≈ 1.27 MJ/kg (~14 %).
+// Caler E_eff multi-marques tire donc le niveau ~3 % trop bas pour sa vraie clientèle →
+// sous-estimation vitesse qui, via Pmax ∝ v0², double en sous-estimation de pression.
+// Correctif : caler E_eff sur des charges MESURÉES de poudres sans Qex/Ba (Western :
+// Accurate/Ramshot), en CONSERVANT la pente (positive, ~physique, sûre en extrapolation)
+// et en recentrant le seul niveau pour annuler le biais vitesse.
 const oldE = JSON.parse(fs.readFileSync(d('model_coefficients.json'))).e_eff.coef;
-const neuE = ols(rec, featE, 'eeff');
-const vErr = (set, w) => set.map((r) => (Math.sqrt(dot(w, featE(r)) / r.eeff) - 1) * 100);
-console.log(`E_eff OLD ${oldE.map((x) => Math.round(x))}  ->  NEW ${neuE.map((x) => Math.round(x))}`);
-for (const [nm, set] of [['RS', rs], ['Western', we]]) { const eo = vErr(set, oldE), en = vErr(set, neuE); console.log(`  ${nm}: v(E_eff) RMS ${rms(eo).toFixed(1)}%→${rms(en).toFixed(1)}% | biais ${bias(eo).toFixed(1)}%→${bias(en).toFixed(1)}%`); }
+const B_EEFF = 77418; // pente conservée (production)
+const vBias = (a) => we.reduce((s, r) => s + (Math.sqrt((a + B_EEFF * r.fill / 100) / r.eeff) - 1), 0) / we.length;
+let aLo = 0.8e6, aHi = 1.8e6;                       // bissection : intercept qui annule le biais vitesse sur la clientèle
+for (let i = 0; i < 60; i++) { const am = (aLo + aHi) / 2; if (vBias(am) < 0) aLo = am; else aHi = am; }
+const neuE = [Math.round((aLo + aHi) / 2), B_EEFF];
+
+// Décomposition reproductible vitesse → pression (clientèle sans Qex/Ba), η_p = coef recalibré.
+const ev = (ec, r) => ec[0] + ec[1] * r.fill / 100;                                   // E_eff(fill)
+const PmaxPred = (r, v) => 0.5 * r.me * v * v / (dot(neu, featP(r)) * r.A * r.L) / 1e5; // bar
+function decompose(tag, ec) {
+  const vw = we.map((r) => (Math.sqrt(ev(ec, r) / r.eeff) - 1) * 100);
+  const peA = we.map((r) => (PmaxPred(r, r.v0) / r.Pmax_bar - 1) * 100);                          // Pmax | v0 RÉEL → isole η_p
+  const peP = we.map((r) => (PmaxPred(r, Math.sqrt(2 * ev(ec, r) * r.C / r.me)) / r.Pmax_bar - 1) * 100); // pipeline complet
+  console.log(`  [${tag}] E_eff [${ec.map((x) => Math.round(x))}] | v0 biais ${bias(vw).toFixed(1)}% (RMS ${rms(vw).toFixed(1)}%) | Pmax|v0réel biais ${bias(peA).toFixed(1)}% | Pmax pipeline biais ${bias(peP).toFixed(1)}% (RMS ${rms(peP).toFixed(1)}%)`);
+}
+console.log(`\nE_eff — clientèle du repli (poudres sans Qex/Ba = Western, n=${we.length}) :`);
+decompose('AVANT', oldE);
+decompose('APRÈS', neuE);
 
 // write back
 const coef = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
 coef.eta_p.coef = neu.map((x) => +x.toFixed(5));
 coef.eta_p.note = 'Re = 1 + A*travel/V0; pression INDICATIVE. Calé multi-marques (Reload Swiss + Accurate/Ramshot) ; sous-estimation résiduelle possible.';
 coef.eta_p.lopo_P_rms_pct = +rms(pErr(rec, neu)).toFixed(1);
-coef.e_eff.coef = neuE.map((x) => +x.toFixed(0));
-coef.e_eff.note = 'FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé multi-marques (Reload Swiss + Accurate/Ramshot).';
-coef.e_eff.lopo_v_rms_pct = +rms(vErr(we, neuE)).toFixed(1);
+coef.e_eff.coef = neuE;
+coef.e_eff.note = 'FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé sur la CLIENTÈLE du repli (poudres SANS Qex/Ba : Accurate/Ramshot) — pente conservée, niveau recentré pour annuler le biais vitesse et réduire la sous-estimation de pression (∝ v0²). RS/VV passent par η_b.';
+coef.e_eff.lopo_v_rms_pct = +rms(we.map((r) => (Math.sqrt(neuE[0] + neuE[1] * r.fill / 100) / Math.sqrt(r.eeff) - 1) * 100)).toFixed(1);
 coef._date = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2) + '\n');
 console.log('-> model_coefficients.json (eta_p mis à jour)');

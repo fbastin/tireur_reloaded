@@ -38,11 +38,11 @@
       "fill/100"
     ],
     "coef": [
-      1106352,
+      1185074,
       77418
     ],
     "unit": "J/kg",
-    "lopo_v_rms_pct": 6.6,
-    "note": "FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé multi-marques (Reload Swiss + Accurate/Ramshot)."
+    "lopo_v_rms_pct": 5.9,
+    "note": "FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé sur la CLIENTÈLE du repli (poudres SANS Qex/Ba : Accurate/Ramshot) — pente conservée, niveau recentré pour annuler le biais vitesse et réduire la sous-estimation de pression (∝ v0²). RS/VV passent par η_b."
   }
 }

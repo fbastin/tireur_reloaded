@@ -173,12 +173,19 @@ $$\eta_b = \beta_0 + \beta_1\,\tfrac{\varphi}{100} + \beta_2\,B_a,
 \qquad
 \eta_p = \gamma_0 + \gamma_1\,\tfrac{\varphi}{100} + \gamma_2\,\ln R_e.$$
 
-Current fitted coefficients ($\eta_b$ on Reload Swiss; the fallback $E_\mathrm{eff}$
-and $\eta_p$ recalibrated **multi-brand** on Reload Swiss + Accurate/Ramshot to remove
-the cross-brand bias — see `scripts/fit_pressure_multibrand.js`). Multi-brand
-$E_\mathrm{eff} = 1\,106\,352 + 77\,418\,(\varphi/100)$ J/kg cuts the fallback velocity
-bias from $-5\%$ to $-3\%$ on Accurate/Ramshot (RS/VV are unaffected — they use the
-$\eta_b$ path).
+Current fitted coefficients ($\eta_b$ on Reload Swiss; $\eta_p$ recalibrated
+**multi-brand** on Reload Swiss + Accurate/Ramshot to remove the cross-brand bias —
+see `scripts/fit_pressure_multibrand.js`). The fallback $E_\mathrm{eff}$ is **not**
+fitted multi-brand: in production, powders with $Q_\mathrm{ex}$/$B_a$ (RS, VV) take the
+$\eta_b$ path and **never** reach $E_\mathrm{eff}$, so averaging it over RS (whose mean
+effective energy ≈ 1.11 MJ/kg) dragged it ~3 % below its real clientele — the
+no-$Q_\mathrm{ex}$/$B_a$ powders (Accurate/Ramshot ≈ 1.27 MJ/kg). $E_\mathrm{eff}$ is
+therefore calibrated on **measured loads of its own clientele** (Western), keeping the
+(positive, physical) slope and recentering only the level to zero the velocity bias:
+$$E_\mathrm{eff} = 1\,185\,074 + 77\,418\,(\varphi/100)\ \text{J/kg}.$$
+This takes the fallback velocity bias on Accurate/Ramshot from $-3.2\%$ to $\approx 0\%$
+(RMS 6.6 → 5.9 %). Because $P_\max \propto v_0^2$, this removed ~6 points of pressure
+under-estimation — see §6 (the propagated velocity bias was the larger half of it).
 
 $$\eta_b = 0.1628 + 0.1218\,\tfrac{\varphi}{100} + 0.0180\,B_a,$$
 $$\eta_p = 0.7741 + 0.1481\,\tfrac{\varphi}{100} - 0.2196\,\ln R_e.$$
@@ -246,12 +253,26 @@ Velocity agreement (~3 %) supports the cross-brand generalization claim (§4) ag
 an independent reference.
 
 A larger cross-check against the **Western Powders guide** (1248 Accurate/Ramshot
-max loads, cartridge + bore verified) gives **velocity RMS 8.7 %** (Accurate 8.4 %,
-Ramshot 9.2 %) — confirming cross-brand generalization of the velocity model — but
-**pressure RMS 32.6 % with a −19 % bias**: the η_p model (calibrated on Reload Swiss)
-does **not** generalize across brands and **under-predicts pressure**. This is the
-quantified basis for treating pressure as *indicative only* and for never showing a
-"safe" verdict (a load at the real CIP limit can read ~80 % here).
+max loads, cartridge + bore verified) gives **velocity RMS 8.7 %** — confirming
+cross-brand generalization of the velocity model. The original RS-only η_p gave a
+**−19 % pressure bias** on this set; the multi-brand η_p (§5.3) centred it.
+
+**Decomposition of the residual pressure under-estimation** (1121 matched Accurate/
+Ramshot loads, `scripts/fit_pressure_multibrand.js`). Because $P_\max \propto v_0^2$,
+a velocity bias enters pressure roughly doubled, so the pipeline bias splits in two:
+
+| Stage | Bias | RMS |
+|---|---|---|
+| $v_0$ (fallback $E_\mathrm{eff}$) | −3.2 % → **0.0 %** | 6.6 → 5.9 % |
+| $P_\max$ given **measured** $v_0$ (η_p alone) | −7.1 % | 16.9 % |
+| $P_\max$ **full pipeline** (predicted $v_0$) | −12.5 % → **−6.6 %** | 22.6 → 21.1 % |
+
+Recentering $E_\mathrm{eff}$ on the fallback's own clientele (§5.3) zeroed the velocity
+bias and **halved the pipeline pressure bias** (−12.5 → −6.6 %). The remaining −6.6 % is
+now the η_p term (−7.1 %), whose cross-powder scatter is irreducible without per-powder
+vivacity ($B_a$ exists for only 16 of 469 powders). Pressure therefore stays
+**indicative only**, with no "safe" verdict ever shown — note the fix moves the estimate
+*upward* (less under-estimation), i.e. in the safer direction for a CIP check.
 
 ## 7. Data provenance and licensing
 
