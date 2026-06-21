@@ -585,6 +585,96 @@
       "case_mm": 48.5,
       "case_vol_cm3": 2.563,
       "pmax_cip_bar": 3275
+    },
+    "6 mm Creedmoor": {
+      "type": "rifle",
+      "bore_mm": 6.17,
+      "case_mm": 48.8,
+      "case_vol_cm3": 3.033
+    },
+    "22 Creedmoor": {
+      "type": "rifle",
+      "bore_mm": 5.7,
+      "case_mm": 49.0,
+      "case_vol_cm3": 3.059
+    },
+    "6mm ARC": {
+      "type": "rifle",
+      "aliases": [
+        "6 mm ARC"
+      ],
+      "bore_mm": 6.17,
+      "case_mm": 37.85,
+      "case_vol_cm3": 2.014
+    },
+    "22 Nosler": {
+      "type": "rifle",
+      "bore_mm": 5.69,
+      "case_mm": 44.7,
+      "case_vol_cm3": 2.107
+    },
+    "224 Valkyrie": {
+      "type": "rifle",
+      "bore_mm": 5.69,
+      "case_mm": 41.0,
+      "case_vol_cm3": 1.786
+    },
+    "284 Winchester": {
+      "type": "rifle",
+      "bore_mm": 7.21,
+      "case_mm": 55.12,
+      "case_vol_cm3": 3.82
+    },
+    "7mm PRC": {
+      "type": "rifle",
+      "aliases": [
+        "7 mm PRC"
+      ],
+      "bore_mm": 7.21,
+      "case_mm": 57.0,
+      "case_vol_cm3": 4.4
+    },
+    "300 Savage": {
+      "type": "rifle",
+      "bore_mm": 7.82,
+      "case_mm": 47.5,
+      "case_vol_cm3": 3.408
+    },
+    "25-06 Remington": {
+      "type": "rifle",
+      "bore_mm": 6.53,
+      "case_mm": 63.3,
+      "case_vol_cm3": 3.675
+    },
+    "280 Remington": {
+      "type": "rifle",
+      "bore_mm": 7.21,
+      "case_mm": 64.5,
+      "case_vol_cm3": 3.717
+    },
+    "300 Norma Magnum": {
+      "type": "rifle",
+      "bore_mm": 7.82,
+      "case_mm": 63.3,
+      "case_vol_cm3": 5.75
+    },
+    "300 Rem. Ultra Mag.": {
+      "type": "rifle",
+      "aliases": [
+        "300 Remington Ultra Magnum"
+      ],
+      "bore_mm": 7.82,
+      "case_mm": 72.4,
+      "case_vol_cm3": 7.37
+    },
+    "7 x 65 R": {
+      "type": "rifle",
+      "aliases": [
+        "7 x 65R"
+      ],
+      "bore_mm": 7.24,
+      "case_mm": 65.0,
+      "case_vol_cm3": 3.743
     }
   }
 }
