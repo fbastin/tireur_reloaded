@@ -17,8 +17,14 @@ const CAL = JSON.parse(fs.readFileSync(d('calibers.json'))).calibers;
 const PWD = JSON.parse(fs.readFileSync(d('powders.json'))).powders;
 const G = 6.479891e-5, GR2G = 0.06479891;
 const norm = (s) => String(s).toLowerCase().replace(/\(.*?\)/g, '').replace(/winchester/g, 'win').replace(/remington/g, 'rem').replace(/magnum/g, 'mag').replace(/springfield/g, 'spring').replace(/[^a-z0-9]/g, '');
-const calIdx = {}; for (const k of Object.keys(CAL)) calIdx[norm(k)] = k;
+const calIdx = {};
+for (const k of Object.keys(CAL)) { calIdx[norm(k)] = k; for (const a of (CAL[k].aliases || [])) calIdx[norm(a)] = k; }
 const pwdIdx = {}; for (const k of Object.keys(PWD)) pwdIdx[norm(k)] = k;
+// Variantes de pression (+P/+P+) = même étui → on les ramène à la cartouche de base.
+const stripVariant = (s) => String(s).replace(/\s*\+p\+?\b/ig, '').replace(/\bfor ar-?15.*/i, '');
+const matchCal = (name) => calIdx[norm(name)] || calIdx[norm(stripVariant(name))] || null;
+// Lignes parasites du guide (en-têtes de spec, pas des cartouches).
+const isJunkCart = (s) => /\bpsi\b|specification|standard saami/i.test(String(s));
 
 const groups = {};   // "calKey|pwdKey" -> [{eeff, np}]
 function add(calKey, pwdKey, eeff, np) {
@@ -35,7 +41,8 @@ for (const r of JSON.parse(fs.readFileSync(d('rs_dataset.local.json')))) {
 }
 // Western (Accurate/Ramshot) — match keys, bore guard
 for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
-  const ck = calIdx[norm(r.cartridge)]; if (!ck) continue; const ca = CAL[ck];
+  if (isJunkCart(r.cartridge)) continue;
+  const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
   if (r.bore_mm && Math.abs(r.bore_mm - ca.bore_mm) > 0.3) continue;
   if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm)) continue;
   const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;

@@ -14,11 +14,21 @@ cartridge labels used by the calibration guide.
 {
   "calibers": {
     "308 Win.": {
+      "type": "rifle",         // "rifle" | "handgun" — groups/sorts the UI dropdown and
+                               // sets the default barrel length (122 mm vs 600 mm)
       "bore_mm": 7.82,         // groove/bullet diameter -> bore area A = πd²/4
       "case_mm": 51.18,        // case length -> bullet travel L = barrel − case
       "case_vol_cm3": 2.981,   // effective chamber volume (see note)
       "pmax_cip_bar": 4150     // CIP/SAAMI max pressure (bar) — drives the overpressure
                                // warning; nominal/indicative, omitted if uncertain
+    },
+    "45 ACP (Auto)": {
+      "type": "handgun",
+      "aliases": ["45 Auto"],  // optional: extra manufacturer-guide names that map to this
+                               // SAME geometry at ingest time (e.g. "45 AUTO (ACP)", and
+                               // "+P" variants, are matched to the base cartridge by the
+                               // anchor builder). Used only by scripts, ignored by the UI.
+      "bore_mm": 11.48, "case_mm": 22.81, "case_vol_cm3": 1.126, "pmax_cip_bar": 1300
     }
   }
 }

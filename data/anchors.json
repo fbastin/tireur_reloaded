@@ -858,9 +858,9 @@
    "n": 6
   },
   "9 mm Luger|Accurate Nitro 100NF": {
-   "eeff": 1561070,
-   "np": 0.2588,
-   "n": 27
+   "eeff": 1560356,
+   "np": 0.2626,
+   "n": 38
   },
   "9 mm Luger|Ramshot Competition": {
    "eeff": 1531813,
@@ -873,14 +873,14 @@
    "n": 27
   },
   "9 mm Luger|Ramshot Silhouette": {
-   "eeff": 1256870,
-   "np": 0.3707,
-   "n": 27
+   "eeff": 1283546,
+   "np": 0.3809,
+   "n": 51
   },
   "9 mm Luger|Ramshot True Blue": {
-   "eeff": 1208000,
-   "np": 0.3532,
-   "n": 22
+   "eeff": 1236734,
+   "np": 0.3616,
+   "n": 41
   },
   "9 mm Luger|Ramshot Zip": {
    "eeff": 1531420,
@@ -893,9 +893,9 @@
    "n": 9
   },
   "9 mm Luger|Accurate No. 7": {
-   "eeff": 1042151,
-   "np": 0.3525,
-   "n": 9
+   "eeff": 1105887,
+   "np": 0.3959,
+   "n": 25
   },
   "357 Magnum|Ramshot Zip": {
    "eeff": 1514990,
@@ -986,6 +986,51 @@
    "eeff": 1021448,
    "np": 0.3803,
    "n": 5
+  },
+  "45 ACP (Auto)|Accurate Nitro 100NF": {
+   "eeff": 1659187,
+   "np": 0.3141,
+   "n": 19
+  },
+  "45 ACP (Auto)|Accurate Solo 1000": {
+   "eeff": 1481434,
+   "np": 0.3325,
+   "n": 6
+  },
+  "45 ACP (Auto)|Accurate No. 2": {
+   "eeff": 1411645,
+   "np": 0.3577,
+   "n": 27
+  },
+  "45 ACP (Auto)|Ramshot Silhouette": {
+   "eeff": 1198132,
+   "np": 0.4245,
+   "n": 29
+  },
+  "45 ACP (Auto)|Accurate No. 7": {
+   "eeff": 931293,
+   "np": 0.4186,
+   "n": 37
+  },
+  "45 ACP (Auto)|Ramshot Competition": {
+   "eeff": 1627441,
+   "np": 0.3155,
+   "n": 12
+  },
+  "45 ACP (Auto)|Ramshot Zip": {
+   "eeff": 1473820,
+   "np": 0.3939,
+   "n": 13
+  },
+  "45 ACP (Auto)|Ramshot True Blue": {
+   "eeff": 1250014,
+   "np": 0.3896,
+   "n": 7
+  },
+  "45 ACP (Auto)|Accurate No. 5": {
+   "eeff": 1118637,
+   "np": 0.4007,
+   "n": 24
   },
   "222 Rem.|Accurate 5744": {
    "eeff": 1306636,
@@ -1127,10 +1172,55 @@
    "np": 0.4156,
    "n": 4
   },
+  "9 mm Browning court|Accurate Nitro 100NF": {
+   "eeff": 1334038,
+   "np": 0.2619,
+   "n": 3
+  },
+  "9 mm Browning court|Ramshot Competition": {
+   "eeff": 1294671,
+   "np": 0.2662,
+   "n": 3
+  },
+  "9 mm Browning court|Ramshot Zip": {
+   "eeff": 1386703,
+   "np": 0.3389,
+   "n": 30
+  },
+  "9 mm Browning court|Accurate Solo 1000": {
+   "eeff": 1382033,
+   "np": 0.3192,
+   "n": 26
+  },
+  "9 mm Browning court|Accurate No. 2": {
+   "eeff": 1311535,
+   "np": 0.336,
+   "n": 25
+  },
+  "9 mm Browning court|Accurate No. 5": {
+   "eeff": 1147436,
+   "np": 0.377,
+   "n": 27
+  },
+  "9 mm Browning court|Accurate No. 7": {
+   "eeff": 996272,
+   "np": 0.3932,
+   "n": 22
+  },
+  "9 mm Luger|Accurate No. 5": {
+   "eeff": 1196137,
+   "np": 0.3809,
+   "n": 25
+  },
+  "9 mm Luger|Accurate No.9": {
+   "eeff": 876121,
+   "np": 0.5275,
+   "n": 6
+  },
   "38 Special|Accurate Nitro 100NF": {
-   "eeff": 1510474,
-   "np": 0.2494,
-   "n": 4
+   "eeff": 1537276,
+   "np": 0.237,
+   "n": 10
   },
   "38 Special|Ramshot Competition": {
    "eeff": 1511863,
@@ -1138,9 +1228,54 @@
    "n": 7
   },
   "38 Special|Ramshot Zip": {
-   "eeff": 1177671,
-   "np": 0.312,
-   "n": 19
+   "eeff": 1184644,
+   "np": 0.3067,
+   "n": 22
+  },
+  "38 Special|Accurate Solo 1000": {
+   "eeff": 1419772,
+   "np": 0.2675,
+   "n": 5
+  },
+  "38 Special|Accurate No. 2": {
+   "eeff": 1323162,
+   "np": 0.2833,
+   "n": 10
+  },
+  "38 Special|Ramshot Silhouette": {
+   "eeff": 1259224,
+   "np": 0.3496,
+   "n": 10
+  },
+  "38 Special|Ramshot True Blue": {
+   "eeff": 1185687,
+   "np": 0.3032,
+   "n": 17
+  },
+  "38 Special|Accurate No. 7": {
+   "eeff": 1084150,
+   "np": 0.2867,
+   "n": 12
+  },
+  "38 Special|Accurate No.9": {
+   "eeff": 985899,
+   "np": 0.3386,
+   "n": 12
+  },
+  "38 Special|Accurate TCM": {
+   "eeff": 988822,
+   "np": 0.3147,
+   "n": 5
+  },
+  "38 Special|Accurate 4100": {
+   "eeff": 898138,
+   "np": 0.3602,
+   "n": 6
+  },
+  "38 Special|Ramshot Enforcer": {
+   "eeff": 985730,
+   "np": 0.3848,
+   "n": 7
   },
   "22 Hornet|Ramshot Enforcer": {
    "eeff": 1368939,
