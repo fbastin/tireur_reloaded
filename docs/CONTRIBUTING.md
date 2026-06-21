@@ -83,9 +83,39 @@ calibration guide (e.g. `"6.5 Creedmoor"`).
 3. Commit **only** the regenerated `data/model_coefficients.json` plus any new
    `powders.json` / `calibers.json` entries.
 
-> Other manufacturers (Vihtavuori, Hodgdon, …) come from **their own** guides; the
-> current parser targets the Reload Swiss layout — adapt `01_parse_guide.js` or add
-> a sibling parser if the column layout differs.
+> Other manufacturers come from **their own** guides; `01_parse_guide.js` targets the
+> Reload Swiss layout. Western (Accurate/Ramshot) and Vihtavuori have sibling parsers —
+> add another if a new layout differs.
+
+### Vihtavuori guide (velocity-only anchors)
+
+The VV guide gives **charge + velocity** (start & max) with a stated **test barrel**, but
+**no per-load pressure** — its *max* loads are at the C.I.P./SAAMI limit. So VV yields
+**velocity anchors only** (`eeff`); the max-load point also feeds the Mayer–Hart guard
+where a powder has `Qex`. Workflow:
+
+```sh
+# 1. the guide is a two-up booklet (two guide-pages per sheet) -> need word positions:
+pdftotext -bbox guides/Vihtavuori_Reloading_Guide_*.pdf /tmp/vv_bbox.html
+# 2. column-aware parse -> data/vihtavuori.local.json (gitignored raw rows)
+node scripts/parse_vihtavuori.js /tmp/vv_bbox.html
+#    spot-check one cartridge against the PDF before trusting it:
+node scripts/parse_vihtavuori.js /tmp/vv_bbox.html --cart "308 Winchester"
+# 3. rebuild anchors (build_anchors.js ingests vihtavuori.local.json if present)
+node scripts/build_anchors.js
+```
+
+`build_anchors.js` adds VV rows as **velocity-only** (`np = null`): the VV "max-at-CIP"
+η_p is a different regime from the ladder-averaged η_p of RS/Western, so it is **not**
+blended. VV-only combos therefore have an anchored velocity but **no anchored pressure** —
+the live tool falls back to the global η_p for those (shown as *"vitesse seule — pression
+η_p global"*). Commit **only** the regenerated `data/anchors.json` (derived means); the
+parsed `data/vihtavuori.local.json` stays gitignored (raw tables — golden rule).
+
+> The guide PDFs live in `reloading/guides/` (outside this repo) and are **not**
+> redistributed. Cartridges absent from `calibers.json` are skipped — add their geometry
+> first (see *Add a cartridge*; `case_vol` can come from `P95(powder volume)/1.08` over the
+> matched rows) to unlock those VV combos.
 
 ## Run the regression test
 
