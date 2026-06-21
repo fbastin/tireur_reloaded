@@ -81,6 +81,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
     <div class="vm-field"><label>Longueur de canon <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
     <hr style="border:none;border-top:1px dashed var(--color-border);margin:0.6rem 0;">
     <div class="vm-field"><label>Vitesse mesurée v&#8320; <span class="vm-unit" id="u_vmeas" onclick="toggleU('vmeas')">m/s</span> — <em>optionnel, pour ancrer</em></label><input type="number" id="vmeas" placeholder="ex. 845" step="1" oninput="calc()"></div>
+    <div class="vm-field"><label>Température <span class="vm-unit" id="u_temp" onclick="toggleU('temp')">°C</span> — <em>sensibilité thermique (Litz), réf. 21&nbsp;°C</em></label><input type="number" id="temp" value="21" step="1" oninput="calc()"></div>
     <p class="vm-note" id="derived"></p>
   </div>
   <div class="vm-panel">
@@ -133,9 +134,11 @@ const U={
   charge:{cur:'gr',  opt:['gr','g'],    el:'c'},
   bbl:   {cur:'mm',  opt:['mm','in'],   el:'bbl'},
   vmeas: {cur:'m/s', opt:['m/s','fps'], el:'vmeas'},
+  temp:  {cur:'°C',  opt:['°C','°F'],   el:'temp'},
   v:     {cur:'m/s', opt:['m/s','fps']},      // sortie vitesse
   p:     {cur:'bar', opt:['bar','psi']},      // sortie pression
 };
+const toC=(v,u)=>u==='°F'? (v-32)*5/9 : v;     // °F/°C -> °C canonique
 // vers les unités canoniques (gr, mm, m/s)
 const toGr=(v,u)=>u==='g'?  v/GR_G : v;
 const toMm=(v,u)=>u==='in'? v*IN_MM : v;
@@ -153,15 +156,16 @@ function toggleU(k){
       else if(k==='charge') el.value=(u.cur==='g'? v*GR_G : v/GR_G).toFixed(2);
       else if(k==='bbl')    el.value=(u.cur==='in'? v/IN_MM : v*IN_MM).toFixed(u.cur==='in'?1:0);
       else if(k==='vmeas')  el.value=(u.cur==='fps'? v*MS_FPS : v/MS_FPS).toFixed(0);
+      else if(k==='temp')   el.value=(u.cur==='°F'? v*9/5+32 : (v-32)*5/9).toFixed(0);
     }
   }
   calc();
 }
 function applySystem(){
   const sys=document.getElementById('unitSystem').value;
-  const want = sys==='metric'   ? {mass:'g', charge:'g', bbl:'mm', vmeas:'m/s', v:'m/s', p:'bar'}
-            : sys==='imperial' ? {mass:'gr',charge:'gr',bbl:'in', vmeas:'fps', v:'fps', p:'psi'}
-            :                    {mass:'gr',charge:'gr',bbl:'mm', vmeas:'m/s', v:'m/s', p:'bar'}; // hybride
+  const want = sys==='metric'   ? {mass:'g', charge:'g', bbl:'mm', vmeas:'m/s', temp:'°C', v:'m/s', p:'bar'}
+            : sys==='imperial' ? {mass:'gr',charge:'gr',bbl:'in', vmeas:'fps', temp:'°F', v:'fps', p:'psi'}
+            :                    {mass:'gr',charge:'gr',bbl:'mm', vmeas:'m/s', temp:'°C', v:'m/s', p:'bar'}; // hybride
   Object.keys(want).forEach(k=>{ if(U[k].cur!==want[k]) toggleU(k); });
 }
 Promise.all([
@@ -226,7 +230,11 @@ function calc(){
     eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
     const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); v0=EnergyModel.velocityFromEnergy(load,Eeff); viaEeff=true;
   }
-  const Pmax=EnergyModel.predictPmax(load,v0,eta_p);     // bar (depuis v0 retenu)
+  // correction thermique (Litz) sur la vitesse PRÉDITE (pas sur une vitesse mesurée par l'utilisateur), réf. 21 °C
+  const Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
+  let tempApplied=false;
+  if(!anchored && isFinite(Tc) && Tc!==21){ v0=VelocityModel.tempCorrect(v0,Tc-21); tempApplied=true; }
+  const Pmax=EnergyModel.predictPmax(load,v0,eta_p);     // bar (depuis v0 retenu, éventuellement corrigé)
   // affichage
   document.getElementById('o_v').textContent=frMs(v0,U.v.cur).toFixed(0);
   document.getElementById('o_p').textContent=frBar(Pmax,U.p.cur).toFixed(0);
@@ -265,6 +273,7 @@ function calc(){
   if(!hasPcd) w='Densité bulk inconnue : remplissage et pression approximés (nominal). '+w;
   if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
   if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
+  if(tempApplied) w='Vitesse ajustée à '+Tc.toFixed(0)+' °C (réf. 21 °C, sensibilité Litz générique ~1,8 fps/°C — indicatif, varie selon la poudre). '+w;
   document.getElementById('warn').textContent=w;
   // courbe Le Duc (couche 3)
   const ld=VelocityModel.leDuc(v0,Pmax,m,C,d,travel);
