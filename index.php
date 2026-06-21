@@ -227,11 +227,12 @@ function calc(){
   // priorité : mesure utilisateur > ancrage fabricant (couple connu) > à froid
   const anc=ANCH[document.getElementById('cart').value+'|'+document.getElementById('pwd').value]||null;
   let v0, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
+  const npGlobal=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
   if(vmeas>0){
     v0=vmeas; anchored=true;
-    eta_p=anc?anc.np:lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
+    eta_p=(anc&&anc.np!=null)?anc.np:npGlobal;           // ancre sans np (VV, vitesse seule) -> η_p global
   } else if(anc){                                        // données fabricant pour ce couple
-    v0=EnergyModel.velocityFromEnergy(load,anc.eeff); eta_p=anc.np; dataAnchor=true;
+    v0=EnergyModel.velocityFromEnergy(load,anc.eeff); eta_p=(anc.np!=null)?anc.np:npGlobal; dataAnchor=true;
   } else if(pw.Qex && pw.Ba){
     eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
     eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
@@ -274,7 +275,7 @@ function calc(){
   tag.textContent=anchored?'ancrée (vos données)':dataAnchor?(ancFlag?'ancrée fabricant (à vérifier)':'ancrée fabricant ~5%'):'à froid ±10%';
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
-  const mode = anchored?'mesure perso' : dataAnchor?`ancré fabricant (n=${anc.n})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
+  const mode = anchored?'mesure perso' : dataAnchor?`ancré fabricant (n=${anc.n}${anc.np==null?', vitesse seule — pression η_p global':''})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}`;
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';

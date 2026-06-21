@@ -74,12 +74,34 @@ for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
   add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr);
 }
 
+// Vihtavuori (guide 2026, parsé) — VITESSE seulement (eeff). Le np VV serait « au max=CIP »,
+// régime différent du np moyenné RS/Western → non mêlé (les couples VV-seuls retombent sur
+// le η_p global pour la pression). 2 points vitesse par ligne (start + max).
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('vihtavuori.local.json'))).rows) {
+    const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    const m = r.bullet_gr * G;
+    for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
+      if (!(cgr > 0 && v > 0)) continue;
+      const C = cgr * G, me = m + C / 3;
+      // mhr seulement pour le point max (Pmax≈CIP) si Qex connu + canon
+      const isMax = cgr === r.max_gr;
+      const mhr = (isMax && ca.pmax_cip_bar && r.barrel_mm)
+        ? mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, cgr, v, ca.pmax_cip_bar, PWD[pk] && PWD[pk].Qex) : null;
+      add(ck, pk, me * v * v / (2 * C), null, mhr);     // np=null : VV ne contribue qu'à la vitesse
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
 const anchors = {}; let kept = 0;
 const looErr = [];
 for (const [k, arr] of Object.entries(groups)) {
   if (arr.length < 3) continue;                       // need a few loads
-  anchors[k] = { eeff: Math.round(mean(arr.map((x) => x.eeff))), np: +mean(arr.map((x) => x.np)).toFixed(4), n: arr.length };
+  anchors[k] = { eeff: Math.round(mean(arr.map((x) => x.eeff))), n: arr.length };
+  const nps = arr.map((x) => x.np).filter((v) => v != null);   // VV ne fournit pas de np
+  if (nps.length) anchors[k].np = +mean(nps).toFixed(4);       // sinon η_p global (UI)
   // résidu MH moyen du groupe (si ≥3 charges avec Qex)
   const mhrs = arr.map((x) => x.mhr).filter((v) => v != null);
   if (mhrs.length >= 3) anchors[k].mhr = +mean(mhrs).toFixed(1);
@@ -107,7 +129,7 @@ if (covered.length > 5) {
   console.log(`garde-fou MH : ${covered.length} ancres couvertes (Qex) | moyenne ${gm.toFixed(1)}% σ ${gsd.toFixed(1)}% | ${flagged} flaguées (|écart|>${thr.toFixed(0)}pts)`);
 }
 
-const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
+const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
 console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}%`);
 console.log('-> data/anchors.json');
