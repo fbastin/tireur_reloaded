@@ -361,6 +361,49 @@ is therefore treated as irreducible at the global cold-start level; the lever fo
 - **Manufacturer load tables** (Reload Swiss Guide 2025) are used for calibration
   only and are **not redistributed**.
 
+## Appendix A. Mayer–Hart closed-form model (explored)
+
+The review [6] highlights the **Mayer–Hart** lumped model (BRL, 1945) — the only
+classical model giving *closed-form* expressions for peak pressure and muzzle energy.
+We examined whether it can serve as an **independent thermochemical cross-check** for our
+efficiencies. The relevant forms (review Eqs. 21–22, in our symbols) are:
+
+$$P_{\max}^{\,\mathrm{MH}} = \frac{P_q}{e}\,\Bigl[1+\tfrac34(\gamma-1)\Bigr]^{-1},
+\qquad
+E_m^{\,\mathrm{MH}} = \frac{C\lambda}{\gamma-1}\Bigl(1 - e^{-(\gamma-1)r}\,[1-(\gamma-1)\varphi]^{-1}\Bigr),$$
+
+with $\lambda$ the specific force (impetus), and $P_q,\varphi,r$ "analytic constants from
+the weapon and charge".
+
+**Finding 1 — Eq. 22 *is* our $\eta_b$, in closed form.** Since $\lambda=Q_\mathrm{ex}(\gamma-1)$,
+the prefactor $C\lambda/(\gamma-1)=C\,Q_\mathrm{ex}$ is the total chemical energy, so Eq. 22
+reads $E_m = C\,Q_\mathrm{ex}\cdot\eta_b^{\mathrm{MH}}$ with
+$\eta_b^{\mathrm{MH}}=1-e^{-(\gamma-1)r}[1-(\gamma-1)\varphi]^{-1}$ — i.e. Mayer–Hart gives
+the **functional form of the ballistic efficiency we fit empirically** (§3.1). Measured on
+the 1700-load RS set, $E_k/(C\,Q_\mathrm{ex})=0.285$ (CV 17 %), matching the fitted
+$\eta_b\approx0.29$. So Mayer–Hart is the *theoretical scaffold* that explains why $\eta_b$
+is bounded near 0.29 and predicts it should depend on the **expansion ratio** ($r$) and
+**loading** ($\varphi$). (Note a tension with §5.4: empirically the expansion ratio does
+*not* reduce cross-cartridge $\eta_b$ error — Mayer–Hart's $r$-dependence is a same-gun
+charge-ladder effect, largely absorbed into the per-cartridge scatter.)
+
+**Finding 2 — Eq. 21 is not usable from the review alone.** The peak-pressure formula needs
+$P_q$, and the naïve Noble–Abel constant-volume pressure $P_q=\lambda C/(V_0-bC)$ is
+**singular at smokeless rifle loading densities**: the covolume term $b\Delta=bC/V_0$ exceeds
+1 for 93/1700 RS loads (mean 0.77), and even on the 960 loads with $b\Delta<0.85$ the
+resulting $P_{\max}^{\mathrm{MH}}$ over-predicts by **+282 % (RMS 356 %)**. The real $P_q,\varphi,r$
+encode the bullet travel to all-burnt and the true peak position — definitions the review
+does **not** provide; they require the primary source (Corner 1950 [2] / the Mayer–Hart BRL
+report).
+
+**Verdict.** Mayer–Hart is valuable as a **theoretical justification** for the η_b/η_p
+formulation (it derives the same energy-fraction structure we calibrate), and is a
+**candidate independent cross-check** for the 16 powders with known thermochemistry —
+*conditional* on obtaining the full $P_q,\varphi,r$ definitions and per-powder $\gamma$,
+covolume and flame temperature. It is **not** a remedy for the data-limited pressure scatter
+(§6.1): being another lumped model calibrated on firing data, it inherits the same ceiling.
+Implementing it faithfully is logged as future work, not a current dependency.
+
 ## See also
 
 - [`CALIBRATION.md`](CALIBRATION.md) — detailed extraction & calibration pipeline.
