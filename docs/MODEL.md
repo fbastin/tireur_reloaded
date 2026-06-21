@@ -335,6 +335,27 @@ max loads, cartridge + bore verified) gives **velocity RMS 8.7 %** — confirmin
 cross-brand generalization of the velocity model. The original RS-only η_p gave a
 **−19 % pressure bias** on this set; the multi-brand η_p (§5.3) centred it.
 
+### Independent pressure cross-check (Vihtavuori, at the CIP ceiling)
+
+A third, larger pressure cross-check uses the **Vihtavuori guide**, whose *max* loads are
+explicitly set **at the C.I.P./SAAMI limit** — so each max load is a clean
+$(v_0,\;P_\max\!=\!\text{CIP})$ pair. Feeding VV's measured $v_0$ + geometry into the
+production η_p model and comparing the predicted $P_\max$ to the cartridge CIP
+(`scripts/vv_pressure_crosscheck.js`, **3245 max loads** with a CIP value):
+
+| Class | Bias vs CIP | RMS |
+|---|---|---|
+| rifle | **−17.1 %** | 18.8 % |
+| handgun | +3.0 % | 35.1 % |
+| all | −13.4 % | 22.7 % |
+
+The **rifle −17 %** independently reproduces the pressure under-estimation seen on Western
+(−19 %) and QuickLOAD — a *third* source (now European **CIP**, vs Western **SAAMI**) confirming
+the §6 ceiling: at a true at-the-limit load the estimate reads ~17 % low, i.e. a max load can
+display as ~83 % of CIP. Handgun pressure is near-zero-bias but very scattered (RMS 35 %),
+consistent with η_p being least reliable for small fast-powder cases. This is the quantified,
+multi-source basis for **never** rendering a "safe" verdict from a cold pressure estimate.
+
 **Decomposition of the residual pressure under-estimation** (1121 matched Accurate/
 Ramshot loads, `scripts/fit_pressure_multibrand.js`). Because $P_\max \propto v_0^2$,
 a velocity bias enters pressure roughly doubled, so the pipeline bias splits in two:
