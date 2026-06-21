@@ -10,6 +10,10 @@
     },
     "9 mm Luger": {
       "type": "handgun",
+      "aliases": [
+        "9 mm Luger / 9x19 mm",
+        "9x19"
+      ],
       "bore_mm": 9.02,
       "case_mm": 19.15,
       "case_vol_cm3": 0.563,
@@ -84,7 +88,8 @@
     "45 ACP (Auto)": {
       "type": "handgun",
       "aliases": [
-        "45 Auto"
+        "45 Auto",
+        "45 Auto / .45 ACP"
       ],
       "bore_mm": 11.48,
       "case_mm": 22.81,
@@ -245,6 +250,9 @@
     },
     "45 - 70 Govt.": {
       "type": "rifle",
+      "aliases": [
+        "45-70 Government"
+      ],
       "bore_mm": 11.63,
       "case_mm": 53.5,
       "case_vol_cm3": 3.301,
@@ -259,6 +267,9 @@
     },
     "300 AAC BLK": {
       "type": "rifle",
+      "aliases": [
+        "300 AAC Blackout"
+      ],
       "bore_mm": 7.82,
       "case_mm": 34.7,
       "case_vol_cm3": 1.044,
@@ -333,6 +344,10 @@
     },
     "7 -08 Rem.": {
       "type": "rifle",
+      "aliases": [
+        "7 mm-08 Remington",
+        "7mm-08 Remington"
+      ],
       "bore_mm": 7.24,
       "case_mm": 51.94,
       "case_vol_cm3": 2.717,
@@ -370,6 +385,10 @@
     },
     "6 Norma BR": {
       "type": "rifle",
+      "aliases": [
+        "6 mm BR Norma",
+        "6mm BR Norma"
+      ],
       "bore_mm": 6.17,
       "case_mm": 38.55,
       "case_vol_cm3": 2.172
