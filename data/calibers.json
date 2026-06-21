@@ -467,6 +467,105 @@
       "case_mm": 38.7,
       "case_vol_cm3": 2.785,
       "pmax_cip_bar": 3585
+    },
+    "454 Casull": {
+      "type": "handgun",
+      "bore_mm": 11.48,
+      "case_mm": 35.1,
+      "case_vol_cm3": 2.163,
+      "pmax_cip_bar": 4482
+    },
+    "460 S&W": {
+      "type": "handgun",
+      "aliases": [
+        "460 S&W Magnum"
+      ],
+      "bore_mm": 11.48,
+      "case_mm": 46.0,
+      "case_vol_cm3": 3.07,
+      "pmax_cip_bar": 4482
+    },
+    "6mm PPC": {
+      "type": "rifle",
+      "aliases": [
+        "6 PPC"
+      ],
+      "bore_mm": 6.17,
+      "case_mm": 38.5,
+      "case_vol_cm3": 1.998
+    },
+    "257 Wby. Mag.": {
+      "type": "rifle",
+      "aliases": [
+        "257 Weatherby Magnum"
+      ],
+      "bore_mm": 6.53,
+      "case_mm": 64.6,
+      "case_vol_cm3": 4.827,
+      "pmax_cip_bar": 4482
+    },
+    "257 Roberts": {
+      "type": "rifle",
+      "bore_mm": 6.53,
+      "case_mm": 56.7,
+      "case_vol_cm3": 3.623,
+      "pmax_cip_bar": 3723
+    },
+    "6.5-284 Norma": {
+      "type": "rifle",
+      "aliases": [
+        "6.5 x 284 Norma"
+      ],
+      "bore_mm": 6.71,
+      "case_mm": 55.1,
+      "case_vol_cm3": 4.485
+    },
+    "300 RCM": {
+      "type": "rifle",
+      "aliases": [
+        "300 Ruger Compact Magnum"
+      ],
+      "bore_mm": 7.82,
+      "case_mm": 53.0,
+      "case_vol_cm3": 4.575,
+      "pmax_cip_bar": 4400
+    },
+    "219 Zipper": {
+      "type": "rifle",
+      "bore_mm": 5.69,
+      "case_mm": 49.2,
+      "case_vol_cm3": 2.103
+    },
+    "338-06": {
+      "type": "rifle",
+      "aliases": [
+        "338-06 A-Square"
+      ],
+      "bore_mm": 8.59,
+      "case_mm": 63.3,
+      "case_vol_cm3": 3.707
+    },
+    "250 Savage": {
+      "type": "rifle",
+      "aliases": [
+        "250-3000 Savage"
+      ],
+      "bore_mm": 6.53,
+      "case_mm": 48.56,
+      "case_vol_cm3": 2.356
+    },
+    "222 Rem. Mag.": {
+      "type": "rifle",
+      "bore_mm": 5.69,
+      "case_mm": 47.0,
+      "case_vol_cm3": 1.794
+    },
+    "308 Marlin Express": {
+      "type": "rifle",
+      "bore_mm": 7.82,
+      "case_mm": 48.5,
+      "case_vol_cm3": 2.563,
+      "pmax_cip_bar": 3275
     }
   }
 }

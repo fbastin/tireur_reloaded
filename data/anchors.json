@@ -1280,6 +1280,32 @@
    "np": 0.4007,
    "n": 24
   },
+  "460 S&W|Accurate No.9": {
+   "eeff": 1343451,
+   "np": 0.4494,
+   "n": 7
+  },
+  "460 S&W|Accurate 4100": {
+   "eeff": 1332581,
+   "np": 0.4907,
+   "n": 6
+  },
+  "460 S&W|Ramshot Enforcer": {
+   "eeff": 1289881,
+   "np": 0.5677,
+   "n": 4,
+   "mhr": -2.4
+  },
+  "460 S&W|Accurate 5744": {
+   "eeff": 1214340,
+   "np": 0.4436,
+   "n": 5
+  },
+  "460 S&W|Accurate 1680": {
+   "eeff": 1036949,
+   "np": 0.4544,
+   "n": 5
+  },
   "222 Rem.|Accurate 5744": {
    "eeff": 1306636,
    "np": 0.3362,
@@ -1324,6 +1350,111 @@
    "eeff": 1293655,
    "np": 0.3706,
    "n": 7
+  },
+  "222 Rem. Mag.|Accurate 2230": {
+   "eeff": 1146067,
+   "np": 0.416,
+   "n": 7
+  },
+  "222 Rem. Mag.|Accurate 2460": {
+   "eeff": 1144007,
+   "np": 0.4288,
+   "n": 7
+  },
+  "222 Rem. Mag.|Accurate 2520": {
+   "eeff": 1052962,
+   "np": 0.4436,
+   "n": 6
+  },
+  "219 Zipper|Accurate 2230": {
+   "eeff": 1070073,
+   "np": 0.4382,
+   "n": 5
+  },
+  "219 Zipper|Accurate 2460": {
+   "eeff": 1085033,
+   "np": 0.4332,
+   "n": 6
+  },
+  "219 Zipper|Accurate 2495": {
+   "eeff": 1100279,
+   "np": 0.4034,
+   "n": 7
+  },
+  "219 Zipper|Accurate 2520": {
+   "eeff": 1064905,
+   "np": 0.446,
+   "n": 6
+  },
+  "219 Zipper|Accurate 4064": {
+   "eeff": 1113001,
+   "np": 0.3899,
+   "n": 4
+  },
+  "219 Zipper|Ramshot Big Game": {
+   "eeff": 1071696,
+   "np": 0.4362,
+   "n": 5
+  },
+  "6mm PPC|Accurate 5744": {
+   "eeff": 1455492,
+   "np": 0.3942,
+   "n": 6
+  },
+  "6mm PPC|Accurate LT-30": {
+   "eeff": 1301519,
+   "np": 0.3641,
+   "n": 9
+  },
+  "6mm PPC|Accurate LT-32": {
+   "eeff": 1387971,
+   "np": 0.4039,
+   "n": 5
+  },
+  "6mm PPC|Accurate 2200": {
+   "eeff": 1403984,
+   "np": 0.4524,
+   "n": 10
+  },
+  "6mm PPC|Ramshot X-Terminator": {
+   "eeff": 1294126,
+   "np": 0.41,
+   "n": 5
+  },
+  "6mm PPC|Accurate 2495": {
+   "eeff": 1369613,
+   "np": 0.4235,
+   "n": 5
+  },
+  "250 Savage|Accurate 2230": {
+   "eeff": 1218986,
+   "np": 0.451,
+   "n": 4
+  },
+  "250 Savage|Accurate 2460": {
+   "eeff": 1214574,
+   "np": 0.4658,
+   "n": 4
+  },
+  "250 Savage|Accurate 2495": {
+   "eeff": 1241538,
+   "np": 0.4592,
+   "n": 4
+  },
+  "250 Savage|Accurate 2520": {
+   "eeff": 1210767,
+   "np": 0.4602,
+   "n": 4
+  },
+  "250 Savage|Accurate 4064": {
+   "eeff": 1202588,
+   "np": 0.4952,
+   "n": 4
+  },
+  "250 Savage|Accurate 2700": {
+   "eeff": 1069583,
+   "np": 0.4447,
+   "n": 4
   },
   "6.5 Grendel|Accurate LT-30": {
    "eeff": 1235079,
@@ -1390,6 +1521,57 @@
    "np": 0.4155,
    "n": 3
   },
+  "6.5-284 Norma|Accurate 5744": {
+   "eeff": 1441656,
+   "np": 0.3911,
+   "n": 3
+  },
+  "6.5-284 Norma|Accurate 4350": {
+   "eeff": 1123402,
+   "np": 0.4411,
+   "n": 4
+  },
+  "6.5-284 Norma|Accurate Magpro": {
+   "eeff": 1068225,
+   "np": 0.4529,
+   "n": 10,
+   "mhr": 5.7
+  },
+  "6.5-284 Norma|Ramshot Magnum": {
+   "eeff": 1028562,
+   "np": 0.475,
+   "n": 23
+  },
+  "308 Marlin Express|Ramshot X-Terminator": {
+   "eeff": 1343642,
+   "np": 0.3771,
+   "n": 4
+  },
+  "308 Marlin Express|Accurate 2230": {
+   "eeff": 1343642,
+   "np": 0.3771,
+   "n": 4
+  },
+  "308 Marlin Express|Accurate 2460": {
+   "eeff": 1339990,
+   "np": 0.3798,
+   "n": 4
+  },
+  "308 Marlin Express|Ramshot TAC": {
+   "eeff": 1305701,
+   "np": 0.3882,
+   "n": 4
+  },
+  "308 Marlin Express|Accurate 2495": {
+   "eeff": 1295292,
+   "np": 0.3644,
+   "n": 3
+  },
+  "308 Marlin Express|Accurate 2520": {
+   "eeff": 1309201,
+   "np": 0.4024,
+   "n": 4
+  },
   "30 T/C|Ramshot X-Terminator": {
    "eeff": 1439473,
    "np": 0.3704,
@@ -1445,6 +1627,21 @@
    "np": 0.4396,
    "n": 9
   },
+  "300 RCM|Ramshot Big Game": {
+   "eeff": 1273693,
+   "np": 0.4371,
+   "n": 7
+  },
+  "300 RCM|Accurate 2700": {
+   "eeff": 1262827,
+   "np": 0.4601,
+   "n": 9
+  },
+  "300 RCM|Ramshot Hunter": {
+   "eeff": 1258113,
+   "np": 0.4594,
+   "n": 14
+  },
   "300 PRC|Accurate 5744": {
    "eeff": 1503217,
    "np": 0.451,
@@ -1470,6 +1667,31 @@
    "eeff": 987891,
    "np": 0.5839,
    "n": 9
+  },
+  "338-06|Accurate 2230": {
+   "eeff": 1428669,
+   "np": 0.3471,
+   "n": 5
+  },
+  "338-06|Accurate 2460": {
+   "eeff": 1436795,
+   "np": 0.3551,
+   "n": 5
+  },
+  "338-06|Accurate 2495": {
+   "eeff": 1445605,
+   "np": 0.3427,
+   "n": 5
+  },
+  "338-06|Accurate 2520": {
+   "eeff": 1430374,
+   "np": 0.3541,
+   "n": 5
+  },
+  "338-06|Accurate 2700": {
+   "eeff": 1285286,
+   "np": 0.3894,
+   "n": 5
   },
   "338 Lapua Mag.|Accurate Magpro": {
    "eeff": 1211536,
@@ -1744,6 +1966,32 @@
    "np": 0.3882,
    "n": 3
   },
+  "454 Casull|Ramshot True Blue": {
+   "eeff": 1580594,
+   "np": 0.3332,
+   "n": 5
+  },
+  "454 Casull|Accurate 4100": {
+   "eeff": 1353990,
+   "np": 0.4391,
+   "n": 12
+  },
+  "454 Casull|Ramshot Enforcer": {
+   "eeff": 1352308,
+   "np": 0.4445,
+   "n": 13,
+   "mhr": 0.7
+  },
+  "454 Casull|Accurate 5744": {
+   "eeff": 954858,
+   "np": 0.4256,
+   "n": 5
+  },
+  "454 Casull|Accurate 1680": {
+   "eeff": 998212,
+   "np": 0.4594,
+   "n": 4
+  },
   "475 Linebaugh|Accurate No.9": {
    "eeff": 1520628,
    "np": 0.3875,
@@ -1869,6 +2117,67 @@
    "eeff": 1025759,
    "np": 0.4845,
    "n": 8
+  },
+  "257 Roberts|Ramshot Big Game": {
+   "eeff": 1127243,
+   "np": 0.467,
+   "n": 3
+  },
+  "257 Roberts|Accurate 2700": {
+   "eeff": 1026903,
+   "np": 0.4818,
+   "n": 9
+  },
+  "257 Roberts|Accurate 4350": {
+   "eeff": 1010302,
+   "np": 0.4903,
+   "n": 5
+  },
+  "257 Roberts|Ramshot Hunter": {
+   "eeff": 1074305,
+   "np": 0.4664,
+   "n": 6
+  },
+  "257 Roberts|Accurate 2520": {
+   "eeff": 1134784,
+   "np": 0.4512,
+   "n": 6
+  },
+  "257 Roberts|Accurate 4064": {
+   "eeff": 1118419,
+   "np": 0.4605,
+   "n": 6
+  },
+  "257 Roberts|Ramshot Magnum": {
+   "eeff": 973287,
+   "np": 0.5079,
+   "n": 7
+  },
+  "257 Wby. Mag.|Accurate 5744": {
+   "eeff": 1256247,
+   "np": 0.4527,
+   "n": 3
+  },
+  "257 Wby. Mag.|Accurate 4350": {
+   "eeff": 1018071,
+   "np": 0.5079,
+   "n": 10
+  },
+  "257 Wby. Mag.|Accurate Magpro": {
+   "eeff": 927059,
+   "np": 0.5155,
+   "n": 12,
+   "mhr": 8.5
+  },
+  "257 Wby. Mag.|Ramshot Magnum": {
+   "eeff": 921113,
+   "np": 0.5142,
+   "n": 12
+  },
+  "257 Wby. Mag.|Ramshot LRT": {
+   "eeff": 902252,
+   "np": 0.5346,
+   "n": 6
   },
   "6.5 Creedmoor|Accurate 4064": {
    "eeff": 1134499,
