@@ -10,7 +10,6 @@
  */
 const EnergyModel = {
   G2KG: 6.479891e-5,            // kg par grain
-  BULK_DEFAULT: 950,           // densité de remplissage par défaut (kg/m³)
 
   area(d_m) { return Math.PI * d_m * d_m / 4; },
   effMass(m, C) { return m + C / 3; },           // Lagrange
@@ -25,11 +24,10 @@ const EnergyModel = {
     const Echem = C * load.Qex_kJkg * 1000;
     const eta_b = KE / Echem;
     const eta_p = KE / (load.Pmax_bar * 1e5 * A * travel);
-    // covariables : taux de chargement (kg/m³ d'espace de combustion) et rapport de détente
-    const chamberVol = (C / this.BULK_DEFAULT);            // ~volume occupé par la poudre
-    const loadDensity = C / chamberVol;                    // = BULK_DEFAULT (placeholder)
-    const expansion = (A * travel) / chamberVol;           // rapport de détente
-    return { eta_b, eta_p, KE, Echem, expansion };
+    // Rapport de détente — MÊME définition qu'en production (Re = 1 + A·course/V0),
+    // calculé uniquement si le volume d'étui est fourni (sinon null, pas de placeholder).
+    const Re = load.case_vol_cm3 > 0 ? 1 + (A * travel) / (load.case_vol_cm3 * 1e-6) : null;
+    return { eta_b, eta_p, KE, Echem, Re };
   },
 
   /**
