@@ -252,6 +252,56 @@ reported LOPO RMS. The estimator loads these at runtime.
 - This is an **estimation aid, not a load-development authority**. Always verify any
   charge against official manufacturer data.
 
+### 6.1 A ceiling shared by every available tool — the data-driven reality
+
+It is tempting to read this model's limits as the price of being "only empirical", and
+to assume a physics-based solver (QuickLOAD, GRT, the MATLAB TorShot code, the artillery
+codes IBHVG2 / STANAG 4367) would not share them. That assumption is wrong, and it is
+worth stating plainly because it governs what any small-arms tool can honestly promise.
+
+**Every available tool is data-driven — the engines differ, the dependence on calibration
+data does not.** A 0-D burn-rate solver does not predict pressure from first principles.
+Its decisive inputs are themselves *fitted to firings*: the propellant **form function**,
+the **vivacity / burn-rate law** $r=\beta\,\bar P^{\,\alpha}$ (Vieille coefficients measured
+in a **closed-bomb** test), the **impetus** and **covolume**, the **heat-loss fraction**,
+and the **shot-start / bore-resistance** pressures. These are not knowable a priori for a
+given commercial lot; they are reverse-engineered so the code reproduces reference data.
+The published review of the field [6] makes the same point structurally: 0-D models cannot
+represent pressure waves or flame-spread non-uniformity at all, so their pressure number is
+a *calibrated interpolation*, not a derivation. Our η_b/η_p model simply makes that
+calibration **explicit and auditable** (two efficiencies, published coefficients, stated
+RMS) instead of burying it inside a proprietary, unpublished form function.
+
+Consequently the **ceiling is common to all of them**, and it has four data-side causes
+that no choice of engine removes:
+
+1. **Measurement-scale divergence.** Reference pressures are produced by *different
+   protocols* — **CIP** (transducer, drilled case) vs **SAAMI** (conformal/copper-crusher
+   lineage), in different test barrels. The same cartridge reads differently on each. We
+   measured this directly: η_p differs ~10 % between a CIP-sourced brand (Reload Swiss) and
+   SAAMI-sourced brands (Accurate/Ramshot), and **no physical model can reconcile two
+   measurement scales** — a solver calibrated on one is biased on the other exactly as we
+   are (§6, decomposition).
+2. **Reference data is itself noisy.** Two QuickLOAD runs for the *same* load disagree by
+   **~8 % on pressure** (below). When the calibration target has ~8 % internal spread, no
+   tool calibrated to it can claim better than indicative pressure.
+3. **Lot-to-lot propellant variation.** Burn-rate and impetus drift between production lots
+   by several percent — larger than many of the modelling refinements being argued over.
+4. **The small-calibre gap.** The review [6] notes that the published models (0-D and CFD)
+   are built and validated for **medium/large-calibre artillery** (AGARD test gun); small
+   arms are under-served. A solver whose constants were tuned on artillery is *not* a
+   first-principles authority when pointed at a 9 mm case.
+
+**What this means for the product.** No currently available tool — empirical or
+"physical" — can deliver a trustworthy *safety* verdict on an arbitrary untested load; all
+of them are interpolators over calibration data of finite, scale-divergent, noisy quality.
+The honest levers are therefore **not** a more elaborate combustion engine but: (i)
+**transparency** about the calibration and its error; (ii) **anchoring** on data close to
+the user's actual load (§5.5), which sidesteps the cross-brand/scale residual where it
+matters; and (iii) **never** rendering a "safe" verdict from a cold prediction. This is the
+design stance of the estimator, and it is a deliberate consequence of the analysis above —
+not a limitation we expect to engineer away.
+
 ### Independent cross-check (QuickLOAD)
 
 As an out-of-sample, cross-tool check, the estimator was compared with a

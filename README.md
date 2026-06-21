@@ -16,6 +16,13 @@ than a proprietary internal-ballistics solver.
 > ⚠️ **Not a safety authority.** Pressure is indicative only; a load truly above the
 > CIP limit can appear "safe". Always verify any charge against official manufacturer
 > data. This is an estimation aid.
+>
+> This ceiling is **not specific to the empirical engine here**: every available tool —
+> including the "physics-based" solvers (QuickLOAD, GRT) — is ultimately *calibrated to
+> firing data* (form functions, vivacity, energy partition), shares the same
+> measurement-scale divergence (CIP vs SAAMI) and small-calibre data gap, and so cannot
+> turn a cold prediction into a safety verdict either. See
+> [`docs/MODEL.md` §6.1](docs/MODEL.md) for the argument and evidence.
 
 ## Layout
 
