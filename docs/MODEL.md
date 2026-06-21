@@ -12,13 +12,27 @@ The estimator predicts **muzzle velocity** $v_0$ and (indicatively) **peak chamb
 pressure** $P_\max$ for a small-arms cartridge load, plus an approximate
 pressure/velocity curve along the bore.
 
-It is a **lumped-parameter (0-D)** model. It deliberately does **not** integrate a
-burn-rate ODE. The reason is structural: faithful 0-D solvers (QuickLOAD, Gordon's
-Reloading Tool) rely on a propellant **form function** and an **energy-partition
-model** that are proprietary and were never published (the GRT author is deceased).
-Attempts to calibrate the open burn-rate ODE against published data plateaued at
-~16 % RMS because a single burn process couples velocity and pressure into an
-inconsistent ("over-peaked") pressure curve.
+It is a **lumped-parameter (0-D)** model — the model family that the field's review
+literature [6] identifies as the standard for fast parametric work (vs the heavier
+multiphase CFD codes), while noting that such 0-D models structurally cannot capture
+pressure waves or flame-spread non-uniformity, so their **pressure output is inherently
+indicative**. The same review also observes that the published models (0-D and CFD
+alike) are **overwhelmingly built and validated for medium/large-calibre artillery**
+(AGARD test gun) and that **small-calibre guns are under-served** — which is exactly why
+transplanting an artillery-lineage combustion solver (GRT, QuickLOAD, TorShot) onto
+small arms is ill-conditioned, and motivates the data-calibrated approach here.
+
+This estimator deliberately does **not** integrate a burn-rate ODE. The reason is
+structural: faithful 0-D solvers (QuickLOAD, Gordon's Reloading Tool) rely on a
+propellant **form function** and an **energy-partition model** that are proprietary and
+were never published (the GRT author is deceased). Attempts to calibrate the open
+burn-rate ODE against published data plateaued at ~16 % RMS because a single burn
+process couples velocity and pressure into an inconsistent ("over-peaked") pressure
+curve. (The closed-form **Mayer–Hart** lumped model [6] — analytic $P_\max$ and
+muzzle-energy expressions — is the closest published analogue to the η_b/η_p approach
+used here and is a candidate independent cross-check for the powders where the
+thermochemical constants are known; it is not a remedy for the brand/measurement
+pressure scatter, which is a data limit, see §6.)
 
 The energy–efficiency formulation sidesteps this by **decoupling** the velocity and
 pressure predictions into two physically interpretable efficiencies that are
@@ -310,3 +324,8 @@ is therefore treated as irreducible at the global cold-start level; the lever fo
 3. Carlucci & Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*.
 4. Le Duc, empirical $v(x)$ velocity–travel relation.
 5. zen/grt_databases (CC0 1.0) — community GRT component data.
+6. F. Ongaro, C. Robbe, A. Papy, B. Stirbu, A. Chabotier — *Modelling of internal
+   ballistics of gun systems: A review*, Defence Technology 41 (2024) 35–58,
+   doi:10.1016/j.dt.2024.05.004 (open access). Classifies lumped-parameter vs CFD
+   models; documents Baer–Frankle, IBHVG2, STANAG 4367, Mayer–Hart; notes the
+   small-calibre gap.
