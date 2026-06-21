@@ -32,10 +32,18 @@ const EnergyModel = {
     return { eta_b, eta_p, KE, Echem, expansion };
   },
 
-  /** Prédiction de v0 à partir de η_b. */
-  predictV0(load, eta_b) {
+  /**
+   * Vitesse à partir d'une énergie effective E (J/kg) : v0 = sqrt(2·E·C/m_e).
+   * Voie unique des trois chemins du modèle (ancrage E=eeff, η_b E=η_b·Qex, repli E=E_eff).
+   */
+  velocityFromEnergy(load, E_Jkg) {
     const m = load.m_gr * this.G2KG, C = load.C_gr * this.G2KG;
-    return Math.sqrt(2 * eta_b * C * load.Qex_kJkg * 1000 / this.effMass(m, C));
+    return Math.sqrt(2 * E_Jkg * C / this.effMass(m, C));
+  },
+
+  /** Prédiction de v0 à partir de η_b (énergie effective = η_b·Qex). */
+  predictV0(load, eta_b) {
+    return this.velocityFromEnergy(load, eta_b * load.Qex_kJkg * 1000);
   },
 
   /** Prédiction de Pmax à partir de v0 et η_p. */

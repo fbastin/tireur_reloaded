@@ -200,7 +200,7 @@ function calc(){
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), C_gr=toGr(+document.getElementById('c').value,U.charge.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
   const vmeas=toMs(parseFloat(document.getElementById('vmeas').value),U.vmeas.cur);
   if(!(m_gr>0&&C_gr>0&&bbl>cart.case_mm)) return;
-  const m=m_gr*G, C=C_gr*G, m_e=m+C/3;
+  const m=m_gr*G, C=C_gr*G;            // m_e=m+C/3 désormais calculé dans EnergyModel
   const d=cart.bore_mm/1000, A=Math.PI*d*d/4, travel=(bbl-cart.case_mm)/1000;
   const Cg=C_gr*0.06479891;                             // charge (g)
   const hasPcd=pw.pcd>0;                                 // densité bulk optionnelle
@@ -208,6 +208,8 @@ function calc(){
   const Re=1+(A*travel)/caseVol;                         // indépendant de pcd
   const fill = hasPcd ? (Cg/(pw.pcd/1000))/cart.case_vol_cm3*100 : null;
   const fillFrac = hasPcd ? fill/100 : 1.0;             // nominal 100 % si pcd inconnu
+  // formules physiques centralisées dans EnergyModel (évite la duplication) ; load reprend la géométrie courante
+  const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
   // priorité : mesure utilisateur > ancrage fabricant (couple connu) > à froid
   const anc=ANCH[document.getElementById('cart').value+'|'+document.getElementById('pwd').value]||null;
   let v0, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
@@ -215,16 +217,16 @@ function calc(){
     v0=vmeas; anchored=true;
     eta_p=anc?anc.np:lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
   } else if(anc){                                        // données fabricant pour ce couple
-    v0=Math.sqrt(2*anc.eeff*C/m_e); eta_p=anc.np; dataAnchor=true;
+    v0=EnergyModel.velocityFromEnergy(load,anc.eeff); eta_p=anc.np; dataAnchor=true;
   } else if(pw.Qex && pw.Ba){
     eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
     eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
-    v0=Math.sqrt(2*eta_b*C*pw.Qex*1000/m_e);
+    v0=EnergyModel.velocityFromEnergy(load,eta_b*pw.Qex*1000);
   } else {                                               // repli énergie effective E_eff
     eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
-    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); v0=Math.sqrt(2*Eeff*C/m_e); viaEeff=true;
+    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); v0=EnergyModel.velocityFromEnergy(load,Eeff); viaEeff=true;
   }
-  const Pmax=0.5*m_e*v0*v0/(eta_p*A*travel)/1e5;         // bar (depuis v0 retenu)
+  const Pmax=EnergyModel.predictPmax(load,v0,eta_p);     // bar (depuis v0 retenu)
   // affichage
   document.getElementById('o_v').textContent=frMs(v0,U.v.cur).toFixed(0);
   document.getElementById('o_p').textContent=frBar(Pmax,U.p.cur).toFixed(0);
