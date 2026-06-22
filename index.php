@@ -7,6 +7,7 @@ include '../../header.php';
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 <script src="energy_model.js"></script>
 <script src="velocity_model.js"></script>
+<script src="cartridge_diagram.js"></script>
 
 <style>
 .vm-grid { display:grid; grid-template-columns: 340px 1fr; gap:1.5rem; margin-top:1rem; align-items:start; }
@@ -76,7 +77,8 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
         <option value="imperial">Impérial (gr, in, fps, psi)</option>
         <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
       </select></div>
-    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();calc()"></select></div>
+    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select>
+      <div id="cartdiag" style="margin-top:0.4rem;text-align:center;"></div></div>
     <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
         <option value="az" selected>tri : A → Z</option>
         <option value="za">tri : Z → A</option>
@@ -132,7 +134,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 </div>
 
 <script>
-let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={};
+let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={};
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -182,8 +184,9 @@ Promise.all([
   fetch('data/anchors.json').then(r=>r.json()).catch(()=>({anchors:{}})),
   fetch('data/burn_rate_chart.txt').then(r=>r.text()).catch(()=>''),   // classement vitesse de combustion (optionnel)
   fetch('data/start_charges.local.json').then(r=>r.json()).catch(()=>({charges:{}})), // charges de départ (optionnel, live)
-]).then(([cal,pwd,coef,anc,brTxt,sc])=>{
-  CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{};
+  fetch('data/cartridge_dims.json').then(r=>r.json()).catch(()=>({dims:{}})), // cotes pour le schéma (optionnel)
+]).then(([cal,pwd,coef,anc,brTxt,sc,cd])=>{
+  CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{}; DIMS=cd.dims||{};
   const cs=document.getElementById('cart');
   const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
   const groups=[['Armes longues','rifle'],['Armes de poing','handgun']];
@@ -202,7 +205,7 @@ Promise.all([
   // si le tri par combustion n'a aucune donnée, masquer ces options
   if(!Object.keys(BRRANK).length){[...document.querySelectorAll('#pwdSort option')].forEach(o=>{if(o.value.startsWith('burn'))o.remove();});}
   populatePowders('RS52');
-  onCart(); applyStartLoad(); calc();
+  onCart(); applyStartLoad(); renderDiag(); calc();
 });
 // (re)peuple le menu poudres selon le tri choisi (#pwdSort), en conservant la sélection
 function populatePowders(defaultSel){
@@ -230,6 +233,12 @@ function applyStartLoad(){
   if(!sc) return;
   document.getElementById('m').value = U.mass.cur==='g' ? (sc.m*GR_G).toFixed(2) : sc.m;
   document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
+}
+// schéma coté de la cartouche sélectionnée (cotes exactes si dispo, sinon profil estimé)
+function renderDiag(){
+  const el=document.getElementById('cartdiag'); if(!el||typeof cartridgeDiagram!=='function')return;
+  const n=document.getElementById('cart').value;
+  el.innerHTML = CAL[n] ? cartridgeDiagram(CAL[n], DIMS[n]||null, el.clientWidth||320) : '';
 }
 function onCart(){ // défaut canon selon type (pistolet court)
   const c=CAL[document.getElementById('cart').value]; if(!c)return;

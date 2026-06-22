@@ -1,0 +1,454 @@
+{
+ "_doc": "Cotes CIP/SAAMI par cartouche (mm) pour le schéma coté : rim=bourrelet, base=culot, shoulder=épaulement, neck=collet, angle=demi-angle épaulement (deg, null si inconnu). balle/longueur viennent de calibers.json. Constantes physiques publiques.",
+ "dims": {
+  "10 mm Auto": {
+   "rim": 10.8,
+   "base": 10.8,
+   "neck": 10.74
+  },
+  "204 Ruger": {
+   "rim": 9.6,
+   "base": 9.56,
+   "shoulder": 9.14,
+   "neck": 5.87,
+   "angle": 30
+  },
+  "22 Hornet": {
+   "rim": 8.9,
+   "base": 7.6,
+   "shoulder": 7,
+   "neck": 6.2,
+   "angle": null
+  },
+  "22-250 Rem.": {
+   "rim": 12,
+   "base": 11.9,
+   "shoulder": 10.5,
+   "neck": 6.5,
+   "angle": 28
+  },
+  "221 Remington Fireball": {
+   "rim": 9.6,
+   "base": 9.55,
+   "shoulder": 9.17,
+   "neck": 6.43,
+   "angle": null
+  },
+  "222 Rem.": {
+   "rim": 9.6,
+   "base": 9.6,
+   "shoulder": 9.1,
+   "neck": 6.4,
+   "angle": null
+  },
+  "222 Rem. Mag.": {
+   "rim": 9.6,
+   "base": 9.6,
+   "shoulder": 9.1,
+   "neck": 6.4,
+   "angle": null
+  },
+  "223 Rem.": {
+   "rim": 9.6,
+   "base": 9.55,
+   "shoulder": 9,
+   "neck": 6.43,
+   "angle": 23
+  },
+  "223 WSSM": {
+   "rim": 13.59,
+   "base": 14.1,
+   "shoulder": 13.82,
+   "neck": 6.91,
+   "angle": null
+  },
+  "224 Valkyrie": {
+   "rim": 10.7,
+   "base": 10.69,
+   "shoulder": 10.24,
+   "neck": 6.5,
+   "angle": null
+  },
+  "240 Weatherby Magnum": {
+   "rim": 11.99,
+   "base": 11.51,
+   "shoulder": 10.9,
+   "neck": 6.91,
+   "angle": null
+  },
+  "243 Win.": {
+   "rim": 12,
+   "base": 12,
+   "shoulder": 11.5,
+   "neck": 7,
+   "angle": null
+  },
+  "25-06 Remington": {
+   "rim": 12,
+   "base": 11.9,
+   "shoulder": 11.2,
+   "neck": 7.4,
+   "angle": null
+  },
+  "250 Savage": {
+   "rim": 12.01,
+   "base": 11.86,
+   "shoulder": 10.25,
+   "neck": 7.25,
+   "angle": null
+  },
+  "257 Roberts": {
+   "rim": 12,
+   "base": 12,
+   "shoulder": 10.9,
+   "neck": 7.4,
+   "angle": null
+  },
+  "257 Wby. Mag.": {
+   "rim": 13.5,
+   "base": 13,
+   "shoulder": 12.5,
+   "neck": 7.2,
+   "angle": null
+  },
+  "260 Rem.": {
+   "rim": 12.01,
+   "base": 11.95,
+   "shoulder": 11.53,
+   "neck": 7.54,
+   "angle": 20
+  },
+  "270 WSM": {
+   "rim": 13.6,
+   "base": 14.1,
+   "shoulder": 13.67,
+   "neck": 7.98,
+   "angle": null
+  },
+  "270 Weatherby Magnum": {
+   "rim": 13.5,
+   "base": 13,
+   "shoulder": 12.5,
+   "neck": 7.7,
+   "angle": null
+  },
+  "270 Win.": {
+   "rim": 12,
+   "base": 11.9,
+   "shoulder": 11.2,
+   "neck": 7.8,
+   "angle": null
+  },
+  "280 Remington": {
+   "rim": 12,
+   "base": 11.9,
+   "shoulder": 11.2,
+   "neck": 8,
+   "angle": null
+  },
+  "284 Winchester": {
+   "rim": 12.01,
+   "base": 12.72,
+   "shoulder": 12.06,
+   "neck": 8.13,
+   "angle": 35
+  },
+  "30-06 Spring.": {
+   "rim": 12.04,
+   "base": 11.96,
+   "shoulder": 11.24,
+   "neck": 8.65,
+   "angle": 17.5
+  },
+  "30-30 Win.": {
+   "rim": 12.9,
+   "base": 10.7,
+   "shoulder": 10.2,
+   "neck": 8.4,
+   "angle": null
+  },
+  "300 AAC BLK": {
+   "rim": 9.6,
+   "base": 9.55,
+   "neck": 8.4
+  },
+  "300 Lapua Magnum": {
+   "rim": 14.93,
+   "base": 14.91,
+   "shoulder": 13.82,
+   "neck": 8.73,
+   "angle": null
+  },
+  "300 WSM": {
+   "rim": 13.6,
+   "base": 14.1,
+   "shoulder": 13.7,
+   "neck": 8.7,
+   "angle": null
+  },
+  "300 Weatherby Magnum": {
+   "rim": 13.5,
+   "base": 13,
+   "shoulder": 12.5,
+   "neck": 8.5,
+   "angle": null
+  },
+  "300 Win. Mag.": {
+   "rim": 13.5,
+   "base": 13,
+   "shoulder": 12.4,
+   "neck": 8.6,
+   "angle": null
+  },
+  "303 British": {
+   "rim": 13.7,
+   "base": 11.7,
+   "shoulder": 10.2,
+   "neck": 8.6,
+   "angle": 17
+  },
+  "308 Marlin Express": {
+   "rim": 12.9,
+   "base": 11.9,
+   "shoulder": 11.5,
+   "neck": 8.7,
+   "angle": null
+  },
+  "308 Win.": {
+   "rim": 12.01,
+   "base": 11.96,
+   "shoulder": 11.53,
+   "neck": 8.72,
+   "angle": 20
+  },
+  "338 Lapua Mag.": {
+   "rim": 14.93,
+   "base": 14.91,
+   "shoulder": 13.82,
+   "neck": 9.46,
+   "angle": 40
+  },
+  "338 Norma Mag.": {
+   "rim": 14.93,
+   "base": 14.87,
+   "shoulder": 14.5,
+   "neck": 9.4,
+   "angle": null
+  },
+  "35 Remington": {
+   "rim": 11.7,
+   "base": 11.6,
+   "shoulder": 10.3,
+   "neck": 9.8,
+   "angle": null
+  },
+  "357 Magnum": {
+   "rim": 11.2,
+   "base": 9.6,
+   "neck": 9.6
+  },
+  "357 SIG": {
+   "rim": 10.77,
+   "base": 10.77,
+   "neck": 9.68
+  },
+  "375 H&H Mag.": {
+   "rim": 13.5,
+   "base": 13,
+   "shoulder": 11.4,
+   "neck": 10.2,
+   "angle": 30
+  },
+  "38 Special": {
+   "rim": 11,
+   "base": 9.6,
+   "neck": 9.6
+  },
+  "40 S&W": {
+   "rim": 10.8,
+   "base": 10.8,
+   "neck": 10.7
+  },
+  "416 Rigby": {
+   "rim": 14.99,
+   "base": 14.96,
+   "shoulder": 13.72,
+   "neck": 11.33,
+   "angle": null
+  },
+  "44 Rem. Mag.": {
+   "rim": 13.1,
+   "base": 11.6,
+   "neck": 11.6
+  },
+  "444 Marlin": {
+   "rim": 13.1,
+   "base": 11.95,
+   "neck": 11.5
+  },
+  "45 - 70 Govt.": {
+   "rim": 15.4,
+   "base": 12.8,
+   "neck": 12.2
+  },
+  "45 ACP (Auto)": {
+   "rim": 12.2,
+   "base": 12.1,
+   "neck": 12
+  },
+  "45 Colt": {
+   "rim": 13,
+   "base": 12.2,
+   "neck": 12.2
+  },
+  "45 Winchester Magnum": {
+   "rim": 12.19,
+   "base": 12.09,
+   "neck": 12.01
+  },
+  "458 Winchester Magnum": {
+   "rim": 13.5,
+   "base": 13,
+   "neck": 12.2
+  },
+  "50 AE": {
+   "rim": 13.06,
+   "base": 13.79,
+   "neck": 13.49
+  },
+  "6 mm Remington": {
+   "rim": 12,
+   "base": 12,
+   "shoulder": 10.9,
+   "neck": 7,
+   "angle": null
+  },
+  "6.5 Creedmoor": {
+   "rim": 12.01,
+   "base": 11.95,
+   "shoulder": 11.73,
+   "neck": 7.49,
+   "angle": 30
+  },
+  "6.5 x 47 Lapua": {
+   "rim": 12.01,
+   "base": 11.95,
+   "shoulder": 11.59,
+   "neck": 7.41,
+   "angle": 30
+  },
+  "6.5 x 55 SE": {
+   "rim": 12.2,
+   "base": 12.2,
+   "shoulder": 11.04,
+   "neck": 7.6,
+   "angle": 25.6
+  },
+  "6mm ARC": {
+   "rim": 11.2,
+   "base": 11.2,
+   "shoulder": 10.92,
+   "neck": 6.96,
+   "angle": null
+  },
+  "7 -08 Rem.": {
+   "rim": 12,
+   "base": 11.9,
+   "shoulder": 11.5,
+   "neck": 8,
+   "angle": null
+  },
+  "7 Rem. Mag.": {
+   "rim": 13.5,
+   "base": 13,
+   "shoulder": 12.5,
+   "neck": 8,
+   "angle": 25
+  },
+  "7 x 57": {
+   "rim": 12.1,
+   "base": 12.01,
+   "shoulder": 10.92,
+   "neck": 8.25,
+   "angle": 20.55
+  },
+  "7 x 64": {
+   "rim": 11.95,
+   "base": 11.85,
+   "shoulder": 10.8,
+   "neck": 7.95,
+   "angle": 20.42
+  },
+  "7.5 x 55 Swiss": {
+   "rim": 12.65,
+   "base": 12.64,
+   "shoulder": 11.63,
+   "neck": 8.58,
+   "angle": 30.5
+  },
+  "7.62 x 39": {
+   "rim": 11.35,
+   "base": 11.35,
+   "shoulder": 10.07,
+   "neck": 8.6,
+   "angle": 16.4
+  },
+  "7.62 x 54 R": {
+   "rim": 14.48,
+   "base": 12.37,
+   "shoulder": 11.61,
+   "neck": 8.53,
+   "angle": 18.5
+  },
+  "7mm WSM": {
+   "rim": 13.59,
+   "base": 14.1,
+   "shoulder": 13.67,
+   "neck": 8.15,
+   "angle": null
+  },
+  "7mm Weatherby Magnum": {
+   "rim": 13.46,
+   "base": 12.98,
+   "shoulder": 12.45,
+   "neck": 7.92,
+   "angle": null
+  },
+  "8 x 57 IS": {
+   "rim": 11.95,
+   "base": 11.94,
+   "shoulder": 10.95,
+   "neck": 9.08,
+   "angle": 19.1
+  },
+  "9 mm Browning court": {
+   "rim": 9.5,
+   "base": 9.5,
+   "neck": 9.5
+  },
+  "9 mm Luger": {
+   "rim": 9.96,
+   "base": 9.93,
+   "neck": 9.65
+  },
+  "9 x 23 Winchester": {
+   "rim": 10.01,
+   "base": 9.93,
+   "neck": 9.68
+  },
+  "9.3 x 62": {
+   "rim": 11.95,
+   "base": 12.1,
+   "shoulder": 11.45,
+   "neck": 9.92,
+   "angle": null
+  },
+  "9.3 x 64 Brenneke": {
+   "rim": 12.6,
+   "base": 12.88,
+   "shoulder": 12.05,
+   "neck": 10.04,
+   "angle": 17.49
+  }
+ }
+}
