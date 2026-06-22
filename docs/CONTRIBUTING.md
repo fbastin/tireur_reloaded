@@ -117,6 +117,16 @@ parsed `data/vihtavuori.local.json` stays gitignored (raw tables — golden rule
 > first (see *Add a cartridge*; `case_vol` can come from `P95(powder volume)/1.08` over the
 > matched rows) to unlock those VV combos.
 
+### Starting-charge pre-fill
+
+`node scripts/build_start_charges.js` regenerates `data/start_charges.local.json` — the
+real manufacturer **minimum** charge for the typical (median) bullet of each
+cartridge×powder, which the UI pre-fills when the user changes cartridge/powder. It is
+**gitignored** (real charges → golden rule): the live site ships it, the public repo does
+not, and the UI degrades gracefully (no pre-fill) when it is absent. **Never** derive this
+from the model — the pressure model under-predicts, so a model-derived "max" charge is
+*too high* (unsafe); only published minimum loads are used.
+
 ## Run the regression test
 
 ```sh

@@ -74,15 +74,15 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
         <option value="imperial">Impérial (gr, in, fps, psi)</option>
         <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
       </select></div>
-    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();calc()"></select></div>
+    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();calc()"></select></div>
     <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
         <option value="az" selected>tri : A → Z</option>
         <option value="za">tri : Z → A</option>
         <option value="burn-fast">tri : combustion rapide → lente</option>
         <option value="burn-slow">tri : combustion lente → rapide</option>
-      </select></label><select id="pwd" onchange="calc()"></select></div>
+      </select></label><select id="pwd" onchange="applyStartLoad();calc()"></select></div>
     <div class="vm-field"><label>Masse de balle <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
-    <div class="vm-field"><label>Charge <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
+    <div class="vm-field"><label>Charge <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span> — <em>charge de départ (min) pré-remplie ; augmentez prudemment</em></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
     <div class="vm-field"><label>Longueur de canon <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
     <hr style="border:none;border-top:1px dashed var(--color-border);margin:0.6rem 0;">
     <div class="vm-field"><label>Vitesse mesurée v&#8320; <span class="vm-unit" id="u_vmeas" onclick="toggleU('vmeas')">m/s</span> — <em>optionnel, pour ancrer</em></label><input type="number" id="vmeas" placeholder="ex. 845" step="1" oninput="calc()"></div>
@@ -130,7 +130,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 </div>
 
 <script>
-let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={};
+let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={};
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -179,8 +179,9 @@ Promise.all([
   fetch('data/model_coefficients.json').then(r=>r.json()),
   fetch('data/anchors.json').then(r=>r.json()).catch(()=>({anchors:{}})),
   fetch('data/burn_rate_chart.txt').then(r=>r.text()).catch(()=>''),   // classement vitesse de combustion (optionnel)
-]).then(([cal,pwd,coef,anc,brTxt])=>{
-  CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{};
+  fetch('data/start_charges.local.json').then(r=>r.json()).catch(()=>({charges:{}})), // charges de départ (optionnel, live)
+]).then(([cal,pwd,coef,anc,brTxt,sc])=>{
+  CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{};
   const cs=document.getElementById('cart');
   const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
   const groups=[['Armes longues','rifle'],['Armes de poing','handgun']];
@@ -199,7 +200,7 @@ Promise.all([
   // si le tri par combustion n'a aucune donnée, masquer ces options
   if(!Object.keys(BRRANK).length){[...document.querySelectorAll('#pwdSort option')].forEach(o=>{if(o.value.startsWith('burn'))o.remove();});}
   populatePowders('RS52');
-  onCart(); calc();
+  onCart(); applyStartLoad(); calc();
 });
 // (re)peuple le menu poudres selon le tri choisi (#pwdSort), en conservant la sélection
 function populatePowders(defaultSel){
@@ -220,6 +221,13 @@ function populatePowders(defaultSel){
     keys.forEach(k=>opt(ps,k));
   }
   if(keep&&PWD[keep])ps.value=keep;
+}
+// pré-remplit balle typique + charge de DÉPART (min fabricant réelle) au changement de couple
+function applyStartLoad(){
+  const sc=STARTC[document.getElementById('cart').value+'|'+document.getElementById('pwd').value];
+  if(!sc) return;
+  document.getElementById('m').value = U.mass.cur==='g' ? (sc.m*GR_G).toFixed(2) : sc.m;
+  document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
 }
 function onCart(){ // défaut canon selon type (pistolet court)
   const c=CAL[document.getElementById('cart').value]; if(!c)return;
