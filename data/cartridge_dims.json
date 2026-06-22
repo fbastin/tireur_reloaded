@@ -13,12 +13,40 @@
    "neck": 5.87,
    "angle": 30
   },
+  "219 Zipper": {
+   "rim": 12.85,
+   "base": 10.72,
+   "shoulder": 9.27,
+   "neck": 6.43,
+   "angle": null
+  },
+  "22 Creedmoor": {
+   "rim": 12.01,
+   "base": 11.95,
+   "shoulder": 11.73,
+   "neck": 6.3,
+   "angle": 30
+  },
   "22 Hornet": {
    "rim": 8.9,
    "base": 7.6,
    "shoulder": 7,
    "neck": 6.2,
    "angle": null
+  },
+  "22 Nosler": {
+   "rim": 9.6,
+   "base": 10.69,
+   "shoulder": 10.2,
+   "neck": 6.5,
+   "angle": null
+  },
+  "22 PPC-USA": {
+   "rim": 11.3,
+   "base": 11.2,
+   "shoulder": 10.95,
+   "neck": 6.3,
+   "angle": 30
   },
   "22-250 Rem.": {
    "rim": 12,
@@ -152,6 +180,18 @@
    "shoulder": 12.06,
    "neck": 8.13,
    "angle": 35
+  },
+  "30 Carbine": {
+   "rim": 9.14,
+   "base": 9.06,
+   "neck": 8.53
+  },
+  "30 T/C": {
+   "rim": 12.01,
+   "base": 11.95,
+   "shoulder": 11.78,
+   "neck": 8.56,
+   "angle": null
   },
   "30-06 Spring.": {
    "rim": 12.04,
@@ -289,6 +329,11 @@
    "base": 9.6,
    "neck": 9.6
   },
+  "357 Maximum": {
+   "rim": 11.18,
+   "base": 9.63,
+   "neck": 9.63
+  },
   "357 SIG": {
    "rim": 10.77,
    "base": 10.77,
@@ -305,6 +350,11 @@
    "rim": 11,
    "base": 9.6,
    "neck": 9.6
+  },
+  "38 Super Auto": {
+   "rim": 10.31,
+   "base": 9.78,
+   "neck": 9.78
   },
   "40 S&W": {
    "rim": 10.8,
@@ -358,6 +408,13 @@
    "base": 12.19,
    "neck": 12.19
   },
+  "458 SOCOM": {
+   "rim": 12.01,
+   "base": 13.74,
+   "shoulder": 13.49,
+   "neck": 12.32,
+   "angle": null
+  },
   "458 Winchester Magnum": {
    "rim": 13.5,
    "base": 13,
@@ -367,6 +424,11 @@
    "rim": 13.21,
    "base": 12.14,
    "neck": 12.14
+  },
+  "475 Linebaugh": {
+   "rim": 13.72,
+   "base": 12.8,
+   "neck": 12.8
   },
   "50 AE": {
    "rim": 13.06,
@@ -378,6 +440,20 @@
    "base": 12.01,
    "shoulder": 11.63,
    "neck": 6.86,
+   "angle": 30
+  },
+  "6 XC": {
+   "rim": 11.86,
+   "base": 11.84,
+   "shoulder": 11.42,
+   "neck": 6.82,
+   "angle": null
+  },
+  "6 mm Creedmoor": {
+   "rim": 12.01,
+   "base": 11.95,
+   "shoulder": 11.73,
+   "neck": 6.85,
    "angle": 30
   },
   "6 mm Remington": {
@@ -415,12 +491,33 @@
    "neck": 7.6,
    "angle": 25.6
   },
+  "6.5-284 Norma": {
+   "rim": 12.01,
+   "base": 12.73,
+   "shoulder": 12.07,
+   "neck": 7.54,
+   "angle": null
+  },
+  "6.8 Western": {
+   "rim": 13.59,
+   "base": 14.1,
+   "shoulder": 13.69,
+   "neck": 7.98,
+   "angle": null
+  },
   "6mm ARC": {
    "rim": 11.2,
    "base": 11.2,
    "shoulder": 10.92,
    "neck": 6.96,
    "angle": null
+  },
+  "6mm PPC": {
+   "rim": 11.3,
+   "base": 11.2,
+   "shoulder": 10.95,
+   "neck": 6.65,
+   "angle": 30
   },
   "7 -08 Rem.": {
    "rim": 12,
@@ -471,6 +568,20 @@
    "neck": 8.53,
    "angle": 18.5
   },
+  "7mm BR Remington": {
+   "rim": 12.01,
+   "base": 12,
+   "shoulder": 11.68,
+   "neck": 8,
+   "angle": null
+  },
+  "7mm RUM": {
+   "rim": 13.51,
+   "base": 13.97,
+   "shoulder": 13.34,
+   "neck": 8.05,
+   "angle": null
+  },
   "7mm WSM": {
    "rim": 13.59,
    "base": 14.1,
@@ -485,12 +596,26 @@
    "neck": 7.92,
    "angle": null
   },
+  "8 x 57 IRS": {
+   "rim": 14,
+   "base": 11.95,
+   "shoulder": 10.95,
+   "neck": 9.08,
+   "angle": 19.1
+  },
   "8 x 57 IS": {
    "rim": 11.95,
    "base": 11.94,
    "shoulder": 10.95,
    "neck": 9.08,
    "angle": 19.1
+  },
+  "8 x 68 S": {
+   "rim": 13,
+   "base": 13.3,
+   "shoulder": 12.15,
+   "neck": 9.14,
+   "angle": 14.53
   },
   "9 mm Browning court": {
    "rim": 9.5,
@@ -520,6 +645,13 @@
    "shoulder": 12.05,
    "neck": 10.04,
    "angle": 17.49
+  },
+  "9.3 x 74 R": {
+   "rim": 13.35,
+   "base": 11.9,
+   "shoulder": 10.4,
+   "neck": 9.92,
+   "angle": null
   }
  }
 }
