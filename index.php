@@ -52,14 +52,16 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/breadcrumb.php';
 
 <p>Modèle <strong>énergie-efficacité</strong> : la vitesse vient de l'énergie de la poudre via une efficacité
 balistique η<sub>b</sub>, la pression d'une efficacité piézométrique η<sub>p</sub> — deux relations
-<strong>calées sur des données fabricant</strong>, sans la fonction de forme propriétaire de l'ancien solveur.
+<strong>calées sur plusieurs guides fabricant</strong> (Reload Swiss, Accurate/Ramshot, Vihtavuori),
+sans la fonction de forme propriétaire de l'ancien solveur.
 Base de composants dérivée de <em>Gordon's Reloading Tool</em> (Gordon †) et de la communauté (CC0).</p>
 
 <div class="vm-banner">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> À froid, la <strong>vitesse</strong> est donnée à
 <strong>±10&nbsp;%</strong> et la <strong>pression à titre purement indicatif</strong> (±15&nbsp;% au mieux) :
-une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». Affinez en saisissant
-<strong>votre vitesse mesurée</strong>. Vérifiez toujours dans les données officielles du fabricant.
+une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». L'estimation est
+<strong>affinée automatiquement (~5&nbsp;%) pour les couples cartouche/poudre connus</strong> ;
+saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. Vérifiez toujours dans les données officielles du fabricant.
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limites &rarr;</a>
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
@@ -118,7 +120,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 <li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: <strong>~5&nbsp;%</strong>&nbsp;;</li>
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: <strong>quasi-exact</strong>.</li>
 </ul>
-<p>Catalogue&nbsp;: <strong>~480 poudres</strong> (Reload Swiss et Vihtavuori calibrées&nbsp;; autres marques en repli énergie effective). Les situations à risque (<strong>surpression vs limite CIP, surremplissage</strong>) sont signalées en couleur — à titre indicatif.</p>
+<p>Catalogue&nbsp;: <strong>~470 poudres</strong> (Reload Swiss, Accurate/Ramshot et Vihtavuori calibrées&nbsp;; autres marques en repli énergie effective). Les situations à risque (<strong>surpression vs limite CIP, surremplissage</strong>) sont signalées en couleur — à titre indicatif.</p>
 <p><strong>Pour aller plus loin&nbsp;:</strong>
 <a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limites</a> ·
