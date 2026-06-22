@@ -67,6 +67,52 @@ over the safe window) and *exploits* measured `charge,velocity` pairs (fits the 
 `E_eff`). It does **not** locate the harmonic node — the 0-D model is smooth; that is left
 to the range and statistics. See the wiki *méthode ladder* and the LaTeX guide (chapter 5).
 
+## CSV import / export
+
+Both the estimator panel and the Ladder *measurements* box have **Export / Import CSV**
+buttons (client-side only — nothing is uploaded). Two documented formats:
+
+**Estimator** — a `champ,valeur,unité` (field,value,unit) table. Lines starting with `#`
+are comments. Only the **input** rows are read back on import; velocity and pressure are
+recomputed (the exported `v0`/`pmax` rows are informational). Values are imported in the
+unit given in the third column and converted to the UI's current display unit.
+
+```csv
+# Tireur.org — Estimateur de balistique intérieure
+champ,valeur,unité
+cartouche,308 Win.,
+poudre,RS52,
+masse,150,gr
+charge,44,gr
+canon,600,mm
+vitesse_mesuree,,m/s
+temperature,21,°C
+# résultats (indicatifs — recalculés à l'import)
+v0,820,m/s
+pmax,3850,bar
+```
+
+Recognised field keys: `cartouche`, `poudre` (must match a catalogue entry), `masse`,
+`charge`, `canon`, `vitesse_mesuree`, `temperature`. Unknown keys are ignored, so the file
+is forward-compatible.
+
+**Ladder measurements** — a `charge,vitesse` table, one row per shot, plus optional `#`
+comment lines. Values are interpreted in the **current display units** (the same as typing
+into the box). Import fills the measurement box and re-runs the fit; export writes the
+parsed rows back with a comment header recording the cartridge/powder pair and units.
+
+```csv
+# Tireur.org — Ladder (mesures de vitesse)
+# couple: 308 Win. | RS52 — unités: charge=gr, vitesse=m/s
+charge,vitesse
+41.0,845
+41.2,851
+41.4,858
+```
+
+Both readers accept `,` `;` tab or space as separators in the ladder box and tolerate a
+leading UTF-8 BOM; the estimator reader expects RFC 4180 commas with optional quoting.
+
 ## Data provenance & licensing
 
 - Component constants (powder `Qex`/`Ba`/`pcd`) derive from **Gordon's Reloading

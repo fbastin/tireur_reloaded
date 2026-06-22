@@ -105,6 +105,20 @@ velocity (a constant $E_\mathrm{eff}$ scores 10.05 % LOPO vs 10.06 % with the fi
 term). When `pcd` is absent, fill defaults to a nominal 100 %, so a velocity estimate
 needs only charge and bullet mass.
 
+**Barrel-length scaling.** $\eta_b$ is geometry-free, so the equation above yields the
+velocity **at the calibration (reference) barrel** $L_\text{ref}$ — the test-barrel length
+the manufacturer data was measured at. The muzzle velocity at the *user's* barrel
+$L_\text{user}$ is then obtained with the empirical **Powley/Litz power law**
+$v_0(L) = v_\text{ref}\,(L/L_\text{ref})^{k}$, $k\approx0.27$ (`VelocityModel.scaleByBarrel`).
+Conversely, a velocity the user *supplies* (chronograph `vmeas`, or a rifle anchor fitted
+from a chrono ladder) is already at $L_\text{user}$, so it is scaled **back** to
+$L_\text{ref}$ before feeding the pressure equation (§3.2). At $L_\text{user}=L_\text{ref}$
+the scaling is unity, so calibration and validation are unchanged. This makes velocity
+**rise with barrel length** (with diminishing returns) while peak pressure stays
+barrel-independent — the physically correct pairing. The exponent $k$ is generic; far from
+$L_\text{ref}$ (ratio outside ~0.6–1.7) the extrapolation is flagged and best confirmed at
+the chronograph.
+
 ### 3.2 Peak pressure — piezometric efficiency $\eta_p$
 
 The **piezometric efficiency** relates the (work-equivalent) mean pressure to the
@@ -114,6 +128,19 @@ $\bar P\,A\,L = E_k$, and writing $\eta_p \equiv \bar P / P_\max$:
 $$\boxed{\,P_\max = \dfrac{\tfrac12 m_e v_0^2}{\eta_p\,A\,L}\,}$$
 
 Pressure therefore depends on bore geometry ($A$, $L$) and on $\eta_p$.
+
+> **Peak pressure is evaluated at a reference (test-barrel) travel, not the user's barrel.**
+> Peak chamber pressure forms in the first few centimetres of bullet travel (the Le Duc
+> peak is at $x=b/2$) and is **physically almost independent of total barrel length**. But
+> the identity above ($\bar P\,A\,L = E_k$ with $E_k$ frozen, since velocity is
+> geometry-free, §3.1) would make $P_\max \propto 1/L$ — so lengthening the barrel would
+> *spuriously* lower the predicted peak pressure. To avoid this artefact, $P_\max$ (and the
+> $\ln R_e$ term in $\eta_p$) is computed at a **fixed reference travel** $L_\text{ref} =
+> L_\text{test} - L_c$ — the cartridge's standard test-barrel length (`test_barrel_mm`,
+> default 600 mm rifle / 122 mm handgun), which is also the geometry $\eta_p$ was calibrated
+> at. Pressure is thus a function of charge/bullet/cartridge only; the user's barrel length
+> drives velocity (via the separate Le Duc tool) and the displayed pressure/travel extent,
+> **not** the peak-pressure number.
 
 ### 3.3 Auxiliary geometric quantities
 

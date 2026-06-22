@@ -36,6 +36,9 @@ include '../../header.php';
 .vm-bar > span { display:block; height:100%; background:#9aa0a6; }
 .vm-bar.warn > span { background:#e67e22; } .vm-bar.danger > span { background:#c0392b; }
 .vm-print { background:var(--color-accent); color:#fff; border:none; border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
+.vm-btn2 { background:var(--color-bg); color:var(--color-text); border:1px solid var(--color-border); border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
+.vm-btn2:hover { border-color:var(--color-accent); color:var(--color-accent); }
+.vm-io { margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
 @media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 1fr; } .vm-panel { border:none; background:#fff; }
   /* Ladder : imprimé seulement s'il est développé ; on garde les tables, on masque les contrôles */
   #ladder:not([open]) { display:none !important; } #ladder { border:none; page-break-inside:avoid; }
@@ -95,6 +98,12 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
     <div class="vm-field"><label>Vitesse mesurée v&#8320; <span class="vm-unit" id="u_vmeas" onclick="toggleU('vmeas')">m/s</span> — <em>optionnel, pour ancrer</em></label><input type="number" id="vmeas" placeholder="ex. 845" step="1" oninput="calc()"></div>
     <div class="vm-field"><label>Température <span class="vm-unit" id="u_temp" onclick="toggleU('temp')">°C</span> — <em>sensibilité thermique (Litz), réf. 21&nbsp;°C</em></label><input type="number" id="temp" value="21" step="1" oninput="calc()"></div>
     <p class="vm-note" id="derived"></p>
+    <div class="vm-io vm-noprint">
+      <button type="button" class="vm-btn2" onclick="exportEstimateur()" title="Télécharger la configuration (et les résultats) en CSV">&#11015;&nbsp;Exporter CSV</button>
+      <button type="button" class="vm-btn2" onclick="document.getElementById('impEst').click()" title="Charger une configuration depuis un CSV">&#11014;&nbsp;Importer CSV</button>
+      <input type="file" id="impEst" accept=".csv,text/csv" style="display:none" onchange="if(this.files[0]){importEstimateur(this.files[0]);this.value='';}">
+    </div>
+    <p class="vm-note vm-noprint" style="margin-top:.3rem;">CSV <code>champ,valeur,unité</code> (lignes <code>#</code> = commentaires). À l'import, seules les <em>entrées</em> sont reprises ; vitesse et pression sont recalculées.</p>
   </div>
   <div class="vm-panel">
     <div id="cartdiag" style="text-align:center;margin-bottom:0.6rem;"></div>
@@ -127,6 +136,12 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 <p class="vm-note">Une ligne par tir : <code>charge,vitesse</code> (unités courantes). L'outil cale l'efficacité de <em>votre</em> carabine et compare mesuré vs courbe lisse.</p>
 <textarea id="ladMeas" rows="5" style="width:100%;font-family:monospace;font-size:0.82rem;" placeholder="41.0, 845&#10;41.2, 851&#10;41.4, 858&#10;..." oninput="fitLadder()"></textarea>
 <div id="ladFit" style="margin-top:0.4rem;"></div>
+<div class="vm-io vm-noprint">
+  <button type="button" class="vm-btn2" onclick="exportLadder()" title="Télécharger les mesures en CSV">&#11015;&nbsp;Exporter CSV</button>
+  <button type="button" class="vm-btn2" onclick="document.getElementById('impLad').click()" title="Charger des mesures depuis un CSV">&#11014;&nbsp;Importer CSV</button>
+  <input type="file" id="impLad" accept=".csv,text/csv" style="display:none" onchange="if(this.files[0]){importLadder(this.files[0]);this.value='';}">
+  <small class="vm-note">format : en-tête <code>charge,vitesse</code> puis une ligne par tir (valeurs dans les <strong>unités courantes</strong> ; lignes <code>#</code> ignorées)</small>
+</div>
 </div>
 </details>
 
@@ -259,6 +274,12 @@ function applyStartLoad(){
   document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
 }
 // --- Ladder : planificateur (fenêtre sûre) + interprète (ancrage carabine) ---
+// Longueur de canon de RÉFÉRENCE pour la PRESSION (tube d'essai). La pression de pic se
+// forme près de la chambre et ne dépend quasi pas du canon réel : on l'évalue à une course
+// fixe (champ `test_barrel_mm` de la cartouche, sinon défaut par type) pour que P_max ne
+// dérive pas — à tort — avec la longueur de canon saisie. La vitesse, elle, reste calculée
+// par η_b (geometry-free) ; l'effet du canon sur v0 relève de l'outil Le Duc dédié.
+function refBbl(cart){ return cart.test_barrel_mm || (cart.type==='handgun'?122:600); }
 // ancre effective : override carabine (ladder) > ancre fabricant du couple
 function effAnchor(ck,pk){
   const anc=ANCH[ck+'|'+pk]||null;
@@ -267,16 +288,20 @@ function effAnchor(ck,pk){
 }
 // prédiction modèle (v0, Pmax, fill, %CIP) pour une charge ARBITRAIRE (sans vmeas/température)
 function modelVP(cart,pw,m_gr,C_gr,bbl,anc){
-  const C=C_gr*G, d=cart.bore_mm/1000, A=Math.PI*d*d/4, travel=(bbl-cart.case_mm)/1000;
-  const Re=1+(A*travel)/(cart.case_vol_cm3*1e-6), hasPcd=pw.pcd>0, Cg=C_gr*GR_G;
+  const C=C_gr*G, d=cart.bore_mm/1000, A=Math.PI*d*d/4;
+  const uT=(bbl-cart.case_mm)/1000, refTravel=(refBbl(cart)-cart.case_mm)/1000;  // course canon réel / référence
+  const ReP=1+(A*refTravel)/(cart.case_vol_cm3*1e-6), hasPcd=pw.pcd>0, Cg=C_gr*GR_G;
   const fill=hasPcd?(Cg/(pw.pcd/1000))/cart.case_vol_cm3*100:null, ff=hasPcd?fill/100:1;
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
-  let v0,eta_p;
-  if(anc){ v0=EnergyModel.velocityFromEnergy(load,anc.eeff); eta_p=anc.np!=null?anc.np:lin(COEF.eta_p.coef,[1,ff,Math.log(Re)]); }
-  else if(pw.Qex&&pw.Ba){ eta_p=lin(COEF.eta_p.coef,[1,ff,Math.log(Re)]); v0=EnergyModel.velocityFromEnergy(load,lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex*1000); }
-  else { eta_p=lin(COEF.eta_p.coef,[1,ff,Math.log(Re)]); v0=EnergyModel.velocityFromEnergy(load,lin(COEF.e_eff.coef,[1,ff])); }
-  const Pmax=EnergyModel.predictPmax(load,v0,eta_p);
-  return {v0,Pmax,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null};
+  const loadP={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:refBbl(cart),case_mm:cart.case_mm};
+  const npG=lin(COEF.eta_p.coef,[1,ff,Math.log(ReP)]), sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
+  let vRef,vUser,eta_p;
+  if(anc && anc.rifle){ vUser=EnergyModel.velocityFromEnergy(load,anc.eeff); vRef=sc(vUser,uT,refTravel); eta_p=anc.np!=null?anc.np:npG; }
+  else if(anc){ vRef=EnergyModel.velocityFromEnergy(load,anc.eeff); vUser=sc(vRef,refTravel,uT); eta_p=anc.np!=null?anc.np:npG; }
+  else if(pw.Qex&&pw.Ba){ eta_p=npG; vRef=EnergyModel.velocityFromEnergy(load,lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex*1000); vUser=sc(vRef,refTravel,uT); }
+  else { eta_p=npG; vRef=EnergyModel.velocityFromEnergy(load,lin(COEF.e_eff.coef,[1,ff])); vUser=sc(vRef,refTravel,uT); }
+  const Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);        // pression au canon de référence (depuis vRef)
+  return {v0:vUser,Pmax,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null};
 }
 function renderLadder(){
   const el=document.getElementById('ladTable'); if(!el)return;
@@ -343,33 +368,43 @@ function calc(){
   const Cg=C_gr*0.06479891;                             // charge (g)
   const hasPcd=pw.pcd>0;                                 // densité bulk optionnelle
   const caseVol=cart.case_vol_cm3*1e-6;                  // m³
-  const Re=1+(A*travel)/caseVol;                         // indépendant de pcd
+  const Re=1+(A*travel)/caseVol;                         // rapport de détente du canon réel (affichage, courbe Le Duc)
+  // Pression : course de RÉFÉRENCE (tube d'essai), indépendante du canon utilisateur
+  const refBbl_mm=refBbl(cart), refTravel=(refBbl_mm-cart.case_mm)/1000, ReP=1+(A*refTravel)/caseVol;
   const fill = hasPcd ? (Cg/(pw.pcd/1000))/cart.case_vol_cm3*100 : null;
   const fillFrac = hasPcd ? fill/100 : 1.0;             // nominal 100 % si pcd inconnu
   // formules physiques centralisées dans EnergyModel (évite la duplication) ; load reprend la géométrie courante
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
+  const loadP={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:refBbl_mm,case_mm:cart.case_mm}; // pour la pression (canon réf.)
   // priorité : mesure utilisateur > ancrage fabricant (couple connu) > à froid
   const anc=effAnchor(document.getElementById('cart').value,document.getElementById('pwd').value);
-  let v0, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
-  const npGlobal=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
-  if(vmeas>0){
-    v0=vmeas; anchored=true;
+  let vRef, vUser, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
+  const npGlobal=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(ReP)]);   // η_p à la course de référence
+  // Loi de canon (Powley/Litz) : v à La -> v à Lb. La calibration (η_b, eeff fabricant) donne la
+  // vitesse au canon de RÉFÉRENCE ; on la met à l'échelle du canon réel. Une vitesse fournie par
+  // l'utilisateur (mesure, ancrage carabine) est déjà au canon réel -> on la ramène à la réf. pour la pression.
+  const sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
+  if(vmeas>0){                                          // vitesse MESURÉE au canon de l'utilisateur
+    vUser=vmeas; vRef=sc(vmeas,travel,refTravel); anchored=true;
     eta_p=(anc&&anc.np!=null)?anc.np:npGlobal;           // ancre sans np (VV, vitesse seule) -> η_p global
-  } else if(anc){                                        // données fabricant pour ce couple
-    v0=EnergyModel.velocityFromEnergy(load,anc.eeff); eta_p=(anc.np!=null)?anc.np:npGlobal; dataAnchor=true;
+  } else if(anc && anc.rifle){                          // ancrage carabine (ladder) : eeff au canon réel
+    vUser=EnergyModel.velocityFromEnergy(load,anc.eeff); vRef=sc(vUser,travel,refTravel); eta_p=(anc.np!=null)?anc.np:npGlobal; dataAnchor=true;
+  } else if(anc){                                       // données fabricant (canon d'essai ≈ réf.)
+    vRef=EnergyModel.velocityFromEnergy(load,anc.eeff); vUser=sc(vRef,refTravel,travel); eta_p=(anc.np!=null)?anc.np:npGlobal; dataAnchor=true;
   } else if(pw.Qex && pw.Ba){
-    eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
+    eta_p=npGlobal;
     eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
-    v0=EnergyModel.velocityFromEnergy(load,eta_b*pw.Qex*1000);
+    vRef=EnergyModel.velocityFromEnergy(load,eta_b*pw.Qex*1000); vUser=sc(vRef,refTravel,travel);
   } else {                                               // repli énergie effective E_eff
-    eta_p=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
-    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); v0=EnergyModel.velocityFromEnergy(load,Eeff); viaEeff=true;
+    eta_p=npGlobal;
+    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); vRef=EnergyModel.velocityFromEnergy(load,Eeff); vUser=sc(vRef,refTravel,travel); viaEeff=true;
   }
   // correction thermique (Litz) sur la vitesse PRÉDITE (pas sur une vitesse mesurée par l'utilisateur), réf. 21 °C
   const Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
   let tempApplied=false;
-  if(!anchored && isFinite(Tc) && Tc!==21){ v0=VelocityModel.tempCorrect(v0,Tc-21); tempApplied=true; }
-  const Pmax=EnergyModel.predictPmax(load,v0,eta_p);     // bar (depuis v0 retenu, éventuellement corrigé)
+  if(!anchored && isFinite(Tc) && Tc!==21){ vUser=VelocityModel.tempCorrect(vUser,Tc-21); tempApplied=true; }
+  const v0=vUser;                                        // vitesse affichée = au canon de l'utilisateur
+  const Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);  // bar — canon de référence (pic chambre ~indép. du canon réel)
   // affichage
   document.getElementById('o_v').textContent=frMs(v0,U.v.cur).toFixed(0);
   document.getElementById('o_p').textContent=frBar(Pmax,U.p.cur).toFixed(0);
@@ -403,8 +438,9 @@ function calc(){
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
   const mode = anchored?'mesure perso' : dataAnchor?`${anc&&anc.rifle?'ancré carabine':'ancré fabricant'} (n=${anc.n}${anc.np==null?', vitesse seule — pression η_p global':''})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
+  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? `  ·  v₀ mise à l'échelle du canon saisi (loi Powley/Litz), pression au canon réf. ${frMm(refBbl_mm,U.bbl.cur).toFixed(U.bbl.cur==='in'?1:0)} ${U.bbl.cur}` : '';
   document.getElementById('derived').textContent=
-    `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}`;
+    `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}${pRefTxt}`;
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
   if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
   else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
@@ -412,6 +448,8 @@ function calc(){
   if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
   if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
   if(tempApplied) w='Vitesse ajustée à '+Tc.toFixed(0)+' °C (réf. 21 °C, sensibilité Litz générique ~1,8 fps/°C — indicatif, varie selon la poudre). '+w;
+  const bRatio=travel/refTravel;
+  if(bRatio<0.6||bRatio>1.7) w='⚠ Canon très éloigné de la longueur de référence ('+frMm(refBbl_mm,U.bbl.cur).toFixed(U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée (loi de puissance), à confirmer au chronographe. '+w;
   document.getElementById('warn').textContent=w;
   renderLadder();
   // courbe Le Duc (couche 3)
@@ -438,6 +476,99 @@ function calc(){
     {x:xs,y:ps,name:'Pression ('+U.p.cur+')',yaxis:'y',line:{color:'#c0392b'}},
     {x:xs,y:vs,name:'Vitesse ('+U.v.cur+')',yaxis:'y2',line:{color:'#2980b9'}}
   ],lay,{displayModeBar:false,responsive:true});
+}
+// --- Import / Export CSV ---------------------------------------------------
+// Déclenche le téléchargement d'un fichier CSV (UTF-8)
+function csvDownload(name,text){
+  const blob=new Blob(['﻿'+text],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+// Échappe une cellule CSV (séparateur virgule, guillemets RFC 4180)
+function csvCell(s){ s=String(s); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; }
+const csvRows=rows=>rows.map(r=>r.map(csvCell).join(',')).join('\n')+'\n';
+// Découpe une ligne CSV en respectant les guillemets
+function csvSplit(line){
+  const out=[]; let cur='',q=false;
+  for(let i=0;i<line.length;i++){const ch=line[i];
+    if(q){ if(ch==='"'){ if(line[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=ch; }
+    else { if(ch==='"')q=true; else if(ch===','){out.push(cur);cur='';} else cur+=ch; } }
+  out.push(cur); return out.map(s=>s.trim());
+}
+// Écrit une entrée numérique (clé U) à partir d'une valeur exprimée dans `unit`, convertie vers l'unité d'affichage courante
+function importField(key,val,unit){
+  const el=document.getElementById(U[key].el); if(!el)return;
+  if(val===''||!isFinite(parseFloat(val))){ if(key==='vmeas')el.value=''; return; }
+  val=parseFloat(val); unit=unit||U[key].cur; const cur=U[key].cur; let out;
+  if(key==='mass'||key==='charge'){ const gr=toGr(val,unit); out=cur==='g'?gr*GR_G:gr; el.value=out.toFixed(key==='mass'?1:2); }
+  else if(key==='bbl'){ const mm=toMm(val,unit); el.value=(cur==='in'?frMm(mm,'in'):mm).toFixed(cur==='in'?1:0); }
+  else if(key==='vmeas'){ el.value=frMs(toMs(val,unit),cur).toFixed(0); }
+  else if(key==='temp'){ const c=toC(val,unit); el.value=(cur==='°F'?c*9/5+32:c).toFixed(0); }
+}
+// Estimateur : exporte la configuration courante + les résultats affichés
+function exportEstimateur(){
+  const v=id=>document.getElementById(id).value;
+  const rows=[
+    ['# Tireur.org — Estimateur de balistique intérieure'],
+    ['# https://www.tireur.org/reloading/tireur_reloaded/ — export '+new Date().toISOString().slice(0,10)],
+    ['champ','valeur','unité'],
+    ['cartouche',v('cart'),''],
+    ['poudre',v('pwd'),''],
+    ['masse',v('m'),U.mass.cur],
+    ['charge',v('c'),U.charge.cur],
+    ['canon',v('bbl'),U.bbl.cur],
+    ['vitesse_mesuree',v('vmeas'),U.vmeas.cur],
+    ['temperature',v('temp'),U.temp.cur],
+  ];
+  if(LAST){
+    rows.push(['# résultats (indicatifs — recalculés à l\'import)']);
+    rows.push(['v0',document.getElementById('o_v').textContent,U.v.cur]);
+    rows.push(['pmax',document.getElementById('o_p').textContent,U.p.cur]);
+  }
+  csvDownload('estimateur_'+v('cart').replace(/\W+/g,'_')+'.csv',csvRows(rows));
+}
+// Estimateur : recharge la configuration depuis un CSV (clé;valeur), recalcule
+function importEstimateur(file){
+  const r=new FileReader();
+  r.onload=()=>{
+    const map={};
+    r.result.split(/\r?\n/).forEach(l=>{ l=l.replace(/^﻿/,'').trim();
+      if(!l||l[0]==='#')return; const f=csvSplit(l);
+      if(f.length>=2 && f[0].toLowerCase()!=='champ') map[f[0].toLowerCase()]=f; });
+    RIFLE.eeff=null;                                   // couple potentiellement changé -> réinit ancrage carabine
+    if(map.cartouche && CAL[map.cartouche[1]]){ document.getElementById('cart').value=map.cartouche[1]; renderDiag(); }
+    if(map.poudre && PWD[map.poudre[1]]) populatePowders(map.poudre[1]);
+    [['masse','mass'],['charge','charge'],['canon','bbl'],['vitesse_mesuree','vmeas'],['temperature','temp']]
+      .forEach(([k,key])=>{ if(map[k]) importField(key,map[k][1],map[k][2]); });
+    calc();
+  };
+  r.readAsText(file);
+}
+// Ladder : exporte les mesures saisies (charge,vitesse) dans les unités courantes
+function exportLadder(){
+  const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value;
+  const pts=document.getElementById('ladMeas').value.split('\n').map(l=>l.trim()).filter(Boolean)
+    .map(l=>l.split(/[,;\t ]+/).map(parseFloat)).filter(a=>a.length>=2&&a[0]>0&&a[1]>0);
+  const rows=[
+    ['# Tireur.org — Ladder (mesures de vitesse)'],
+    ['# couple: '+ck+' | '+pk+' — unités: charge='+U.charge.cur+', vitesse='+U.v.cur],
+    ['charge','vitesse'],
+    ...pts.map(a=>[a[0],a[1]]),
+  ];
+  csvDownload('ladder_'+ck.replace(/\W+/g,'_')+'.csv',csvRows(rows));
+}
+// Ladder : importe des mesures depuis un CSV vers la zone de saisie, puis ajuste
+function importLadder(file){
+  const r=new FileReader();
+  r.onload=()=>{
+    const lines=r.result.split(/\r?\n/).map(l=>l.replace(/^﻿/,'').trim())
+      .filter(l=>l&&l[0]!=='#').map(csvSplit)
+      .filter(a=>a.length>=2&&isFinite(parseFloat(a[0]))&&isFinite(parseFloat(a[1])))
+      .map(a=>parseFloat(a[0])+', '+parseFloat(a[1]));
+    document.getElementById('ladMeas').value=lines.join('\n');
+    fitLadder();
+  };
+  r.readAsText(file);
 }
 // Ouvre la note « Comment ça marche » si on arrive via #howto (lien profond depuis le guide)
 (function(){function openHowto(){if(location.hash==='#howto'){var d=document.getElementById('howto');if(d){d.open=true;d.scrollIntoView();}}}
