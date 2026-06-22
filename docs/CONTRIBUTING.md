@@ -117,15 +117,25 @@ parsed `data/vihtavuori.local.json` stays gitignored (raw tables — golden rule
 > first (see *Add a cartridge*; `case_vol` can come from `P95(powder volume)/1.08` over the
 > matched rows) to unlock those VV combos.
 
-### Starting-charge pre-fill
+### Starting-charge pre-fill & the Ladder window
 
 `node scripts/build_start_charges.js` regenerates `data/start_charges.local.json` — the
-real manufacturer **minimum** charge for the typical (median) bullet of each
-cartridge×powder, which the UI pre-fills when the user changes cartridge/powder. It is
-**gitignored** (real charges → golden rule): the live site ships it, the public repo does
-not, and the UI degrades gracefully (no pre-fill) when it is absent. **Never** derive this
-from the model — the pressure model under-predicts, so a model-derived "max" charge is
-*too high* (unsafe); only published minimum loads are used.
+real manufacturer **minimum and maximum** charge (`c`, `cmax`) for the typical (median)
+bullet of each cartridge×powder. The UI uses it twice: it **pre-fills** the start charge
+when the user changes cartridge/powder, and it bounds the **Ladder** planner's safe window
+(start → max). It is **gitignored** (real charges → golden rule): the live site ships it,
+the public repo does not, and the UI degrades gracefully when it is absent (no pre-fill;
+the ladder falls back to an indicative range around the current charge). **Never** derive
+the max from the model — the pressure model under-predicts, so a model-derived "max at CIP"
+is *too high* (unsafe); only published min/max loads bound the ladder.
+
+> **Ladder mode** (UI, no data files beyond the above). The estimator *plans* a ladder
+> (charge → v0 / Pmax / %CIP table over the safe window) and *exploits* measured
+> `charge,velocity` pairs (fits the rifle's own `E_eff` + an apply-as-anchor button). It
+> deliberately does **not** locate the harmonic "node" — the 0-D model is smooth; that is
+> for the range and statistics to decide (see the wiki *méthode ladder* and the guide).
+> Regenerate `start_charges.local.json` after any data change so the ladder window stays
+> correct on the live site.
 
 ## Run the regression test
 
