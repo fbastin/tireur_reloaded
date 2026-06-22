@@ -77,8 +77,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
         <option value="imperial">Impérial (gr, in, fps, psi)</option>
         <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
       </select></div>
-    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select>
-      <div id="cartdiag" style="margin-top:0.4rem;text-align:center;"></div></div>
+    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select></div>
     <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
         <option value="az" selected>tri : A → Z</option>
         <option value="za">tri : Z → A</option>
@@ -94,6 +93,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
     <p class="vm-note" id="derived"></p>
   </div>
   <div class="vm-panel">
+    <div id="cartdiag" style="text-align:center;margin-bottom:0.6rem;"></div>
     <div id="danger" class="vm-alert" style="display:none;"></div>
     <div class="vm-kpi">
       <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small>vitesse <span id="o_vtag" class="vm-tag">à froid ±10%</span></small></div>
