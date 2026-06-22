@@ -106,6 +106,10 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
     </div>
     <div id="plot" style="width:100%;height:330px;"></div>
     <p class="vm-note" id="warn"></p>
+    <div class="vm-noprint" style="margin-top:0.5rem">
+      <button type="button" id="toExt" class="vm-print" onclick="toExterior()" disabled style="opacity:.5">&#127919;&nbsp;Vers la balistique extérieure</button>
+      <small class="vm-note" style="display:inline;margin-left:.4rem">envoie V₀, masse et calibre au calculateur de trajectoire (renseignez-y le CB et la longueur de balle)</small>
+    </div>
   </div>
 </div>
 
@@ -152,7 +156,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 </div>
 
 <script>
-let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={}, RIFLE={eeff:null,n:0};
+let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={}, RIFLE={eeff:null,n:0}, LAST=null;
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -310,6 +314,12 @@ function fitLadder(){
     +'<button type="button" class="vm-print" onclick="applyRifle('+eeff.toFixed(1)+','+pts.length+')">Ancrer cette carabine</button></p>'+t+'</table>';
 }
 function applyRifle(eeff,n){ RIFLE.eeff=eeff; RIFLE.n=n; calc(); renderLadder(); }
+// passe la sortie (V₀ m/s, masse gr, calibre mm) au calculateur de balistique extérieure
+function toExterior(){
+  if(!LAST) return;
+  const q=new URLSearchParams({mv:Math.round(LAST.v0),mass:LAST.m_gr.toFixed(1),cal:LAST.bore.toFixed(2)});
+  window.open('/calculateur-balistique.php?'+q.toString(),'_blank','noopener');
+}
 // schéma coté de la cartouche sélectionnée (cotes exactes si dispo, sinon profil estimé)
 function renderDiag(){
   const el=document.getElementById('cartdiag'); if(!el||typeof cartridgeDiagram!=='function')return;
@@ -363,6 +373,9 @@ function calc(){
   // affichage
   document.getElementById('o_v').textContent=frMs(v0,U.v.cur).toFixed(0);
   document.getElementById('o_p').textContent=frBar(Pmax,U.p.cur).toFixed(0);
+  // mémorise la sortie (unités SI) pour l'export vers la balistique extérieure
+  LAST={v0:v0,m_gr:m_gr,bore:cart.bore_mm};
+  const _be=document.getElementById('toExt'); if(_be){_be.disabled=false; _be.style.opacity='';}
   // --- situations dangereuses (surpression / surremplissage), affichage proéminent ---
   const pcip=cart.pmax_cip_bar||null, pct=pcip?Pmax/pcip*100:null;
   let lvl='ok'; const al=[];
