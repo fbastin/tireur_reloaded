@@ -36,7 +36,11 @@ include '../../header.php';
 .vm-bar > span { display:block; height:100%; background:#9aa0a6; }
 .vm-bar.warn > span { background:#e67e22; } .vm-bar.danger > span { background:#c0392b; }
 .vm-print { background:var(--color-accent); color:#fff; border:none; border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
-@media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 1fr; } .vm-panel { border:none; background:#fff; } }
+@media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 1fr; } .vm-panel { border:none; background:#fff; }
+  /* Ladder : imprimé seulement s'il est développé ; on garde les tables, on masque les contrôles */
+  #ladder:not([open]) { display:none !important; } #ladder { border:none; page-break-inside:avoid; }
+  #ladder summary { font-weight:700; list-style:none; } #ladder summary::-webkit-details-marker { display:none; }
+  #ladder .vm-field, #ladder textarea, #ladder button { display:none !important; } }
 </style>
 
 <div id="cadre">
@@ -108,7 +112,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 <p class="vm-note vm-noprint" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
 <a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>.</p>
 
-<details id="ladder" class="vm-noprint" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
+<details id="ladder" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;">Ladder (développement de charge)</summary>
 <div style="font-size:0.9rem;">
 <p class="vm-note">L'estimateur <strong>planifie</strong> et <strong>borne</strong> votre ladder, et <strong>exploite</strong> vos vitesses mesurées. Il <strong>ne désigne pas</strong> le nœud : le modèle est lisse (pas d'harmoniques de canon) — c'est au tir + à la statistique (≥ 20 coups, SD/ES) de trancher. <a href="/wiki/doku.php?id=technique:rechargement_balistique">méthode ladder &rarr;</a></p>
