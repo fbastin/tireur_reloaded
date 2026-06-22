@@ -210,17 +210,23 @@ effective energy ≈ 1.11 MJ/kg) dragged it ~3 % below its real clientele — th
 no-$Q_\mathrm{ex}$/$B_a$ powders (Accurate/Ramshot ≈ 1.27 MJ/kg). $E_\mathrm{eff}$ is
 therefore calibrated on **measured loads of its own clientele** (Western), keeping the
 (positive, physical) slope and recentering only the level to zero the velocity bias:
-$$E_\mathrm{eff} = 1\,185\,074 + 77\,418\,(\varphi/100)\ \text{J/kg}.$$
+$$E_\mathrm{eff} = 1\,162\,805 + 77\,418\,(\varphi/100)\ \text{J/kg}.$$
 This takes the fallback velocity bias on Accurate/Ramshot from $-3.2\%$ to $\approx 0\%$
 (RMS 6.6 → 5.9 %). Because $P_\max \propto v_0^2$, this removed ~6 points of pressure
 under-estimation — see §6 (the propagated velocity bias was the larger half of it).
 
 $$\eta_b = 0.1628 + 0.1218\,\tfrac{\varphi}{100} + 0.0180\,B_a,$$
-$$\eta_p = 0.7741 + 0.1481\,\tfrac{\varphi}{100} - 0.2196\,\ln R_e.$$
+$$\eta_p = 0.6337 + 0.1943\,\tfrac{\varphi}{100} - 0.1825\,\ln R_e.$$
 
-The multi-brand $\eta_p$ centres the bias (RS $+5\%$, Accurate/Ramshot $-7\%$, overall
-$\approx 0\%$; RMS ~17.5 %) instead of favouring Reload Swiss — pressure stays
-indicative.
+$\eta_p$ is fitted **source-equal-weighted over three datasets**: Reload Swiss + Accurate/
+Ramshot **+ Vihtavuori at the CIP ceiling** (each max load is a $(v_0,P_\max\!=\!\text{CIP})$
+pair; weight $1/n_\text{source}$ so the 3245 VV points do not swamp the others). Adding the
+at-the-limit VV data pulls $\eta_p$ down (higher predicted pressure), trading a centred fit
+for a **safer, more source-consistent** one — per-source pressure bias moves
+RS $+4.9\!\to\!+9.8\%$, Western $-3.7\!\to\!+0.7\%$, **VV $-13.4\!\to\!-10.0\%$**, and the worst
+$|\text{bias}|$ drops 13 → 10 %. Crucially the **dangerous high-fill zone** ($\varphi\ge95\%$)
+improves $-8\!\to\!-6\%$; the cost is conservative over-prediction at low fill (the *safe*
+direction). RMS is ~flat (21.4 → 21.1 %). Pressure stays **indicative**.
 
 Adding further features (e.g. $Q_\mathrm{ex}$, charge/bullet ratio, expansion ratio
 in $\eta_b$) improves the in-sample fit but **degrades generalization** and is
@@ -343,18 +349,20 @@ $(v_0,\;P_\max\!=\!\text{CIP})$ pair. Feeding VV's measured $v_0$ + geometry int
 production η_p model and comparing the predicted $P_\max$ to the cartridge CIP
 (`scripts/vv_pressure_crosscheck.js`, **3245 max loads** with a CIP value):
 
-| Class | Bias vs CIP | RMS |
+| Class | Bias vs CIP (before → after §5.3 recal) | RMS |
 |---|---|---|
-| rifle | **−17.1 %** | 18.8 % |
-| handgun | +3.0 % | 35.1 % |
-| all | −13.4 % | 22.7 % |
+| rifle | **−17.1 % → −14.0 %** | 18.8 → 16.2 % |
+| handgun | +3.0 % → +7.6 % | 35.1 → 33.2 % |
+| all | −13.4 % → −10.0 % | 22.7 → 20.5 % |
 
-The **rifle −17 %** independently reproduces the pressure under-estimation seen on Western
-(−19 %) and QuickLOAD — a *third* source (now European **CIP**, vs Western **SAAMI**) confirming
-the §6 ceiling: at a true at-the-limit load the estimate reads ~17 % low, i.e. a max load can
-display as ~83 % of CIP. Handgun pressure is near-zero-bias but very scattered (RMS 35 %),
-consistent with η_p being least reliable for small fast-powder cases. This is the quantified,
-multi-source basis for **never** rendering a "safe" verdict from a cold pressure estimate.
+Before recalibration the **rifle −17 %** independently reproduced the under-estimation seen on
+Western (−19 %) and QuickLOAD — a *third* source (European **CIP** vs Western **SAAMI**) confirming
+the §6 ceiling. This cross-check is what **motivated folding VV-at-CIP into the η_p fit** (§5.3):
+afterwards the rifle bias improves to **−14 %** (RMS 16 %) and handgun tips conservative (+7.6 %).
+A residual rifle under-prediction remains — a single global η_p cannot fully reconcile the
+CIP/SAAMI/RS measurement regimes (§6, η_p-residual note) — so pressure stays **indicative** and a
+max load can still read ~86 % of CIP. This multi-source evidence is the basis for **never**
+rendering a "safe" verdict from a cold pressure estimate.
 
 **Decomposition of the residual pressure under-estimation** (1121 matched Accurate/
 Ramshot loads, `scripts/fit_pressure_multibrand.js`). Because $P_\max \propto v_0^2$,

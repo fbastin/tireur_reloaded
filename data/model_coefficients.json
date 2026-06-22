@@ -1,6 +1,6 @@
 {
   "_doc": "Derived (publishable) coefficients of the energy-efficiency model. Calibrated on a manufacturer guide; raw load tables are NOT redistributed (EULA).",
-  "_date": "2026-06-21",
+  "_date": "2026-06-22",
   "_credit": "Component database derived from Gordon's Reloading Tool (Gordon, deceased) and the community (zen/grt_databases, CC0 1.0).",
   "_n_records": 1700,
   "_n_powders": 14,
@@ -25,12 +25,12 @@
       "ln(Re)"
     ],
     "coef": [
-      0.77406,
-      0.14812,
-      -0.21955
+      0.63373,
+      0.19431,
+      -0.18245
     ],
-    "lopo_P_rms_pct": 17.5,
-    "note": "Re = 1 + A*travel/V0; pression INDICATIVE. Calé multi-marques (Reload Swiss + Accurate/Ramshot) ; sous-estimation résiduelle possible."
+    "lopo_P_rms_pct": 21.1,
+    "note": "Re = 1 + A*travel/V0; pression INDICATIVE. Calé 3 sources ÉQUIPONDÉRÉES (Reload Swiss + Accurate/Ramshot + Vihtavuori-au-CIP) : inclut la charge max au plafond CIP, ce qui réduit la sous-estimation en zone haute (dangereuse) et rend le biais plus cohérent entre sources (max |biais| ~10%). Penche conservateur (sur-prédit légèrement RS / bas remplissage) — direction SÛRE."
   },
   "e_eff": {
     "features": [
@@ -38,11 +38,11 @@
       "fill/100"
     ],
     "coef": [
-      1185074,
+      1162805,
       77418
     ],
     "unit": "J/kg",
-    "lopo_v_rms_pct": 5.9,
+    "lopo_v_rms_pct": 7.4,
     "note": "FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé sur la CLIENTÈLE du repli (poudres SANS Qex/Ba : Accurate/Ramshot) — pente conservée, niveau recentré pour annuler le biais vitesse et réduire la sous-estimation de pression (∝ v0²). RS/VV passent par η_b."
   }
 }
