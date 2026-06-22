@@ -28,7 +28,8 @@ const groups = {};
 const add = (ck, pk, bullet, charge) => {
   if (!ck || !pk || !(bullet > 0 && charge > 0)) return;
   const k = ck + '|' + pk, g = (groups[k] = groups[k] || {});
-  if (g[bullet] == null || charge < g[bullet]) g[bullet] = charge;
+  const b = (g[bullet] = g[bullet] || { min: charge, max: charge });
+  if (charge < b.min) b.min = charge; if (charge > b.max) b.max = charge;
 };
 
 // Reload Swiss — use the 'min' level loads
@@ -53,9 +54,9 @@ for (const [k, byBullet] of Object.entries(groups)) {
   const bullets = Object.keys(byBullet).map(Number);
   if (bullets.length < 1) continue;
   const m = median(bullets);                       // typical bullet = median weight
-  out[k] = { m: +m.toFixed(1), c: +byBullet[m].toFixed(2) };  // its minimum (starting) charge
+  out[k] = { m: +m.toFixed(1), c: +byBullet[m].min.toFixed(2), cmax: +byBullet[m].max.toFixed(2) }; // min (start) + max charge
   n++;
 }
 fs.writeFileSync(d('start_charges.local.json'),
-  JSON.stringify({ _doc: 'Charge de DÉPART (min fabricant) pour la balle typique (médiane) par cartouche|poudre. LOCAL/gitignored : charges réelles, non redistribuées. Pré-remplissage UI au changement de couple.', m: 'balle typique (gr)', c: 'charge min (gr)', charges: out }, null, 1));
+  JSON.stringify({ _doc: 'Charge DÉPART (min) et MAX fabricant pour la balle typique (médiane) par cartouche|poudre. LOCAL/gitignored : charges réelles, non redistribuées. Pré-remplissage + fenêtre sûre de la ladder dans l UI.', m: 'balle typique (gr)', c: 'charge min (gr)', cmax: 'charge max (gr)', charges: out }, null, 1));
 console.log(`start charges for ${n} combos -> data/start_charges.local.json (gitignored)`);

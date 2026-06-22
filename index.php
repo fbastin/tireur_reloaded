@@ -108,6 +108,20 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 <p class="vm-note vm-noprint" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
 <a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>.</p>
 
+<details id="ladder" class="vm-noprint" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
+<summary style="cursor:pointer;font-weight:600;">Ladder (développement de charge)</summary>
+<div style="font-size:0.9rem;">
+<p class="vm-note">L'estimateur <strong>planifie</strong> et <strong>borne</strong> votre ladder, et <strong>exploite</strong> vos vitesses mesurées. Il <strong>ne désigne pas</strong> le nœud : le modèle est lisse (pas d'harmoniques de canon) — c'est au tir + à la statistique (≥ 20 coups, SD/ES) de trancher. <a href="/wiki/doku.php?id=technique:rechargement_balistique">méthode ladder &rarr;</a></p>
+<h4 style="margin:.6rem 0 .2rem;">1. Plan — fenêtre sûre (charge de départ → max fabricant)</h4>
+<div class="vm-field" style="max-width:200px;"><label>Incrément (gr)</label><input type="number" id="ladStep" value="0.2" step="0.1" min="0.05" oninput="renderLadder()"></div>
+<div id="ladTable" style="overflow-x:auto;"></div>
+<h4 style="margin:.8rem 0 .2rem;">2. Exploiter — vos vitesses mesurées (ancrage carabine)</h4>
+<p class="vm-note">Une ligne par tir : <code>charge,vitesse</code> (unités courantes). L'outil cale l'efficacité de <em>votre</em> carabine et compare mesuré vs courbe lisse.</p>
+<textarea id="ladMeas" rows="5" style="width:100%;font-family:monospace;font-size:0.82rem;" placeholder="41.0, 845&#10;41.2, 851&#10;41.4, 858&#10;..." oninput="fitLadder()"></textarea>
+<div id="ladFit" style="margin-top:0.4rem;"></div>
+</div>
+</details>
+
 <details id="howto" class="vm-howto vm-noprint" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;">Comment ça marche&nbsp;?</summary>
 <div style="font-size:0.9rem;">
@@ -134,7 +148,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 </div>
 
 <script>
-let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={};
+let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={}, RIFLE={eeff:null,n:0};
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -156,6 +170,7 @@ const toMs=(v,u)=>u==='fps'?v/MS_FPS: v;
 const frMm =(v,u)=>u==='in'? v/IN_MM  : v;
 const frMs =(v,u)=>u==='fps'?v*MS_FPS : v;
 const frBar=(v,u)=>u==='psi'?v*BAR_PSI: v;
+const frChg=(gr)=>U.charge.cur==='g'? gr*GR_G : gr;          // charge gr -> unité d'affichage
 function toggleU(k){
   const u=U[k]; u.cur=u.opt[(u.opt.indexOf(u.cur)+1)%u.opt.length];
   document.getElementById('u_'+k).textContent=u.cur;
@@ -229,11 +244,68 @@ function populatePowders(defaultSel){
 }
 // pré-remplit balle typique + charge de DÉPART (min fabricant réelle) au changement de couple
 function applyStartLoad(){
+  RIFLE.eeff=null;                                   // l'ancrage carabine (ladder) est propre au couple -> réinit
   const sc=STARTC[document.getElementById('cart').value+'|'+document.getElementById('pwd').value];
   if(!sc) return;
   document.getElementById('m').value = U.mass.cur==='g' ? (sc.m*GR_G).toFixed(2) : sc.m;
   document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
 }
+// --- Ladder : planificateur (fenêtre sûre) + interprète (ancrage carabine) ---
+// ancre effective : override carabine (ladder) > ancre fabricant du couple
+function effAnchor(ck,pk){
+  const anc=ANCH[ck+'|'+pk]||null;
+  if(RIFLE.eeff!=null) return {eeff:RIFLE.eeff, np:anc?anc.np:null, n:RIFLE.n, rifle:true};
+  return anc;
+}
+// prédiction modèle (v0, Pmax, fill, %CIP) pour une charge ARBITRAIRE (sans vmeas/température)
+function modelVP(cart,pw,m_gr,C_gr,bbl,anc){
+  const C=C_gr*G, d=cart.bore_mm/1000, A=Math.PI*d*d/4, travel=(bbl-cart.case_mm)/1000;
+  const Re=1+(A*travel)/(cart.case_vol_cm3*1e-6), hasPcd=pw.pcd>0, Cg=C_gr*GR_G;
+  const fill=hasPcd?(Cg/(pw.pcd/1000))/cart.case_vol_cm3*100:null, ff=hasPcd?fill/100:1;
+  const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
+  let v0,eta_p;
+  if(anc){ v0=EnergyModel.velocityFromEnergy(load,anc.eeff); eta_p=anc.np!=null?anc.np:lin(COEF.eta_p.coef,[1,ff,Math.log(Re)]); }
+  else if(pw.Qex&&pw.Ba){ eta_p=lin(COEF.eta_p.coef,[1,ff,Math.log(Re)]); v0=EnergyModel.velocityFromEnergy(load,lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex*1000); }
+  else { eta_p=lin(COEF.eta_p.coef,[1,ff,Math.log(Re)]); v0=EnergyModel.velocityFromEnergy(load,lin(COEF.e_eff.coef,[1,ff])); }
+  const Pmax=EnergyModel.predictPmax(load,v0,eta_p);
+  return {v0,Pmax,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null};
+}
+function renderLadder(){
+  const el=document.getElementById('ladTable'); if(!el)return;
+  const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value, cart=CAL[ck], pw=PWD[pk];
+  if(!cart||!pw){el.innerHTML='';return;}
+  const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
+  const sc=STARTC[ck+'|'+pk];
+  let cmin,cmax,note;
+  if(sc){ cmin=sc.c; cmax=sc.cmax; note='fenêtre fabricant '+sc.c+'–'+sc.cmax+' gr (balle '+sc.m+' gr)'; }
+  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); cmin=cur*0.95; cmax=cur; note='⚠ pas de données fabricant — plage indicative, vérifiez le max'; }
+  const step=+document.getElementById('ladStep').value;     // incrément en grains
+  if(!(cmax>cmin+1e-6&&step>0)){el.innerHTML='<p class="vm-note">'+note+' — plage trop étroite pour une ladder.</p>';return;}
+  const anc=effAnchor(ck,pk), nmax=Math.min(40,Math.floor((cmax-cmin)/step));
+  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">Charge ('+U.charge.cur+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% CIP</th></tr>';
+  for(let i=0;i<=nmax;i++){ const Cg=Math.min(cmin+i*step,cmax); const r=modelVP(cart,pw,m_gr,Cg,bbl,anc);
+    const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
+    t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+frChg(Cg).toFixed(2)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>';
+    if(Cg>=cmax)break; }
+  el.innerHTML='<p class="vm-note">'+note+(anc&&anc.rifle?' · <strong>ancré carabine</strong>':'')+' — Pmax/%CIP indicatifs (sous-estimés). Ne dépassez pas le max fabricant.</p>'+t+'</table>';
+}
+function fitLadder(){
+  const out=document.getElementById('ladFit'); if(!out)return;
+  const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), m=m_gr*G;
+  const pts=document.getElementById('ladMeas').value.split('\n').map(l=>l.trim()).filter(Boolean)
+    .map(l=>l.split(/[,;\t ]+/).map(parseFloat)).filter(a=>a.length>=2&&a[0]>0&&a[1]>0)
+    .map(a=>({C:toGr(a[0],U.charge.cur), v:toMs(a[1],U.v.cur)}));
+  if(pts.length<2){out.innerHTML=pts.length?'<p class="vm-note">Au moins 2 lignes valides nécessaires.</p>':'';return;}
+  const eeffs=pts.map(p=>{const C=p.C*G,me=m+C/3;return me*p.v*p.v/(2*C);});
+  const eeff=eeffs.reduce((a,b)=>a+b,0)/eeffs.length, vmean=pts.reduce((s,p)=>s+p.v,0)/pts.length;
+  const resid=pts.map(p=>{const C=p.C*G,me=m+C/3;return p.v-Math.sqrt(2*eeff*C/me);});
+  const rms=Math.sqrt(resid.reduce((s,x)=>s+x*x,0)/resid.length);
+  let t='<table style="width:100%;border-collapse:collapse;font-size:0.8rem;"><tr style="text-align:right"><th style="text-align:left">Charge</th><th>v₀ mes.</th><th>v₀ lissé</th><th>écart</th></tr>';
+  pts.forEach((p,i)=>{const C=p.C*G,me=m+C/3,vf=Math.sqrt(2*eeff*C/me);t+='<tr style="text-align:right;border-top:1px solid var(--color-border)"><td style="text-align:left">'+frChg(p.C).toFixed(2)+'</td><td>'+frMs(p.v,U.v.cur).toFixed(0)+'</td><td>'+frMs(vf,U.v.cur).toFixed(0)+'</td><td>'+(resid[i]>=0?'+':'')+frMs(resid[i],U.v.cur).toFixed(0)+'</td></tr>';});
+  out.innerHTML='<p class="vm-note">E_eff carabine ≈ <strong>'+Math.round(eeff)+'&nbsp;J/kg</strong> · écart mesuré/lissé <strong>'+frMs(rms,U.v.cur).toFixed(1)+'&nbsp;'+U.v.cur+'</strong> ('+(rms/vmean*100).toFixed(1)+'%) — <em>proxy de consistance ; un vrai SD/ES exige des tirs répétés à charge fixe</em>. '
+    +'<button type="button" class="vm-print" onclick="applyRifle('+eeff.toFixed(1)+','+pts.length+')">Ancrer cette carabine</button></p>'+t+'</table>';
+}
+function applyRifle(eeff,n){ RIFLE.eeff=eeff; RIFLE.n=n; calc(); renderLadder(); }
 // schéma coté de la cartouche sélectionnée (cotes exactes si dispo, sinon profil estimé)
 function renderDiag(){
   const el=document.getElementById('cartdiag'); if(!el||typeof cartridgeDiagram!=='function')return;
@@ -263,7 +335,7 @@ function calc(){
   // formules physiques centralisées dans EnergyModel (évite la duplication) ; load reprend la géométrie courante
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
   // priorité : mesure utilisateur > ancrage fabricant (couple connu) > à froid
-  const anc=ANCH[document.getElementById('cart').value+'|'+document.getElementById('pwd').value]||null;
+  const anc=effAnchor(document.getElementById('cart').value,document.getElementById('pwd').value);
   let v0, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
   const npGlobal=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(Re)]);
   if(vmeas>0){
@@ -310,10 +382,10 @@ function calc(){
   else pbar.style.display='none';
   const ancFlag = !!(anc && anc.mhflag);                 // couple fabricant atypique (garde-fou Mayer-Hart)
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?'ancrée (vos données)':dataAnchor?(ancFlag?'ancrée fabricant (à vérifier)':'ancrée fabricant ~5%'):'à froid ±10%';
+  tag.textContent=anchored?'ancrée (vos données)':dataAnchor?(anc&&anc.rifle?'ancrée carabine (ladder)':ancFlag?'ancrée fabricant (à vérifier)':'ancrée fabricant ~5%'):'à froid ±10%';
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
-  const mode = anchored?'mesure perso' : dataAnchor?`ancré fabricant (n=${anc.n}${anc.np==null?', vitesse seule — pression η_p global':''})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
+  const mode = anchored?'mesure perso' : dataAnchor?`${anc&&anc.rifle?'ancré carabine':'ancré fabricant'} (n=${anc.n}${anc.np==null?', vitesse seule — pression η_p global':''})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}`;
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
@@ -324,6 +396,7 @@ function calc(){
   if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
   if(tempApplied) w='Vitesse ajustée à '+Tc.toFixed(0)+' °C (réf. 21 °C, sensibilité Litz générique ~1,8 fps/°C — indicatif, varie selon la poudre). '+w;
   document.getElementById('warn').textContent=w;
+  renderLadder();
   // courbe Le Duc (couche 3)
   const ld=VelocityModel.leDuc(v0,Pmax,m,C,d,travel);
   if(!ld){Plotly.purge('plot');
