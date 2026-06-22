@@ -75,7 +75,12 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
         <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
       </select></div>
     <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();calc()"></select></div>
-    <div class="vm-field"><label>Poudre</label><select id="pwd" onchange="calc()"></select></div>
+    <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
+        <option value="az" selected>tri : A → Z</option>
+        <option value="za">tri : Z → A</option>
+        <option value="burn-fast">tri : combustion rapide → lente</option>
+        <option value="burn-slow">tri : combustion lente → rapide</option>
+      </select></label><select id="pwd" onchange="calc()"></select></div>
     <div class="vm-field"><label>Masse de balle <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
     <div class="vm-field"><label>Charge <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
     <div class="vm-field"><label>Longueur de canon <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
@@ -125,7 +130,7 @@ une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». A
 </div>
 
 <script>
-let CAL={}, PWD={}, COEF={}, ANCH={};
+let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={};
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -187,21 +192,35 @@ Promise.all([
     cs.appendChild(og);
   });
   cs.value='308 Win.';
-  const ps=document.getElementById('pwd');
-  const pLabel=(k)=>{const p=PWD[k];return (p.mfg?p.mfg+' ':'')+(p.name||k);};
-  // rang de vitesse de combustion (rapide -> lente) depuis burn_rate_chart.txt
+  // rang de vitesse de combustion (rapide -> lente) depuis burn_rate_chart.txt (optionnel)
   const pnorm=(s)=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
   const pIdx={}; Object.keys(PWD).forEach(k=>{const p=PWD[k];pIdx[pnorm(k)]=k;pIdx[pnorm((p.mfg||'')+(p.name||''))]=k;pIdx[pnorm(p.name||'')]=k;});
-  const brRank={}; (brTxt||'').split('\n').map(s=>s.trim()).filter(s=>s&&!s.startsWith('#')).forEach((nm,i)=>{const k=pIdx[pnorm(nm)]; if(k!=null&&brRank[k]==null) brRank[k]=i;});
-  const ranked=Object.keys(PWD).filter(k=>brRank[k]!=null).sort((a,b)=>brRank[a]-brRank[b]);
-  const rest=Object.keys(PWD).filter(k=>brRank[k]==null).sort((a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true}));
-  const addPwdGroup=(label,keys)=>{ if(!keys.length)return; const og=document.createElement('optgroup'); og.label=label;
-    keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);og.appendChild(o);}); ps.appendChild(og); };
-  addPwdGroup('Par vitesse de combustion (rapide → lente)', ranked);
-  addPwdGroup(ranked.length?'Autres poudres (A → Z)':'Poudres (A → Z)', rest);
-  ps.value='RS52';
+  BRRANK={}; (brTxt||'').split('\n').map(s=>s.trim()).filter(s=>s&&!s.startsWith('#')).forEach((nm,i)=>{const k=pIdx[pnorm(nm)]; if(k!=null&&BRRANK[k]==null) BRRANK[k]=i;});
+  // si le tri par combustion n'a aucune donnée, masquer ces options
+  if(!Object.keys(BRRANK).length){[...document.querySelectorAll('#pwdSort option')].forEach(o=>{if(o.value.startsWith('burn'))o.remove();});}
+  populatePowders('RS52');
   onCart(); calc();
 });
+// (re)peuple le menu poudres selon le tri choisi (#pwdSort), en conservant la sélection
+function populatePowders(defaultSel){
+  const ps=document.getElementById('pwd'); const keep=defaultSel||ps.value;
+  const mode=document.getElementById('pwdSort').value;
+  const pLabel=(k)=>{const p=PWD[k];return (p.mfg?p.mfg+' ':'')+(p.name||k);};
+  const byName=(a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true});
+  const opt=(parent,k)=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);parent.appendChild(o);};
+  ps.innerHTML='';
+  if(mode==='burn-fast'||mode==='burn-slow'){
+    const fast=mode==='burn-fast';
+    const ranked=Object.keys(PWD).filter(k=>BRRANK[k]!=null).sort((a,b)=>fast?BRRANK[a]-BRRANK[b]:BRRANK[b]-BRRANK[a]);
+    const rest=Object.keys(PWD).filter(k=>BRRANK[k]==null).sort(byName);
+    if(ranked.length){const g=document.createElement('optgroup');g.label='Vitesse de combustion ('+(fast?'rapide → lente':'lente → rapide')+')';ranked.forEach(k=>opt(g,k));ps.appendChild(g);}
+    const g2=document.createElement('optgroup');g2.label='Autres poudres (A → Z)';rest.forEach(k=>opt(g2,k));ps.appendChild(g2);
+  } else {
+    const keys=Object.keys(PWD).sort(byName); if(mode==='za')keys.reverse();
+    keys.forEach(k=>opt(ps,k));
+  }
+  if(keep&&PWD[keep])ps.value=keep;
+}
 function onCart(){ // défaut canon selon type (pistolet court)
   const c=CAL[document.getElementById('cart').value]; if(!c)return;
   const bbl_mm = c.type==='handgun' ? 122 : 600;
