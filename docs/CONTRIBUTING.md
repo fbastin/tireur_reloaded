@@ -68,6 +68,10 @@ calibration guide (e.g. `"6.5 Creedmoor"`).
   data). If you have no calibration data for the cartridge yet, set a best estimate
   of the effective chamber volume; it only affects the fill-ratio computed for the
   user and can be refined later.
+- `test_barrel_mm` (optional) is the **reference barrel** for pressure and velocity-vs-barrel
+  scaling. Don't hand-set it: run `node scripts/build_test_barrels.js --write` to (re)derive
+  it per cartridge as the modal calibration barrel across RS/Western/Vihtavuori. Cartridges
+  with no data keep the type default (600 rifle / 122 handgun). Re-run after adding data.
 
 ## Add / extend calibration data
 

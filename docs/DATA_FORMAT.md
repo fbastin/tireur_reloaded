@@ -19,8 +19,15 @@ cartridge labels used by the calibration guide.
       "bore_mm": 7.82,         // groove/bullet diameter -> bore area A = πd²/4
       "case_mm": 51.18,        // case length -> bullet travel L = barrel − case
       "case_vol_cm3": 2.981,   // effective chamber volume (see note)
-      "pmax_cip_bar": 4150     // CIP/SAAMI max pressure (bar) — drives the overpressure
+      "pmax_cip_bar": 4150,    // CIP/SAAMI max pressure (bar) — drives the overpressure
                                // warning; nominal/indicative, omitted if uncertain
+      "test_barrel_mm": 610    // optional: reference test-barrel length. Peak PRESSURE is
+                               // evaluated at this travel (peak forms near the chamber,
+                               // ~independent of the real barrel), and predicted VELOCITY is
+                               // anchored here then scaled to the user's barrel (Powley/Litz).
+                               // Auto-derived per cartridge by `scripts/build_test_barrels.js`
+                               // (modal calibration barrel across RS/Western/Vihtavuori).
+                               // Falls back to 600 (rifle) / 122 (handgun) when absent.
     },
     "45 ACP (Auto)": {
       "type": "handgun",

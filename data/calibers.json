@@ -6,7 +6,8 @@
       "bore_mm": 7.82,
       "case_mm": 51.18,
       "case_vol_cm3": 2.981,
-      "pmax_cip_bar": 4150
+      "pmax_cip_bar": 4150,
+      "test_barrel_mm": 610
     },
     "9 mm Luger": {
       "type": "handgun",
@@ -17,14 +18,16 @@
       "bore_mm": 9.02,
       "case_mm": 19.15,
       "case_vol_cm3": 0.563,
-      "pmax_cip_bar": 2350
+      "pmax_cip_bar": 2350,
+      "test_barrel_mm": 102
     },
     "7 x 64": {
       "type": "rifle",
       "bore_mm": 7.24,
       "case_mm": 64,
       "case_vol_cm3": 3.798,
-      "pmax_cip_bar": 4150
+      "pmax_cip_bar": 4150,
+      "test_barrel_mm": 650
     },
     "6.5 Creedmoor": {
       "type": "rifle",
@@ -38,7 +41,8 @@
       "bore_mm": 7.82,
       "case_mm": 63.35,
       "case_vol_cm3": 3.877,
-      "pmax_cip_bar": 4050
+      "pmax_cip_bar": 4050,
+      "test_barrel_mm": 620
     },
     "9.3 x 62": {
       "type": "rifle",
@@ -52,14 +56,16 @@
       "bore_mm": 7.82,
       "case_mm": 66.55,
       "case_vol_cm3": 5.157,
-      "pmax_cip_bar": 4300
+      "pmax_cip_bar": 4300,
+      "test_barrel_mm": 620
     },
     "7.5 x 55 Swiss": {
       "type": "rifle",
       "bore_mm": 7.77,
       "case_mm": 55.6,
       "case_vol_cm3": 3.718,
-      "pmax_cip_bar": 3800
+      "pmax_cip_bar": 3800,
+      "test_barrel_mm": 650
     },
     "243 Win.": {
       "type": "rifle",
@@ -83,7 +89,8 @@
       "bore_mm": 7.24,
       "case_mm": 64.77,
       "case_vol_cm3": 5.099,
-      "pmax_cip_bar": 4300
+      "pmax_cip_bar": 4300,
+      "test_barrel_mm": 610
     },
     "45 ACP (Auto)": {
       "type": "handgun",
@@ -94,35 +101,40 @@
       "bore_mm": 11.48,
       "case_mm": 22.81,
       "case_vol_cm3": 1.126,
-      "pmax_cip_bar": 1300
+      "pmax_cip_bar": 1300,
+      "test_barrel_mm": 127
     },
     "223 Rem.": {
       "type": "rifle",
       "bore_mm": 5.7,
       "case_mm": 44.7,
       "case_vol_cm3": 1.804,
-      "pmax_cip_bar": 4300
+      "pmax_cip_bar": 4300,
+      "test_barrel_mm": 620
     },
     "357 Magnum": {
       "type": "handgun",
       "bore_mm": 9.07,
       "case_mm": 32.77,
       "case_vol_cm3": 1.12,
-      "pmax_cip_bar": 3000
+      "pmax_cip_bar": 3000,
+      "test_barrel_mm": 175
     },
     "44 Rem. Mag.": {
       "type": "handgun",
       "bore_mm": 10.92,
       "case_mm": 32.61,
       "case_vol_cm3": 1.56,
-      "pmax_cip_bar": 3000
+      "pmax_cip_bar": 3000,
+      "test_barrel_mm": 150
     },
     "300 PRC": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 65.02,
       "case_vol_cm3": 5.571,
-      "pmax_cip_bar": 4400
+      "pmax_cip_bar": 4400,
+      "test_barrel_mm": 660
     },
     "6.5 x 55 SE": {
       "type": "rifle",
@@ -133,14 +145,16 @@
       "bore_mm": 6.71,
       "case_mm": 55,
       "case_vol_cm3": 3.419,
-      "pmax_cip_bar": 3800
+      "pmax_cip_bar": 3800,
+      "test_barrel_mm": 650
     },
     "38 Special": {
       "type": "handgun",
       "bore_mm": 9.07,
       "case_mm": 29.34,
       "case_vol_cm3": 1.032,
-      "pmax_cip_bar": 1500
+      "pmax_cip_bar": 1500,
+      "test_barrel_mm": 196
     },
     "38 Super Auto": {
       "type": "handgun",
@@ -150,28 +164,32 @@
       "bore_mm": 9.07,
       "case_mm": 22.94,
       "case_vol_cm3": 0.79,
-      "pmax_cip_bar": 2400
+      "pmax_cip_bar": 2400,
+      "test_barrel_mm": 127
     },
     "8 x 57 IRS": {
       "type": "rifle",
       "bore_mm": 8.2,
       "case_mm": 57,
       "case_vol_cm3": 3.557,
-      "pmax_cip_bar": 3650
+      "pmax_cip_bar": 3650,
+      "test_barrel_mm": 650
     },
     "222 Rem.": {
       "type": "rifle",
       "bore_mm": 5.7,
       "case_mm": 43.18,
       "case_vol_cm3": 1.61,
-      "pmax_cip_bar": 3600
+      "pmax_cip_bar": 3600,
+      "test_barrel_mm": 610
     },
     "270 Win.": {
       "type": "rifle",
       "bore_mm": 7.04,
       "case_mm": 64.51,
       "case_vol_cm3": 4.112,
-      "pmax_cip_bar": 4300
+      "pmax_cip_bar": 4300,
+      "test_barrel_mm": 620
     },
     "6.5 PRC": {
       "type": "rifle",
@@ -192,14 +210,16 @@
       "bore_mm": 6.71,
       "case_mm": 53,
       "case_vol_cm3": 2.995,
-      "pmax_cip_bar": 4150
+      "pmax_cip_bar": 4150,
+      "test_barrel_mm": 630
     },
     "375 H&H Mag.": {
       "type": "rifle",
       "bore_mm": 9.53,
       "case_mm": 72,
       "case_vol_cm3": 5.154,
-      "pmax_cip_bar": 4300
+      "pmax_cip_bar": 4300,
+      "test_barrel_mm": 650
     },
     "6 XC": {
       "type": "rifle",
@@ -212,14 +232,16 @@
       "bore_mm": 8.2,
       "case_mm": 57,
       "case_vol_cm3": 3.489,
-      "pmax_cip_bar": 3900
+      "pmax_cip_bar": 3900,
+      "test_barrel_mm": 620
     },
     "8 x 68 S": {
       "type": "rifle",
       "bore_mm": 8.2,
       "case_mm": 67.5,
       "case_vol_cm3": 5.059,
-      "pmax_cip_bar": 4400
+      "pmax_cip_bar": 4400,
+      "test_barrel_mm": 650
     },
     "30 R Blaser": {
       "type": "rifle",
@@ -232,14 +254,16 @@
       "bore_mm": 8.61,
       "case_mm": 69.2,
       "case_vol_cm3": 6.389,
-      "pmax_cip_bar": 4200
+      "pmax_cip_bar": 4200,
+      "test_barrel_mm": 700
     },
     "338 Win. Mag.": {
       "type": "rifle",
       "bore_mm": 8.61,
       "case_mm": 63.5,
       "case_vol_cm3": 4.684,
-      "pmax_cip_bar": 4300
+      "pmax_cip_bar": 4300,
+      "test_barrel_mm": 620
     },
     "444 Marlin": {
       "type": "rifle",
@@ -263,7 +287,8 @@
       "bore_mm": 5.7,
       "case_mm": 35.56,
       "case_vol_cm3": 0.665,
-      "pmax_cip_bar": 3200
+      "pmax_cip_bar": 3200,
+      "test_barrel_mm": 508
     },
     "300 AAC BLK": {
       "type": "rifle",
@@ -273,28 +298,32 @@
       "bore_mm": 7.82,
       "case_mm": 34.7,
       "case_vol_cm3": 1.044,
-      "pmax_cip_bar": 3800
+      "pmax_cip_bar": 3800,
+      "test_barrel_mm": 406
     },
     "10 mm Auto": {
       "type": "handgun",
       "bore_mm": 10.17,
       "case_mm": 25.2,
       "case_vol_cm3": 0.879,
-      "pmax_cip_bar": 2300
+      "pmax_cip_bar": 2300,
+      "test_barrel_mm": 127
     },
     "22-250 Rem.": {
       "type": "rifle",
       "bore_mm": 5.7,
       "case_mm": 48.56,
       "case_vol_cm3": 2.736,
-      "pmax_cip_bar": 4050
+      "pmax_cip_bar": 4050,
+      "test_barrel_mm": 610
     },
     "45 Colt": {
       "type": "handgun",
       "bore_mm": 11.48,
       "case_mm": 32.61,
       "case_vol_cm3": 1.837,
-      "pmax_cip_bar": 1100
+      "pmax_cip_bar": 1100,
+      "test_barrel_mm": 150
     },
     "9 mm Browning court": {
       "type": "handgun",
@@ -306,14 +335,16 @@
       "bore_mm": 9.02,
       "case_mm": 17.27,
       "case_vol_cm3": 0.434,
-      "pmax_cip_bar": 1500
+      "pmax_cip_bar": 1500,
+      "test_barrel_mm": 94
     },
     "30-30 Win.": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 51.82,
       "case_vol_cm3": 2.168,
-      "pmax_cip_bar": 3000
+      "pmax_cip_bar": 3000,
+      "test_barrel_mm": 610
     },
     "6.5 x 47 Lapua": {
       "type": "rifle",
@@ -340,7 +371,8 @@
       "bore_mm": 7.92,
       "case_mm": 53.7,
       "case_vol_cm3": 3.65,
-      "pmax_cip_bar": 3900
+      "pmax_cip_bar": 3900,
+      "test_barrel_mm": 610
     },
     "7 -08 Rem.": {
       "type": "rifle",
@@ -351,20 +383,23 @@
       "bore_mm": 7.24,
       "case_mm": 51.94,
       "case_vol_cm3": 2.717,
-      "pmax_cip_bar": 4150
+      "pmax_cip_bar": 4150,
+      "test_barrel_mm": 610
     },
     "10.3 x 60 R": {
       "type": "rifle",
       "bore_mm": 10.3,
       "case_mm": 60,
-      "case_vol_cm3": 4.786
+      "case_vol_cm3": 4.786,
+      "test_barrel_mm": 680
     },
     "40 S&W": {
       "type": "handgun",
       "bore_mm": 10.17,
       "case_mm": 21.59,
       "case_vol_cm3": 0.648,
-      "pmax_cip_bar": 2250
+      "pmax_cip_bar": 2250,
+      "test_barrel_mm": 102
     },
     "270 WSM": {
       "type": "rifle",
@@ -374,14 +409,16 @@
       "bore_mm": 7.04,
       "case_mm": 53.34,
       "case_vol_cm3": 4.499,
-      "pmax_cip_bar": 4450
+      "pmax_cip_bar": 4450,
+      "test_barrel_mm": 610
     },
     "303 British": {
       "type": "rifle",
       "bore_mm": 7.92,
       "case_mm": 56.44,
       "case_vol_cm3": 3.09,
-      "pmax_cip_bar": 3650
+      "pmax_cip_bar": 3650,
+      "test_barrel_mm": 610
     },
     "6 Norma BR": {
       "type": "rifle",
@@ -391,7 +428,8 @@
       ],
       "bore_mm": 6.17,
       "case_mm": 38.55,
-      "case_vol_cm3": 2.172
+      "case_vol_cm3": 2.172,
+      "test_barrel_mm": 660
     },
     "300 WSM": {
       "type": "rifle",
@@ -401,7 +439,8 @@
       "bore_mm": 7.82,
       "case_mm": 53.34,
       "case_vol_cm3": 4.597,
-      "pmax_cip_bar": 4400
+      "pmax_cip_bar": 4400,
+      "test_barrel_mm": 620
     },
     "338 Norma Mag.": {
       "type": "rifle",
@@ -425,7 +464,8 @@
       "bore_mm": 10.41,
       "case_mm": 32.8,
       "case_vol_cm3": 1.404,
-      "pmax_cip_bar": 2480
+      "pmax_cip_bar": 2480,
+      "test_barrel_mm": 254
     },
     "357 Maximum": {
       "type": "handgun",
@@ -437,7 +477,8 @@
       "bore_mm": 9.07,
       "case_mm": 40.8,
       "case_vol_cm3": 1.64,
-      "pmax_cip_bar": 2760
+      "pmax_cip_bar": 2760,
+      "test_barrel_mm": 318
     },
     "30 T/C": {
       "type": "rifle",
@@ -447,35 +488,40 @@
       "bore_mm": 7.82,
       "case_mm": 48.77,
       "case_vol_cm3": 3.034,
-      "pmax_cip_bar": 4250
+      "pmax_cip_bar": 4250,
+      "test_barrel_mm": 610
     },
     "475 Linebaugh": {
       "type": "handgun",
       "bore_mm": 12.06,
-      "case_mm": 36.0,
+      "case_mm": 36,
       "case_vol_cm3": 3.481,
-      "pmax_cip_bar": 3450
+      "pmax_cip_bar": 3450,
+      "test_barrel_mm": 203
     },
     "458 SOCOM": {
       "type": "rifle",
       "bore_mm": 11.63,
-      "case_mm": 40.0,
+      "case_mm": 40,
       "case_vol_cm3": 3.604,
-      "pmax_cip_bar": 2410
+      "pmax_cip_bar": 2410,
+      "test_barrel_mm": 406
     },
     "357 SIG": {
       "type": "handgun",
       "bore_mm": 9.02,
       "case_mm": 21.97,
       "case_vol_cm3": 0.518,
-      "pmax_cip_bar": 2760
+      "pmax_cip_bar": 2760,
+      "test_barrel_mm": 102
     },
     "35 Remington": {
       "type": "rifle",
       "bore_mm": 9.09,
       "case_mm": 48.8,
       "case_vol_cm3": 3.618,
-      "pmax_cip_bar": 2310
+      "pmax_cip_bar": 2310,
+      "test_barrel_mm": 610
     },
     "6.5 Grendel": {
       "type": "rifle",
@@ -485,14 +531,16 @@
       "bore_mm": 6.71,
       "case_mm": 38.7,
       "case_vol_cm3": 2.785,
-      "pmax_cip_bar": 3585
+      "pmax_cip_bar": 3585,
+      "test_barrel_mm": 508
     },
     "454 Casull": {
       "type": "handgun",
       "bore_mm": 11.48,
       "case_mm": 35.1,
       "case_vol_cm3": 2.163,
-      "pmax_cip_bar": 4482
+      "pmax_cip_bar": 4482,
+      "test_barrel_mm": 191
     },
     "460 S&W": {
       "type": "handgun",
@@ -500,9 +548,10 @@
         "460 S&W Magnum"
       ],
       "bore_mm": 11.48,
-      "case_mm": 46.0,
+      "case_mm": 46,
       "case_vol_cm3": 3.07,
-      "pmax_cip_bar": 4482
+      "pmax_cip_bar": 4482,
+      "test_barrel_mm": 211
     },
     "6mm PPC": {
       "type": "rifle",
@@ -513,7 +562,8 @@
       ],
       "bore_mm": 6.17,
       "case_mm": 38.5,
-      "case_vol_cm3": 1.998
+      "case_vol_cm3": 1.998,
+      "test_barrel_mm": 533
     },
     "257 Wby. Mag.": {
       "type": "rifle",
@@ -523,14 +573,16 @@
       "bore_mm": 6.53,
       "case_mm": 64.6,
       "case_vol_cm3": 4.827,
-      "pmax_cip_bar": 4482
+      "pmax_cip_bar": 4482,
+      "test_barrel_mm": 660
     },
     "257 Roberts": {
       "type": "rifle",
       "bore_mm": 6.53,
       "case_mm": 56.7,
       "case_vol_cm3": 3.623,
-      "pmax_cip_bar": 3723
+      "pmax_cip_bar": 3723,
+      "test_barrel_mm": 610
     },
     "6.5-284 Norma": {
       "type": "rifle",
@@ -539,7 +591,8 @@
       ],
       "bore_mm": 6.71,
       "case_mm": 55.1,
-      "case_vol_cm3": 4.485
+      "case_vol_cm3": 4.485,
+      "test_barrel_mm": 660
     },
     "300 RCM": {
       "type": "rifle",
@@ -547,15 +600,17 @@
         "300 Ruger Compact Magnum"
       ],
       "bore_mm": 7.82,
-      "case_mm": 53.0,
+      "case_mm": 53,
       "case_vol_cm3": 4.575,
-      "pmax_cip_bar": 4400
+      "pmax_cip_bar": 4400,
+      "test_barrel_mm": 610
     },
     "219 Zipper": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 49.2,
-      "case_vol_cm3": 2.103
+      "case_vol_cm3": 2.103,
+      "test_barrel_mm": 610
     },
     "338-06": {
       "type": "rifle",
@@ -564,7 +619,8 @@
       ],
       "bore_mm": 8.59,
       "case_mm": 63.3,
-      "case_vol_cm3": 3.707
+      "case_vol_cm3": 3.707,
+      "test_barrel_mm": 610
     },
     "250 Savage": {
       "type": "rifle",
@@ -573,31 +629,35 @@
       ],
       "bore_mm": 6.53,
       "case_mm": 48.56,
-      "case_vol_cm3": 2.356
+      "case_vol_cm3": 2.356,
+      "test_barrel_mm": 610
     },
     "222 Rem. Mag.": {
       "type": "rifle",
       "bore_mm": 5.69,
-      "case_mm": 47.0,
-      "case_vol_cm3": 1.794
+      "case_mm": 47,
+      "case_vol_cm3": 1.794,
+      "test_barrel_mm": 610
     },
     "308 Marlin Express": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 48.5,
       "case_vol_cm3": 2.563,
-      "pmax_cip_bar": 3275
+      "pmax_cip_bar": 3275,
+      "test_barrel_mm": 610
     },
     "6 mm Creedmoor": {
       "type": "rifle",
       "bore_mm": 6.17,
       "case_mm": 48.8,
-      "case_vol_cm3": 3.033
+      "case_vol_cm3": 3.033,
+      "test_barrel_mm": 660
     },
     "22 Creedmoor": {
       "type": "rifle",
       "bore_mm": 5.7,
-      "case_mm": 49.0,
+      "case_mm": 49,
       "case_vol_cm3": 3.059
     },
     "6mm ARC": {
@@ -607,25 +667,29 @@
       ],
       "bore_mm": 6.17,
       "case_mm": 37.85,
-      "case_vol_cm3": 2.014
+      "case_vol_cm3": 2.014,
+      "test_barrel_mm": 508
     },
     "22 Nosler": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 44.7,
-      "case_vol_cm3": 2.107
+      "case_vol_cm3": 2.107,
+      "test_barrel_mm": 610
     },
     "224 Valkyrie": {
       "type": "rifle",
       "bore_mm": 5.69,
-      "case_mm": 41.0,
-      "case_vol_cm3": 1.786
+      "case_mm": 41,
+      "case_vol_cm3": 1.786,
+      "test_barrel_mm": 610
     },
     "284 Winchester": {
       "type": "rifle",
       "bore_mm": 7.21,
       "case_mm": 55.12,
-      "case_vol_cm3": 3.82
+      "case_vol_cm3": 3.82,
+      "test_barrel_mm": 610
     },
     "7mm PRC": {
       "type": "rifle",
@@ -633,20 +697,23 @@
         "7 mm PRC"
       ],
       "bore_mm": 7.21,
-      "case_mm": 57.0,
-      "case_vol_cm3": 4.4
+      "case_mm": 57,
+      "case_vol_cm3": 4.4,
+      "test_barrel_mm": 610
     },
     "300 Savage": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 47.5,
-      "case_vol_cm3": 3.408
+      "case_vol_cm3": 3.408,
+      "test_barrel_mm": 660
     },
     "25-06 Remington": {
       "type": "rifle",
       "bore_mm": 6.53,
       "case_mm": 63.3,
-      "case_vol_cm3": 3.675
+      "case_vol_cm3": 3.675,
+      "test_barrel_mm": 610
     },
     "280 Remington": {
       "type": "rifle",
@@ -658,7 +725,8 @@
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 63.3,
-      "case_vol_cm3": 5.75
+      "case_vol_cm3": 5.75,
+      "test_barrel_mm": 660
     },
     "300 Rem. Ultra Mag.": {
       "type": "rifle",
@@ -667,7 +735,8 @@
       ],
       "bore_mm": 7.82,
       "case_mm": 72.4,
-      "case_vol_cm3": 7.37
+      "case_vol_cm3": 7.37,
+      "test_barrel_mm": 670
     },
     "7 x 65 R": {
       "type": "rifle",
@@ -675,26 +744,30 @@
         "7 x 65R"
       ],
       "bore_mm": 7.24,
-      "case_mm": 65.0,
-      "case_vol_cm3": 3.743
+      "case_mm": 65,
+      "case_vol_cm3": 3.743,
+      "test_barrel_mm": 660
     },
     "6.8 Western": {
       "type": "rifle",
       "bore_mm": 7.04,
       "case_mm": 51.3,
-      "case_vol_cm3": 4.294
+      "case_vol_cm3": 4.294,
+      "test_barrel_mm": 610
     },
     "300 Lapua Magnum": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 69.73,
-      "case_vol_cm3": 6.25
+      "case_vol_cm3": 6.25,
+      "test_barrel_mm": 660
     },
     "6 mm Remington": {
       "type": "rifle",
       "bore_mm": 6.17,
       "case_mm": 56.7,
-      "case_vol_cm3": 3.261
+      "case_vol_cm3": 3.261,
+      "test_barrel_mm": 660
     },
     "50 AE": {
       "type": "handgun",
@@ -703,7 +776,8 @@
       ],
       "bore_mm": 12.7,
       "case_mm": 32.6,
-      "case_vol_cm3": 3.412
+      "case_vol_cm3": 3.412,
+      "test_barrel_mm": 280
     },
     "240 Weatherby Magnum": {
       "type": "rifle",
@@ -715,25 +789,29 @@
       "type": "rifle",
       "bore_mm": 10.57,
       "case_mm": 73.66,
-      "case_vol_cm3": 6.463
+      "case_vol_cm3": 6.463,
+      "test_barrel_mm": 620
     },
     "204 Ruger": {
       "type": "rifle",
       "bore_mm": 5.18,
-      "case_mm": 47.0,
-      "case_vol_cm3": 1.853
+      "case_mm": 47,
+      "case_vol_cm3": 1.853,
+      "test_barrel_mm": 610
     },
     "30 Carbine": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 32.8,
-      "case_vol_cm3": 1.05
+      "case_vol_cm3": 1.05,
+      "test_barrel_mm": 445
     },
     "270 Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 7.04,
-      "case_mm": 65.0,
-      "case_vol_cm3": 5.413
+      "case_mm": 65,
+      "case_vol_cm3": 5.413,
+      "test_barrel_mm": 650
     },
     "7mm RUM": {
       "type": "rifle",
@@ -742,31 +820,36 @@
       ],
       "bore_mm": 7.21,
       "case_mm": 72.4,
-      "case_vol_cm3": 6.098
+      "case_vol_cm3": 6.098,
+      "test_barrel_mm": 660
     },
     "458 Winchester Magnum": {
       "type": "rifle",
       "bore_mm": 11.63,
       "case_mm": 63.5,
-      "case_vol_cm3": 5.214
+      "case_vol_cm3": 5.214,
+      "test_barrel_mm": 635
     },
     "221 Remington Fireball": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 35.6,
-      "case_vol_cm3": 1.331
+      "case_vol_cm3": 1.331,
+      "test_barrel_mm": 356
     },
     "7mm Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 7.21,
       "case_mm": 64.7,
-      "case_vol_cm3": 5.23
+      "case_vol_cm3": 5.23,
+      "test_barrel_mm": 660
     },
     "45 Winchester Magnum": {
       "type": "handgun",
       "bore_mm": 11.5,
       "case_mm": 30.4,
-      "case_vol_cm3": 1.89
+      "case_vol_cm3": 1.89,
+      "test_barrel_mm": 300
     },
     "223 WSSM": {
       "type": "rifle",
@@ -775,25 +858,29 @@
       ],
       "bore_mm": 5.69,
       "case_mm": 42.4,
-      "case_vol_cm3": 3.038
+      "case_vol_cm3": 3.038,
+      "test_barrel_mm": 610
     },
     "300 Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 71.8,
-      "case_vol_cm3": 5.602
+      "case_vol_cm3": 5.602,
+      "test_barrel_mm": 660
     },
     "9 x 23 Winchester": {
       "type": "handgun",
       "bore_mm": 9.04,
       "case_mm": 22.86,
-      "case_vol_cm3": 0.8
+      "case_vol_cm3": 0.8,
+      "test_barrel_mm": 130
     },
     "7 x 57 R": {
       "type": "rifle",
       "bore_mm": 7.24,
-      "case_mm": 57.0,
-      "case_vol_cm3": 3.209
+      "case_mm": 57,
+      "case_vol_cm3": 3.209,
+      "test_barrel_mm": 550
     },
     "7mm WSM": {
       "type": "rifle",
@@ -803,7 +890,8 @@
       ],
       "bore_mm": 7.21,
       "case_mm": 53.3,
-      "case_vol_cm3": 4.539
+      "case_vol_cm3": 4.539,
+      "test_barrel_mm": 610
     },
     "7mm BR Remington": {
       "type": "rifle",
@@ -812,7 +900,8 @@
       ],
       "bore_mm": 7.21,
       "case_mm": 38.6,
-      "case_vol_cm3": 2.248
+      "case_vol_cm3": 2.248,
+      "test_barrel_mm": 375
     },
     "22 PPC-USA": {
       "type": "rifle",
@@ -821,7 +910,8 @@
       ],
       "bore_mm": 5.69,
       "case_mm": 38.5,
-      "case_vol_cm3": 2.048
+      "case_vol_cm3": 2.048,
+      "test_barrel_mm": 610
     }
   }
 }
