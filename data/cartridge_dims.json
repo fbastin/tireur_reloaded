@@ -373,6 +373,13 @@
    "base": 13.79,
    "neck": 13.49
   },
+  "6 Norma BR": {
+   "rim": 12.01,
+   "base": 12.01,
+   "shoulder": 11.63,
+   "neck": 6.86,
+   "angle": 30
+  },
   "6 mm Remington": {
    "rim": 12,
    "base": 12,
@@ -414,6 +421,13 @@
    "shoulder": 10.92,
    "neck": 6.96,
    "angle": null
+  },
+  "6mm BR Remington": {
+   "rim": 12.01,
+   "base": 12.01,
+   "shoulder": 11.63,
+   "neck": 6.86,
+   "angle": 30
   },
   "7 -08 Rem.": {
    "rim": 12,
