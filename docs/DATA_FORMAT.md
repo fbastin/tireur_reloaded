@@ -162,6 +162,19 @@ These are produced by the calibration pipeline and must never be committed.
 }]
 ```
 
+### `sierra_<cartridge>.local.json` — Sierra legacy charge→velocity rows
+
+Velocity-only anchor source (no pressure). `barrel_mm` is **Sierra's** test barrel and may differ
+from the cartridge `test_barrel_mm`; `build_anchors.js` rescales each velocity to the reference
+before computing `eeff` (see CONTRIBUTING → *Sierra legacy load data*). `v0_fps` in feet/second.
+
+```jsonc
+{ "rows": [
+  { "cartridge": "7.5 x 55 Swiss", "bullet_gr": 165, "powder": "IMR 4064",
+    "charge_gr": 42.0, "v0_fps": 2500, "barrel_mm": 780 }
+]}
+```
+
 ## Units summary
 
 | Quantity | Unit |

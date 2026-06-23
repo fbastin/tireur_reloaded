@@ -121,6 +121,29 @@ parsed `data/vihtavuori.local.json` stays gitignored (raw tables — golden rule
 > first (see *Add a cartridge*; `case_vol` can come from `P95(powder volume)/1.08` over the
 > matched rows) to unlock those VV combos.
 
+### Sierra legacy load data (velocity-only, barrel-scaled)
+
+Sierra's *legacy* load-data PDFs (`sierrabullets.com/load-data/legacy/...`) give **charge → muzzle
+velocity** tables — useful **velocity anchors**, and the only common source with measured
+velocities for some cartridges (e.g. 7.5×55 Swiss). Two specifics set them apart from RS/VV:
+
+1. **Their test barrel often differs from the cartridge's reference** (`test_barrel_mm`). Sierra's
+   7.5×55 data is from a 30.7″ (780 mm) M1911, not the 650 mm K31 reference. `build_anchors.js`
+   therefore **scales each velocity to `test_barrel_mm`** (via `velocity_model.js` `scaleByBarrel`)
+   **before** computing `eeff` — because the live tool predicts at the reference and rescales from
+   there. Skipping this would bake the long-barrel velocity into `eeff` and over-predict.
+2. **Velocity-only** (`np = null`, like Vihtavuori): no pressure → live tool uses the global η_p.
+
+Drop a gitignored `data/sierra_<cartridge>.local.json` with rows
+`{ cartridge, bullet_gr, powder, charge_gr, v0_fps, barrel_mm }` (powder names must match
+`powders.json` keys after `norm()`), then:
+```sh
+node scripts/build_anchors.js     # ingests sierra_*.local.json if present
+```
+Commit **only** the regenerated `data/anchors.json`; the raw `sierra_*.local.json` stays gitignored
+(golden rule). On the 7.5×55 this anchoring cut the velocity bias from **+9 %** (generic `e_eff`,
+worst at reduced charges) to **~3 %** against Sierra's measured data.
+
 ### Starting-charge pre-fill & the Ladder window
 
 `node scripts/build_start_charges.js` regenerates `data/start_charges.local.json` — the
