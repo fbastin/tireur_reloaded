@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-06-21",
+ "_date": "2026-06-23",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -4448,6 +4448,34 @@
   "50 AE|3N38": {
    "eeff": 1596518,
    "n": 6
+  },
+  "7.5 x 55 Swiss|IMR 3031": {
+   "eeff": 1049768,
+   "n": 10
+  },
+  "7.5 x 55 Swiss|IMR 4895": {
+   "eeff": 1059982,
+   "n": 18
+  },
+  "7.5 x 55 Swiss|IMR 4064": {
+   "eeff": 1066331,
+   "n": 22
+  },
+  "7.5 x 55 Swiss|IMR 4320": {
+   "eeff": 1063753,
+   "n": 16
+  },
+  "7.5 x 55 Swiss|IMR 4350": {
+   "eeff": 976419,
+   "n": 14
+  },
+  "7.5 x 55 Swiss|IMR 4831": {
+   "eeff": 974163,
+   "n": 8
+  },
+  "7.5 x 55 Swiss|Hodgdon H4831, H4831C": {
+   "eeff": 932049,
+   "n": 8
   }
  }
 }

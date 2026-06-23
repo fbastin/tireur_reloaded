@@ -94,6 +94,23 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
+// Sierra (Reloading Manual 6e éd., legacy) — table charge→vitesse, canon 30.7" = 780 mm,
+// balles .308. VITESSE seule (eeff ; np absent → η_p global). La vitesse est RAMENÉE au
+// canon de référence de la cartouche (test_barrel_mm) avant le calcul de eeff, car ce
+// canon (780 mm) diffère de la référence et l'UI rescale ensuite depuis cette référence.
+try {
+  const VM = require('../velocity_model.js');
+  for (const r of JSON.parse(fs.readFileSync(d('sierra_7-5x55.local.json'))).rows) {
+    const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm && ca.test_barrel_mm > 0)) continue;
+    const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
+    const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (ca.test_barrel_mm - ca.case_mm) / 1000;
+    const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // 780 mm → canon de réf
+    add(ck, pk, me * vRef * vRef / (2 * C), null, null);
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
 const anchors = {}; let kept = 0;
 const looErr = [];
