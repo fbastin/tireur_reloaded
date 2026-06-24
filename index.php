@@ -84,7 +84,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
         <option value="imperial">Impérial (gr, in, fps, psi)</option>
         <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
       </select></div>
-    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select></div>
+    <div class="vm-field"><label>Cartouche</label><input id="cart" list="cartList" autocomplete="off" placeholder="Tapez pour filtrer, puis choisissez (ex. 308, 9 mm…)" onchange="onCart();applyStartLoad();renderDiag();calc()"><datalist id="cartList"></datalist></div>
     <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
         <option value="az" selected>tri : A → Z</option>
         <option value="za">tri : Z → A</option>
@@ -225,15 +225,12 @@ Promise.all([
   fetch('data/cartridge_dims.json').then(r=>r.json()).catch(()=>({dims:{}})), // cotes pour le schéma (optionnel)
 ]).then(([cal,pwd,coef,anc,brTxt,sc,cd])=>{
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{}; DIMS=cd.dims||{};
-  const cs=document.getElementById('cart');
+  const cs=document.getElementById('cart'), dl=document.getElementById('cartList');
   const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
   const groups=[['Armes longues','rifle'],['Armes de poing','handgun']];
   groups.forEach(([label,type])=>{
-    const keys=Object.keys(CAL).filter(k=>(CAL[k].type||'rifle')===type).sort(byName);
-    if(!keys.length) return;
-    const og=document.createElement('optgroup'); og.label=label;
-    keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;og.appendChild(o);});
-    cs.appendChild(og);
+    Object.keys(CAL).filter(k=>(CAL[k].type||'rifle')===type).sort(byName)
+      .forEach(k=>{const o=document.createElement('option');o.value=k;o.label=label;dl.appendChild(o);});
   });
   cs.value='308 Win.';
   // rang de vitesse de combustion (rapide -> lente) depuis burn_rate_chart.txt (optionnel)
