@@ -39,7 +39,7 @@ include '../../header.php';
 .vm-btn2 { background:var(--color-bg); color:var(--color-text); border:1px solid var(--color-border); border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
 .vm-btn2:hover { border-color:var(--color-accent); color:var(--color-accent); }
 .vm-io { margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
-@media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 1fr; } .vm-panel { border:none; background:#fff; }
+@media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 2fr; } .vm-panel { border:none; background:#fff; }
   /* Ladder : imprimé seulement s'il est développé ; on garde les tables, on masque les contrôles */
   #ladder:not([open]) { display:none !important; } #ladder { border:none; page-break-inside:avoid; }
   #ladder summary { font-weight:700; list-style:none; } #ladder summary::-webkit-details-marker { display:none; }
