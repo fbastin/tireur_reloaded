@@ -16,11 +16,6 @@ include '../../header.php';
 .vm-field { margin-bottom:0.7rem; }
 .vm-field label { display:block; font-size:0.85rem; color:var(--color-text-light); margin-bottom:0.2rem; }
 .vm-field input, .vm-field select { width:100%; padding:0.4rem 0.6rem; border:1px solid var(--color-border); border-radius:var(--radius); background:var(--color-bg); color:var(--color-text); }
-.combo { position:relative; }
-.combo-list { position:absolute; z-index:50; left:0; right:0; top:100%; margin:0.15rem 0 0; padding:0.2rem 0; list-style:none; max-height:260px; overflow-y:auto; background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius); box-shadow:0 6px 18px rgba(0,0,0,.18); }
-.combo-list li.optgrp { padding:0.45rem 0.6rem 0.2rem; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--color-text-light); cursor:default; }
-.combo-list li.opt { padding:0.32rem 0.6rem; font-size:0.9rem; cursor:pointer; }
-.combo-list li.opt:hover, .combo-list li.opt.active { background:var(--color-accent); color:#fff; }
 .vm-unit { display:inline-block; cursor:pointer; font-size:0.72rem; font-weight:600; padding:0.02rem 0.4rem; border-radius:10px; background:var(--color-border); color:var(--color-text); user-select:none; }
 .vm-unit:hover { background:var(--color-accent); color:#fff; }
 .vm-out small.vm-unit { font-size:0.78rem; font-weight:600; }
@@ -89,7 +84,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
         <option value="imperial">Impérial (gr, in, fps, psi)</option>
         <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
       </select></div>
-    <div class="vm-field"><label>Cartouche</label><div class="combo"><input id="cart" autocomplete="off" placeholder="Tapez pour filtrer, puis choisissez (ex. 308, 9 mm…)"><ul id="cartList" class="combo-list" hidden></ul></div></div>
+    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select></div>
     <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
         <option value="az" selected>tri : A → Z</option>
         <option value="za">tri : Z → A</option>
@@ -230,9 +225,16 @@ Promise.all([
   fetch('data/cartridge_dims.json').then(r=>r.json()).catch(()=>({dims:{}})), // cotes pour le schéma (optionnel)
 ]).then(([cal,pwd,coef,anc,brTxt,sc,cd])=>{
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{}; DIMS=cd.dims||{};
-  buildCartItems();
-  wireCartCombo();
-  document.getElementById('cart').value='308 Win.';
+  const cs=document.getElementById('cart');
+  const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
+  [['Armes longues','rifle'],['Armes de poing','handgun']].forEach(([label,type])=>{
+    const keys=Object.keys(CAL).filter(k=>(CAL[k].type||'rifle')===type).sort(byName);
+    if(!keys.length) return;
+    const og=document.createElement('optgroup'); og.label=label;
+    keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;og.appendChild(o);});
+    cs.appendChild(og);
+  });
+  cs.value='308 Win.';
   // rang de vitesse de combustion (rapide -> lente) depuis burn_rate_chart.txt (optionnel)
   const pnorm=(s)=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
   const pIdx={}; Object.keys(PWD).forEach(k=>{const p=PWD[k];pIdx[pnorm(k)]=k;pIdx[pnorm((p.mfg||'')+(p.name||''))]=k;pIdx[pnorm(p.name||'')]=k;});
@@ -341,52 +343,6 @@ function toExterior(){
   if(!LAST) return;
   const q=new URLSearchParams({mv:Math.round(LAST.v0),mass:LAST.m_gr.toFixed(1),cal:LAST.bore.toFixed(2)});
   window.open('/calculateur-balistique.php?'+q.toString(),'_blank','noopener');
-}
-// --- combobox cartouche (input filtrable, multi-navigateur, sans <datalist>) ---
-let CART_ITEMS=[]; // [{name, group}] — armes longues d'abord, puis armes de poing
-function buildCartItems(){
-  CART_ITEMS=[];
-  const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
-  [['Armes longues','rifle'],['Armes de poing','handgun']].forEach(([label,type])=>{
-    Object.keys(CAL).filter(k=>(CAL[k].type||'rifle')===type).sort(byName)
-      .forEach(k=>CART_ITEMS.push({name:k,group:label}));
-  });
-}
-function escHtml(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-function renderCartList(q){
-  const ul=document.getElementById('cartList'); if(!ul)return;
-  const nq=(q||'').toLowerCase().trim();
-  let html='', lastGroup=null;
-  CART_ITEMS.forEach(it=>{
-    if(nq && it.name.toLowerCase().indexOf(nq)<0) return;
-    if(it.group!==lastGroup){ html+='<li class="optgrp">'+it.group+'</li>'; lastGroup=it.group; }
-    html+='<li class="opt" data-v="'+escHtml(it.name)+'">'+escHtml(it.name)+'</li>';
-  });
-  ul.innerHTML=html||'<li class="optgrp">Aucune cartouche</li>';
-}
-function setCart(name){
-  document.getElementById('cart').value=name;
-  document.getElementById('cartList').hidden=true;
-  onCart();applyStartLoad();renderDiag();calc();
-}
-function wireCartCombo(){
-  const ci=document.getElementById('cart'), ul=document.getElementById('cartList');
-  ci.addEventListener('focus',()=>{renderCartList('');ul.hidden=false;});
-  ci.addEventListener('input',()=>{renderCartList(ci.value);ul.hidden=false;});
-  ci.addEventListener('blur',()=>{setTimeout(()=>{ul.hidden=true;},150);});
-  // mousedown (pas click) + preventDefault : le blur ne masque pas la liste avant la sélection
-  ul.addEventListener('mousedown',e=>{const li=e.target.closest('li.opt'); if(li){e.preventDefault();setCart(li.getAttribute('data-v'));}});
-  ci.addEventListener('keydown',e=>{
-    if(ul.hidden && e.key==='ArrowDown'){ renderCartList(ci.value); ul.hidden=false; }
-    const opts=[...ul.querySelectorAll('li.opt')]; let i=opts.findIndex(o=>o.classList.contains('active'));
-    if(e.key==='ArrowDown'){ e.preventDefault(); i=Math.min(i+1,opts.length-1); }
-    else if(e.key==='ArrowUp'){ e.preventDefault(); i=Math.max(i-1,0); }
-    else if(e.key==='Enter'){ if(i>=0){ e.preventDefault(); setCart(opts[i].getAttribute('data-v')); } return; }
-    else if(e.key==='Escape'){ ul.hidden=true; return; }
-    else return;
-    opts.forEach(o=>o.classList.remove('active'));
-    if(opts[i]){ opts[i].classList.add('active'); opts[i].scrollIntoView({block:'nearest'}); }
-  });
 }
 // schéma coté de la cartouche sélectionnée (cotes exactes si dispo, sinon profil estimé)
 function renderDiag(){
