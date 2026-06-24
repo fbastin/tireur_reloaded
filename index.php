@@ -348,8 +348,25 @@ function toExterior(){
 // schéma coté de la cartouche sélectionnée (cotes exactes si dispo, sinon profil estimé)
 function renderDiag(){
   const el=document.getElementById('cartdiag'); if(!el||typeof cartridgeDiagram!=='function')return;
-  const n=document.getElementById('cart').value;
-  el.innerHTML = CAL[n] ? cartridgeDiagram(CAL[n], DIMS[n]||null, el.clientWidth||320) : '';
+  const n=document.getElementById('cart').value, cart=CAL[n];
+  if(!cart){ el.innerHTML=''; return; }
+  const svg=cartridgeDiagram(cart, DIMS[n]||null, 210);
+  const num=(v,d)=> (v==null||!isFinite(v))?'—':(+v.toFixed(d)).toString();
+  const rows=[
+    ['Type', cart.type==='handgun'?'Arme de poing':'Carabine'],
+    ['Ø balle', num(cart.bore_mm,2)+' mm'],
+    ['Longueur d\'étui', num(cart.case_mm,1)+' mm'],
+    ['Volume d\'étui', cart.case_vol_cm3?num(cart.case_vol_cm3,2)+' cm³':'—'],
+    ['Pression max C.I.P.', cart.pmax_cip_bar?num(cart.pmax_cip_bar,0)+' bar':'—'],
+    ['Canon d\'essai', cart.test_barrel_mm?num(cart.test_barrel_mm,0)+' mm':'—'],
+  ];
+  const specs='<div style="flex:1 1 150px;min-width:150px;text-align:left;">'
+    +'<div style="font-weight:700;color:var(--color-accent);margin-bottom:0.35rem;">'+n+'</div>'
+    +'<table style="font-size:0.82rem;border-collapse:collapse;width:100%;">'
+    +rows.map(r=>'<tr><td style="color:var(--color-text-light);padding:0.13rem 0.6rem 0.13rem 0;white-space:nowrap;">'+r[0]+'</td><td style="text-align:right;font-weight:600;white-space:nowrap;">'+r[1]+'</td></tr>').join('')
+    +'</table></div>';
+  el.innerHTML='<div style="display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;">'
+    +'<div style="flex:0 0 auto;">'+svg+'</div>'+specs+'</div>';
 }
 function onCart(){ // défaut canon selon type (pistolet court)
   const c=CAL[document.getElementById('cart').value]; if(!c)return;
