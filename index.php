@@ -118,7 +118,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
       <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small>pression <span class="vm-tag">indicative</span> <span id="o_pcip"></span></small>
         <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
     </div>
-    <div id="plot" style="width:100%;height:330px;"></div>
+    <div id="plot" style="width:100%;height:440px;"></div>
     <p class="vm-note" id="warn"></p>
     <div class="vm-noprint" style="margin-top:0.5rem">
       <button type="button" id="toExt" class="vm-print" onclick="toExterior()" disabled style="opacity:.5">&#127919;&nbsp;Vers la balistique extérieure</button>
