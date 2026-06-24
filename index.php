@@ -520,22 +520,34 @@ function calc(){
   const xs=[],vs=[],ps=[];
   for(let i=0;i<=100;i++){const x=travel*i/100;xs.push(frMm(x*1000,U.bbl.cur));vs.push(frMs(ld.v(x),U.v.cur));ps.push(frBar(ld.P_bar(x),U.p.cur));}
   const pcipD=pcip?frBar(pcip,U.p.cur):null;
-  const yTop=Math.max(Math.max.apply(null,ps), pcipD||0)*1.12;
+  // si la limite CIP est connue, on étend l'axe jusqu'au-dessus de P_E (1,25×) pour montrer toutes les zones
+  const yTop=pcipD?Math.max(Math.max.apply(null,ps), pcipD*1.25)*1.06:Math.max.apply(null,ps)*1.12;
   const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
      xaxis:{title:'Course de la balle ('+U.bbl.cur+')'},
      yaxis:{title:'Pression ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
      yaxis2:{title:'Vitesse ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
   if(pcipD){
-    const pWarn=pcipD*0.9; // seuil indicatif "pression élevée" (90 % de la limite CIP)
+    // Seuils C.I.P. alignés sur la norme : P_max (limite moyenne), P_K=1,15×P_max
+    // (limite cartouche individuelle), P_E=1,25×P_max (pression d'épreuve de l'arme).
+    // pWarn=0,90×P_max : marge de sous-estimation du modèle (~6–10 % de biais bas) — une
+    // estimation entrant ici peut déjà valoir P_max en réalité.
+    const pK=pcipD*1.15, pE=pcipD*1.25, pWarn=pcipD*0.9, u=U.p.cur;
     lay.shapes=[
-      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pcipD,fillcolor:'rgba(243,156,18,0.12)',line:{width:0},layer:'below'},
-      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:yTop,fillcolor:'rgba(192,57,43,0.10)',line:{width:0},layer:'below'},
-      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pWarn,line:{color:'#e67e22',width:1.5,dash:'dot'},layer:'above'},
-      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pcipD,line:{color:'#c0392b',width:2.5,dash:'dash'},layer:'above'}
+      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pcipD,fillcolor:'rgba(243,156,18,0.13)',line:{width:0},layer:'below'},
+      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pK,fillcolor:'rgba(192,57,43,0.12)',line:{width:0},layer:'below'},
+      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pK,y1:pE,fillcolor:'rgba(123,36,28,0.17)',line:{width:0},layer:'below'},
+      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pE,y1:yTop,fillcolor:'rgba(80,20,15,0.24)',line:{width:0},layer:'below'},
+      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pWarn,line:{color:'#e67e22',width:1.2,dash:'dot'},layer:'above'},
+      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pcipD,line:{color:'#c0392b',width:2.5,dash:'dash'},layer:'above'},
+      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pK,y1:pK,line:{color:'#a93226',width:1.4,dash:'dot'},layer:'above'},
+      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pE,y1:pE,line:{color:'#7b241c',width:1.4,dash:'dot'},layer:'above'}
     ];
+    const lab=(y,anchor,text,color,bold)=>({xref:'paper',x:0.99,xanchor:'right',yref:'y',y:y,yanchor:anchor,text:bold?'<b>'+text+'</b>':text,showarrow:false,font:{size:10,color:color},bgcolor:'rgba(255,255,255,0.72)'});
     lay.annotations=[
-      {xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pcipD,yanchor:'bottom',text:'<b>Limite CIP '+pcipD.toFixed(0)+' '+U.p.cur+'</b>',showarrow:false,font:{size:11,color:'#c0392b'},bgcolor:'rgba(255,255,255,0.75)'},
-      {xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pWarn,yanchor:'top',text:'pression élevée (≥ 90 % CIP)',showarrow:false,font:{size:10,color:'#b9770e'},bgcolor:'rgba(255,255,255,0.7)'}
+      lab(pWarn,'top','≈90 % · marge modèle',  '#b9770e',false),
+      lab(pcipD,'bottom','P_max C.I.P. '+pcipD.toFixed(0)+' '+u,'#c0392b',true),
+      lab(pK,'bottom','P_K 1,15× (cartouche)','#a93226',false),
+      lab(pE,'bottom','P_E 1,25× (épreuve arme)','#7b241c',false)
     ];
   }
   Plotly.react('plot',[
