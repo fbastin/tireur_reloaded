@@ -526,11 +526,17 @@ function calc(){
      yaxis:{title:'Pression ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
      yaxis2:{title:'Vitesse ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
   if(pcipD){
+    const pWarn=pcipD*0.9; // seuil indicatif "pression élevée" (90 % de la limite CIP)
     lay.shapes=[
+      {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pcipD,fillcolor:'rgba(243,156,18,0.12)',line:{width:0},layer:'below'},
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:yTop,fillcolor:'rgba(192,57,43,0.10)',line:{width:0},layer:'below'},
+      {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pWarn,line:{color:'#e67e22',width:1.5,dash:'dot'},layer:'above'},
       {type:'line',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pcipD,line:{color:'#c0392b',width:2.5,dash:'dash'},layer:'above'}
     ];
-    lay.annotations=[{xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pcipD,yanchor:'bottom',text:'<b>Limite CIP '+pcipD.toFixed(0)+' '+U.p.cur+'</b>',showarrow:false,font:{size:11,color:'#c0392b'},bgcolor:'rgba(255,255,255,0.75)'}];
+    lay.annotations=[
+      {xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pcipD,yanchor:'bottom',text:'<b>Limite CIP '+pcipD.toFixed(0)+' '+U.p.cur+'</b>',showarrow:false,font:{size:11,color:'#c0392b'},bgcolor:'rgba(255,255,255,0.75)'},
+      {xref:'paper',x:0.5,xanchor:'center',yref:'y',y:pWarn,yanchor:'top',text:'pression élevée (≥ 90 % CIP)',showarrow:false,font:{size:10,color:'#b9770e'},bgcolor:'rgba(255,255,255,0.7)'}
+    ];
   }
   Plotly.react('plot',[
     {x:xs,y:ps,name:'Pression ('+U.p.cur+')',yaxis:'y',line:{color:'#c0392b'}},
