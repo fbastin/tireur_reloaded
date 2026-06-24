@@ -224,7 +224,7 @@
     "6 XC": {
       "type": "rifle",
       "bore_mm": 6.17,
-      "case_mm": 48,
+      "case_mm": 40.9,
       "case_vol_cm3": 2.871
     },
     "8 x 57 IS": {
