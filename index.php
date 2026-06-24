@@ -521,7 +521,7 @@ function calc(){
   for(let i=0;i<=100;i++){const x=travel*i/100;xs.push(frMm(x*1000,U.bbl.cur));vs.push(frMs(ld.v(x),U.v.cur));ps.push(frBar(ld.P_bar(x),U.p.cur));}
   const pcipD=pcip?frBar(pcip,U.p.cur):null;
   const yTop=Math.max(Math.max.apply(null,ps), pcipD||0)*1.12;
-  const lay={margin:{t:10,r:55,l:55,b:40},legend:{orientation:'h'},
+  const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
      xaxis:{title:'Course de la balle ('+U.bbl.cur+')'},
      yaxis:{title:'Pression ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
      yaxis2:{title:'Vitesse ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
