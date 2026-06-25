@@ -1012,6 +1012,19 @@
       "aliases": [
         "375 Ruger"
       ]
+    },
+    "6mm BR Norma": {
+      "type": "rifle",
+      "bore_mm": 6.17,
+      "case_mm": 39.5,
+      "case_vol_cm3": 2.17,
+      "test_barrel_mm": 610,
+      "aliases": [
+        "6mm BR Norma",
+        "6mm BR",
+        "6BR",
+        "6mmBR Norma"
+      ]
     }
   }
 }

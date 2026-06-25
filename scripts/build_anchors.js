@@ -19,7 +19,10 @@ const G = 6.479891e-5, GR2G = 0.06479891;
 const norm = (s) => String(s).toLowerCase().replace(/\(.*?\)/g, '').replace(/winchester/g, 'win').replace(/remington/g, 'rem').replace(/magnum/g, 'mag').replace(/springfield/g, 'spring').replace(/[^a-z0-9]/g, '');
 const calIdx = {};
 for (const k of Object.keys(CAL)) { calIdx[norm(k)] = k; for (const a of (CAL[k].aliases || [])) calIdx[norm(a)] = k; }
+// Index poudres : clé complète d'abord (prioritaire), puis le nom de produit seul
+// (« Benchmark », « Varget »…) pour les sources qui n'écrivent pas le fabricant (Sierra).
 const pwdIdx = {}; for (const k of Object.keys(PWD)) pwdIdx[norm(k)] = k;
+for (const k of Object.keys(PWD)) { const nm = norm(PWD[k].name || ''); if (nm && !pwdIdx[nm]) pwdIdx[nm] = k; }
 // Variantes de pression (+P/+P+) = même étui → on les ramène à la cartouche de base.
 const stripVariant = (s) => String(s).replace(/\s*\+p\+?\b/ig, '').replace(/\bfor ar-?15.*/i, '');
 const matchCal = (name) => calIdx[norm(name)] || calIdx[norm(stripVariant(name))] || null;
@@ -110,22 +113,61 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
-// Sierra (Reloading Manual 6e éd., legacy) — table charge→vitesse, canon 30.7" = 780 mm,
-// balles .308. VITESSE seule (eeff ; np absent → η_p global). La vitesse est RAMENÉE au
-// canon de référence de la cartouche (test_barrel_mm) avant le calcul de eeff, car ce
-// canon (780 mm) diffère de la référence et l'UI rescale ensuite depuis cette référence.
+// Speer — PDF en ligne par cartouche/balle (start + max). VITESSE seule (eeff ; np=null).
+// Pas de longueur de canon publiée → v0 au canon de référence (comme Norma). Tous les
+// fichiers data/speer_*.local.json.
+try {
+  const speerFiles = fs.readdirSync(path.join(__dirname, '..', 'data')).filter((f) => /^speer_.*\.local\.json$/.test(f));
+  for (const f of speerFiles) {
+    for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
+      const ck = matchCal(r.cartridge); if (!ck) continue;
+      const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+      const m = r.bullet_gr * G;
+      for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
+        if (!(cgr > 0 && v > 0)) continue;
+        const C = cgr * G, me = m + C / 3;
+        add(ck, pk, me * v * v / (2 * C), null, null);
+      }
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
+
+// LoadData.com (agrégateur ; données issues de manuels fabricant) — pages uniques
+// ouvertes par l'utilisateur, charge→vitesse. VITESSE seule (eeff ; np=null). Souvent
+// du revolver (canon ventilé) → v0 traitée au canon de référence (pas de loi de canon).
+try {
+  const ldFiles = fs.readdirSync(path.join(__dirname, '..', 'data')).filter((f) => /^loaddata_.*\.local\.json$/.test(f));
+  for (const f of ldFiles) {
+    for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
+      const ck = matchCal(r.cartridge); if (!ck) continue;
+      const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+      if (!(r.charge_gr > 0 && r.v0_fps > 0)) continue;
+      const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3, v = r.v0_fps * 0.3048;
+      add(ck, pk, me * v * v / (2 * C), null, null);
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
+
+// Sierra — tables charge→vitesse (manuel 6e éd. legacy + PDF en ligne par cartouche).
+// VITESSE seule (eeff ; np absent → η_p global). La vitesse est RAMENÉE au canon de
+// référence de la cartouche (test_barrel_mm) avant le calcul de eeff (le canon d'essai
+// Sierra diffère de la référence ; l'UI rescale ensuite depuis cette référence).
+// Tous les fichiers data/sierra_*.local.json sont pris en compte.
 try {
   const VM = require('../velocity_model.js');
-  for (const r of JSON.parse(fs.readFileSync(d('sierra_7-5x55.local.json'))).rows) {
-    const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
-    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
-    if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm && ca.test_barrel_mm > 0)) continue;
-    const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
-    const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (ca.test_barrel_mm - ca.case_mm) / 1000;
-    const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // 780 mm → canon de réf
-    add(ck, pk, me * vRef * vRef / (2 * C), null, null);
+  const sierraFiles = fs.readdirSync(path.join(__dirname, '..', 'data')).filter((f) => /^sierra_.*\.local\.json$/.test(f));
+  for (const f of sierraFiles) {
+    for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
+      const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
+      const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+      if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm && ca.test_barrel_mm > 0)) continue;
+      const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
+      const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (ca.test_barrel_mm - ca.case_mm) / 1000;
+      const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // canon Sierra → canon de réf
+      add(ck, pk, me * vRef * vRef / (2 * C), null, null);
+    }
   }
-} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
 const anchors = {}; let kept = 0;
