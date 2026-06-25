@@ -2290,32 +2290,32 @@
    "n": 10,
    "np": 0.4186
   },
-  "6mm BR Norma|Accurate LT-30": {
+  "6 Norma BR|Accurate LT-30": {
    "eeff": 1352189,
    "n": 7,
-   "np": 0.3323
+   "np": 0.3324
   },
-  "6mm BR Norma|Accurate LT-32": {
-   "eeff": 1186911,
+  "6 Norma BR|Accurate LT-32": {
+   "eeff": 1237984,
    "n": 26,
-   "np": 0.4138
+   "np": 0.4139
   },
-  "6mm BR Norma|Accurate 2700": {
+  "6 Norma BR|Accurate 2700": {
    "eeff": 1137703,
    "n": 3,
    "np": 0.4228
   },
-  "6mm BR Norma|Accurate 4350": {
+  "6 Norma BR|Accurate 4350": {
    "eeff": 1144990,
    "n": 5,
-   "np": 0.4003
+   "np": 0.4004
   },
-  "6mm BR Norma|Ramshot Hunter": {
+  "6 Norma BR|Ramshot Hunter": {
    "eeff": 1124366,
    "n": 4,
-   "np": 0.4105
+   "np": 0.4106
   },
-  "6mm BR Norma|Accurate Magpro": {
+  "6 Norma BR|Accurate Magpro": {
    "eeff": 1065116,
    "n": 3,
    "np": 0.4143
@@ -2763,7 +2763,8 @@
   },
   "221 Remington Fireball|N120": {
    "eeff": 1143071,
-   "n": 8
+   "n": 8,
+   "mhr": 4.6
   },
   "221 Remington Fireball|N130": {
    "eeff": 1057700,
@@ -3007,23 +3008,23 @@
    "eeff": 1100451,
    "n": 20
   },
-  "6mm BR Norma|N133": {
+  "6 Norma BR|N133": {
    "eeff": 1230388,
    "n": 4
   },
-  "6mm BR Norma|N135": {
+  "6 Norma BR|N135": {
    "eeff": 1205902,
    "n": 4
   },
-  "6mm BR Norma|N140": {
+  "6 Norma BR|N140": {
    "eeff": 1210164,
    "n": 14
   },
-  "6mm BR Norma|N540": {
-   "eeff": 1209527,
+  "6 Norma BR|N540": {
+   "eeff": 1221647,
    "n": 18
   },
-  "6mm BR Norma|N150": {
+  "6 Norma BR|N150": {
    "eeff": 1174964,
    "n": 4
   },
@@ -3045,7 +3046,8 @@
   },
   "6 mm Creedmoor|N160": {
    "eeff": 1084460,
-   "n": 38
+   "n": 38,
+   "mhr": 4.7
   },
   "6 mm Creedmoor|N555": {
    "eeff": 1120258,
@@ -3153,7 +3155,8 @@
   },
   "25-06 Remington|N160": {
    "eeff": 1008381,
-   "n": 8
+   "n": 8,
+   "mhr": 4.5
   },
   "25-06 Remington|N165": {
    "eeff": 977842,
@@ -3226,7 +3229,8 @@
   },
   "6.8 Western|N160": {
    "eeff": 1078441,
-   "n": 6
+   "n": 6,
+   "mhr": 2.7
   },
   "6.8 Western|N165": {
    "eeff": 1060076,
@@ -3300,7 +3304,8 @@
   },
   "270 Weatherby Magnum|N160": {
    "eeff": 1020260,
-   "n": 6
+   "n": 6,
+   "mhr": 1.6
   },
   "270 Weatherby Magnum|N165": {
    "eeff": 983138,
@@ -3357,7 +3362,8 @@
   },
   "284 Winchester|N160": {
    "eeff": 1089279,
-   "n": 20
+   "n": 20,
+   "mhr": 2.2
   },
   "284 Winchester|N560": {
    "eeff": 1068849,
@@ -3426,7 +3432,8 @@
   },
   "280 Remington|N160": {
    "eeff": 1105585,
-   "n": 14
+   "n": 14,
+   "mhr": 3.5
   },
   "280 Remington|N165": {
    "eeff": 1074991,
@@ -3470,7 +3477,8 @@
   },
   "7mm WSM|N160": {
    "eeff": 1122671,
-   "n": 10
+   "n": 10,
+   "mhr": 2.5
   },
   "7mm WSM|N165": {
    "eeff": 1069424,
@@ -3499,7 +3507,8 @@
   },
   "7mm Weatherby Magnum|N160": {
    "eeff": 1058222,
-   "n": 8
+   "n": 8,
+   "mhr": 2.2
   },
   "7mm Weatherby Magnum|N560": {
    "eeff": 1061001,
@@ -3515,7 +3524,8 @@
   },
   "7mm PRC|N160": {
    "eeff": 1133257,
-   "n": 8
+   "n": 8,
+   "mhr": 1.6
   },
   "7mm PRC|N165": {
    "eeff": 1096814,
@@ -3638,7 +3648,8 @@
   },
   "300 Savage|N120": {
    "eeff": 1311972,
-   "n": 6
+   "n": 6,
+   "mhr": -1.5
   },
   "300 Savage|N130": {
    "eeff": 1300221,
@@ -3874,7 +3885,8 @@
   },
   "300 Weatherby Magnum|N160": {
    "eeff": 1092239,
-   "n": 8
+   "n": 8,
+   "mhr": 2.4
   },
   "300 Weatherby Magnum|N165": {
    "eeff": 1069018,
@@ -3918,7 +3930,8 @@
   },
   "300 Rem. Ultra Mag.|N160": {
    "eeff": 1037493,
-   "n": 6
+   "n": 6,
+   "mhr": 0.2
   },
   "300 Rem. Ultra Mag.|24N41": {
    "eeff": 916535,
@@ -3934,7 +3947,9 @@
   },
   "300 Rem. Ultra Mag.|N120": {
    "eeff": 1111863,
-   "n": 10
+   "n": 10,
+   "mhr": -17.5,
+   "mhflag": true
   },
   "300 Rem. Ultra Mag.|N130": {
    "eeff": 1032320,
@@ -4083,7 +4098,8 @@
   },
   "416 Rigby|N160": {
    "eeff": 1112616,
-   "n": 10
+   "n": 10,
+   "mhr": 8.2
   },
   "416 Rigby|N165": {
    "eeff": 1078427,
@@ -4610,76 +4626,76 @@
    "eeff": 1345706,
    "n": 6
   },
-  "6mm BR Norma|Hodgdon Benchmark": {
-   "eeff": 1171848,
+  "6 Norma BR|Hodgdon Benchmark": {
+   "eeff": 1226246,
    "n": 25
   },
-  "6mm BR Norma|Hodgdon H335": {
-   "eeff": 1133364,
+  "6 Norma BR|Hodgdon H335": {
+   "eeff": 1185976,
    "n": 31
   },
-  "6mm BR Norma|IMR 8208 XBR": {
-   "eeff": 1156152,
+  "6 Norma BR|IMR 8208 XBR": {
+   "eeff": 1209822,
    "n": 27
   },
-  "6mm BR Norma|Shooters World Tactical Rifle": {
-   "eeff": 1138213,
+  "6 Norma BR|Shooters World Tactical Rifle": {
+   "eeff": 1191050,
    "n": 25
   },
-  "6mm BR Norma|Hodgdon H4895": {
-   "eeff": 1146501,
+  "6 Norma BR|Hodgdon H4895": {
+   "eeff": 1199723,
    "n": 29
   },
-  "6mm BR Norma|IMR 4895": {
-   "eeff": 1101339,
+  "6 Norma BR|IMR 4895": {
+   "eeff": 1152465,
    "n": 30
   },
-  "6mm BR Norma|IMR 4166": {
-   "eeff": 1120312,
+  "6 Norma BR|IMR 4166": {
+   "eeff": 1172319,
    "n": 24
   },
-  "6mm BR Norma|IMR 4064": {
-   "eeff": 1094292,
+  "6 Norma BR|IMR 4064": {
+   "eeff": 1145091,
    "n": 21
   },
-  "6mm BR Norma|Hodgdon Varget": {
-   "eeff": 1092300,
+  "6 Norma BR|Hodgdon Varget": {
+   "eeff": 1143005,
    "n": 28
   },
-  "6mm BR Norma|Alliant Reloder 10X": {
-   "eeff": 1236453,
+  "6 Norma BR|Alliant Reloder 10X": {
+   "eeff": 1293851,
    "n": 13
   },
-  "6mm BR Norma|N130": {
-   "eeff": 1216344,
+  "6 Norma BR|N130": {
+   "eeff": 1272808,
    "n": 12
   },
-  "6mm BR Norma|Ramshot TAC": {
-   "eeff": 1155279,
+  "6 Norma BR|Ramshot TAC": {
+   "eeff": 1208909,
    "n": 15
   },
-  "6mm BR Norma|Accurate 2495": {
-   "eeff": 1125184,
+  "6 Norma BR|Accurate 2495": {
+   "eeff": 1177416,
    "n": 20
   },
-  "6mm BR Norma|Accurate 4064": {
-   "eeff": 1107353,
+  "6 Norma BR|Accurate 4064": {
+   "eeff": 1158758,
    "n": 19
   },
-  "6mm BR Norma|Alliant Reloder 15": {
-   "eeff": 1151512,
+  "6 Norma BR|Alliant Reloder 15": {
+   "eeff": 1204966,
    "n": 20
   },
-  "6mm BR Norma|Alliant Power Pro 2000-MR": {
-   "eeff": 1179670,
+  "6 Norma BR|Alliant Power Pro 2000-MR": {
+   "eeff": 1234432,
    "n": 5
   },
-  "6mm BR Norma|Hodgdon H4350": {
-   "eeff": 1146058,
+  "6 Norma BR|Hodgdon H4350": {
+   "eeff": 1199259,
    "n": 4
   },
-  "6mm BR Norma|Alliant Reloder 17": {
-   "eeff": 1118627,
+  "6 Norma BR|Alliant Reloder 17": {
+   "eeff": 1170554,
    "n": 5
   },
   "7.5 x 55 Swiss|IMR 3031": {

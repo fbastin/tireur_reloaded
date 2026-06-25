@@ -1,5 +1,5 @@
 {
-  "_doc": "Dimensions standard (CIP/SAAMI, domaine public) : bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression CIP/SAAMI (bar), valeur nominale indicative (absente si incertaine). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine ~0.87, pistolet ~0.66) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur).",
+  "_doc": "Dimensions standard (CIP/SAAMI, domaine public) : bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression CIP/SAAMI (bar), valeur nominale indicative (absente si incertaine ; pmax_src=\"SAAMI\" si tirée du standard SAAMI Z299.4 carabine au lieu du CIP — transducteur psi→bar). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine ~0.87, pistolet ~0.66) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur).",
   "calibers": {
     "308 Win.": {
       "type": "rifle",
@@ -431,12 +431,17 @@
       "type": "rifle",
       "aliases": [
         "6 mm BR Norma",
-        "6mm BR Norma"
+        "6mm BR Norma",
+        "6mm BR",
+        "6BR",
+        "6mmBR Norma",
+        "6 Norma BR"
       ],
       "bore_mm": 6.17,
-      "case_mm": 38.55,
+      "case_mm": 39.62,
       "case_vol_cm3": 2.172,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4050
     },
     "300 WSM": {
       "type": "rifle",
@@ -599,7 +604,9 @@
       "bore_mm": 6.71,
       "case_mm": 55.1,
       "case_vol_cm3": 4.485,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 3999,
+      "pmax_src": "SAAMI"
     },
     "300 RCM": {
       "type": "rifle",
@@ -637,14 +644,18 @@
       "bore_mm": 6.53,
       "case_mm": 48.56,
       "case_vol_cm3": 2.356,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 3103,
+      "pmax_src": "SAAMI"
     },
     "222 Rem. Mag.": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 47,
       "case_vol_cm3": 1.794,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 3792,
+      "pmax_src": "SAAMI"
     },
     "308 Marlin Express": {
       "type": "rifle",
@@ -659,13 +670,17 @@
       "bore_mm": 6.17,
       "case_mm": 48.8,
       "case_vol_cm3": 3.033,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4275,
+      "pmax_src": "SAAMI"
     },
     "22 Creedmoor": {
       "type": "rifle",
       "bore_mm": 5.7,
       "case_mm": 49,
-      "case_vol_cm3": 3.059
+      "case_vol_cm3": 3.059,
+      "pmax_cip_bar": 4275,
+      "pmax_src": "SAAMI"
     },
     "6mm ARC": {
       "type": "rifle",
@@ -675,28 +690,36 @@
       "bore_mm": 6.17,
       "case_mm": 37.85,
       "case_vol_cm3": 2.014,
-      "test_barrel_mm": 508
+      "test_barrel_mm": 508,
+      "pmax_cip_bar": 3585,
+      "pmax_src": "SAAMI"
     },
     "22 Nosler": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 44.7,
       "case_vol_cm3": 2.107,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 3792,
+      "pmax_src": "SAAMI"
     },
     "224 Valkyrie": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 41,
       "case_vol_cm3": 1.786,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 3792,
+      "pmax_src": "SAAMI"
     },
     "284 Winchester": {
       "type": "rifle",
       "bore_mm": 7.21,
       "case_mm": 55.12,
       "case_vol_cm3": 3.82,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 3861,
+      "pmax_src": "SAAMI"
     },
     "7mm PRC": {
       "type": "rifle",
@@ -706,34 +729,44 @@
       "bore_mm": 7.21,
       "case_mm": 57,
       "case_vol_cm3": 4.4,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "300 Savage": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 47.5,
       "case_vol_cm3": 3.408,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 3241,
+      "pmax_src": "SAAMI"
     },
     "25-06 Remington": {
       "type": "rifle",
       "bore_mm": 6.53,
       "case_mm": 63.3,
       "case_vol_cm3": 3.675,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 4344,
+      "pmax_src": "SAAMI"
     },
     "280 Remington": {
       "type": "rifle",
       "bore_mm": 7.21,
       "case_mm": 64.5,
-      "case_vol_cm3": 3.717
+      "case_vol_cm3": 3.717,
+      "pmax_cip_bar": 4137,
+      "pmax_src": "SAAMI"
     },
     "300 Norma Magnum": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 63.3,
       "case_vol_cm3": 5.75,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4206,
+      "pmax_src": "SAAMI"
     },
     "300 Rem. Ultra Mag.": {
       "type": "rifle",
@@ -743,7 +776,9 @@
       "bore_mm": 7.82,
       "case_mm": 72.4,
       "case_vol_cm3": 7.37,
-      "test_barrel_mm": 670
+      "test_barrel_mm": 670,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "7 x 65 R": {
       "type": "rifle",
@@ -760,7 +795,9 @@
       "bore_mm": 7.04,
       "case_mm": 51.3,
       "case_vol_cm3": 4.294,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "300 Lapua Magnum": {
       "type": "rifle",
@@ -774,7 +811,9 @@
       "bore_mm": 6.17,
       "case_mm": 56.7,
       "case_vol_cm3": 3.261,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "50 AE": {
       "type": "handgun",
@@ -797,28 +836,36 @@
       "bore_mm": 10.57,
       "case_mm": 73.66,
       "case_vol_cm3": 6.463,
-      "test_barrel_mm": 620
+      "test_barrel_mm": 620,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "204 Ruger": {
       "type": "rifle",
       "bore_mm": 5.18,
       "case_mm": 47,
       "case_vol_cm3": 1.853,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 3964,
+      "pmax_src": "SAAMI"
     },
     "30 Carbine": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 32.8,
       "case_vol_cm3": 1.05,
-      "test_barrel_mm": 445
+      "test_barrel_mm": 445,
+      "pmax_cip_bar": 2758,
+      "pmax_src": "SAAMI"
     },
     "270 Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 7.04,
       "case_mm": 65,
       "case_vol_cm3": 5.413,
-      "test_barrel_mm": 650
+      "test_barrel_mm": 650,
+      "pmax_cip_bar": 4309,
+      "pmax_src": "SAAMI"
     },
     "7mm RUM": {
       "type": "rifle",
@@ -828,28 +875,36 @@
       "bore_mm": 7.21,
       "case_mm": 72.4,
       "case_vol_cm3": 6.098,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "458 Winchester Magnum": {
       "type": "rifle",
       "bore_mm": 11.63,
       "case_mm": 63.5,
       "case_vol_cm3": 5.214,
-      "test_barrel_mm": 635
+      "test_barrel_mm": 635,
+      "pmax_cip_bar": 4137,
+      "pmax_src": "SAAMI"
     },
     "221 Remington Fireball": {
       "type": "rifle",
       "bore_mm": 5.69,
       "case_mm": 35.6,
       "case_vol_cm3": 1.331,
-      "test_barrel_mm": 356
+      "test_barrel_mm": 356,
+      "pmax_cip_bar": 4137,
+      "pmax_src": "SAAMI"
     },
     "7mm Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 7.21,
       "case_mm": 64.7,
       "case_vol_cm3": 5.23,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "45 Winchester Magnum": {
       "type": "handgun",
@@ -866,14 +921,18 @@
       "bore_mm": 5.69,
       "case_mm": 42.4,
       "case_vol_cm3": 3.038,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "300 Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 71.8,
       "case_vol_cm3": 5.602,
-      "test_barrel_mm": 660
+      "test_barrel_mm": 660,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "9 x 23 Winchester": {
       "type": "handgun",
@@ -898,7 +957,9 @@
       "bore_mm": 7.21,
       "case_mm": 53.3,
       "case_vol_cm3": 4.539,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_cip_bar": 4482,
+      "pmax_src": "SAAMI"
     },
     "7mm BR Remington": {
       "type": "rifle",
@@ -1011,19 +1072,6 @@
       "test_barrel_mm": 610,
       "aliases": [
         "375 Ruger"
-      ]
-    },
-    "6mm BR Norma": {
-      "type": "rifle",
-      "bore_mm": 6.17,
-      "case_mm": 39.5,
-      "case_vol_cm3": 2.17,
-      "test_barrel_mm": 610,
-      "aliases": [
-        "6mm BR Norma",
-        "6mm BR",
-        "6BR",
-        "6mmBR Norma"
       ]
     }
   }
