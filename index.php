@@ -90,7 +90,8 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
         <option value="za">tri : Z → A</option>
         <option value="burn-fast">tri : combustion rapide → lente</option>
         <option value="burn-slow">tri : combustion lente → rapide</option>
-      </select></label><select id="pwd" onchange="applyStartLoad();calc()"></select></div>
+      </select></label><select id="pwd" onchange="applyStartLoad();calc()"></select>
+      <small class="vm-note" style="display:block;margin-top:.15rem;">« <strong>●</strong> » = données fabricant pour ce calibre (ancrage ~5 % + fenêtre ladder). Sans « ● » : estimation à froid, ladder non borné.</small></div>
     <div class="vm-field"><label>Masse de balle <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
     <div class="vm-field"><label>Charge <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span> — <em>charge de départ (min) pré-remplie ; augmentez prudemment</em></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
     <div class="vm-field"><label>Longueur de canon <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
@@ -280,7 +281,10 @@ function populatePowders(defaultSel){
   const mode=document.getElementById('pwdSort').value;
   const pLabel=(k)=>{const p=PWD[k];return (p.mfg?p.mfg+' ':'')+(p.name||k);};
   const byName=(a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true});
-  const opt=(parent,k)=>{const o=document.createElement('option');o.value=k;o.textContent=pLabel(k);parent.appendChild(o);};
+  // « ● » = données fabricant pour CE calibre (ancrage et/ou fenêtre de charge ladder).
+  const ck=document.getElementById('cart').value;
+  const hasData=(k)=> !!(ANCH[ck+'|'+k] || STARTC[ck+'|'+k]);
+  const opt=(parent,k)=>{const o=document.createElement('option');o.value=k;o.textContent=(hasData(k)?'● ':'')+pLabel(k);parent.appendChild(o);};
   ps.innerHTML='';
   if(mode==='burn-fast'||mode==='burn-slow'){
     const fast=mode==='burn-fast';
@@ -311,6 +315,7 @@ function applyStartLoad(){
 // dérive pas — à tort — avec la longueur de canon saisie. La vitesse, elle, reste calculée
 // par η_b (geometry-free) ; l'effet du canon sur v0 relève de l'outil Le Duc dédié.
 function refBbl(cart){ return cart.test_barrel_mm || (cart.type==='handgun'?122:600); }
+const limSrc=(c)=> c && c.pmax_src==='SAAMI' ? 'SAAMI' : 'CIP';   // source de la limite de pression
 // volume utile d'étui effectif (cm³) : saisie utilisateur si fournie, sinon nominal cartouche.
 function effCV(cart){ return (CVOL>0 ? CVOL : cart.case_vol_cm3); }
 // Sensibilité au volume d'étui pour les prédictions ANCRÉES (eeff/np figés au volume
@@ -375,7 +380,7 @@ function ladderWindow(){
   const sc=STARTC[ck+'|'+pk];
   let mfgMin,mfgMax,note;
   if(sc){ mfgMin=sc.c; mfgMax=sc.cmax; note='fenêtre fabricant '+ladDisp(sc.c).toFixed(2)+'–'+ladDisp(sc.cmax).toFixed(2)+' '+LADUNIT+' (balle '+sc.m+' gr)'; }
-  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note='⚠ pas de données fabricant — plage indicative, vérifiez le max'; }
+  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note='⚠ <strong>pas de données fabricant</strong> pour ce couple (poudre sans « ● ») — choisissez une poudre marquée ● ou saisissez <strong>Min / Max / Incrément</strong> à la main.'; }
   const fMin=parseFloat(document.getElementById('ladMin').value), fStart=parseFloat(document.getElementById('ladStart').value),
         fMax=parseFloat(document.getElementById('ladMax').value), fStep=parseFloat(document.getElementById('ladStep').value);
   const minG=fMin>0?ladToGr(fMin):mfgMin, cmax=fMax>0?ladToGr(fMax):mfgMax, over=cmax>mfgMax+1e-9;
@@ -395,12 +400,12 @@ function renderLadder(){
   const w=ladderWindow();
   if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+' — plage trop étroite (départ ≥ max ou incrément nul).</p>';return;}
   const anc=effAnchor(ck,pk), charges=ladderCharges(w);
-  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">Charge ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% CIP</th></tr>';
+  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">Charge ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% '+limSrc(cart)+'</th></tr>';
   for(const Cg of charges){ const r=modelVP(cart,pw,m_gr,Cg,bbl,anc);
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
   const overTxt = w.over ? ' <strong style="color:#c0392b">⚠ max saisi '+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+' &gt; max fabricant '+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+' — zone NON couverte par les données, danger.</strong>' : '';
-  el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?' · <strong>ancré carabine</strong>':'')+overTxt+' — Pmax/%CIP indicatifs (sous-estimés). Ne dépassez pas le max fabricant.</p>'+t+'</table>';
+  el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?' · <strong>ancré carabine</strong>':'')+overTxt+' — Pmax/%'+limSrc(cart)+' indicatifs (sous-estimés). Ne dépassez pas le max fabricant.</p>'+t+'</table>';
 }
 function fitLadder(){
   const out=document.getElementById('ladFit'); if(!out)return;
@@ -453,6 +458,7 @@ function onCart(){ // défaut canon selon type (pistolet court)
   const bbl_mm = c.type==='handgun' ? 122 : 600;
   document.getElementById('bbl').value = U.bbl.cur==='in' ? frMm(bbl_mm,'in').toFixed(1) : bbl_mm;
   CVOL=null; document.getElementById('cvol').value=''; updateCvolPlaceholder();   // volume perso propre à la cartouche
+  populatePowders();                                  // rafraîchit les marqueurs « ● données » pour ce calibre
 }
 // volume utile d'étui : conversion gr H₂O ↔ cm³ (1 gr H₂O ≈ 0,0648 cm³), stockage interne en cm³.
 // facteur capacité PLEINE (étui vide, au ras) -> capacité UTILE (balle sertie), par type d'arme.
@@ -532,8 +538,8 @@ function calc(){
   const pcip=cart.pmax_cip_bar||null, pct=pcip?Pmax/pcip*100:null;
   let lvl='ok'; const al=[];
   if(pct!=null){
-    if(pct>100){al.push(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite CIP (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`);lvl='danger';}
-    else if(pct>=85){al.push(`Pression proche de la limite CIP (${pct.toFixed(0)} %)`);lvl='warn';}
+    if(pct>100){al.push(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite ${limSrc(cart)} (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`);lvl='danger';}
+    else if(pct>=85){al.push(`Pression proche de la limite ${limSrc(cart)} (${pct.toFixed(0)} %)`);lvl='warn';}
   }
   if(hasPcd){
     if(fill>110){al.push(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`);lvl='danger';}
@@ -545,7 +551,7 @@ function calc(){
     dz.innerHTML=`<strong>${lvl==='danger'?'⛔ DANGER':'⚠ Attention'}</strong> — ${al.join(' · ')}. <em>Estimation indicative — confirmez dans les données fabricant.</em>`;}
   else dz.style.display='none';
   document.getElementById('pbox').className='vm-out'+(pct==null?'':(pct>100?' danger':pct>=85?' warn':''));
-  document.getElementById('o_pcip').textContent = pct!=null ? `· ${pct.toFixed(0)} % CIP` : '(limite CIP non renseignée)';
+  document.getElementById('o_pcip').textContent = pct!=null ? `· ${pct.toFixed(0)} % ${limSrc(cart)}` : '(limite de pression non renseignée)';
   const pbar=document.getElementById('pbar');
   if(pct!=null){pbar.style.display='block';pbar.className='vm-bar'+(pct>100?' danger':pct>=85?' warn':'');pbar.firstElementChild.style.width=Math.min(pct,100)+'%';}
   else pbar.style.display='none';
@@ -562,6 +568,7 @@ function calc(){
   if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
   else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
   if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w='⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). '+w; }
+  if(!pcip) w='ℹ Cartouche sans limite de pression publiée dans nos données (absente du standard SAAMI carabine ; valeur CIP non renseignée) → pas de bandes de sécurité ni de % limite sur cette cartouche. '+w;
   if(!hasPcd) w='Densité bulk inconnue : remplissage et pression approximés (nominal). '+w;
   if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
   if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
@@ -592,18 +599,22 @@ function calc(){
       ladTraces.push({x:xk,y:vk,yaxis:'y2',name:nm,legendgroup:'lad',showlegend:false,line:{color:'rgba(41,128,185,0.20)',width:1},hoverinfo:'name'});
     }
   }
-  // si la limite CIP est connue, on étend l'axe jusqu'au-dessus de P_E (1,25×) pour montrer toutes les zones
-  const yTop=Math.max(pcipD?Math.max(Math.max.apply(null,ps),pcipD*1.25)*1.06:Math.max.apply(null,ps)*1.12, maxLadP*1.06);
+  // seuils selon la source de la pression max : CIP (P_K 1,15× / P_E 1,25×) ou
+  // SAAMI (MPSM 1,065× / épreuve = MPLM×1,30 ≈ 1,334× MAP).
+  const saami=cart.pmax_src==='SAAMI', kMul=saami?1.065:1.15, eMul=saami?1.026*1.30:1.25;
+  // si la limite est connue, on étend l'axe au-dessus de l'épreuve pour montrer toutes les zones
+  const yTop=Math.max(pcipD?Math.max(Math.max.apply(null,ps),pcipD*eMul)*1.06:Math.max.apply(null,ps)*1.12, maxLadP*1.06);
   const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
      xaxis:{title:'Course de la balle ('+U.bbl.cur+')'},
      yaxis:{title:'Pression ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
      yaxis2:{title:'Vitesse ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
   if(pcipD){
-    // Seuils C.I.P. alignés sur la norme : P_max (limite moyenne), P_K=1,15×P_max
-    // (limite cartouche individuelle), P_E=1,25×P_max (pression d'épreuve de l'arme).
-    // pWarn=0,90×P_max : marge de sous-estimation du modèle (~6–10 % de biais bas) — une
-    // estimation entrant ici peut déjà valoir P_max en réalité.
-    const pK=pcipD*1.15, pE=pcipD*1.25, pWarn=pcipD*0.9, u=U.p.cur;
+    // Seuils : limite moyenne (P_max CIP / MAP SAAMI), seuil intermédiaire (P_K 1,15× cartouche
+    // CIP / MPSM 1,065× échantillon SAAMI) et épreuve arme (P_E 1,25× CIP / MPLM×1,30 ≈1,33× MAP
+    // SAAMI). pWarn=0,90× : marge de sous-estimation du modèle — une estimation entrant ici peut
+    // déjà valoir la limite en réalité.
+    const pK=pcipD*kMul, pE=pcipD*eMul, pWarn=pcipD*0.9, u=U.p.cur;
+    const limLab=saami?'MAP SAAMI':'P_max C.I.P.', kLab=saami?'MPSM 1,065× (échantillon)':'P_K 1,15× (cartouche)', eLab=saami?'épreuve ≈1,33× (proof)':'P_E 1,25× (épreuve arme)';
     lay.shapes=[
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pcipD,fillcolor:'rgba(243,156,18,0.13)',line:{width:0},layer:'below'},
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pK,fillcolor:'rgba(192,57,43,0.12)',line:{width:0},layer:'below'},
@@ -617,9 +628,9 @@ function calc(){
     const lab=(y,anchor,text,color,bold)=>({xref:'paper',x:0.99,xanchor:'right',yref:'y',y:y,yanchor:anchor,text:bold?'<b>'+text+'</b>':text,showarrow:false,font:{size:10,color:color},bgcolor:'rgba(255,255,255,0.72)'});
     lay.annotations=[
       lab(pWarn,'top','≈90 % · marge modèle',  '#b9770e',false),
-      lab(pcipD,'bottom','P_max C.I.P. '+pcipD.toFixed(0)+' '+u,'#c0392b',true),
-      lab(pK,'bottom','P_K 1,15× (cartouche)','#a93226',false),
-      lab(pE,'bottom','P_E 1,25× (épreuve arme)','#7b241c',false)
+      lab(pcipD,'bottom',limLab+' '+pcipD.toFixed(0)+' '+u,'#c0392b',true),
+      lab(pK,'bottom',kLab,'#a93226',false),
+      lab(pE,'bottom',eLab,'#7b241c',false)
     ];
   }
   const plotData=[
