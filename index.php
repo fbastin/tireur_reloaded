@@ -601,7 +601,9 @@ function calc(){
   }
   // seuils selon la source de la pression max : CIP (P_K 1,15× / P_E 1,25×) ou
   // SAAMI (MPSM 1,065× / épreuve = MPLM×1,30 ≈ 1,334× MAP).
-  const saami=cart.pmax_src==='SAAMI', kMul=saami?1.065:1.15, eMul=saami?1.026*1.30:1.25;
+  // SAAMI : CV 0,04 (carabine) / 0,05 (pistolet) → MPSM 1,065×/1,078× et épreuve = MPLM×1,30.
+  const saami=cart.pmax_src==='SAAMI', hg=cart.type==='handgun';
+  const kMul=saami?(hg?1.078:1.065):1.15, eMul=saami?((hg?1.0316:1.026)*1.30):1.25;
   // si la limite est connue, on étend l'axe au-dessus de l'épreuve pour montrer toutes les zones
   const yTop=Math.max(pcipD?Math.max(Math.max.apply(null,ps),pcipD*eMul)*1.06:Math.max.apply(null,ps)*1.12, maxLadP*1.06);
   const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
@@ -614,7 +616,8 @@ function calc(){
     // SAAMI). pWarn=0,90× : marge de sous-estimation du modèle — une estimation entrant ici peut
     // déjà valoir la limite en réalité.
     const pK=pcipD*kMul, pE=pcipD*eMul, pWarn=pcipD*0.9, u=U.p.cur;
-    const limLab=saami?'MAP SAAMI':'P_max C.I.P.', kLab=saami?'MPSM 1,065× (échantillon)':'P_K 1,15× (cartouche)', eLab=saami?'épreuve ≈1,33× (proof)':'P_E 1,25× (épreuve arme)';
+    const fx=(x,n)=>x.toFixed(n).replace('.',',');
+    const limLab=saami?'MAP SAAMI':'P_max C.I.P.', kLab=saami?('MPSM '+fx(kMul,3)+'× (échantillon)'):'P_K 1,15× (cartouche)', eLab=saami?('épreuve '+fx(eMul,2)+'× (proof)'):'P_E 1,25× (épreuve arme)';
     lay.shapes=[
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pcipD,fillcolor:'rgba(243,156,18,0.13)',line:{width:0},layer:'below'},
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pK,fillcolor:'rgba(192,57,43,0.12)',line:{width:0},layer:'below'},
