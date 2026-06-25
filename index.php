@@ -97,6 +97,14 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
     <hr style="border:none;border-top:1px dashed var(--color-border);margin:0.6rem 0;">
     <div class="vm-field"><label>Vitesse mesurée v&#8320; <span class="vm-unit" id="u_vmeas" onclick="toggleU('vmeas')">m/s</span> — <em>optionnel, pour ancrer</em></label><input type="number" id="vmeas" placeholder="ex. 845" step="1" oninput="calc()"></div>
     <div class="vm-field"><label>Température <span class="vm-unit" id="u_temp" onclick="toggleU('temp')">°C</span> — <em>sensibilité thermique (Litz), réf. 21&nbsp;°C</em></label><input type="number" id="temp" value="21" step="1" oninput="calc()"></div>
+    <div class="vm-field"><label>Volume d'étui <span class="vm-unit" id="u_cvol" onclick="toggleCvolUnit()">cm³</span> — <em>avancé ; vide = nominal · <a href="/wiki/doku.php?id=rechargement:volume_etui_pression" target="_blank" rel="noopener">comment mesurer ?</a></em></label>
+      <div style="display:flex;gap:.35rem;align-items:stretch;">
+        <input type="number" id="cvol" placeholder="nominal" step="0.01" oninput="onCvol()" style="flex:1;min-width:0;">
+        <select id="cvolMode" onchange="updateCvolPlaceholder();onCvol()" style="width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;" title="utile = balle sertie (exact, méthode ogive dans l'eau) ; pleine = étui vide au ras (×facteur, approché)">
+          <option value="usable" selected>utile (balle sertie)</option>
+          <option value="full">pleine (étui vide)</option>
+        </select>
+      </div></div>
     <p class="vm-note" id="derived"></p>
     <div class="vm-io vm-noprint">
       <button type="button" class="vm-btn2" onclick="exportEstimateur()" title="Télécharger la configuration (et les résultats) en CSV">&#11015;&nbsp;Exporter CSV</button>
@@ -172,6 +180,7 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 
 <script>
 let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={}, RIFLE={eeff:null,n:0}, LAST=null;
+let CVOL=null, CVOLUNIT='cm3';   // volume utile d'étui saisi (cm³ ; null = valeur nominale de la cartouche)
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -279,6 +288,21 @@ function applyStartLoad(){
 // dérive pas — à tort — avec la longueur de canon saisie. La vitesse, elle, reste calculée
 // par η_b (geometry-free) ; l'effet du canon sur v0 relève de l'outil Le Duc dédié.
 function refBbl(cart){ return cart.test_barrel_mm || (cart.type==='handgun'?122:600); }
+// volume utile d'étui effectif (cm³) : saisie utilisateur si fournie, sinon nominal cartouche.
+function effCV(cart){ return (CVOL>0 ? CVOL : cart.case_vol_cm3); }
+// Sensibilité au volume d'étui pour les prédictions ANCRÉES (eeff/np figés au volume
+// nominal du fabricant) : on applique le GRADIENT du modèle global (η_b·Qex / E_eff pour
+// l'énergie, η_p(fill,Re) pour la pression) entre le fill utilisateur et le fill nominal.
+// Au volume nominal -> {e:1, np:1}. C'est la philosophie « ancre = niveau, modèle = pente ».
+function cvScales(cart,pw,C_gr){
+  if(!(CVOL>0 && pw.pcd>0)) return {e:1,np:1};
+  const Cg=C_gr*GR_G, A=Math.PI*(cart.bore_mm/1000)**2/4, refTravel=(refBbl(cart)-cart.case_mm)/1000;
+  const cvN=cart.case_vol_cm3, cvU=CVOL;
+  const ffN=(Cg/(pw.pcd/1000))/cvN, ffU=(Cg/(pw.pcd/1000))/cvU;
+  const eg=(ff)=> (pw.Qex&&pw.Ba) ? lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex : lin(COEF.e_eff.coef,[1,ff]);
+  const npg=(ff,cv)=>lin(COEF.eta_p.coef,[1,ff,Math.log(1+(A*refTravel)/(cv*1e-6))]);
+  return { e: eg(ffU)/eg(ffN), np: npg(ffU,cvU)/npg(ffN,cvN) };
+}
 // ancre effective : override carabine (ladder) > ancre fabricant du couple
 function effAnchor(ck,pk){
   const anc=ANCH[ck+'|'+pk]||null;
@@ -289,14 +313,16 @@ function effAnchor(ck,pk){
 function modelVP(cart,pw,m_gr,C_gr,bbl,anc){
   const C=C_gr*G, d=cart.bore_mm/1000, A=Math.PI*d*d/4;
   const uT=(bbl-cart.case_mm)/1000, refTravel=(refBbl(cart)-cart.case_mm)/1000;  // course canon réel / référence
-  const ReP=1+(A*refTravel)/(cart.case_vol_cm3*1e-6), hasPcd=pw.pcd>0, Cg=C_gr*GR_G;
-  const fill=hasPcd?(Cg/(pw.pcd/1000))/cart.case_vol_cm3*100:null, ff=hasPcd?fill/100:1;
+  const cv=effCV(cart);
+  const ReP=1+(A*refTravel)/(cv*1e-6), hasPcd=pw.pcd>0, Cg=C_gr*GR_G;
+  const fill=hasPcd?(Cg/(pw.pcd/1000))/cv*100:null, ff=hasPcd?fill/100:1;
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
   const loadP={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:refBbl(cart),case_mm:cart.case_mm};
   const npG=lin(COEF.eta_p.coef,[1,ff,Math.log(ReP)]), sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
+  const S=cvScales(cart,pw,C_gr);                        // sensibilité au volume d'étui saisi (1,1 si nominal)
   let vRef,vUser,eta_p;
-  if(anc && anc.rifle){ vUser=EnergyModel.velocityFromEnergy(load,anc.eeff); vRef=sc(vUser,uT,refTravel); eta_p=anc.np!=null?anc.np:npG; }
-  else if(anc){ vRef=EnergyModel.velocityFromEnergy(load,anc.eeff); vUser=sc(vRef,refTravel,uT); eta_p=anc.np!=null?anc.np:npG; }
+  if(anc && anc.rifle){ vUser=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vRef=sc(vUser,uT,refTravel); eta_p=anc.np!=null?anc.np*S.np:npG; }
+  else if(anc){ vRef=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vUser=sc(vRef,refTravel,uT); eta_p=anc.np!=null?anc.np*S.np:npG; }
   else if(pw.Qex&&pw.Ba){ eta_p=npG; vRef=EnergyModel.velocityFromEnergy(load,lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex*1000); vUser=sc(vRef,refTravel,uT); }
   else { eta_p=npG; vRef=EnergyModel.velocityFromEnergy(load,lin(COEF.e_eff.coef,[1,ff])); vUser=sc(vRef,refTravel,uT); }
   const Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);        // pression au canon de référence (depuis vRef)
@@ -371,7 +397,26 @@ function onCart(){ // défaut canon selon type (pistolet court)
   const c=CAL[document.getElementById('cart').value]; if(!c)return;
   const bbl_mm = c.type==='handgun' ? 122 : 600;
   document.getElementById('bbl').value = U.bbl.cur==='in' ? frMm(bbl_mm,'in').toFixed(1) : bbl_mm;
+  CVOL=null; document.getElementById('cvol').value=''; updateCvolPlaceholder();   // volume perso propre à la cartouche
 }
+// volume utile d'étui : conversion gr H₂O ↔ cm³ (1 gr H₂O ≈ 0,0648 cm³), stockage interne en cm³.
+// facteur capacité PLEINE (étui vide, au ras) -> capacité UTILE (balle sertie), par type d'arme.
+function cvFullFactor(c){ return (c && c.type==='handgun') ? 0.66 : 0.87; }
+function onCvol(){ const raw=parseFloat(document.getElementById('cvol').value);
+  if(!(raw>0)){ CVOL=null; calc(); return; }
+  let cm3 = (CVOLUNIT==='grh2o') ? raw*0.0648 : raw;            // -> cm³
+  if(document.getElementById('cvolMode').value==='full') cm3 *= cvFullFactor(CAL[document.getElementById('cart').value]); // pleine -> utile
+  CVOL = cm3; calc(); }
+function toggleCvolUnit(){ const el=document.getElementById('cvol'), raw=parseFloat(el.value);
+  CVOLUNIT = CVOLUNIT==='cm3' ? 'grh2o' : 'cm3';
+  document.getElementById('u_cvol').textContent = CVOLUNIT==='cm3' ? 'cm³' : 'gr H₂O';
+  if(raw>0) el.value = (CVOLUNIT==='grh2o' ? raw/0.0648 : raw*0.0648).toFixed(2);
+  updateCvolPlaceholder(); }
+function updateCvolPlaceholder(){ const c=CAL[document.getElementById('cart').value]; const el=document.getElementById('cvol'); if(!c||!el)return;
+  const full = document.getElementById('cvolMode').value==='full';
+  const nom_cm3 = full ? c.case_vol_cm3/cvFullFactor(c) : c.case_vol_cm3;   // nominal dans le mode courant
+  const nom = CVOLUNIT==='grh2o' ? nom_cm3/0.0648 : nom_cm3;
+  el.placeholder = isFinite(nom) ? 'nominal '+nom.toFixed(2) : 'nominal'; }
 function lin(coef,feats){return coef.reduce((s,w,i)=>s+w*feats[i],0);}
 function calc(){
   const cart=CAL[document.getElementById('cart').value], pw=PWD[document.getElementById('pwd').value];
@@ -383,11 +428,11 @@ function calc(){
   const d=cart.bore_mm/1000, A=Math.PI*d*d/4, travel=(bbl-cart.case_mm)/1000;
   const Cg=C_gr*0.06479891;                             // charge (g)
   const hasPcd=pw.pcd>0;                                 // densité bulk optionnelle
-  const caseVol=cart.case_vol_cm3*1e-6;                  // m³
+  const cv_cm3=effCV(cart), caseVol=cv_cm3*1e-6;         // volume utile (saisi ou nominal), m³
   const Re=1+(A*travel)/caseVol;                         // rapport de détente du canon réel (affichage, courbe Le Duc)
   // Pression : course de RÉFÉRENCE (tube d'essai), indépendante du canon utilisateur
   const refBbl_mm=refBbl(cart), refTravel=(refBbl_mm-cart.case_mm)/1000, ReP=1+(A*refTravel)/caseVol;
-  const fill = hasPcd ? (Cg/(pw.pcd/1000))/cart.case_vol_cm3*100 : null;
+  const fill = hasPcd ? (Cg/(pw.pcd/1000))/cv_cm3*100 : null;
   const fillFrac = hasPcd ? fill/100 : 1.0;             // nominal 100 % si pcd inconnu
   // formules physiques centralisées dans EnergyModel (évite la duplication) ; load reprend la géométrie courante
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
@@ -400,13 +445,14 @@ function calc(){
   // vitesse au canon de RÉFÉRENCE ; on la met à l'échelle du canon réel. Une vitesse fournie par
   // l'utilisateur (mesure, ancrage carabine) est déjà au canon réel -> on la ramène à la réf. pour la pression.
   const sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
+  const S=cvScales(cart,pw,C_gr);                        // sensibilité au volume d'étui saisi (1,1 si nominal)
   if(vmeas>0){                                          // vitesse MESURÉE au canon de l'utilisateur
     vUser=vmeas; vRef=sc(vmeas,travel,refTravel); anchored=true;
-    eta_p=(anc&&anc.np!=null)?anc.np:npGlobal;           // ancre sans np (VV, vitesse seule) -> η_p global
+    eta_p=(anc&&anc.np!=null)?anc.np*S.np:npGlobal;      // ancre sans np (VV, vitesse seule) -> η_p global
   } else if(anc && anc.rifle){                          // ancrage carabine (ladder) : eeff au canon réel
-    vUser=EnergyModel.velocityFromEnergy(load,anc.eeff); vRef=sc(vUser,travel,refTravel); eta_p=(anc.np!=null)?anc.np:npGlobal; dataAnchor=true;
+    vUser=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vRef=sc(vUser,travel,refTravel); eta_p=(anc.np!=null)?anc.np*S.np:npGlobal; dataAnchor=true;
   } else if(anc){                                       // données fabricant (canon d'essai ≈ réf.)
-    vRef=EnergyModel.velocityFromEnergy(load,anc.eeff); vUser=sc(vRef,refTravel,travel); eta_p=(anc.np!=null)?anc.np:npGlobal; dataAnchor=true;
+    vRef=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vUser=sc(vRef,refTravel,travel); eta_p=(anc.np!=null)?anc.np*S.np:npGlobal; dataAnchor=true;
   } else if(pw.Qex && pw.Ba){
     eta_p=npGlobal;
     eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
@@ -452,7 +498,7 @@ function calc(){
   const tag=document.getElementById('o_vtag');
   tag.textContent=anchored?'ancrée (vos données)':dataAnchor?(anc&&anc.rifle?'ancrée carabine (ladder)':ancFlag?'ancrée fabricant (à vérifier)':'ancrée fabricant ~5%'):'à froid ±10%';
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
-  const fillTxt = hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)';
+  const fillTxt = (hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)') + (CVOL>0?` · volume étui perso ${cv_cm3.toFixed(2)} cm³`:'');
   const mode = anchored?'mesure perso' : dataAnchor?`${anc&&anc.rifle?'ancré carabine':'ancré fabricant'} (n=${anc.n}${anc.np==null?', vitesse seule — pression η_p global':''})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
   const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? `  ·  v₀ mise à l'échelle du canon saisi (loi Powley/Litz), pression au canon réf. ${frMm(refBbl_mm,U.bbl.cur).toFixed(U.bbl.cur==='in'?1:0)} ${U.bbl.cur}` : '';
   document.getElementById('derived').textContent=
@@ -460,6 +506,7 @@ function calc(){
   let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
   if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
   else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
+  if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w='⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). '+w; }
   if(!hasPcd) w='Densité bulk inconnue : remplissage et pression approximés (nominal). '+w;
   if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
   if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
