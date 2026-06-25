@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-06-23",
+ "_date": "2026-06-24",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -463,29 +463,29 @@
    "np": 0.4197,
    "mhr": 4
   },
-  "6 XC|RS52": {
+  "6mm XC|RS52": {
    "eeff": 1224288,
    "n": 4,
    "np": 0.4569,
-   "mhr": 1.7
+   "mhr": 1.6
   },
-  "6 XC|RS60": {
+  "6mm XC|RS60": {
    "eeff": 1165553,
    "n": 6,
    "np": 0.4811,
    "mhr": 4
   },
-  "6 XC|RS62": {
+  "6mm XC|RS62": {
    "eeff": 1096121,
    "n": 6,
    "np": 0.4874,
-   "mhr": 3.4
+   "mhr": 3.5
   },
-  "6 XC|RS70": {
+  "6mm XC|RS70": {
    "eeff": 1077923,
    "n": 6,
    "np": 0.4933,
-   "mhr": 5.8
+   "mhr": 6.1
   },
   "6.5 x 47 Lapua|RS52": {
    "eeff": 1273705,
@@ -565,72 +565,71 @@
    "np": 0.5129,
    "mhr": 3.5
   },
-  "7 x 57|RS50": {
+  "7x57 Mauser|RS50": {
    "eeff": 1159141,
    "n": 10,
    "np": 0.4365,
-   "mhr": 3.8
+   "mhr": 3.5
   },
-  "7 x 57|RS52": {
+  "7x57 Mauser|RS52": {
    "eeff": 1189070,
    "n": 10,
    "np": 0.4639,
-   "mhr": 3.3
+   "mhr": 3
   },
-  "7 x 57|RS60": {
+  "7x57 Mauser|RS60": {
    "eeff": 1117094,
    "n": 10,
    "np": 0.4752,
-   "mhr": 5.9
+   "mhr": 5.7
   },
-  "7 x 57|RS62": {
+  "7x57 Mauser|RS62": {
    "eeff": 1067801,
    "n": 10,
    "np": 0.4931,
-   "mhr": 4.1
+   "mhr": 4
   },
-  "7 x 57|RS70": {
+  "7x57 Mauser|RS70": {
    "eeff": 1061082,
    "n": 10,
    "np": 0.4865,
    "mhr": 6.2
   },
-  "7 x 64|RS50": {
+  "7x64 Brenneke|RS50": {
    "eeff": 1085115,
    "n": 6,
    "np": 0.4626,
-   "mhr": 5.7
+   "mhr": 5.1
   },
-  "7 x 64|RS52": {
+  "7x64 Brenneke|RS52": {
    "eeff": 1134982,
    "n": 8,
    "np": 0.4854,
-   "mhr": 4.2
+   "mhr": 3.7
   },
-  "7 x 64|RS60": {
+  "7x64 Brenneke|RS60": {
    "eeff": 1096145,
    "n": 24,
    "np": 0.4758,
-   "mhr": 6.4
+   "mhr": 6.1
   },
-  "7 x 64|RS62": {
+  "7x64 Brenneke|RS62": {
    "eeff": 976283,
    "n": 22,
    "np": 0.5084,
-   "mhr": 5.3
+   "mhr": 5.6
   },
-  "7 x 64|RS70": {
+  "7x64 Brenneke|RS70": {
    "eeff": 988170,
    "n": 14,
    "np": 0.5068,
-   "mhr": 6
+   "mhr": 6.7
   },
-  "7 x 64|RS80": {
+  "7x64 Brenneke|RS80": {
    "eeff": 655029,
    "n": 6,
    "np": 0.5674,
-   "mhr": -13.6,
-   "mhflag": true
+   "mhr": -3.6
   },
   "7.5 x 55 Swiss|RS60": {
    "eeff": 1188869,
@@ -729,13 +728,13 @@
    "np": 0.4647,
    "mhr": 4.5
   },
-  "8 x 57 IS|RS52": {
+  "8x57 IS|RS52": {
    "eeff": 1208808,
    "n": 10,
    "np": 0.4598,
    "mhr": 3.2
   },
-  "8 x 57 IS|RS50": {
+  "8x57 IS|RS50": {
    "eeff": 1151011,
    "n": 12,
    "np": 0.4408,
@@ -1421,6 +1420,16 @@
    "n": 5,
    "np": 0.4362
   },
+  "220 Swift|Accurate 4064": {
+   "eeff": 1074739,
+   "n": 3,
+   "np": 0.4593
+  },
+  "220 Swift|Ramshot Big Game": {
+   "eeff": 1042434,
+   "n": 3,
+   "np": 0.4577
+  },
   "223 WSSM|Ramshot Big Game": {
    "eeff": 1026740,
    "n": 4,
@@ -1460,6 +1469,16 @@
    "eeff": 1369613,
    "n": 5,
    "np": 0.4235
+  },
+  "6mm XC|Accurate 2700": {
+   "eeff": 1255717,
+   "n": 5,
+   "np": 0.4415
+  },
+  "6mm XC|Ramshot Hunter": {
+   "eeff": 1227875,
+   "n": 6,
+   "np": 0.4499
   },
   "6 mm Creedmoor|Ramshot Hunter": {
    "eeff": 1140954,
@@ -3062,15 +3081,15 @@
    "eeff": 911486,
    "n": 4
   },
-  "6 XC|N550": {
+  "6mm XC|N550": {
    "eeff": 1130779,
    "n": 12
   },
-  "6 XC|N540": {
+  "6mm XC|N540": {
    "eeff": 1209800,
    "n": 10
   },
-  "6 XC|N150": {
+  "6mm XC|N150": {
    "eeff": 1132270,
    "n": 8
   },
@@ -3334,11 +3353,11 @@
    "eeff": 1068849,
    "n": 18
   },
-  "7 x 57|N150": {
+  "7x57 Mauser|N150": {
    "eeff": 1102900,
    "n": 4
   },
-  "7 x 57|N160": {
+  "7x57 Mauser|N160": {
    "eeff": 1030868,
    "n": 4
   },
@@ -3362,28 +3381,28 @@
    "eeff": 993080,
    "n": 10
   },
-  "7 x 64|N540": {
+  "7x64 Brenneke|N540": {
    "eeff": 1223184,
    "n": 20
   },
-  "7 x 64|N150": {
+  "7x64 Brenneke|N150": {
    "eeff": 1177827,
    "n": 10
   },
-  "7 x 64|N550": {
+  "7x64 Brenneke|N550": {
    "eeff": 1171351,
    "n": 20
   },
-  "7 x 64|N160": {
+  "7x64 Brenneke|N160": {
    "eeff": 1081707,
    "n": 20,
-   "mhr": 3.2
+   "mhr": 2.4
   },
-  "7 x 64|N560": {
+  "7x64 Brenneke|N560": {
    "eeff": 1075847,
    "n": 14
   },
-  "7 x 64|N165": {
+  "7x64 Brenneke|N165": {
    "eeff": 1064692,
    "n": 6
   },
@@ -3931,31 +3950,31 @@
    "eeff": 1295321,
    "n": 4
   },
-  "8 x 57 IS|N130": {
+  "8x57 IS|N130": {
    "eeff": 1286233,
    "n": 4
   },
-  "8 x 57 IS|N135": {
+  "8x57 IS|N135": {
    "eeff": 1246103,
    "n": 8
   },
-  "8 x 57 IS|N140": {
+  "8x57 IS|N140": {
    "eeff": 1224870,
    "n": 18
   },
-  "8 x 57 IS|N540": {
+  "8x57 IS|N540": {
    "eeff": 1282072,
    "n": 20
   },
-  "8 x 57 IS|N150": {
+  "8x57 IS|N150": {
    "eeff": 1243925,
    "n": 22
   },
-  "8 x 57 IS|N550": {
+  "8x57 IS|N550": {
    "eeff": 1245251,
    "n": 10
   },
-  "8 x 57 IS|N160": {
+  "8x57 IS|N160": {
    "eeff": 1119389,
    "n": 6,
    "mhr": 7.2
@@ -4447,6 +4466,110 @@
   },
   "50 AE|3N38": {
    "eeff": 1596518,
+   "n": 6
+  },
+  "222 Rem.|Norma 200": {
+   "eeff": 1284541,
+   "n": 4
+  },
+  "22-250 Rem.|Norma 201": {
+   "eeff": 1144370,
+   "n": 4
+  },
+  "22-250 Rem.|Norma 202": {
+   "eeff": 1139034,
+   "n": 4
+  },
+  "220 Swift|Norma 202": {
+   "eeff": 1138657,
+   "n": 6
+  },
+  "223 Rem.|Norma 200": {
+   "eeff": 1314851,
+   "n": 4
+  },
+  "6x47 Lapua|Norma 203B": {
+   "eeff": 1222703,
+   "n": 4
+  },
+  "6mm XC|Norma 203B": {
+   "eeff": 1206918,
+   "n": 4
+  },
+  "243 Win.|Norma 203B": {
+   "eeff": 1101623,
+   "n": 4
+  },
+  "243 Win.|Norma URP": {
+   "eeff": 1047384,
+   "n": 4
+  },
+  "243 Ackley Improved|Norma URP": {
+   "eeff": 1046150,
+   "n": 4
+  },
+  "6 mm Creedmoor|Norma URP": {
+   "eeff": 1124618,
+   "n": 4
+  },
+  "6.5 x 47 Lapua|Norma 203B": {
+   "eeff": 1332637,
+   "n": 6
+  },
+  "6.5 x 55 SE|Norma URP": {
+   "eeff": 1149681,
+   "n": 6
+  },
+  "6.5 x 55 SE|Norma 204": {
+   "eeff": 1097438,
+   "n": 6
+  },
+  "260 Rem.|Norma URP": {
+   "eeff": 1234640,
+   "n": 6
+  },
+  "260 Rem.|Norma 204": {
+   "eeff": 1167134,
+   "n": 6
+  },
+  "6.5 Grendel|Norma 201": {
+   "eeff": 1403610,
+   "n": 4
+  },
+  "6.5 Creedmoor|Norma URP": {
+   "eeff": 1233526,
+   "n": 6
+  },
+  "6.5 Creedmoor|Norma 204": {
+   "eeff": 1183949,
+   "n": 4
+  },
+  "308 Win.|Norma 203B": {
+   "eeff": 1366695,
+   "n": 6
+  },
+  "308 Win.|Norma 202": {
+   "eeff": 1404457,
+   "n": 6
+  },
+  "30-06 Spring.|Norma URP": {
+   "eeff": 1204147,
+   "n": 6
+  },
+  "30-06 Spring.|Norma 204": {
+   "eeff": 1136023,
+   "n": 6
+  },
+  "30-06 Spring.|Norma 203B": {
+   "eeff": 1269719,
+   "n": 6
+  },
+  "300 Win. Mag.|Norma 204": {
+   "eeff": 1100818,
+   "n": 6
+  },
+  "300 WSM|Norma 204": {
+   "eeff": 1161144,
    "n": 6
   },
   "7.5 x 55 Swiss|IMR 3031": {

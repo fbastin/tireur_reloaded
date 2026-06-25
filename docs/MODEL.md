@@ -349,6 +349,77 @@ matters; and (iii) **never** rendering a "safe" verdict from a cold prediction. 
 design stance of the estimator, and it is a deliberate consequence of the analysis above —
 not a limitation we expect to engineer away.
 
+### 6.2 The legacy GRT ODE, tested on a GRT-perfect powder — and why it can't be faithfully rebuilt
+
+A natural objection: the discrepancies might mean our *reimplementation* of GRT's solver
+(`legacy/grt_solver.js`) is wrong, and a faithful rebuild would fix it. We tested this
+directly using **Norma 202**, which GRT marks `Qlty=1` (its highest-confidence powder
+calibration) and which ships a complete parameter set — vivacity $B_a$, $Q_\mathrm{ex}$,
+$k$, covolume, and the full three-stage form-function parameters $a_0,z_1,z_2$. Feeding
+those GRT-trusted constants into the legacy ODE and comparing to Norma's own velocities
+(20 points, default $P_\mathrm{start}=150$, $P_\mathrm{friction}=100$ bar):
+
+| Method on Norma 202 (Qlty=1) | velocity RMS | bias |
+|---|---|---|
+| **Legacy GRT ODE** (full GRT params) | **19.5 %** | **−19.4 %** |
+| η_b surrogate | 8.3 % | −7.0 % |
+| $E_\mathrm{eff}$ fallback | **5.0 %** | −0.5 % |
+
+So even fed GRT's *best* constants, our ODE under-predicts velocity by ~19 % — exactly the
+structural defect found in the original validation, now reproduced on a perfectly-calibrated
+powder. This isolates the cause: it is **not** the data (the same loads are predicted to
+5 % by the fallback) and **not** the η_b surrogate — it is our **reproduction of GRT's
+combustion physics** (the parametric form $\varphi(z)$ and the energy-sharing model).
+
+**Can the real model be sourced? No — investigated and closed (2026-06-24).**
+- **Source code is closed.** Both GitHub repos (`GordonsReloadingTool/GRT`,
+  `jbaconsult/GRT`) contain only a `README` — *"Copyright … all rights reserved.
+  Commercial use without written permission is strictly prohibited."* No solver code.
+- **The manual gives theory, not the proprietary model.** It documents the closed-bomb
+  vivacity relation (which we already implement) and Noble–Abel, but states the form
+  function is bespoke: *"it is not sufficient to use the differential equations from the
+  literature 1:1 … new equations had to be compiled."* The $a_0,z_1,z_2$ parameters are
+  described only **qualitatively** (progressive → primary-degressive → secondary-degressive
+  transitions) — **no $\varphi(z)$ equation**. The energy budget (Sebert carrying-factor
+  effective mass, friction/gas losses) is *"represented by models"* with *"empirically
+  determined coefficients/constants"* whose **values are not published**.
+- The author is deceased and the component DB is encrypted (H2).
+
+Fitting those unknowns ourselves is exactly the path the original work tried and closed at a
+**~16 % RMS floor** (parametric calibration of the form function / loss terms). The
+conclusion is therefore **acted as closed**: a faithful GRT rebuild is blocked by a
+*sourcing* problem (the form-function equations and energy-sharing constants are unpublished
+and unrecoverable), not a coding one — and the experiment above shows the legacy ODE, even
+ideally fed, is **worse than the empirical estimator**. The legacy solver is retained only
+as a pedagogical pressure-curve illustrator; the estimator remains the primary tool.
+
+**Could we instead *recalibrate* a 0-D ODE on all our data and beat the empirical model?**
+Tested directly (`scripts/grt_recalib.js`, `scripts/grt_formfit.js`) on the **full 1700
+RS joint (v0, Pmax) set** — well-calibrated powders with full form-function parameters:
+
+1. *Baseline* (legacy ODE, per-powder $a_0,z_1,z_2$): **v −20.6 %, P −19.8 %** bias — a
+   large systematic deficit, $\mathrm{corr}(v_\mathrm{err},P_\mathrm{err})=0.55$.
+2. *Global energy/vivacity scaling*: removing the deficit on velocity (energy ×1.30 or
+   $B_a$ ×1.5 → v bias ≈0) **explodes peak pressure (+25 % to +64 %)**; centring pressure
+   (energy ×1.15) leaves **v at −11 %**. The two cannot be satisfied together.
+3. *Free global form function* $\varphi(z)=(1+pz)(1-z)^q$ + energy scale, grid-searched for
+   minimum combined RMS: best is $q=0.3$, energy ×1.15 → **v 11.6 %, P 23.9 %** (combined
+   ≈18.8 %). **No** $(p,q,\text{energy})$ puts both v and P under ~15 %; pressure RMS floors
+   at ~24 %.
+
+So even with all the data, the full GRT parameters, and a freely-tunable global form
+function, a single-energy-budget ODE floors at ~19 % combined (~24 % on pressure) — **worse
+than the empirical η_b/η_p model** (v 5–10 %, P 16–21 %). The cause is structural: one
+energy budget drives v and P through a **single** $P(x)$ curve, so they cannot be matched
+independently; the lever that would (the correct per-powder grain-geometry $\varphi(z)$) is
+GRT's unpublished piece, and a single global form cannot stand in for 14 different grain
+geometries. The empirical model's two **independent** efficiencies are precisely the
+degree of freedom the ODE lacks — i.e. the decoupled estimator *is* the best-achievable
+form of the model once v and P are allowed to separate. (As a by-product, recalibrating the
+legacy ODE to $q\approx0.3$, energy ×1.15 would re-centre it from −20 %/−20 % to ≈−7 %/−3 %
+bias; not applied, since centring a 24 %-scatter pressure makes the *exploration* tool look
+more trustworthy than it is, against the safety stance.)
+
 ### Independent cross-check (QuickLOAD)
 
 As an out-of-sample, cross-tool check, the estimator was compared with a
@@ -391,6 +462,37 @@ CIP/SAAMI/RS measurement regimes (§6, η_p-residual note) — so pressure stays
 max load can still read ~86 % of CIP. This multi-source evidence is the basis for **never**
 rendering a "safe" verdict from a cold pressure estimate.
 
+### Independent velocity cross-check (Norma)
+
+A fourth source, the **Norma "Reloading Data — Balistix" guide** (Aug 2023, parsed by
+`scripts/parse_norma.js`), is velocity-only (ft/s, no pressure, no test-barrel length) and
+uses **Norma powders that have no $Q_\mathrm{ex}/B_a$** in our component base — i.e. exactly
+the clientele of the $E_\mathrm{eff}$ fallback (§5.3). Feeding its 138 velocity points
+(69/88 rows whose cartridge matches a known caliber) through the **cold** $E_\mathrm{eff}$
+fallback — *without any Norma-specific calibration* — gives **velocity RMS 4.5 %, bias +1.3 %**.
+This independently confirms the fallback generalizes to a fourth brand, and the small
+*positive* bias is in the **safe** direction (slightly over-predicts $v_0$, hence $P_\max$).
+Norma is therefore folded into the per-cartridge×powder **anchors** (§5.5, velocity-only,
+$\eta_p$ left to the global term) — 22 new combos — but the global coefficients are left
+untouched, since the cold fallback already covers it within tolerance. Raw table not
+redistributed (EULA); only the derived anchors are published.
+
+*Note — why fallback-clientele brands keep the fallback even when a powder file exists.*
+GRT `.propellant` files for some fallback-brand powders are available (and are used by the
+legacy GRT simulator), but routing them through the **η_b path** with those constants
+(η_b fitted on Reload Swiss, $Q_\mathrm{ex}\approx 3900$–$4400$) *degrades* the cold velocity
+and biases it **−10 % = the unsafe direction** (under-predicts $v_0$, hence $P_\max$),
+because these brands' GRT $Q_\mathrm{ex}$ run low (~3700–3760, often $Qlty<1$):
+
+| Powder (GRT consts) | η_b path | $E_\mathrm{eff}$ fallback | test set |
+|---|---|---|---|
+| Norma 202 ($Q_\mathrm{ex}3760,B_a0.61$) | 9.9 % / −9.0 % | **5.2 % / −2.6 %** | 14 Norma pts |
+| Accurate 2230 ($Q_\mathrm{ex}3710,B_a0.55$) | 11.8 % / −9.7 % | **5.7 % / −2.8 %** | 153 Western loads |
+
+So the estimator deliberately keeps these brands on the $E_\mathrm{eff}$ fallback (no
+$Q_\mathrm{ex}/B_a$ in their `powders.json` entries); the GRT files feed only the legacy
+simulator. This is the same cross-brand non-transfer of η_b documented for pressure in §5.3.
+
 **Decomposition of the residual pressure under-estimation** (1121 matched Accurate/
 Ramshot loads, `scripts/fit_pressure_multibrand.js`). Because $P_\max \propto v_0^2$,
 a velocity bias enters pressure roughly doubled, so the pipeline bias splits in two:
@@ -428,8 +530,10 @@ is therefore treated as irreducible at the global cold-start level; the lever fo
   community dataset *zen/grt_databases* (CC0 1.0).
 - **Caliber capacities** are derived aggregates (medians) over the calibration set —
   physical constants, publicly known.
-- **Manufacturer load tables** (Reload Swiss Guide 2025) are used for calibration
-  only and are **not redistributed**.
+- **Manufacturer load tables** (Reload Swiss Guide 2025 for calibration; Accurate/
+  Ramshot, Vihtavuori 2026 and Norma 2023 as cross-checks / velocity anchors) are used
+  for calibration/validation only and are **not redistributed** (EULA). Only the derived
+  coefficients and anchors are published.
 
 ## Appendix A. Mayer–Hart closed-form model (explored)
 

@@ -29,8 +29,11 @@ const get = (xml, name) => { const m = xml.match(new RegExp('name="' + name + '"
 const dec = (s) => decodeURIComponent(String(s || '').replace(/\+/g, ' ')).trim();
 
 function keyFor(mname, pname) {
-  const p = dec(pname);
-  if (/reload\s*swiss/i.test(dec(mname)) || /^RS\s*\d/i.test(p)) return 'RS' + (p.match(/\d+/) || [''])[0];
+  const p = dec(pname), m = dec(mname);
+  if (/reload\s*swiss/i.test(m) || /^RS\s*\d/i.test(p)) return 'RS' + (p.match(/\d+/) || [''])[0];
+  // Norma keys are manufacturer-prefixed in powders.json (e.g. "Norma 202"); the
+  // numeric product "203" is sold/keyed as "203B".
+  if (/norma/i.test(m)) return 'Norma ' + (p === '203' ? '203B' : p.replace(/\s+/g, ' '));
   return p.replace(/\s+/g, ' ');
 }
 
@@ -48,7 +51,7 @@ for (const f of files) {
   const cur = pj.powders[key];
   if (!cur) { pj.powders[key] = next; added++; }
   else if (cur.Qex === Qex && cur.Ba === Ba && cur.pcd === pcd) { kept++; }
-  else if (force) { pj.powders[key] = next; conflicts++; console.log(`  overwrite ${key}: ${JSON.stringify(cur)} -> ${JSON.stringify(next)}`); }
+  else if (force) { pj.powders[key] = { ...cur, ...next }; conflicts++; console.log(`  overwrite ${key}: ${JSON.stringify(cur)} -> ${JSON.stringify(pj.powders[key])}`); }
   else { conflicts++; console.log(`  conflict ${key} (kept): have ${JSON.stringify(cur)} file ${JSON.stringify(next)} — use --force to replace`); }
 }
 // keep keys sorted for stable diffs

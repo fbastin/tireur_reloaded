@@ -94,6 +94,22 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
+// Norma (Reloading Data — Balistix, 2023, parsé) — VITESSE seulement (eeff ; np=null →
+// η_p global). Poudres Norma SANS Qex (→ mhr=null). Pas de longueur de canon publiée :
+// v0 traitée comme au canon de référence (comme Vihtavuori). 2 points par ligne.
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('norma.local.json'))).rows) {
+    const ck = matchCal(r.cartridge); if (!ck) continue;
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    const m = r.bullet_gr * G;
+    for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
+      if (!(cgr > 0 && v > 0)) continue;
+      const C = cgr * G, me = m + C / 3;
+      add(ck, pk, me * v * v / (2 * C), null, null);   // np=null : Norma ne contribue qu'à la vitesse
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 // Sierra (Reloading Manual 6e éd., legacy) — table charge→vitesse, canon 30.7" = 780 mm,
 // balles .308. VITESSE seule (eeff ; np absent → η_p global). La vitesse est RAMENÉE au
 // canon de référence de la cartouche (test_barrel_mm) avant le calcul de eeff, car ce
