@@ -121,7 +121,10 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
       <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small>pression <span class="vm-tag">indicative</span> <span id="o_pcip"></span></small>
         <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
     </div>
-    <div id="plot" style="width:100%;height:440px;"></div>
+    <div style="position:relative;">
+      <div id="plot" style="width:100%;height:440px;cursor:zoom-in;"></div>
+      <button type="button" id="plotZoom" class="vm-noprint" title="Agrandir le graphe (ou cliquez sur la courbe)" onclick="openPlotModal()" style="position:absolute;top:4px;right:6px;border:1px solid var(--color-border);background:rgba(255,255,255,0.85);border-radius:4px;cursor:pointer;font-size:1rem;line-height:1;padding:.15rem .35rem;">&#9974;</button>
+    </div>
     <p class="vm-note" id="warn"></p>
     <div class="vm-noprint" style="margin-top:0.5rem">
       <button type="button" id="toExt" class="vm-print" onclick="toExterior()" disabled style="opacity:.5">&#127919;&nbsp;Vers la balistique extérieure</button>
@@ -138,7 +141,13 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 <div style="font-size:0.9rem;">
 <p class="vm-note">L'estimateur <strong>planifie</strong> et <strong>borne</strong> votre ladder, et <strong>exploite</strong> vos vitesses mesurées. Il <strong>ne désigne pas</strong> le nœud : le modèle est lisse (pas d'harmoniques de canon) — c'est au tir + à la statistique (≥ 20 coups, SD/ES) de trancher. <a href="/wiki/doku.php?id=technique:rechargement_balistique">méthode ladder &rarr;</a></p>
 <h4 style="margin:.6rem 0 .2rem;">1. Plan — fenêtre sûre (charge de départ → max fabricant)</h4>
-<div class="vm-field" style="max-width:200px;"><label>Incrément (gr)</label><input type="number" id="ladStep" value="0.2" step="0.1" min="0.05" oninput="renderLadder()"></div>
+<div style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:flex-end;margin-bottom:.4rem;">
+  <div class="vm-field" style="max-width:110px;margin:0;"><label>Min <span class="vm-unit" id="u_lad" onclick="toggleLadUnit()">gr</span></label><input type="number" id="ladMin" step="0.1" placeholder="fabricant" oninput="calc()"></div>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label>Départ</label><input type="number" id="ladStart" step="0.1" placeholder="= min" oninput="calc()"></div>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label>Max</label><input type="number" id="ladMax" step="0.1" placeholder="fabricant" oninput="calc()"></div>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label>Incrément</label><input type="number" id="ladStep" value="0.2" step="0.05" min="0.01" oninput="calc()"></div>
+  <label style="font-size:.8rem;display:flex;align-items:center;gap:.3rem;cursor:pointer;"><input type="checkbox" id="ladPlot" onchange="calc()"> courbes du ladder sur le graphe</label>
+</div>
 <div id="ladTable" style="overflow-x:auto;"></div>
 <h4 style="margin:.8rem 0 .2rem;">2. Exploiter — vos vitesses mesurées (ancrage carabine)</h4>
 <p class="vm-note">Une ligne par tir : <code>charge,vitesse</code> (unités courantes). L'outil cale l'efficacité de <em>votre</em> carabine et compare mesuré vs courbe lisse.</p>
@@ -178,9 +187,21 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 
 </div>
 
+<div id="plotModal" class="vm-noprint" onclick="if(event.target===this)closePlotModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:2vh 2vw;">
+  <div style="background:#fff;border-radius:8px;width:96vw;max-width:1150px;height:92vh;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,0.45);">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .8rem;border-bottom:1px solid #ddd;">
+      <strong style="color:#222;">Pression / vitesse &mdash; vue agrandie</strong>
+      <button type="button" onclick="closePlotModal()" title="Fermer (Échap)" style="border:none;background:none;font-size:1.4rem;line-height:1;cursor:pointer;color:#444;">&times;</button>
+    </div>
+    <div id="plotBig" style="flex:1;min-height:0;"></div>
+  </div>
+</div>
+
 <script>
 let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={}, RIFLE={eeff:null,n:0}, LAST=null;
 let CVOL=null, CVOLUNIT='cm3';   // volume utile d'étui saisi (cm³ ; null = valeur nominale de la cartouche)
+let LADUNIT='gr';                // unité de masse des champs du ladder (gr | g)
+let LASTPLOT=null, PLOTBOUND=false;   // dernier graphe (data+layout) pour la vue agrandie
 const G=6.479891e-5;
 // --- Gestion des unités (mêmes conventions que la balistique extérieure) ---
 const GR_G=0.06479891, IN_MM=25.4, MS_FPS=3.280839895, BAR_PSI=14.5037738;
@@ -277,9 +298,11 @@ function populatePowders(defaultSel){
 function applyStartLoad(){
   RIFLE.eeff=null;                                   // l'ancrage carabine (ladder) est propre au couple -> réinit
   const sc=STARTC[document.getElementById('cart').value+'|'+document.getElementById('pwd').value];
-  if(!sc) return;
-  document.getElementById('m').value = U.mass.cur==='g' ? (sc.m*GR_G).toFixed(2) : sc.m;
-  document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
+  if(sc){
+    document.getElementById('m').value = U.mass.cur==='g' ? (sc.m*GR_G).toFixed(2) : sc.m;
+    document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
+  }
+  setLadderDefaults();                               // pré-remplit Min/Départ du ladder (fenêtre fabricant)
 }
 // --- Ladder : planificateur (fenêtre sûre) + interprète (ancrage carabine) ---
 // Longueur de canon de RÉFÉRENCE pour la PRESSION (tube d'essai). La pression de pic se
@@ -328,24 +351,56 @@ function modelVP(cart,pw,m_gr,C_gr,bbl,anc){
   const Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);        // pression au canon de référence (depuis vRef)
   return {v0:vUser,Pmax,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null};
 }
+// --- unité de masse du ladder (gr <-> g) ---
+const ladToGr=(v)=> LADUNIT==='g' ? v/GR_G : v;           // saisie (LADUNIT) -> grains
+const ladDisp=(gr)=> LADUNIT==='g' ? gr*GR_G : gr;        // grains -> affichage (LADUNIT)
+function toggleLadUnit(){
+  ['ladMin','ladStart','ladStep'].forEach(id=>{const el=document.getElementById(id);const v=parseFloat(el.value);
+    if(v>0) el.value=(LADUNIT==='gr'? v*GR_G : v/GR_G).toFixed(LADUNIT==='gr'?3:2);});
+  LADUNIT = LADUNIT==='gr' ? 'g' : 'gr';
+  document.getElementById('u_lad').textContent=LADUNIT;
+  calc();
+}
+// pré-remplit Min/Départ depuis la fenêtre fabricant (au changement de couple)
+function setLadderDefaults(){
+  const sc=STARTC[document.getElementById('cart').value+'|'+document.getElementById('pwd').value];
+  const dp=(gr)=>ladDisp(gr).toFixed(LADUNIT==='gr'?2:3);
+  document.getElementById('ladMin').value   = sc ? dp(sc.c)    : '';
+  document.getElementById('ladStart').value = sc ? dp(sc.c)    : '';
+  document.getElementById('ladMax').value   = sc ? dp(sc.cmax) : '';
+}
+// fenêtre effective (en GRAINS) : départ/min utilisateur, plafond = max fabricant (sécurité)
+function ladderWindow(){
+  const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value;
+  const sc=STARTC[ck+'|'+pk];
+  let mfgMin,mfgMax,note;
+  if(sc){ mfgMin=sc.c; mfgMax=sc.cmax; note='fenêtre fabricant '+ladDisp(sc.c).toFixed(2)+'–'+ladDisp(sc.cmax).toFixed(2)+' '+LADUNIT+' (balle '+sc.m+' gr)'; }
+  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note='⚠ pas de données fabricant — plage indicative, vérifiez le max'; }
+  const fMin=parseFloat(document.getElementById('ladMin').value), fStart=parseFloat(document.getElementById('ladStart').value),
+        fMax=parseFloat(document.getElementById('ladMax').value), fStep=parseFloat(document.getElementById('ladStep').value);
+  const minG=fMin>0?ladToGr(fMin):mfgMin, cmax=fMax>0?ladToGr(fMax):mfgMax, over=cmax>mfgMax+1e-9;
+  let startG=fStart>0?ladToGr(fStart):minG; startG=Math.max(minG,Math.min(startG,cmax));
+  const stepG=fStep>0?ladToGr(fStep):0.2;
+  return {minG,startG,cmax,stepG,mfgMax,over,note};
+}
+function ladderCharges(w){ const out=[]; const n=Math.min(60,Math.floor((w.cmax-w.startG)/w.stepG+1e-9));
+  for(let i=0;i<=n;i++){ const Cg=w.startG+i*w.stepG; if(Cg>=w.cmax-1e-9){out.push(w.cmax);return out;} out.push(Cg); }
+  if(out[out.length-1]<w.cmax-1e-9) out.push(w.cmax);   // garantit la charge max (plafond fabricant)
+  return out; }
 function renderLadder(){
   const el=document.getElementById('ladTable'); if(!el)return;
   const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value, cart=CAL[ck], pw=PWD[pk];
   if(!cart||!pw){el.innerHTML='';return;}
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
-  const sc=STARTC[ck+'|'+pk];
-  let cmin,cmax,note;
-  if(sc){ cmin=sc.c; cmax=sc.cmax; note='fenêtre fabricant '+sc.c+'–'+sc.cmax+' gr (balle '+sc.m+' gr)'; }
-  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); cmin=cur*0.95; cmax=cur; note='⚠ pas de données fabricant — plage indicative, vérifiez le max'; }
-  const step=+document.getElementById('ladStep').value;     // incrément en grains
-  if(!(cmax>cmin+1e-6&&step>0)){el.innerHTML='<p class="vm-note">'+note+' — plage trop étroite pour une ladder.</p>';return;}
-  const anc=effAnchor(ck,pk), nmax=Math.min(40,Math.floor((cmax-cmin)/step));
-  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">Charge ('+U.charge.cur+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% CIP</th></tr>';
-  for(let i=0;i<=nmax;i++){ const Cg=Math.min(cmin+i*step,cmax); const r=modelVP(cart,pw,m_gr,Cg,bbl,anc);
+  const w=ladderWindow();
+  if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+' — plage trop étroite (départ ≥ max ou incrément nul).</p>';return;}
+  const anc=effAnchor(ck,pk), charges=ladderCharges(w);
+  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">Charge ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% CIP</th></tr>';
+  for(const Cg of charges){ const r=modelVP(cart,pw,m_gr,Cg,bbl,anc);
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
-    t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+frChg(Cg).toFixed(2)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>';
-    if(Cg>=cmax)break; }
-  el.innerHTML='<p class="vm-note">'+note+(anc&&anc.rifle?' · <strong>ancré carabine</strong>':'')+' — Pmax/%CIP indicatifs (sous-estimés). Ne dépassez pas le max fabricant.</p>'+t+'</table>';
+    t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
+  const overTxt = w.over ? ' <strong style="color:#c0392b">⚠ max saisi '+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+' &gt; max fabricant '+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+' — zone NON couverte par les données, danger.</strong>' : '';
+  el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?' · <strong>ancré carabine</strong>':'')+overTxt+' — Pmax/%CIP indicatifs (sous-estimés). Ne dépassez pas le max fabricant.</p>'+t+'</table>';
 }
 function fitLadder(){
   const out=document.getElementById('ladFit'); if(!out)return;
@@ -523,8 +578,22 @@ function calc(){
   const xs=[],vs=[],ps=[];
   for(let i=0;i<=100;i++){const x=travel*i/100;xs.push(frMm(x*1000,U.bbl.cur));vs.push(frMs(ld.v(x),U.v.cur));ps.push(frBar(ld.P_bar(x),U.p.cur));}
   const pcipD=pcip?frBar(pcip,U.p.cur):null;
+  // Superposition des courbes du LADDER (en plus clair) : une P(x)/v(x) par charge de la fenêtre.
+  const ladTraces=[]; let maxLadP=0;
+  if(document.getElementById('ladPlot') && document.getElementById('ladPlot').checked){
+    const w=ladderWindow(), chgs=ladderCharges(w), anc2=effAnchor(document.getElementById('cart').value,document.getElementById('pwd').value);
+    const stride=Math.max(1,Math.ceil(chgs.length/14));     // ~14 courbes max pour rester lisible
+    for(let k=0;k<chgs.length;k+=stride){ const Cg=chgs[k];
+      const r=modelVP(cart,pw,m_gr,Cg,bbl,anc2); if(!(r.v0>0&&r.Pmax>0))continue;
+      const lk=VelocityModel.leDuc(r.v0,r.Pmax,m,Cg*G,d,travel); if(!lk)continue;
+      const xk=[],vk=[],pk2=[]; for(let i=0;i<=50;i++){const x=travel*i/50;xk.push(frMm(x*1000,U.bbl.cur));vk.push(frMs(lk.v(x),U.v.cur));const P=frBar(lk.P_bar(x),U.p.cur);pk2.push(P);if(P>maxLadP)maxLadP=P;}
+      const nm=ladDisp(Cg).toFixed(LADUNIT==='gr'?1:3)+' '+LADUNIT;
+      ladTraces.push({x:xk,y:pk2,yaxis:'y',name:nm,legendgroup:'lad',showlegend:false,line:{color:'rgba(192,57,43,0.20)',width:1},hoverinfo:'name'});
+      ladTraces.push({x:xk,y:vk,yaxis:'y2',name:nm,legendgroup:'lad',showlegend:false,line:{color:'rgba(41,128,185,0.20)',width:1},hoverinfo:'name'});
+    }
+  }
   // si la limite CIP est connue, on étend l'axe jusqu'au-dessus de P_E (1,25×) pour montrer toutes les zones
-  const yTop=pcipD?Math.max(Math.max.apply(null,ps), pcipD*1.25)*1.06:Math.max.apply(null,ps)*1.12;
+  const yTop=Math.max(pcipD?Math.max(Math.max.apply(null,ps),pcipD*1.25)*1.06:Math.max.apply(null,ps)*1.12, maxLadP*1.06);
   const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
      xaxis:{title:'Course de la balle ('+U.bbl.cur+')'},
      yaxis:{title:'Pression ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
@@ -553,11 +622,27 @@ function calc(){
       lab(pE,'bottom','P_E 1,25× (épreuve arme)','#7b241c',false)
     ];
   }
-  Plotly.react('plot',[
-    {x:xs,y:ps,name:'Pression ('+U.p.cur+')',yaxis:'y',line:{color:'#c0392b'}},
-    {x:xs,y:vs,name:'Vitesse ('+U.v.cur+')',yaxis:'y2',line:{color:'#2980b9'}}
-  ],lay,{displayModeBar:false,responsive:true});
+  const plotData=[
+    ...ladTraces,                                            // courbes du ladder (clair) sous les courbes principales
+    {x:xs,y:ps,name:'Pression ('+U.p.cur+')'+(ladTraces.length?' · charge courante':''),yaxis:'y',line:{color:'#c0392b',width:2.5}},
+    {x:xs,y:vs,name:'Vitesse ('+U.v.cur+')'+(ladTraces.length?' · charge courante':''),yaxis:'y2',line:{color:'#2980b9',width:2.5}}
+  ];
+  LASTPLOT={data:plotData,layout:lay};                       // mémorisé pour la vue agrandie
+  Plotly.react('plot',plotData,lay,{displayModeBar:false,responsive:true});
+  if(!PLOTBOUND){ const gd=document.getElementById('plot'); if(gd&&gd.on){ gd.on('plotly_click',openPlotModal); PLOTBOUND=true; } }
+  if(document.getElementById('plotModal').style.display==='flex') openPlotModal();   // rafraîchit la modale ouverte
 }
+// --- Vue agrandie du graphe (modale, zoom/pan via la barre Plotly) -----------
+function openPlotModal(){
+  if(!LASTPLOT) return;
+  const modal=document.getElementById('plotModal'); modal.style.display='flex';
+  const data=JSON.parse(JSON.stringify(LASTPLOT.data)), layout=JSON.parse(JSON.stringify(LASTPLOT.layout));
+  layout.margin={t:14,r:65,l:65,b:90}; layout.font={size:13};
+  Plotly.newPlot('plotBig',data,layout,{displayModeBar:true,responsive:true,scrollZoom:true,
+    modeBarButtonsToRemove:['lasso2d','select2d'],displaylogo:false});
+}
+function closePlotModal(){ document.getElementById('plotModal').style.display='none'; Plotly.purge('plotBig'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.getElementById('plotModal').style.display==='flex') closePlotModal(); });
 // --- Import / Export CSV ---------------------------------------------------
 // Déclenche le téléchargement d'un fichier CSV (UTF-8)
 function csvDownload(name,text){
