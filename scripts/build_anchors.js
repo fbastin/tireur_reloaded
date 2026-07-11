@@ -132,6 +132,20 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
 
+// Alliant (Reloader's Guide, PDF officiel à couche texte — pas d'OCR). Charges MAXIMALES
+// seulement → 1 point par ligne, comme LoadData. VITESSE seule (eeff ; np=null). Canon
+// d'essai SAAMI NON VENTÉ, longueur non publiée → v0 au canon de référence (comme Norma).
+// Balles plomb écartées à l'extraction (coefficients calés sur du chemisé).
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('alliant.local.json'))).rows) {
+    const ck = matchCal(r.cartridge); if (!ck) continue;
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    if (!(r.charge_gr > 0 && r.v0_fps > 0)) continue;
+    const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3, v = r.v0_fps * 0.3048;
+    add(ck, pk, me * v * v / (2 * C), null, null);
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 // LoadData.com (agrégateur ; données issues de manuels fabricant) — pages uniques
 // ouvertes par l'utilisateur, charge→vitesse. VITESSE seule (eeff ; np=null). Souvent
 // du revolver (canon ventilé) → v0 traitée au canon de référence (pas de loi de canon).

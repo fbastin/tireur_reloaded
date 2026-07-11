@@ -60,6 +60,20 @@ for (const f of glob(/^speer_.*\.local\.json$/)) addRange(JSON.parse(fs.readFile
 for (const f of glob(/^sierra_.*\.local\.json$/)) addRange(JSON.parse(fs.readFileSync(d(f))).rows, 'charge_gr');
 for (const f of glob(/^loaddata_.*\.local\.json$/)) addRange(JSON.parse(fs.readFileSync(d(f))).rows, 'charge_gr');
 
+// Alliant — ne publie que la charge MAXIMALE. La charge de départ est DÉRIVÉE de la consigne
+// imprimée dans le guide lui-même (« reduce rifle and handgun charge weights by 10% to
+// establish a starting load ») : ce n'est donc pas une valeur inventée, mais la règle du
+// fabricant appliquée à sa propre donnée. Sans elle, les 91 couples ancrés via Alliant
+// seraient marqués « ● données » avec un ladder vide (l'incohérence corrigée le 2026-06-25).
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('alliant.local.json'))).rows) {
+    const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
+    if (!(r.charge_gr > 0)) continue;
+    add(ck, pk, r.bullet_gr, r.charge_gr);            // max publiée
+    add(ck, pk, r.bullet_gr, r.charge_gr * 0.9);      // départ = max − 10 % (consigne Alliant)
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }
+
 const median = (a) => { const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
 const out = {}; let n = 0;
 for (const [k, byBullet] of Object.entries(groups)) {

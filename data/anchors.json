@@ -4600,13 +4600,385 @@
    "eeff": 1161144,
    "n": 6
   },
-  "38 Special|Alliant Power Pistol": {
-   "eeff": 1031925,
-   "n": 4
+  "38 Special|Alliant Bullseye": {
+   "eeff": 1248006,
+   "n": 12
+  },
+  "38 Special|Alliant American Select": {
+   "eeff": 999222,
+   "n": 5
   },
   "38 Special|Alliant Unique": {
-   "eeff": 982398,
+   "eeff": 1025367,
+   "n": 11
+  },
+  "38 Special|Alliant Power Pistol": {
+   "eeff": 1014316,
+   "n": 9
+  },
+  "9 mm Luger|Alliant Unique": {
+   "eeff": 1399953,
+   "n": 3
+  },
+  "9 mm Luger|Alliant Blue Dot": {
+   "eeff": 1118488,
+   "n": 3
+  },
+  "357 Magnum|Alliant Unique": {
+   "eeff": 1123168,
+   "n": 5
+  },
+  "357 Magnum|Alliant Power Pistol": {
+   "eeff": 1076558,
+   "n": 5
+  },
+  "357 Magnum|Alliant Blue Dot": {
+   "eeff": 964965,
+   "n": 4
+  },
+  "357 Magnum|Alliant 2400": {
+   "eeff": 761239,
    "n": 6
+  },
+  "10 mm Auto|Alliant Unique": {
+   "eeff": 1350414,
+   "n": 3
+  },
+  "10 mm Auto|Alliant Blue Dot": {
+   "eeff": 1143884,
+   "n": 3
+  },
+  "45 ACP (Auto)|Alliant Bullseye": {
+   "eeff": 1354920,
+   "n": 3
+  },
+  "45 ACP (Auto)|Alliant Unique": {
+   "eeff": 1163787,
+   "n": 3
+  },
+  "44 Rem. Mag.|Alliant Unique": {
+   "eeff": 1426627,
+   "n": 4
+  },
+  "45 ACP (Auto)|Alliant Power Pistol": {
+   "eeff": 1052253,
+   "n": 3
+  },
+  "44 Rem. Mag.|Alliant Power Pistol": {
+   "eeff": 1393260,
+   "n": 3
+  },
+  "44 Rem. Mag.|Alliant 2400": {
+   "eeff": 1021079,
+   "n": 5
+  },
+  "454 Casull|Alliant 2400": {
+   "eeff": 1097556,
+   "n": 3
+  },
+  "460 S&W|Alliant Power Pistol": {
+   "eeff": 1334962,
+   "n": 3
+  },
+  "460 S&W|Alliant 2400": {
+   "eeff": 1124639,
+   "n": 3
+  },
+  "222 Rem.|Alliant Reloder 7": {
+   "eeff": 1319748,
+   "n": 4
+  },
+  "222 Rem.|Alliant Reloder 10X": {
+   "eeff": 1111833,
+   "n": 3
+  },
+  "22-250 Rem.|Alliant Reloder 10X": {
+   "eeff": 1206819,
+   "n": 3
+  },
+  "22-250 Rem.|Alliant Reloder 15": {
+   "eeff": 1099519,
+   "n": 6
+  },
+  "223 Rem.|Alliant Reloder 7": {
+   "eeff": 1076751,
+   "n": 3
+  },
+  "223 Rem.|Alliant Reloder 10X": {
+   "eeff": 1200568,
+   "n": 5
+  },
+  "223 Rem.|Alliant Power Pro 1200-R": {
+   "eeff": 1283679,
+   "n": 6
+  },
+  "22-250 Rem.|Alliant AR Comp": {
+   "eeff": 1255580,
+   "n": 8
+  },
+  "223 Rem.|Alliant Reloder 15": {
+   "eeff": 1130108,
+   "n": 3
+  },
+  "22-250 Rem.|Alliant Power Pro 2000-MR": {
+   "eeff": 1162848,
+   "n": 3
+  },
+  "223 Rem.|Alliant AR Comp": {
+   "eeff": 1321668,
+   "n": 7
+  },
+  "223 Rem.|Alliant Power Pro 2000-MR": {
+   "eeff": 1269148,
+   "n": 3
+  },
+  "220 Swift|Alliant Reloder 15": {
+   "eeff": 1034302,
+   "n": 3
+  },
+  "220 Swift|Alliant Reloder 19": {
+   "eeff": 845340,
+   "n": 3
+  },
+  "223 WSSM|Alliant Power Pro 2000-MR": {
+   "eeff": 1092113,
+   "n": 3
+  },
+  "6 mm Remington|Alliant Power Pro 2000-MR": {
+   "eeff": 1168962,
+   "n": 4
+  },
+  "6mm PPC|Alliant Reloder 7": {
+   "eeff": 1427376,
+   "n": 3
+  },
+  "6 mm Remington|Alliant Reloder 19": {
+   "eeff": 980801,
+   "n": 5
+  },
+  "6 mm Remington|Alliant Reloder 17": {
+   "eeff": 1160984,
+   "n": 3
+  },
+  "6 mm Remington|Alliant Reloder 22": {
+   "eeff": 976808,
+   "n": 5
+  },
+  "243 Win.|Alliant Reloder 10X": {
+   "eeff": 1206202,
+   "n": 3
+  },
+  "243 Win.|Alliant Reloder 15": {
+   "eeff": 1125148,
+   "n": 3
+  },
+  "243 Win.|Alliant AR Comp": {
+   "eeff": 1220196,
+   "n": 3
+  },
+  "257 Roberts|Alliant Power Pro 2000-MR": {
+   "eeff": 1172615,
+   "n": 3
+  },
+  "257 Wby. Mag.|Alliant Reloder 22": {
+   "eeff": 993267,
+   "n": 3
+  },
+  "257 Wby. Mag.|Alliant Reloder 25": {
+   "eeff": 993932,
+   "n": 3
+  },
+  "25-06 Remington|Alliant Power Pro 2000-MR": {
+   "eeff": 1142052,
+   "n": 3
+  },
+  "270 Win.|Alliant Reloder 19": {
+   "eeff": 1019024,
+   "n": 5
+  },
+  "270 Win.|Alliant Power Pro 2000-MR": {
+   "eeff": 1249305,
+   "n": 3
+  },
+  "270 Win.|Alliant Reloder 17": {
+   "eeff": 1242852,
+   "n": 3
+  },
+  "270 Win.|Alliant Reloder 22": {
+   "eeff": 1094133,
+   "n": 3
+  },
+  "260 Rem.|Alliant Reloder 19": {
+   "eeff": 1079624,
+   "n": 5
+  },
+  "270 WSM|Alliant Reloder 17": {
+   "eeff": 1183170,
+   "n": 3
+  },
+  "270 WSM|Alliant Reloder 19": {
+   "eeff": 1104453,
+   "n": 3
+  },
+  "270 WSM|Alliant Reloder 22": {
+   "eeff": 1138402,
+   "n": 3
+  },
+  "260 Rem.|Alliant Reloder 22": {
+   "eeff": 1124172,
+   "n": 3
+  },
+  "270 Weatherby Magnum|Alliant Reloder 19": {
+   "eeff": 1070259,
+   "n": 3
+  },
+  "260 Rem.|Alliant Reloder 10X": {
+   "eeff": 1429190,
+   "n": 3
+  },
+  "280 Remington|Alliant Reloder 19": {
+   "eeff": 1139181,
+   "n": 6
+  },
+  "280 Remington|Alliant Reloder 17": {
+   "eeff": 1239881,
+   "n": 5
+  },
+  "280 Remington|Alliant Reloder 22": {
+   "eeff": 1138323,
+   "n": 3
+  },
+  "280 Remington|Alliant Power Pro 4000-MR": {
+   "eeff": 1205368,
+   "n": 3
+  },
+  "7 -08 Rem.|Alliant Reloder 15": {
+   "eeff": 1261436,
+   "n": 3
+  },
+  "7mm RUM|Alliant Reloder 22": {
+   "eeff": 991116,
+   "n": 3
+  },
+  "7mm RUM|Alliant Reloder 25": {
+   "eeff": 968762,
+   "n": 3
+  },
+  "7 Rem. Mag.|Alliant Reloder 17": {
+   "eeff": 1181381,
+   "n": 4
+  },
+  "7 Rem. Mag.|Alliant Reloder 19": {
+   "eeff": 1109902,
+   "n": 6
+  },
+  "7 Rem. Mag.|Alliant Reloder 22": {
+   "eeff": 1099423,
+   "n": 5
+  },
+  "7 Rem. Mag.|Alliant Power Pro 4000-MR": {
+   "eeff": 1141268,
+   "n": 3
+  },
+  "7mm Weatherby Magnum|Alliant Reloder 15": {
+   "eeff": 1157119,
+   "n": 3
+  },
+  "7mm Weatherby Magnum|Alliant Reloder 19": {
+   "eeff": 1076658,
+   "n": 3
+  },
+  "7mm Weatherby Magnum|Alliant Reloder 22": {
+   "eeff": 1072482,
+   "n": 3
+  },
+  "30-30 Win.|Alliant Reloder 7": {
+   "eeff": 1199856,
+   "n": 4
+  },
+  "30-30 Win.|Alliant Reloder 10X": {
+   "eeff": 1168868,
+   "n": 3
+  },
+  "300 Savage|Alliant Reloder 15": {
+   "eeff": 1305111,
+   "n": 3
+  },
+  "300 WSM|Alliant Reloder 19": {
+   "eeff": 1188156,
+   "n": 3
+  },
+  "300 WSM|Alliant Reloder 17": {
+   "eeff": 1324615,
+   "n": 3
+  },
+  "300 Weatherby Magnum|Alliant Reloder 19": {
+   "eeff": 1074278,
+   "n": 6
+  },
+  "303 British|Alliant Reloder 10X": {
+   "eeff": 1358895,
+   "n": 3
+  },
+  "303 British|Alliant Reloder 15": {
+   "eeff": 1280656,
+   "n": 6
+  },
+  "300 Weatherby Magnum|Alliant Reloder 22": {
+   "eeff": 1099455,
+   "n": 4
+  },
+  "300 Weatherby Magnum|Alliant Reloder 25": {
+   "eeff": 1098881,
+   "n": 3
+  },
+  "303 British|Alliant Reloder 17": {
+   "eeff": 1312715,
+   "n": 3
+  },
+  "300 Rem. Ultra Mag.|Alliant Power Pro 4000-MR": {
+   "eeff": 1125774,
+   "n": 4
+  },
+  "300 Rem. Ultra Mag.|Alliant Reloder 22": {
+   "eeff": 1048849,
+   "n": 4
+  },
+  "300 Rem. Ultra Mag.|Alliant Reloder 25": {
+   "eeff": 1032478,
+   "n": 3
+  },
+  "338 Win. Mag.|Alliant Reloder 19": {
+   "eeff": 1201703,
+   "n": 6
+  },
+  "338 Win. Mag.|Alliant Reloder 17": {
+   "eeff": 1347473,
+   "n": 3
+  },
+  "338 Win. Mag.|Alliant Reloder 22": {
+   "eeff": 1192392,
+   "n": 4
+  },
+  "375 H&H Mag.|Alliant Reloder 15": {
+   "eeff": 1343892,
+   "n": 5
+  },
+  "338 Lapua Mag.|Alliant Reloder 33": {
+   "eeff": 1148828,
+   "n": 4
+  },
+  "338 Lapua Mag.|Alliant Reloder 19": {
+   "eeff": 1171862,
+   "n": 3
+  },
+  "35 Remington|Alliant Reloder 7": {
+   "eeff": 1204427,
+   "n": 3
+  },
+  "458 Winchester Magnum|Alliant Reloder 7": {
+   "eeff": 1428605,
+   "n": 3
   },
   "38 Special|Hodgdon Universal": {
    "eeff": 1047711,
@@ -4614,10 +4986,6 @@
   },
   "38 Special|IMR IMR 700X": {
    "eeff": 1339025,
-   "n": 8
-  },
-  "38 Special|Alliant Bullseye": {
-   "eeff": 1287608,
    "n": 8
   },
   "38 Special|Hodgdon HP-38": {
