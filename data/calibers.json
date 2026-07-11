@@ -87,7 +87,12 @@
       "bore_mm": 7.24,
       "case_mm": 57,
       "case_vol_cm3": 3.357,
-      "pmax_cip_bar": 3900
+      "pmax_cip_bar": 3900,
+      "aliases": [
+        "7x57",
+        "7x57 Mauser"
+      ],
+      "test_barrel_mm": 600
     },
     "7 Rem. Mag.": {
       "type": "rifle",
@@ -1033,18 +1038,6 @@
       "aliases": [
         "243 Ackley Imp",
         "243 AI"
-      ]
-    },
-    "7x57 Mauser": {
-      "type": "rifle",
-      "bore_mm": 7.21,
-      "case_mm": 57,
-      "case_vol_cm3": 3.413,
-      "pmax_cip_bar": 3900,
-      "test_barrel_mm": 600,
-      "aliases": [
-        "7x57",
-        "7x57 Mauser"
       ]
     },
     "375 Ruger": {
