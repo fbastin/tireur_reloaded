@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-06-25",
+ "_date": "2026-07-11",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -467,7 +467,7 @@
    "eeff": 1224288,
    "n": 4,
    "np": 0.4569,
-   "mhr": 1.6
+   "mhr": 1.7
   },
   "6 XC|RS60": {
    "eeff": 1165553,
@@ -479,13 +479,13 @@
    "eeff": 1096121,
    "n": 6,
    "np": 0.4874,
-   "mhr": 3.5
+   "mhr": 3.4
   },
   "6 XC|RS70": {
    "eeff": 1077923,
    "n": 6,
    "np": 0.4933,
-   "mhr": 6.1
+   "mhr": 5.8
   },
   "6.5 x 47 Lapua|RS52": {
    "eeff": 1273705,
@@ -599,37 +599,38 @@
    "eeff": 1085115,
    "n": 6,
    "np": 0.4626,
-   "mhr": 5.1
+   "mhr": 5.7
   },
   "7 x 64|RS52": {
    "eeff": 1134982,
    "n": 8,
    "np": 0.4854,
-   "mhr": 3.7
+   "mhr": 4.2
   },
   "7 x 64|RS60": {
    "eeff": 1096145,
    "n": 24,
    "np": 0.4758,
-   "mhr": 6.1
+   "mhr": 6.4
   },
   "7 x 64|RS62": {
    "eeff": 976283,
    "n": 22,
    "np": 0.5084,
-   "mhr": 5.6
+   "mhr": 5.3
   },
   "7 x 64|RS70": {
    "eeff": 988170,
    "n": 14,
    "np": 0.5068,
-   "mhr": 6.7
+   "mhr": 6
   },
   "7 x 64|RS80": {
    "eeff": 655029,
    "n": 6,
    "np": 0.5674,
-   "mhr": -3.6
+   "mhr": -13.6,
+   "mhflag": true
   },
   "7.5 x 55 Swiss|RS60": {
    "eeff": 1188869,
@@ -1473,12 +1474,12 @@
   "6 XC|Accurate 2700": {
    "eeff": 1255717,
    "n": 5,
-   "np": 0.4415
+   "np": 0.4482
   },
   "6 XC|Ramshot Hunter": {
    "eeff": 1227875,
    "n": 6,
-   "np": 0.4499
+   "np": 0.4567
   },
   "6 mm Creedmoor|Accurate 4350": {
    "eeff": 1167405,
@@ -3412,7 +3413,7 @@
   "7 x 64|N160": {
    "eeff": 1081707,
    "n": 20,
-   "mhr": 2.4
+   "mhr": 3.2
   },
   "7 x 64|N560": {
    "eeff": 1075847,
