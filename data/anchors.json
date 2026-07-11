@@ -4644,12 +4644,20 @@
    "eeff": 1350414,
    "n": 3
   },
+  "357 Magnum|Alliant Power Pro 300-MP": {
+   "eeff": 1166512,
+   "n": 3
+  },
   "10 mm Auto|Alliant Blue Dot": {
    "eeff": 1143884,
    "n": 3
   },
   "45 ACP (Auto)|Alliant Bullseye": {
    "eeff": 1354920,
+   "n": 3
+  },
+  "44 Rem. Mag.|Alliant Power Pro 300-MP": {
+   "eeff": 1108455,
    "n": 3
   },
   "45 ACP (Auto)|Alliant Unique": {
@@ -4676,6 +4684,10 @@
    "eeff": 1097556,
    "n": 3
   },
+  "454 Casull|Alliant Power Pro 300-MP": {
+   "eeff": 1226793,
+   "n": 3
+  },
   "460 S&W|Alliant Power Pistol": {
    "eeff": 1334962,
    "n": 3
@@ -4683,6 +4695,14 @@
   "460 S&W|Alliant 2400": {
    "eeff": 1124639,
    "n": 3
+  },
+  "460 S&W|Alliant Power Pro 300-MP": {
+   "eeff": 1311892,
+   "n": 3
+  },
+  "22 Hornet|Alliant Power Pro 300-MP": {
+   "eeff": 1511681,
+   "n": 4
   },
   "222 Rem.|Alliant Reloder 7": {
    "eeff": 1319748,

@@ -597,6 +597,12 @@
       "base": "Double",
       "type": "Ball"
     },
+    "Alliant Power Pro 300-MP": {
+      "mfg": "Alliant",
+      "name": "Power Pro 300-MP",
+      "base": "Double",
+      "type": "Ball"
+    },
     "Alliant Power Pro 4000-MR": {
       "mfg": "Alliant",
       "name": "Power Pro 4000-MR",
