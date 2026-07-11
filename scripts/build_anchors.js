@@ -146,6 +146,22 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
+// Vectan / Nobel Sport (catalogue officiel) — charge DÉPART + MAX, données NORMES CIP.
+// VITESSE seule (eeff ; np=null). Pas de longueur de canon publiée → v0 au canon de référence
+// (comme Norma). Seules les lignes dont la balle est NON AMBIGUË sont extraites (cf. parseur).
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('vectan.local.json'))).rows) {
+    const ck = matchCal(r.cartridge); if (!ck) continue;
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    const m = r.bullet_gr * G;
+    for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
+      if (!(cgr > 0 && v > 0)) continue;
+      const C = cgr * G, me = m + C / 3;
+      add(ck, pk, me * v * v / (2 * C), null, null);
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 // LoadData.com (agrégateur ; données issues de manuels fabricant) — pages uniques
 // ouvertes par l'utilisateur, charge→vitesse. VITESSE seule (eeff ; np=null). Souvent
 // du revolver (canon ventilé) → v0 traitée au canon de référence (pas de loi de canon).
