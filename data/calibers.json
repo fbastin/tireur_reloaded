@@ -27,7 +27,11 @@
       "case_mm": 64,
       "case_vol_cm3": 3.798,
       "pmax_cip_bar": 4150,
-      "test_barrel_mm": 650
+      "test_barrel_mm": 650,
+      "aliases": [
+        "7x64",
+        "7x64 Brenneke"
+      ]
     },
     "6.5 Creedmoor": {
       "type": "rifle",
@@ -228,8 +232,13 @@
     "6 XC": {
       "type": "rifle",
       "bore_mm": 6.17,
-      "case_mm": 40.9,
-      "case_vol_cm3": 2.871
+      "case_mm": 48.1,
+      "case_vol_cm3": 2.871,
+      "aliases": [
+        "6mm XC",
+        "6XC"
+      ],
+      "test_barrel_mm": 600
     },
     "8 x 57 IS": {
       "type": "rifle",
@@ -237,7 +246,13 @@
       "case_mm": 57,
       "case_vol_cm3": 3.489,
       "pmax_cip_bar": 3900,
-      "test_barrel_mm": 620
+      "test_barrel_mm": 620,
+      "aliases": [
+        "8x57 Mauser",
+        "8x57 IS",
+        "8x57 JS",
+        "8x57"
+      ]
     },
     "8 x 68 S": {
       "type": "rifle",
@@ -1008,17 +1023,6 @@
         "6x47 Lapua"
       ]
     },
-    "6mm XC": {
-      "type": "rifle",
-      "bore_mm": 6.17,
-      "case_mm": 39.6,
-      "case_vol_cm3": 2.967,
-      "test_barrel_mm": 600,
-      "aliases": [
-        "6mm XC",
-        "6XC"
-      ]
-    },
     "243 Ackley Improved": {
       "type": "rifle",
       "bore_mm": 6.17,
@@ -1041,32 +1045,6 @@
       "aliases": [
         "7x57",
         "7x57 Mauser"
-      ]
-    },
-    "7x64 Brenneke": {
-      "type": "rifle",
-      "bore_mm": 7.21,
-      "case_mm": 65,
-      "case_vol_cm3": 3.99,
-      "pmax_cip_bar": 4150,
-      "test_barrel_mm": 600,
-      "aliases": [
-        "7x64",
-        "7x64 Brenneke"
-      ]
-    },
-    "8x57 IS": {
-      "type": "rifle",
-      "bore_mm": 8.2,
-      "case_mm": 57,
-      "case_vol_cm3": 3.504,
-      "pmax_cip_bar": 3900,
-      "test_barrel_mm": 600,
-      "aliases": [
-        "8x57 Mauser",
-        "8x57 IS",
-        "8x57 JS",
-        "8x57"
       ]
     },
     "375 Ruger": {
