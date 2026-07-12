@@ -146,6 +146,27 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
+// Lovex / Explosia (guide officiel, normes CIP) — LA SEULE source « web » qui publie à la
+// fois la LONGUEUR DE CANON et la PRESSION : elle alimente donc la VITESSE *et* la PRESSION
+// (η_p), comme Reload Swiss / Western, et pas seulement E_eff. La pression publiée est celle
+// de la charge MAX -> np n'est calculé que sur ce point ; la charge de départ ne donne que eeff.
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('lovex.local.json'))).rows) {
+    const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    if (!(r.barrel_mm > ca.case_mm)) continue;
+    const m = r.bullet_gr * G;
+    const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
+    for (const [cgr, v, pbar] of [[r.start_gr, r.start_ms, null], [r.max_gr, r.max_ms, r.max_Pmax_bar]]) {
+      if (!(cgr > 0 && v > 0)) continue;
+      const C = cgr * G, me = m + C / 3;
+      const np = pbar > 0 ? 0.5 * me * v * v / (pbar * 1e5 * A * L) : null;
+      const mhr = pbar > 0 ? mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, cgr, v, pbar, PWD[pk] && PWD[pk].Qex) : null;
+      add(ck, pk, me * v * v / (2 * C), np, mhr);
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 // Vectan / Nobel Sport (catalogue officiel) — charge DÉPART + MAX, données NORMES CIP.
 // VITESSE seule (eeff ; np=null). Pas de longueur de canon publiée → v0 au canon de référence
 // (comme Norma). Seules les lignes dont la balle est NON AMBIGUË sont extraites (cf. parseur).

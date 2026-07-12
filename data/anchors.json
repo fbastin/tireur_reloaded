@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-07-11",
+ "_date": "2026-07-12",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -4999,6 +4999,581 @@
   "458 Winchester Magnum|Alliant Reloder 7": {
    "eeff": 1428605,
    "n": 3
+  },
+  "9 mm Luger|Lovex S011": {
+   "eeff": 1797349,
+   "n": 12,
+   "np": 0.2542
+  },
+  "9 mm Luger|Lovex D032": {
+   "eeff": 1759806,
+   "n": 12,
+   "np": 0.2525
+  },
+  "9 mm Luger|Lovex S020": {
+   "eeff": 1582044,
+   "n": 12,
+   "np": 0.2756
+  },
+  "9 mm Luger|Lovex D036": {
+   "eeff": 1298857,
+   "n": 12,
+   "np": 0.2877
+  },
+  "9 mm Luger|Lovex D037.1": {
+   "eeff": 1045457,
+   "n": 12,
+   "np": 0.2823
+  },
+  "38 Special|Lovex D013": {
+   "eeff": 1212133,
+   "n": 4,
+   "np": 0.3514
+  },
+  "38 Special|Lovex S015": {
+   "eeff": 1140454,
+   "n": 4,
+   "np": 0.3491
+  },
+  "38 Special|Lovex S011": {
+   "eeff": 1408748,
+   "n": 4,
+   "np": 0.4062
+  },
+  "38 Special|Lovex D032": {
+   "eeff": 1309313,
+   "n": 4,
+   "np": 0.3721
+  },
+  "38 Special|Lovex S020": {
+   "eeff": 1307842,
+   "n": 4,
+   "np": 0.4538
+  },
+  "38 Special|Lovex D036": {
+   "eeff": 1123415,
+   "n": 4,
+   "np": 0.4602
+  },
+  "357 Magnum|Lovex S011": {
+   "eeff": 1514841,
+   "n": 4,
+   "np": 0.3394
+  },
+  "357 Magnum|Lovex D032": {
+   "eeff": 1515246,
+   "n": 4,
+   "np": 0.3373
+  },
+  "357 Magnum|Lovex S020": {
+   "eeff": 1473225,
+   "n": 4,
+   "np": 0.3732
+  },
+  "357 Magnum|Lovex D036": {
+   "eeff": 1532486,
+   "n": 4,
+   "np": 0.4496
+  },
+  "357 Magnum|Lovex D037.1": {
+   "eeff": 1268259,
+   "n": 4,
+   "np": 0.4469
+  },
+  "357 Magnum|Lovex D037.2": {
+   "eeff": 1155787,
+   "n": 4,
+   "np": 0.4485
+  },
+  "22 Hornet|Lovex S040": {
+   "eeff": 1552159,
+   "n": 6,
+   "np": 0.2006
+  },
+  "22 Hornet|Lovex S053": {
+   "eeff": 1332642,
+   "n": 6,
+   "np": 0.206
+  },
+  "22 Hornet|Lovex D063": {
+   "eeff": 1218835,
+   "n": 6,
+   "np": 0.2294
+  },
+  "222 Rem.|Lovex S040": {
+   "eeff": 1459295,
+   "n": 4,
+   "np": 0.2884
+  },
+  "222 Rem.|Lovex S053": {
+   "eeff": 1355342,
+   "n": 4,
+   "np": 0.3209
+  },
+  "222 Rem.|Lovex D063": {
+   "eeff": 1331889,
+   "n": 4,
+   "np": 0.3288
+  },
+  "222 Rem.|Lovex D073.4": {
+   "eeff": 1191398,
+   "n": 4,
+   "np": 0.3556
+  },
+  "222 Rem.|Lovex D073.5": {
+   "eeff": 1159702,
+   "n": 4,
+   "np": 0.3666
+  },
+  "222 Rem.|Lovex D073.6": {
+   "eeff": 1039580,
+   "n": 4,
+   "np": 0.4235
+  },
+  "223 Rem.|Lovex S053": {
+   "eeff": 1355308,
+   "n": 4,
+   "np": 0.3133
+  },
+  "223 Rem.|Lovex D063": {
+   "eeff": 1454301,
+   "n": 4,
+   "np": 0.3114
+  },
+  "223 Rem.|Lovex S060": {
+   "eeff": 1249595,
+   "n": 8,
+   "np": 0.3377
+  },
+  "223 Rem.|Lovex D073.4": {
+   "eeff": 1226101,
+   "n": 8,
+   "np": 0.3502
+  },
+  "223 Rem.|Lovex D073.5": {
+   "eeff": 1244307,
+   "n": 8,
+   "np": 0.356
+  },
+  "223 Rem.|Lovex D073.6": {
+   "eeff": 1212109,
+   "n": 8,
+   "np": 0.3605
+  },
+  "22-250 Rem.|Lovex S060": {
+   "eeff": 1042641,
+   "n": 6,
+   "np": 0.4597
+  },
+  "22-250 Rem.|Lovex D073.4": {
+   "eeff": 1127442,
+   "n": 6,
+   "np": 0.481
+  },
+  "22-250 Rem.|Lovex D073.5": {
+   "eeff": 1071144,
+   "n": 6,
+   "np": 0.4687
+  },
+  "22-250 Rem.|Lovex D073.6": {
+   "eeff": 1077085,
+   "n": 6,
+   "np": 0.4816
+  },
+  "22-250 Rem.|Lovex S062": {
+   "eeff": 1076989,
+   "n": 6,
+   "np": 0.4685
+  },
+  "5.6 x 50 R Mag.|Lovex S060": {
+   "eeff": 1110354,
+   "n": 4,
+   "np": 0.377
+  },
+  "5.6 x 50 R Mag.|Lovex D073.4": {
+   "eeff": 1125359,
+   "n": 4,
+   "np": 0.3996
+  },
+  "5.6 x 50 R Mag.|Lovex D073.5": {
+   "eeff": 1125301,
+   "n": 4,
+   "np": 0.3984
+  },
+  "5.6 x 50 R Mag.|Lovex D073.6": {
+   "eeff": 1097439,
+   "n": 4,
+   "np": 0.4096
+  },
+  "243 Win.|Lovex S060": {
+   "eeff": 1149918,
+   "n": 8,
+   "np": 0.3794
+  },
+  "243 Win.|Lovex S062": {
+   "eeff": 1094572,
+   "n": 8,
+   "np": 0.3884
+  },
+  "243 Win.|Lovex S065": {
+   "eeff": 1099320,
+   "n": 8,
+   "np": 0.4058
+  },
+  "243 Win.|Lovex S070": {
+   "eeff": 994935,
+   "n": 8,
+   "np": 0.4243
+  },
+  "6.5 x 55 SE|Lovex S062": {
+   "eeff": 1121155,
+   "n": 10,
+   "np": 0.3836
+  },
+  "6.5 x 55 SE|Lovex S065": {
+   "eeff": 1086971,
+   "n": 10,
+   "np": 0.3965
+  },
+  "6.5 x 55 SE|Lovex S070": {
+   "eeff": 1075060,
+   "n": 8,
+   "np": 0.4298
+  },
+  "270 Win.|Lovex S062": {
+   "eeff": 1167756,
+   "n": 6,
+   "np": 0.4443
+  },
+  "270 Win.|Lovex S065": {
+   "eeff": 1147858,
+   "n": 6,
+   "np": 0.4598
+  },
+  "270 Win.|Lovex S070": {
+   "eeff": 1055852,
+   "n": 6,
+   "np": 0.4741
+  },
+  "7 x 57|Lovex S060": {
+   "eeff": 1278298,
+   "n": 16,
+   "np": 0.3867
+  },
+  "7 x 57|Lovex D073.6": {
+   "eeff": 1224980,
+   "n": 16,
+   "np": 0.4125
+  },
+  "7 x 57|Lovex S062": {
+   "eeff": 1179480,
+   "n": 16,
+   "np": 0.4129
+  },
+  "7 x 57|Lovex S065": {
+   "eeff": 1160961,
+   "n": 16,
+   "np": 0.4204
+  },
+  "7 x 57|Lovex S070": {
+   "eeff": 1057303,
+   "n": 4,
+   "np": 0.4057
+  },
+  "7 x 57 R|Lovex S060": {
+   "eeff": 1232991,
+   "n": 16,
+   "np": 0.4027
+  },
+  "7 x 57 R|Lovex D073.6": {
+   "eeff": 1186180,
+   "n": 16,
+   "np": 0.4214
+  },
+  "7 x 57 R|Lovex S062": {
+   "eeff": 1128688,
+   "n": 16,
+   "np": 0.4322
+  },
+  "7 x 57 R|Lovex S065": {
+   "eeff": 1125218,
+   "n": 16,
+   "np": 0.4388
+  },
+  "7 x 64|Lovex D073.6": {
+   "eeff": 1155447,
+   "n": 6,
+   "np": 0.4477
+  },
+  "7 x 64|Lovex S062": {
+   "eeff": 1163393,
+   "n": 14,
+   "np": 0.4367
+  },
+  "7 x 64|Lovex S065": {
+   "eeff": 1129359,
+   "n": 14,
+   "np": 0.451
+  },
+  "7 x 64|Lovex S060": {
+   "eeff": 1119177,
+   "n": 4,
+   "np": 0.4251
+  },
+  "7 x 64|Lovex S070": {
+   "eeff": 1066729,
+   "n": 12,
+   "np": 0.4575
+  },
+  "7 x 65 R|Lovex S060": {
+   "eeff": 1178251,
+   "n": 8,
+   "np": 0.4235
+  },
+  "7 x 65 R|Lovex D073.6": {
+   "eeff": 1153575,
+   "n": 8,
+   "np": 0.437
+  },
+  "7 x 65 R|Lovex S062": {
+   "eeff": 1114046,
+   "n": 8,
+   "np": 0.4392
+  },
+  "7 x 65 R|Lovex S065": {
+   "eeff": 1091645,
+   "n": 8,
+   "np": 0.4607
+  },
+  "7 x 65 R|Lovex S070": {
+   "eeff": 1017016,
+   "n": 8,
+   "np": 0.4471
+  },
+  "303 British|Lovex S060": {
+   "eeff": 1327556,
+   "n": 4,
+   "np": 0.3597
+  },
+  "303 British|Lovex D073.4": {
+   "eeff": 1292801,
+   "n": 4,
+   "np": 0.3687
+  },
+  "303 British|Lovex D073.5": {
+   "eeff": 1291012,
+   "n": 4,
+   "np": 0.3725
+  },
+  "303 British|Lovex D073.6": {
+   "eeff": 1273675,
+   "n": 4,
+   "np": 0.3817
+  },
+  "303 British|Lovex S062": {
+   "eeff": 1285881,
+   "n": 4,
+   "np": 0.3851
+  },
+  "308 Win.|Lovex S060": {
+   "eeff": 1359006,
+   "n": 28,
+   "np": 0.3301
+  },
+  "308 Win.|Lovex D073.4": {
+   "eeff": 1367156,
+   "n": 28,
+   "np": 0.349
+  },
+  "308 Win.|Lovex D073.5": {
+   "eeff": 1346294,
+   "n": 28,
+   "np": 0.3478
+  },
+  "308 Win.|Lovex D073.6": {
+   "eeff": 1347894,
+   "n": 28,
+   "np": 0.373
+  },
+  "308 Win.|Lovex S062": {
+   "eeff": 1266792,
+   "n": 28,
+   "np": 0.3688
+  },
+  "308 Win.|Lovex S065": {
+   "eeff": 1178496,
+   "n": 28,
+   "np": 0.3822
+  },
+  "30-06 Spring.|Lovex S060": {
+   "eeff": 1261736,
+   "n": 28,
+   "np": 0.3788
+  },
+  "30-06 Spring.|Lovex D073.6": {
+   "eeff": 1237497,
+   "n": 30,
+   "np": 0.3927
+  },
+  "30-06 Spring.|Lovex S062": {
+   "eeff": 1210283,
+   "n": 30,
+   "np": 0.4061
+  },
+  "30-06 Spring.|Lovex S065": {
+   "eeff": 1175692,
+   "n": 30,
+   "np": 0.4093
+  },
+  "30-06 Spring.|Lovex S070": {
+   "eeff": 998000,
+   "n": 30,
+   "np": 0.4113
+  },
+  "30-06 Spring.|Lovex S071": {
+   "eeff": 1093753,
+   "n": 20,
+   "np": 0.4161
+  },
+  "300 Win. Mag.|Lovex S062": {
+   "eeff": 1231322,
+   "n": 4,
+   "np": 0.4215
+  },
+  "300 Win. Mag.|Lovex S065": {
+   "eeff": 1194331,
+   "n": 4,
+   "np": 0.4351
+  },
+  "300 Win. Mag.|Lovex S070": {
+   "eeff": 1137174,
+   "n": 4,
+   "np": 0.4484
+  },
+  "300 Win. Mag.|Lovex S071": {
+   "eeff": 1104703,
+   "n": 4,
+   "np": 0.4798
+  },
+  "7.62 x 39|Lovex S053": {
+   "eeff": 1491792,
+   "n": 4,
+   "np": 0.2598
+  },
+  "7.62 x 39|Lovex D063": {
+   "eeff": 1508072,
+   "n": 4,
+   "np": 0.2617
+  },
+  "7.62 x 54 R|Lovex S060": {
+   "eeff": 1434207,
+   "n": 6,
+   "np": 0.3321
+  },
+  "7.62 x 54 R|Lovex D073.4": {
+   "eeff": 1306822,
+   "n": 6,
+   "np": 0.3158
+  },
+  "7.62 x 54 R|Lovex D073.5": {
+   "eeff": 1293092,
+   "n": 6,
+   "np": 0.3133
+  },
+  "7.62 x 54 R|Lovex D073.6": {
+   "eeff": 1269881,
+   "n": 6,
+   "np": 0.3194
+  },
+  "7.62 x 54 R|Lovex S062": {
+   "eeff": 1348129,
+   "n": 6,
+   "np": 0.3477
+  },
+  "7.62 x 54 R|Lovex S065": {
+   "eeff": 1288089,
+   "n": 6,
+   "np": 0.3609
+  },
+  "8 x 57 IS|Lovex S062": {
+   "eeff": 1275749,
+   "n": 8,
+   "np": 0.379
+  },
+  "8 x 57 IS|Lovex S065": {
+   "eeff": 1174166,
+   "n": 8,
+   "np": 0.3779
+  },
+  "8 x 57 IS|Lovex S070": {
+   "eeff": 1069829,
+   "n": 8,
+   "np": 0.3795
+  },
+  "8 x 57 IS|Lovex S071": {
+   "eeff": 998146,
+   "n": 8,
+   "np": 0.4873
+  },
+  "8 x 57 IRS|Lovex S062": {
+   "eeff": 1235757,
+   "n": 6,
+   "np": 0.4125
+  },
+  "8 x 57 IRS|Lovex S065": {
+   "eeff": 1143990,
+   "n": 6,
+   "np": 0.4145
+  },
+  "8 x 57 IRS|Lovex S070": {
+   "eeff": 1133812,
+   "n": 6,
+   "np": 0.4156
+  },
+  "338 Lapua Mag.|Lovex S065": {
+   "eeff": 1134144,
+   "n": 6,
+   "np": 0.4586
+  },
+  "338 Lapua Mag.|Lovex S070": {
+   "eeff": 1087009,
+   "n": 6,
+   "np": 0.4834
+  },
+  "338 Lapua Mag.|Lovex S071": {
+   "eeff": 1097955,
+   "n": 6,
+   "np": 0.4978
+  },
+  "9.3 x 62|Lovex S060": {
+   "eeff": 1342471,
+   "n": 6,
+   "np": 0.3503
+  },
+  "9.3 x 62|Lovex D073.4": {
+   "eeff": 1373313,
+   "n": 6,
+   "np": 0.3812
+  },
+  "9.3 x 62|Lovex D073.5": {
+   "eeff": 1321133,
+   "n": 6,
+   "np": 0.3617
+  },
+  "9.3 x 62|Lovex D073.6": {
+   "eeff": 1285554,
+   "n": 6,
+   "np": 0.3798
+  },
+  "9.3 x 62|Lovex S062": {
+   "eeff": 1214241,
+   "n": 6,
+   "np": 0.3941
+  },
+  "9.3 x 62|Lovex S065": {
+   "eeff": 1180943,
+   "n": 6,
+   "np": 0.399
   },
   "9 mm Luger|Vectan BA 9": {
    "eeff": 1457292,

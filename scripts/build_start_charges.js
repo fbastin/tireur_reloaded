@@ -60,6 +60,9 @@ for (const f of glob(/^speer_.*\.local\.json$/)) addRange(JSON.parse(fs.readFile
 for (const f of glob(/^sierra_.*\.local\.json$/)) addRange(JSON.parse(fs.readFileSync(d(f))).rows, 'charge_gr');
 for (const f of glob(/^loaddata_.*\.local\.json$/)) addRange(JSON.parse(fs.readFileSync(d(f))).rows, 'charge_gr');
 
+// Lovex — charge départ + max (normes CIP).
+try { addRange(JSON.parse(fs.readFileSync(d('lovex.local.json'))).rows, 'start_gr', 'max_gr'); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+
 // Vectan — charge départ + max (données NORMES CIP).
 try { addRange(JSON.parse(fs.readFileSync(d('vectan.local.json'))).rows, 'start_gr', 'max_gr'); } catch (e) { if (e.code !== 'ENOENT') throw e; }
 
