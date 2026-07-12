@@ -299,6 +299,47 @@ reported LOPO RMS. The estimator loads these at runtime.
 - This is an **estimation aid, not a load-development authority**. Always verify any
   charge against official manufacturer data.
 
+### 6.0 Why η_p is NOT refitted, even though far more data is now available (tested, rejected)
+
+The model's coefficients are fitted on **Reload Swiss alone** (1700 charges), while Western
+(2995 usable rows) and Lovex (563) also publish velocity **and** pressure. Widening the fit
+looks like free accuracy. It is not. Reproduce with `node scripts/etap_refit_experiment.js`
+(console only, writes nothing).
+
+**The three sources do not measure the same η_p.** Mean observed η_p:
+
+| Reload Swiss | Western | Lovex |
+|---|---|---|
+| **0.447** | 0.399 | 0.384 |
+
+The only source used for calibration sits **12–16 % above** the other two — different test
+rigs, cases and barrels, not noise.
+
+Because $P \propto 1/\eta_p$, fitting *cleanly* on Reload Swiss makes predicted pressures too
+**low** everywhere else — the **unsafe** direction (the tool tells the handloader a charge is
+milder than it is):
+
+| coefficients | Reload Swiss | Lovex | Western |
+|---|---|---|---|
+| **current (published)** | +9.8 % / RMS 21.1 % | −7.8 % / 11.5 % | **−0.2 %** / 21.6 % |
+| refit on RS | 0.0 % / **16.2 %** | −14.5 % (under-predicts 97 % of cases) | **−9.2 %** (83 %) |
+| refit on RS + Lovex | +3.7 % / 17.1 % | −11.1 % (94 %) | −5.9 % / 22.9 % |
+
+A "clean" refit zeroes the bias **on its own training set** and improves its RMS (21.1 → 16.2 %)
+— while degrading safety everywhere else. The apparent *defect* of the published coefficients
+(intercept 0.634 instead of 0.844) is exactly what compensates the Reload Swiss offset and
+gives them a near-zero bias (−0.2 %) on Western, the largest independent set (2995 rows).
+
+**Caveat, deliberately left alone.** The historical fit derives the case volume per row from the
+fill ratio *published by Reload Swiss*, whereas the UI only has the nominal volume from
+`calibers.json` — a genuine train/serve mismatch. It happens to cancel the source offset:
+"fixing" it in isolation is the "refit on RS" row above, i.e. a safety regression. Do not touch
+it without re-reading this section.
+
+**Corollary — the pressure floor is structural.** Three manufacturers measuring the same
+quantity disagree by ±14 %; no single model can be right on all three, and **no amount of data
+will change that**. Same conclusion as the ODE route (§6.2). Pressure stays *indicative*.
+
 ### 6.1 A ceiling shared by every available tool — the data-driven reality
 
 It is tempting to read this model's limits as the price of being "only empirical", and
