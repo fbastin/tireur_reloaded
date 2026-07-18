@@ -66,8 +66,11 @@ Base de composants dérivée de <em>Gordon's Reloading Tool</em> (Gordon †) et
 
 <div class="vm-banner">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> À froid, la <strong>vitesse</strong> est donnée à
-<strong>±10&nbsp;%</strong> et la <strong>pression à titre purement indicatif</strong> (±15&nbsp;% au mieux) :
-une charge réellement au-dessus de la limite CIP peut s'afficher « sûre ». L'estimation est
+<strong>±10&nbsp;%</strong> et la <strong>pression à titre purement indicatif</strong> :
+<strong>~20&nbsp;% d'écart quadratique moyen</strong>, avec un biais qui va dans le mauvais sens
+&mdash; le modèle <strong>sous-estime</strong> la pression le plus souvent, et les écarts relevés en
+validation atteignent 25 à 35&nbsp;% sur certaines charges. Autrement dit, une charge réellement
+au-dessus de la limite CIP peut s'afficher « sûre ». L'estimation est
 <strong>affinée automatiquement (~5&nbsp;%) pour les couples cartouche/poudre connus</strong> ;
 saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. Vérifiez toujours dans les données officielles du fabricant.
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limites &rarr;</a>
@@ -564,7 +567,7 @@ function calc(){
   const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? `  ·  v₀ mise à l'échelle du canon saisi (loi Powley/Litz), pression au canon réf. ${frMm(refBbl_mm,U.bbl.cur).toFixed(U.bbl.cur==='in'?1:0)} ${U.bbl.cur}` : '';
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}${pRefTxt}`;
-  let w='Pression indicative (η_p ±15 % au mieux) — ne jamais valider une charge sur cette base.';
+  let w='Pression indicative (η_p : ~20 % RMS, biais vers la SOUS-estimation) — ne jamais valider une charge sur cette base.';
   if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
   else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
   if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w='⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). '+w; }
