@@ -6,7 +6,7 @@ include '../../../header.php';
 
 <link rel="stylesheet" href="/css/ballistics.css?v=20260604a">
 <!-- Plotly.js -->
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="/js/vendor/plotly/plotly-2.35.2.min.js?v=2.35.2" charset="utf-8"></script>
 <script src="grt_solver.js"></script>
 
 <style>

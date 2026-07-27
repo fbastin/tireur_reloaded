@@ -4,7 +4,7 @@ $meta_description = "Estimateur de vitesse et de pression au rechargement par mo
 include '../../header.php';
 ?>
 <link rel="stylesheet" href="/rechargement/css/reloading.css" />
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="/js/vendor/plotly/plotly-2.35.2.min.js?v=2.35.2" charset="utf-8"></script>
 <script src="energy_model.js"></script>
 <script src="velocity_model.js"></script>
 <script src="cartridge_diagram.js"></script>
