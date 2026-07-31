@@ -619,9 +619,12 @@ function calc(){
      yaxis2:{title:'Vitesse ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
   if(pcipD){
     // Seuils : limite moyenne (P_max CIP / MAP SAAMI), seuil intermédiaire (P_K 1,15× cartouche
-    // CIP / MPSM 1,065× échantillon SAAMI) et épreuve arme (P_E 1,25× CIP / MPLM×1,30 ≈1,33× MAP
-    // SAAMI). pWarn=0,90× : marge de sous-estimation du modèle — une estimation entrant ici peut
-    // déjà valoir la limite en réalité.
+    // CIP / MPSM 1,065× échantillon SAAMI) et épreuve arme (P_E). ATTENTION : le coefficient de
+    // P_E n'est PAS unique — la C.I.P. exige 1,25× pour les armes rayées à percussion centrale
+    // mais 1,30× pour les armes de poing, la percussion annulaire et la grenaille ; d'où le
+    // branchement sur `hg` dans eMul ci-dessus (corrigé le 2026-07-29, cf. wiki technique:limite_cip).
+    // pWarn=0,90× : bande de garde, PAS une correction chiffrée — aucun biais de pression n'est
+    // établi pour ce modèle ; une estimation entrant ici peut déjà valoir la limite en réalité.
     const pK=pcipD*kMul, pE=pcipD*eMul, pWarn=pcipD*0.9, u=U.p.cur;
     const fx=(x,n)=>x.toFixed(n).replace('.',',');
     const limLab=saami?'MAP SAAMI':'P_max C.I.P.', kLab=saami?('MPSM '+fx(kMul,3)+'× (échantillon)'):'P_K 1,15× (cartouche)', eLab=saami?('épreuve '+fx(eMul,2)+'× (proof)'):('P_E '+fx(eMul,2)+'× (épreuve arme)');
