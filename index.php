@@ -318,7 +318,10 @@ function applyStartLoad(){
 // dérive pas — à tort — avec la longueur de canon saisie. La vitesse, elle, reste calculée
 // par η_b (geometry-free) ; l'effet du canon sur v0 relève de l'outil Le Duc dédié.
 function refBbl(cart){ return cart.test_barrel_mm || (cart.type==='handgun'?122:600); }
-const limSrc=(c)=> c && c.pmax_src==='SAAMI' ? 'SAAMI' : 'CIP';   // source de la limite de pression
+// Source de la limite de pression. `pmax_src` n'est présent QUE si la valeur n'est pas
+// celle des tables C.I.P. : absent = C.I.P., 'SAAMI' = standard SAAMI, toute autre
+// valeur = limite sans normalisation (wildcat), à ne pas présenter comme officielle.
+const limSrc=(c)=> !c || !c.pmax_src ? 'C.I.P.' : (c.pmax_src==='SAAMI' ? 'SAAMI' : 'estimée');
 // volume utile d'étui effectif (cm³) : saisie utilisateur si fournie, sinon nominal cartouche.
 function effCV(cart){ return (CVOL>0 ? CVOL : cart.case_vol_cm3); }
 // Sensibilité au volume d'étui pour les prédictions ANCRÉES (eeff/np figés au volume
@@ -445,7 +448,7 @@ function renderDiag(){
     ['Ø balle', num(cart.bore_mm,2)+' mm'],
     ['Longueur d\'étui', num(cart.case_mm,1)+' mm'],
     ['Volume d\'étui', cart.case_vol_cm3?num(cart.case_vol_cm3,2)+' cm³':'—'],
-    ['Pression max C.I.P.', cart.pmax_cip_bar?num(cart.pmax_cip_bar,0)+' bar':'—'],
+    ['Pression max '+limSrc(cart), cart.pmax_cip_bar?num(cart.pmax_cip_bar,0)+' bar':'—'],
     ['Canon d\'essai', cart.test_barrel_mm?num(cart.test_barrel_mm,0)+' mm':'—'],
   ];
   const specs='<div style="flex:1 1 150px;min-width:150px;text-align:left;">'

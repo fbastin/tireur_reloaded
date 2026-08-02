@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-07-12",
+ "_date": "2026-08-02",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -2765,7 +2765,7 @@
   "221 Remington Fireball|N120": {
    "eeff": 1143071,
    "n": 8,
-   "mhr": 4.6
+   "mhr": 1.6
   },
   "221 Remington Fireball|N130": {
    "eeff": 1057700,
@@ -2810,7 +2810,7 @@
   "222 Rem.|N120": {
    "eeff": 1266159,
    "n": 38,
-   "mhr": 2.7
+   "mhr": 3
   },
   "222 Rem.|N130": {
    "eeff": 1219607,
@@ -3048,7 +3048,7 @@
   "6 mm Creedmoor|N160": {
    "eeff": 1084460,
    "n": 38,
-   "mhr": 4.7
+   "mhr": 5
   },
   "6 mm Creedmoor|N555": {
    "eeff": 1120258,
@@ -3157,7 +3157,7 @@
   "25-06 Remington|N160": {
    "eeff": 1008381,
    "n": 8,
-   "mhr": 4.5
+   "mhr": 4.7
   },
   "25-06 Remington|N165": {
    "eeff": 977842,
@@ -3231,7 +3231,7 @@
   "6.8 Western|N160": {
    "eeff": 1078441,
    "n": 6,
-   "mhr": 2.7
+   "mhr": 2.4
   },
   "6.8 Western|N165": {
    "eeff": 1060076,
@@ -3264,7 +3264,7 @@
   "270 WSM|N160": {
    "eeff": 1036377,
    "n": 6,
-   "mhr": -1
+   "mhr": -1.2
   },
   "270 WSM|N165": {
    "eeff": 989962,
@@ -3364,7 +3364,7 @@
   "284 Winchester|N160": {
    "eeff": 1089279,
    "n": 20,
-   "mhr": 2.2
+   "mhr": 4.2
   },
   "284 Winchester|N560": {
    "eeff": 1068849,
@@ -3396,7 +3396,8 @@
   },
   "7 x 57 R|N160": {
    "eeff": 993080,
-   "n": 10
+   "n": 10,
+   "mhr": 5.8
   },
   "7 x 64|N540": {
    "eeff": 1223184,
@@ -3434,7 +3435,7 @@
   "280 Remington|N160": {
    "eeff": 1105585,
    "n": 14,
-   "mhr": 3.5
+   "mhr": 3.2
   },
   "280 Remington|N165": {
    "eeff": 1074991,
@@ -3466,7 +3467,8 @@
   },
   "7 x 65 R|N160": {
    "eeff": 1064473,
-   "n": 18
+   "n": 18,
+   "mhr": 5.1
   },
   "7 x 65 R|N560": {
    "eeff": 1064168,
@@ -3479,7 +3481,7 @@
   "7mm WSM|N160": {
    "eeff": 1122671,
    "n": 10,
-   "mhr": 2.5
+   "mhr": 2.3
   },
   "7mm WSM|N165": {
    "eeff": 1069424,
@@ -3583,7 +3585,7 @@
   "300 AAC BLK|N120": {
    "eeff": 1191731,
    "n": 10,
-   "mhr": 0.1
+   "mhr": 0.6
   },
   "308 Win.|N110": {
    "eeff": 1408847,
@@ -3629,7 +3631,7 @@
   "30-30 Win.|N120": {
    "eeff": 1225194,
    "n": 6,
-   "mhr": 4.8
+   "mhr": 5.5
   },
   "30-30 Win.|N130": {
    "eeff": 1193956,
@@ -3650,7 +3652,7 @@
   "300 Savage|N120": {
    "eeff": 1311972,
    "n": 6,
-   "mhr": -1.5
+   "mhr": -0.4
   },
   "300 Savage|N130": {
    "eeff": 1300221,
@@ -3895,7 +3897,8 @@
   },
   "300 Lapua Magnum|N160": {
    "eeff": 1087516,
-   "n": 6
+   "n": 6,
+   "mhr": 0.6
   },
   "300 Lapua Magnum|N560": {
    "eeff": 1081017,
@@ -3932,7 +3935,7 @@
   "300 Rem. Ultra Mag.|N160": {
    "eeff": 1037493,
    "n": 6,
-   "mhr": 0.2
+   "mhr": 0
   },
   "300 Rem. Ultra Mag.|24N41": {
    "eeff": 916535,
@@ -4024,7 +4027,7 @@
   "8 x 57 IRS|N160": {
    "eeff": 1162957,
    "n": 16,
-   "mhr": -21.3,
+   "mhr": -35.9,
    "mhflag": true
   },
   "8 x 57 IRS|N560": {
@@ -4100,7 +4103,7 @@
   "416 Rigby|N160": {
    "eeff": 1112616,
    "n": 10,
-   "mhr": 8.2
+   "mhr": 4.1
   },
   "416 Rigby|N165": {
    "eeff": 1078427,
@@ -4113,7 +4116,7 @@
   "444 Marlin|N120": {
    "eeff": 1402474,
    "n": 6,
-   "mhr": -4.4
+   "mhr": 0.5
   },
   "444 Marlin|N130": {
    "eeff": 1333285,
@@ -4153,7 +4156,8 @@
   },
   "7mm BR Remington|N120": {
    "eeff": 1224093,
-   "n": 10
+   "n": 10,
+   "mhr": -0.1
   },
   "7mm BR Remington|N130": {
    "eeff": 1198903,
@@ -4490,7 +4494,7 @@
   "50 AE|N120": {
    "eeff": 854068,
    "n": 6,
-   "mhr": 8.8
+   "mhr": 7.7
   },
   "50 AE|3N38": {
    "eeff": 1596518,
