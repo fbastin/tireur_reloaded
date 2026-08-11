@@ -1,5 +1,5 @@
 {
- "_doc": "Cotes CIP/SAAMI par cartouche (mm) pour le schéma coté : rim=bourrelet, base=culot, shoulder=épaulement, neck=collet, angle=demi-angle épaulement (deg, null si inconnu). balle/longueur viennent de calibers.json. Constantes physiques publiques.",
+ "_doc": "Cotes CIP/SAAMI par cartouche (mm) pour le schéma coté : rim=bourrelet, base=culot, shoulder=épaulement, neck=collet, angle=demi-angle épaulement (deg, null si inconnu). balle/longueur viennent de calibers.json. Constantes physiques publiques. shoulder=null signifie SANS ÉPAULEMENT (étui droit ou simplement conique), pas « inconnu » : sur une fiche C.I.P. le critère est le bloc Junction Cone, rempli si et seulement si l'étui a un épaulement. Le .458 Win. Mag. l'a vide — ses 0,8 mm entre culot et collet sont la conicité de l'étui, pas un rétreint.",
  "dims": {
   "10 mm Auto": {
    "rim": 10.8,
@@ -230,8 +230,10 @@
   },
   "300 AAC BLK": {
    "rim": 9.6,
-   "base": 9.55,
-   "neck": 8.4
+   "base": 9.6,
+   "shoulder": 9.16,
+   "neck": 8.48,
+   "angle": null
   },
   "300 Lapua Magnum": {
    "rim": 14.93,
@@ -451,9 +453,11 @@
    "angle": null
   },
   "458 Winchester Magnum": {
-   "rim": 13.5,
-   "base": 13,
-   "neck": 12.2
+   "rim": 13.51,
+   "base": 13.03,
+   "shoulder": null,
+   "neck": 12.22,
+   "angle": null
   },
   "460 S&W": {
    "rim": 13.21,
