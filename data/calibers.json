@@ -1045,6 +1045,9 @@
       "case_mm": 47,
       "case_vol_cm3": 2.79,
       "test_barrel_mm": 600,
+      "pmax_cip_bar": 4350,
+      "pmax_src": "dérivée",
+      "pmax_note": "Wildcat non homologué C.I.P. ni normalisé SAAMI : limite reprise du 6,5 x 47 Lapua dont il dérive (même étui, collet rétreint en 6 mm). Valeur indicative.",
       "aliases": [
         "6x47 Lapua"
       ]
