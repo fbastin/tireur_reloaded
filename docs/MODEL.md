@@ -529,6 +529,36 @@ CIP/SAAMI/RS measurement regimes (§6, η_p-residual note) — so pressure stays
 max load can still read ~86 % of CIP. This multi-source evidence is the basis for **never**
 rendering a "safe" verdict from a cold pressure estimate.
 
+### Independent cross-check on a fifth laboratory (ADI, 2026-08-11)
+
+The **ADI Handloaders' Guide** (Thales Australia, 6th ed. 2013, parsed by `scripts/parse_adi.js`)
+enters **nothing** — not the η_p fit, not the anchors, not the E_eff fallback. Its powders carry
+their own keys (`ADI AR 2208`), disjoint from Hodgdon's, so it measures the shipped model on
+genuinely new data. Reproduce with `node scripts/adi_crosscheck.js` (console only). 1827 usable
+charges of 3199; 636 carry PSI pressure (the rest are CUP, not convertible — velocity only).
+
+| | bias | RMS | n |
+|---|---|---|---|
+| Pressure (given real $v_0$, isolates η_p) | −3.9 % | **12.6 %** | 636 |
+| Velocity, cold fallback | +2.8 % | 9.0 % | 1827 |
+| Velocity, anchored couples | +0.2 % | **6.1 %** | 25 |
+
+**Reload Swiss is not the outlier.** ADI measures η_p = **0.442**, essentially Reload Swiss's
+0.447. Five laboratories now read:
+
+| Reload Swiss | ADI | Hodgdon | Western | Lovex |
+|---|---|---|---|---|
+| 0.447 | 0.442 | 0.418 | 0.399 | 0.384 |
+
+Two high, one middle, two low — a genuine inter-laboratory dispersion of ±7.6 % about the mean,
+not one deviant rig. This *strengthens* the structural-floor argument of §6.0 rather than
+explaining it away: no single η_p can be right on all five. Across those five sets the published
+coefficients keep |bias| ≤ ~10 % (RS +9.8, VV-CIP −9.9, ADI −3.9, Hodgdon +0.6, Western −0.2),
+which is the property they were chosen for.
+
+The anchored-vs-cold gap (6.1 % vs 9.0 %) reproduces on independent data, on a small sample
+(25 couples — ADI's powders are mostly unanchored by construction).
+
 ### Independent velocity cross-check (Norma)
 
 A fourth source, the **Norma "Reloading Data — Balistix" guide** (Aug 2023, parsed by
