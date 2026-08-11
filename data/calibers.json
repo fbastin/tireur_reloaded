@@ -144,7 +144,7 @@
     "300 PRC": {
       "type": "rifle",
       "bore_mm": 7.82,
-      "case_mm": 65.02,
+      "case_mm": 65.53,
       "case_vol_cm3": 5.571,
       "pmax_cip_bar": 4400,
       "test_barrel_mm": 660
@@ -207,7 +207,7 @@
     "6.5 PRC": {
       "type": "rifle",
       "bore_mm": 6.71,
-      "case_mm": 51.81,
+      "case_mm": 51.56,
       "case_vol_cm3": 3.948,
       "pmax_cip_bar": 4400
     },
@@ -271,7 +271,7 @@
     "30 R Blaser": {
       "type": "rifle",
       "bore_mm": 7.82,
-      "case_mm": 60.5,
+      "case_mm": 68.0,
       "case_vol_cm3": 4.438,
       "pmax_cip_bar": 4050
     },
@@ -419,7 +419,7 @@
     "10.3 x 60 R": {
       "type": "rifle",
       "bore_mm": 10.3,
-      "case_mm": 60,
+      "case_mm": 60.8,
       "case_vol_cm3": 4.786,
       "test_barrel_mm": 680,
       "pmax_cip_bar": 2700
@@ -756,7 +756,7 @@
         "7 mm PRC"
       ],
       "bore_mm": 7.21,
-      "case_mm": 57,
+      "case_mm": 57.91,
       "case_vol_cm3": 4.4,
       "test_barrel_mm": 610,
       "pmax_cip_bar": 4482,
@@ -1030,7 +1030,7 @@
     "220 Swift": {
       "type": "rifle",
       "bore_mm": 5.69,
-      "case_mm": 56.13,
+      "case_mm": 56.01,
       "case_vol_cm3": 2.59,
       "pmax_cip_bar": 4300,
       "test_barrel_mm": 600,
