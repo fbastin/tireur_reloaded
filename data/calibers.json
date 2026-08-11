@@ -658,9 +658,10 @@
         "338-06 A-Square"
       ],
       "bore_mm": 8.59,
-      "case_mm": 63.3,
+      "case_mm": 63.35,
       "case_vol_cm3": 3.707,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 610,
+      "pmax_note": "Cartouche non normalisée : absente des tables C.I.P. (Tab I) comme du standard SAAMI Z299.4-2025, vérifié le 2026-08-11. Aucune limite de pression officielle ne peut lui être attribuée."
     },
     "250 Savage": {
       "type": "rifle",
