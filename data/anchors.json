@@ -3215,6 +3215,10 @@
    "eeff": 1157365,
    "n": 3
   },
+  "220 Swift|Hodgdon H4831, H4831C": {
+   "eeff": 989010,
+   "n": 4
+  },
   "220 Swift|Hodgdon H4350": {
    "eeff": 1046782,
    "n": 5
@@ -3228,6 +3232,11 @@
    "n": 7,
    "np": 0.4984,
    "mhr": 7.5
+  },
+  "22 Creedmoor|Hodgdon H4831, H4831C": {
+   "eeff": 1067275,
+   "n": 7,
+   "np": 0.4864
   },
   "22 Creedmoor|Ramshot Hunter": {
    "eeff": 1081164,
@@ -3363,6 +3372,11 @@
    "n": 6,
    "np": 0.4709
   },
+  "6 mm Creedmoor|Hodgdon H4831, H4831C": {
+   "eeff": 1110030,
+   "n": 8,
+   "np": 0.4698
+  },
   "6 mm Creedmoor|IMR 4831": {
    "eeff": 1150571,
    "n": 11,
@@ -3477,6 +3491,11 @@
    "n": 7,
    "np": 0.471
   },
+  "243 Win.|Hodgdon H4831, H4831C": {
+   "eeff": 1105386,
+   "n": 6,
+   "np": 0.4826
+  },
   "243 Win.|Hodgdon H1000": {
    "eeff": 1067000,
    "n": 5,
@@ -3590,6 +3609,11 @@
    "n": 6,
    "np": 0.4949
   },
+  "6 mm Remington|Hodgdon H4831, H4831C": {
+   "eeff": 1054819,
+   "n": 6,
+   "np": 0.51
+  },
   "6 mm Remington|Hodgdon H1000": {
    "eeff": 998514,
    "n": 5,
@@ -3602,6 +3626,10 @@
   "257 Roberts|Winchester 760": {
    "eeff": 1062840,
    "n": 6
+  },
+  "257 Roberts|Hodgdon H4831, H4831C": {
+   "eeff": 944123,
+   "n": 5
   },
   "257 Roberts|Hodgdon H4350": {
    "eeff": 1004285,
@@ -3669,6 +3697,11 @@
    "n": 8,
    "np": 0.5048
   },
+  "25-06 Remington|Hodgdon H4831, H4831C": {
+   "eeff": 1008782,
+   "n": 8,
+   "np": 0.4785
+  },
   "25-06 Remington|IMR 4831": {
    "eeff": 1057874,
    "n": 9,
@@ -3727,6 +3760,10 @@
   },
   "257 Wby. Mag.|Hodgdon H1000": {
    "eeff": 921493,
+   "n": 7
+  },
+  "257 Wby. Mag.|Hodgdon H4831, H4831C": {
+   "eeff": 983877,
    "n": 7
   },
   "257 Wby. Mag.|Hodgdon H4350": {
@@ -3824,6 +3861,11 @@
    "n": 4,
    "np": 0.3922
   },
+  "6.5 Creedmoor|Hodgdon H4831, H4831C": {
+   "eeff": 1201015,
+   "n": 5,
+   "np": 0.4221
+  },
   "6.5 Creedmoor|IMR 4831": {
    "eeff": 1247258,
    "n": 5,
@@ -3833,6 +3875,11 @@
    "eeff": 1113297,
    "n": 3,
    "np": 0.4472
+  },
+  "260 Rem.|Hodgdon H4831, H4831C": {
+   "eeff": 1145010,
+   "n": 11,
+   "np": 0.44
   },
   "260 Rem.|Hodgdon H4350": {
    "eeff": 1231170,
@@ -3931,6 +3978,11 @@
    "eeff": 1163521,
    "n": 8,
    "np": 0.4946
+  },
+  "6.8 Western|Hodgdon H4831, H4831C": {
+   "eeff": 1177312,
+   "n": 9,
+   "np": 0.49
   },
   "6.8 Western|Ramshot Hunter": {
    "eeff": 1160928,
@@ -4063,6 +4115,11 @@
    "n": 4,
    "np": 0.4181
   },
+  "270 Win.|Hodgdon H4831, H4831C": {
+   "eeff": 1071587,
+   "n": 9,
+   "np": 0.4787
+  },
   "270 Win.|Ramshot Magnum": {
    "eeff": 1070074,
    "n": 17,
@@ -4190,6 +4247,11 @@
    "n": 6,
    "np": 0.4195
   },
+  "7 -08 Rem.|Hodgdon H4831, H4831C": {
+   "eeff": 1144745,
+   "n": 6,
+   "np": 0.4174
+  },
   "7 -08 Rem.|IMR 4831": {
    "eeff": 1204854,
    "n": 4,
@@ -4199,6 +4261,11 @@
    "eeff": 1036648,
    "n": 20,
    "np": 0.5239
+  },
+  "7 Rem. Mag.|Hodgdon H4831, H4831C": {
+   "eeff": 1085455,
+   "n": 12,
+   "np": 0.5279
   },
   "7 Rem. Mag.|IMR 4831": {
    "eeff": 1118519,
@@ -4262,6 +4329,11 @@
    "n": 6,
    "np": 0.5308
   },
+  "7mm PRC|Hodgdon H4831, H4831C": {
+   "eeff": 1228661,
+   "n": 6,
+   "np": 0.5101
+  },
   "7mm PRC|IMR 4831": {
    "eeff": 1229963,
    "n": 6,
@@ -4269,6 +4341,10 @@
   },
   "7mm Weatherby Magnum|Hodgdon H1000": {
    "eeff": 1090029,
+   "n": 5
+  },
+  "7mm Weatherby Magnum|Hodgdon H4831, H4831C": {
+   "eeff": 1126619,
    "n": 5
   },
   "7mm Weatherby Magnum|IMR 4831": {
@@ -4294,6 +4370,11 @@
   "30 Carbine|Hodgdon H4227": {
    "eeff": 1131532,
    "n": 6
+  },
+  "300 AAC BLK|Accurate 11FS": {
+   "eeff": 1505689,
+   "n": 3,
+   "np": 0.2858
   },
   "300 AAC BLK|Accurate 4100": {
    "eeff": 1619826,
@@ -4595,6 +4676,11 @@
    "n": 12,
    "np": 0.4269
   },
+  "30-06 Spring.|Hodgdon H4831, H4831C": {
+   "eeff": 1140133,
+   "n": 6,
+   "np": 0.4063
+  },
   "30-06 Spring.|IMR 4831": {
    "eeff": 1222249,
    "n": 6,
@@ -4666,6 +4752,11 @@
    "n": 3,
    "np": 0.4034
   },
+  "300 WSM|Hodgdon H4831, H4831C": {
+   "eeff": 1206283,
+   "n": 9,
+   "np": 0.4505
+  },
   "300 WSM|IMR 4831": {
    "eeff": 1266323,
    "n": 4,
@@ -4686,6 +4777,11 @@
    "n": 12,
    "np": 0.5364,
    "mhr": 2
+  },
+  "300 Win. Mag.|Hodgdon H4831, H4831C": {
+   "eeff": 1138267,
+   "n": 12,
+   "np": 0.5207
   },
   "300 Win. Mag.|IMR 4831": {
    "eeff": 1190912,
@@ -4764,6 +4860,11 @@
    "n": 11,
    "np": 0.5227
   },
+  "300 PRC|Hodgdon H4831, H4831C": {
+   "eeff": 1124601,
+   "n": 4,
+   "np": 0.5063
+  },
   "300 PRC|Hodgdon Retumbo": {
    "eeff": 1142445,
    "n": 10,
@@ -4792,6 +4893,10 @@
   },
   "300 Weatherby Magnum|Hodgdon H1000": {
    "eeff": 1065075,
+   "n": 7
+  },
+  "300 Weatherby Magnum|Hodgdon H4831, H4831C": {
+   "eeff": 1104554,
    "n": 7
   },
   "300 Weatherby Magnum|IMR 4831": {
@@ -4851,6 +4956,11 @@
    "n": 7,
    "np": 0.5718
   },
+  "300 Rem. Ultra Mag.|Hodgdon H4831, H4831C": {
+   "eeff": 1088677,
+   "n": 6,
+   "np": 0.553
+  },
   "300 Rem. Ultra Mag.|IMR 4831": {
    "eeff": 1094151,
    "n": 5,
@@ -4891,6 +5001,10 @@
    "eeff": 1369390,
    "n": 6
   },
+  "338 Win. Mag.|Hodgdon H4831, H4831C": {
+   "eeff": 1216333,
+   "n": 8
+  },
   "338 Win. Mag.|IMR 4350": {
    "eeff": 1269528,
    "n": 10
@@ -4911,6 +5025,11 @@
    "eeff": 1297363,
    "n": 3,
    "np": 0.4204
+  },
+  "338 Lapua Mag.|Hodgdon H4831, H4831C": {
+   "eeff": 1133680,
+   "n": 10,
+   "np": 0.5071
   },
   "338 Lapua Mag.|IMR 4831": {
    "eeff": 1204262,
@@ -5525,6 +5644,11 @@
    "n": 4,
    "np": 0.3936
   },
+  "41 Rem. Mag.|Accurate 11FS": {
+   "eeff": 1341211,
+   "n": 5,
+   "np": 0.4079
+  },
   "41 Rem. Mag.|Hodgdon H110": {
    "eeff": 1398452,
    "n": 4
@@ -5544,6 +5668,11 @@
   "41 Rem. Mag.|Hodgdon CFE Pistol": {
    "eeff": 2009136,
    "n": 3
+  },
+  "44 Rem. Mag.|Accurate 11FS": {
+   "eeff": 1191040,
+   "n": 9,
+   "np": 0.4306
   },
   "44 Rem. Mag.|Accurate No.9": {
    "eeff": 1131661,
@@ -5738,6 +5867,11 @@
   "45 Colt|Hodgdon H4227": {
    "eeff": 940169,
    "n": 6
+  },
+  "45 Colt|Accurate 11FS": {
+   "eeff": 1170813,
+   "n": 6,
+   "np": 0.5264
   },
   "45 Colt|Accurate 4100": {
    "eeff": 1159782,

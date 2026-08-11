@@ -26,8 +26,15 @@ const PWD = JSON.parse(fs.readFileSync(d('powders.json'))).powders;
 const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
 const idx = {};
 for (const k of Object.keys(PWD)) if (PWD[k].pcd) idx[norm(k)] = k;
+// Alias curés à la main — fichier séparé, powders.json étant écrit par les scripts d'import.
+const ALIAS = JSON.parse(fs.readFileSync(d('powder_aliases.json'))).alias;
 const MARQUES = ['', 'ADI ', 'Hodgdon ', 'Thales '];
-const matchPoudre = (l) => { for (const m of MARQUES) { const k = idx[norm(m + l)]; if (k) return k; } return null; };
+function matchPoudre(label) {
+  const a = ALIAS[label];
+  if (a && idx[norm(a)]) return idx[norm(a)];
+  for (const m of MARQUES) { const k = idx[norm(m + label)]; if (k) return k; }
+  return null;
+}
 
 const txt = execSync(`pdftotext -q -layout "${pdf}" - 2>/dev/null`, { maxBuffer: 1 << 28 }).toString();
 const IN = 25.4;

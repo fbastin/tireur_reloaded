@@ -1,0 +1,54 @@
+{
+  "_provenance": {
+    "objet": "Alias entre les libelles de poudre des guides de rechargement et les cles de powders.json.",
+    "pourquoi_un_fichier_separe": "powders.json est ECRIT par scripts/ingest_propellants.js et scripts/import_grt_qex.js. Y inscrire des alias les exposerait a disparaitre au prochain import — la faute exacte du 2026-08-11 sur calibers.json. Ce fichier-ci est cure a la main et n'est genere par rien.",
+    "critere": "Un alias n'est pose que si la CLE de powders.json contient le libelle du guide comme composant distinct (« Hodgdon H4831, H4831C » contient « H4831 »). Deux noms qui se ressemblent ne suffisent pas : IMR 7828 et IMR 7828SC sont des produits differents, de densite apparente differente.",
+    "etabli_le": "2026-08-11"
+  },
+
+  "_regles": {
+    "suffixe_subsonic": "Les libelles « <poudre> Subsonic » du manuel Hodgdon designent la MEME poudre, dans sa section de donnees subsoniques. Le suffixe est retire avant appariement — regle mecanique appliquee par les parseurs, pas une liste."
+  },
+
+  "alias": {
+    "H4831": "Hodgdon H4831, H4831C",
+    "AR2213SC": "ADI AR 2213, AR 2213SC",
+    "A-11FS": "Accurate 11FS",
+    "No. 11 FS": "Accurate 11FS",
+    "No. 11FS": "Accurate 11FS",
+    "NO. 11FS": "Accurate 11FS",
+    "NO.11FS": "Accurate 11FS"
+  },
+
+  "_a_confirmer": {
+    "_note": "Identites PROBABLES mais non etablies : il faudrait une source fabricant, pas un souvenir. Non appariees en attendant — une charge perdue vaut mieux qu'une charge attribuee a la mauvaise poudre.",
+    "A-2015 (56 charges)": "seule « Accurate 2015BR » existe (pcd 962). Le 2015BR aurait ete renomme 2015, a verifier chez Western.",
+    "IMR 7828 SSC (70 charges)": "seule « IMR 7828SC » existe (pcd 945). SSC = Super Short Cut ; probablement la meme, mais « IMR 7828 » SANS suffixe est un produit DISTINCT, ce qui interdit de deviner.",
+    "H4831SC (5 charges)": "la cle « Hodgdon H4831, H4831C » nomme H4831 et H4831C, pas H4831SC — coupe courte, densite differente.",
+    "Bench Mark 2 / Bench Mark 1 (196 charges, ADI)": "« Hodgdon Benchmark » existe (pcd 906). ADI fabrique les poudres Hodgdon Extreme, mais l'equivalence Bench Mark 2 = Benchmark n'est pas etablie."
+  },
+
+  "_sans_densite": {
+    "_note": "Entrees PRESENTES dans powders.json mais sans densite apparente (pcd). Un alias n'y changerait rien : sans pcd, le taux de remplissage — variable des deux regressions — n'est pas calculable. Il leur faut une densite SOURCEE ; ne pas en inventer.",
+    "Hodgdon Hybrid 100V": 184,
+    "Winchester Autocomp": 140,
+    "Hodgdon Lil Gun": 107,
+    "Ramshot Competition": 62,
+    "Hodgdon US869": 59,
+    "Accurate Nitro 100NF": 48,
+    "Winchester WST": 25,
+    "Hodgdon Titewad": 10,
+    "Winchester 244": 151,
+    "Hodgdon Superformance": 65,
+    "Winchester WSF Super-Field": 47,
+    "IMR IMR 700X": 72,
+    "ADI Benchmark 8208": 182,
+    "ADI AR 2206": 3
+  },
+
+  "_absentes": {
+    "_note": "Aucune entree, sous aucun nom. Il faudrait creer la fiche poudre (mfg, name, pcd) depuis une source fabricant.",
+    "Grand": 127,
+    "LVR": 11
+  }
+}

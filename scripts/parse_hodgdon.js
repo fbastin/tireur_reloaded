@@ -36,13 +36,21 @@ const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
 const idx = {};
 for (const k of Object.keys(PWD)) if (PWD[k].pcd) idx[norm(k)] = k;
 
+// Alias curés à la main (data/powder_aliases.json) : fichier SÉPARÉ, parce que powders.json
+// est écrit par les scripts d'import et qu'un alias inscrit dedans disparaîtrait au prochain.
+const ALIAS = JSON.parse(fs.readFileSync(d('powder_aliases.json'))).alias;
+
 // Le manuel couvre trois marques ; l'ordre n'importe pas, les clés normalisées sont disjointes.
 const MARQUES = ['', 'Hodgdon ', 'IMR ', 'Winchester ', 'Accurate ', 'Alliant ', 'Ramshot '];
 function matchPoudre(label) {
-  for (const m of MARQUES) { const k = idx[norm(m + label)]; if (k) return k; }
-  let m = label.match(/^A-?\s?(\d{4})$/i);              // « A-4350 » -> « Accurate 4350 »
+  // « <poudre> Subsonic » = la MÊME poudre, dans la section de données subsoniques du manuel.
+  const l = label.replace(/\s+subsonic$/i, '').trim();
+  const a = ALIAS[l] || ALIAS[label];
+  if (a && idx[norm(a)]) return idx[norm(a)];
+  for (const m of MARQUES) { const k = idx[norm(m + l)]; if (k) return k; }
+  let m = l.match(/^A-?\s?(\d{4})$/i);                  // « A-4350 » -> « Accurate 4350 »
   if (m && idx[norm('Accurate ' + m[1])]) return idx[norm('Accurate ' + m[1])];
-  m = label.match(/^W(\d{3})$/i);                       // « W760 »  -> « Winchester 760 »
+  m = l.match(/^W(\d{3})$/i);                           // « W760 »  -> « Winchester 760 »
   if (m && idx[norm('Winchester ' + m[1])]) return idx[norm('Winchester ' + m[1])];
   return null;
 }

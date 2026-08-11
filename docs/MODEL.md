@@ -534,13 +534,13 @@ rendering a "safe" verdict from a cold pressure estimate.
 The **ADI Handloaders' Guide** (Thales Australia, 6th ed. 2013, parsed by `scripts/parse_adi.js`)
 enters **nothing** — not the η_p fit, not the anchors, not the E_eff fallback. Its powders carry
 their own keys (`ADI AR 2208`), disjoint from Hodgdon's, so it measures the shipped model on
-genuinely new data. Reproduce with `node scripts/adi_crosscheck.js` (console only). 1827 usable
-charges of 3199; 636 carry PSI pressure (the rest are CUP, not convertible — velocity only).
+genuinely new data. Reproduce with `node scripts/adi_crosscheck.js` (console only). 2073 usable
+charges of 3563; 724 carry PSI pressure (the rest are CUP, not convertible — velocity only).
 
 | | bias | RMS | n |
 |---|---|---|---|
-| Pressure (given real $v_0$, isolates η_p) | −3.9 % | **12.6 %** | 636 |
-| Velocity, cold fallback | +2.8 % | 9.0 % | 1827 |
+| Pressure (given real $v_0$, isolates η_p) | −3.6 % | **12.1 %** | 724 |
+| Velocity, cold fallback | +3.5 % | 9.1 % | 2073 |
 | Velocity, anchored couples | +0.2 % | **6.1 %** | 25 |
 
 **Reload Swiss is not the outlier.** ADI measures η_p = **0.442**, essentially Reload Swiss's
