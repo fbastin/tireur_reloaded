@@ -661,7 +661,9 @@
       "case_mm": 63.35,
       "case_vol_cm3": 3.707,
       "test_barrel_mm": 610,
-      "pmax_note": "Cartouche non normalisée : absente des tables C.I.P. (Tab I) comme du standard SAAMI Z299.4-2025, vérifié le 2026-08-11. Aucune limite de pression officielle ne peut lui être attribuée."
+      "pmax_cip_bar": 4050,
+      "pmax_src": "dérivée",
+      "pmax_note": "Wildcat non normalisé : absent des tables C.I.P. (Tab I) comme du standard SAAMI Z299.4-2025, vérifié le 2026-08-11. Limite reprise du .30-06 Springfield dont il dérive (même étui, collet ouvert en 8,6 mm). Conservatrice : parmi les dérivés du .30-06, seuls ceux de plus petit alésage sont normalisés au-dessus du parent. Valeur indicative."
     },
     "250 Savage": {
       "type": "rifle",
