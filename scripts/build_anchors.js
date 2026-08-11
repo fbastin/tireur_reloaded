@@ -3,7 +3,8 @@
  * manufacturer datasets, so the tool can refine a known combo from ~10% (cold) to ~5%.
  *
  * Usage : node scripts/build_anchors.js
- * Inputs (local, gitignored): data/rs_dataset.local.json, data/western.local.json
+ * Inputs (local, gitignored): data/rs_dataset.local.json, data/western.local.json,
+ *   data/hodgdon.local.json, data/vihtavuori.local.json, data/norma.local.json, …
  * Output (PUBLISHED, derived only — no raw load tables): data/anchors.json
  *   { "<caliberKey>|<powderKey>": { eeff: J/kg, np: η_p, n: count } }
  *
@@ -76,6 +77,31 @@ for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
   const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
   add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr);
 }
+
+// Hodgdon Annual Manual (AM24, parsé par scripts/parse_hodgdon.js). Comble la lacune
+// nommée par la feuille de route : Hodgdon/IMR était à 9 poudres ancrées sur 44.
+// Les lignes en CUP ne contribuent QUE la vitesse — le CUP n'est pas convertible en psi,
+// un η_p calculé dessus serait faux d'un facteur inconnu. Même traitement que Vihtavuori.
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('hodgdon.local.json'))).rows) {
+    if (isJunkCart(r.cartridge)) continue;
+    const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
+    if (r.bore_mm && Math.abs(r.bore_mm - ca.bore_mm) > 0.3) continue;
+    if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm)) continue;
+    const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+    const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
+    const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
+    const v0 = r.v0_fps * 0.3048;
+    const eeff = me * v0 * v0 / (2 * C);
+    if (r.Pmax_psi > 0) {
+      const Pmax = r.Pmax_psi * 0.0689476 * 1e5;
+      const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
+      add(ck, pk, eeff, 0.5 * me * v0 * v0 / (Pmax * A * L), mhr);
+    } else {
+      add(ck, pk, eeff, null, null);                   // ligne en CUP : vitesse seule
+    }
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
 // Vihtavuori (guide 2026, parsé) — VITESSE seulement (eeff). Le np VV serait « au max=CIP »,
 // régime différent du np moyenné RS/Western → non mêlé (les couples VV-seuls retombent sur
