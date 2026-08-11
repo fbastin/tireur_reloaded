@@ -862,8 +862,9 @@
     "240 Weatherby Magnum": {
       "type": "rifle",
       "bore_mm": 6.17,
-      "case_mm": 63.4,
-      "case_vol_cm3": 3.73
+      "case_mm": 63.5,
+      "case_vol_cm3": 3.73,
+      "pmax_cip_bar": 4400
     },
     "416 Rigby": {
       "type": "rifle",
