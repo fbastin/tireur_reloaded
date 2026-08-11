@@ -322,14 +322,24 @@ The model's coefficients are fitted on **Reload Swiss alone** (1700 charges), wh
 looks like free accuracy. It is not. Reproduce with `node scripts/etap_refit_experiment.js`
 (console only, writes nothing).
 
-**The three sources do not measure the same η_p.** Mean observed η_p:
+**The sources do not measure the same η_p.** Mean observed η_p:
 
-| Reload Swiss | Western | Lovex |
-|---|---|---|
-| **0.447** | 0.399 | 0.384 |
+| Reload Swiss | Western | Lovex | Hodgdon (2026-08-11) |
+|---|---|---|---|
+| **0.447** | 0.399 | 0.384 | 0.418 |
 
-The only source used for calibration sits **12–16 % above** the other two — different test
-rigs, cases and barrels, not noise.
+The only source used for calibration sits **12–16 % above** Western and Lovex — different
+test rigs, cases and barrels, not noise.
+
+**Fourth measurement, and it validates the compromise (2026-08-11).** The Hodgdon Annual
+Manual (AM24, user-supplied — `hodgdonreloading.com` is behind Cloudflare) yields 4439 usable
+rows, a set never seen by the calibration. Its η_p of 0.418 falls *between* Reload Swiss and
+Western: RS is high, but not a lone outlier — four labs span 0.384–0.447, ±7.6 % about the
+mean. And the **current published coefficients predict Hodgdon's pressure with a bias of
++0.6 % and RMS 15.4 %** — unbiased, and a *lower* RMS than on any of the three calibration
+sources (RS 21.0, Western 21.5, VV-CIP 19.0). The deliberate "defect" of §6.0 is therefore
+confirmed by an independent fourth laboratory; **η_p is still not refitted, now for a
+positive reason rather than a defensive one.**
 
 Because $P \propto 1/\eta_p$, fitting *cleanly* on Reload Swiss makes predicted pressures too
 **low** everywhere else — the **unsafe** direction (the tool tells the handloader a charge is
