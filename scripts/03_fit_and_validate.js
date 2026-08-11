@@ -96,6 +96,15 @@ const coef = {
   eta_p: { features: ['1', 'fill/100', 'ln(Re)'], coef: wp.map((x) => +x.toFixed(5)), lopo_P_rms_pct: +lopoP.toFixed(1), note: 'Re = 1 + A*travel/V0; pressure is INDICATIVE only' },
   e_eff: { features: ['1', 'fill/100'], coef: we.map((x) => +x.toFixed(0)), unit: 'J/kg', lopo_v_rms_pct: +lopoEeff.toFixed(1), note: 'FALLBACK when Qex/Ba unknown: v0 = sqrt(2*E_eff*C/m_e); needs only bulk density (for fill). Same accuracy as eta_b path.' },
 };
+// ÉTAT INTERMÉDIAIRE, PAS LE MODÈLE DE PRODUCTION. Ce script cale η_p et E_eff sur Reload
+// Swiss SEUL. C'est exactement le « refit on RS » que docs/MODEL.md §6.0 a testé puis REJETÉ :
+// il annule le biais sur son propre jeu (RMS 21,1 → 16,2 %) mais sous-estime la pression
+// ailleurs — direction NON SÛRE — et sous-prédit 97 % des cas Lovex. Le modèle publié vient
+// de `fit_pressure_multibrand.js`, qui repasse derrière avec trois sources équipondérées.
+//
+// Le marqueur rend l'état intermédiaire DÉTECTABLE et pas seulement annoncé : le 2026-08-11,
+// lancer ce script « pour mesurer » a écrasé les coefficients de production sans un mot.
+coef._calage = 'INCOMPLET — Reload Swiss seul. Lancer scripts/fit_pressure_multibrand.js.';
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2));
 
 console.log(`records ${D.length} | powders ${powders.length}`);
@@ -104,4 +113,9 @@ console.log(`η_p = ${wp.map((x) => x.toFixed(4))}  (1, fill/100, lnRe)`);
 console.log(`E_eff = ${we.map((x) => x.toFixed(0))}  J/kg  (1, fill/100)  [fallback, no Qex/Ba]`);
 console.log(`LOPO (cold)     : v ${lopoV.toFixed(1)}%  | P ${lopoP.toFixed(1)}%  | E_eff fallback v ${lopoEeff.toFixed(1)}%`);
 console.log(`anchored LOO    : v ${rms(av).toFixed(1)}%  (${av.length} pts)`);
-console.log(`-> ${d('model_coefficients.json')}  (published)`);
+console.log(`-> ${d('model_coefficients.json')}`);
+console.log('');
+console.log('  /!\\ CALAGE INCOMPLET — le fichier porte pour l\'instant un η_p calé sur Reload');
+console.log('      Swiss SEUL, que MODEL.md §6.0 a testé et rejeté : meilleur sur son propre');
+console.log('      jeu, mais sous-estime la pression ailleurs — direction NON SÛRE.');
+console.log('      ENCHAÎNER :  node scripts/fit_pressure_multibrand.js');

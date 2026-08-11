@@ -121,5 +121,6 @@ coef.e_eff.coef = neuE;
 coef.e_eff.note = 'FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé sur la CLIENTÈLE du repli (poudres SANS Qex/Ba : Accurate/Ramshot) — pente conservée, niveau recentré pour annuler le biais vitesse et réduire la sous-estimation de pression (∝ v0²). RS/VV passent par η_b.';
 coef.e_eff.lopo_v_rms_pct = +rms(we.map((r) => (Math.sqrt(neuE[0] + neuE[1] * r.fill / 100) / Math.sqrt(r.eeff) - 1) * 100)).toFixed(1);
 coef._date = new Date().toISOString().slice(0, 10);
+delete coef._calage;   // lève le marqueur posé par 03_fit_and_validate.js : le calage est complet
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2) + '\n');
-console.log('-> model_coefficients.json (eta_p mis à jour)');
+console.log('-> model_coefficients.json (eta_p et E_eff mis à jour — calage complet)');

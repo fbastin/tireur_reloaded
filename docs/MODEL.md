@@ -290,6 +290,22 @@ tightens it.
 `data/model_coefficients.json` stores the feature lists, fitted coefficients and the
 reported LOPO RMS. The estimator loads these at runtime.
 
+**It is produced by TWO passes, in this order.** Running the first alone leaves the model in
+the state §6.0 tested and rejected — better on its own training set, unsafe elsewhere:
+
+```bash
+node scripts/03_fit_and_validate.js      # η_b, η_p, E_eff on Reload Swiss alone — INCOMPLETE
+node scripts/fit_pressure_multibrand.js  # rewrites η_p (3 equiponderated sources) and E_eff
+```
+
+The first pass writes a `_calage: "INCOMPLET…"` marker and prints a warning; the second
+removes it. Check that key before trusting the file: on 2026-08-11 the first script was run
+on its own "just to measure" and silently reverted the safety calibration.
+
+Note that `fit_pressure_multibrand.js` rewrites **both** η_p *and* E_eff — the latter
+recentred on the fallback's real clientele (powders without Qex/Ba). Its name understates
+what it does.
+
 ## 6. Accuracy and limitations (safety)
 
 - **Pressure is the weak output** ($\eta_p$ CV ~21 %, ~16 % LOPO) and is shown as
