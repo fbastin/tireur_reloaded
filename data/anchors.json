@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-08-11",
+ "_date": "2026-08-14",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -57,7 +57,7 @@
    "eeff": 971183,
    "n": 4,
    "np": 0.5086,
-   "mhr": 6.9
+   "mhr": 7
   },
   "22-250 Rem.|RS52": {
    "eeff": 1025100,
@@ -129,7 +129,7 @@
    "eeff": 1115980,
    "n": 8,
    "np": 0.4745,
-   "mhr": 5.8
+   "mhr": 5.9
   },
   "260 Rem.|RS62": {
    "eeff": 1103893,
@@ -486,7 +486,7 @@
    "eeff": 1077923,
    "n": 6,
    "np": 0.4933,
-   "mhr": 5.8
+   "mhr": 5.7
   },
   "6.5 x 47 Lapua|RS52": {
    "eeff": 1273705,
@@ -698,13 +698,13 @@
    "eeff": 953056,
    "n": 4,
    "np": 0.5219,
-   "mhr": 6.1
+   "mhr": 6.2
   },
   "7 Rem. Mag.|RS70": {
    "eeff": 995996,
    "n": 12,
    "np": 0.5259,
-   "mhr": 6.3
+   "mhr": 6.4
   },
   "7 Rem. Mag.|RS76": {
    "eeff": 971308,
@@ -1309,28 +1309,28 @@
   "460 S&W|Accurate No.9": {
    "eeff": 1343451,
    "n": 14,
-   "np": 0.3879
+   "np": 0.3873
   },
   "460 S&W|Accurate 4100": {
    "eeff": 1332581,
    "n": 12,
-   "np": 0.4236
+   "np": 0.423
   },
   "460 S&W|Ramshot Enforcer": {
    "eeff": 1289881,
    "n": 8,
-   "np": 0.49,
+   "np": 0.4892,
    "mhr": 0.8
   },
   "460 S&W|Accurate 5744": {
    "eeff": 1214340,
    "n": 10,
-   "np": 0.3829
+   "np": 0.3823
   },
   "460 S&W|Accurate 1680": {
    "eeff": 1036949,
    "n": 10,
-   "np": 0.3922
+   "np": 0.3916
   },
   "204 Ruger|Accurate 5744": {
    "eeff": 1205352,
@@ -1490,42 +1490,42 @@
   "6mm PPC|Accurate 5744": {
    "eeff": 1455492,
    "n": 6,
-   "np": 0.3942
+   "np": 0.3939
   },
   "6mm PPC|Accurate LT-30": {
    "eeff": 1301519,
    "n": 9,
-   "np": 0.3641
+   "np": 0.3639
   },
   "6mm PPC|Accurate LT-32": {
    "eeff": 1387971,
    "n": 5,
-   "np": 0.4039
+   "np": 0.4036
   },
   "6mm PPC|Accurate 2200": {
    "eeff": 1403984,
    "n": 10,
-   "np": 0.4524
+   "np": 0.4522
   },
   "6mm PPC|Ramshot X-Terminator": {
    "eeff": 1294126,
    "n": 5,
-   "np": 0.41
+   "np": 0.4098
   },
   "6mm PPC|Accurate 2495": {
    "eeff": 1369613,
    "n": 5,
-   "np": 0.4235
+   "np": 0.4232
   },
   "6 XC|Accurate 2700": {
    "eeff": 1255717,
    "n": 5,
-   "np": 0.4482
+   "np": 0.4484
   },
   "6 XC|Ramshot Hunter": {
    "eeff": 1227875,
    "n": 6,
-   "np": 0.4567
+   "np": 0.4569
   },
   "6 mm Creedmoor|Accurate 4064": {
    "eeff": 1113013,
@@ -1616,62 +1616,62 @@
   "6.5 Grendel|Accurate LT-32": {
    "eeff": 1223930,
    "n": 4,
-   "np": 0.3432
+   "np": 0.3431
   },
   "6.5 Grendel|Accurate 2200": {
    "eeff": 1339408,
    "n": 11,
-   "np": 0.3906
+   "np": 0.3905
   },
   "6.5 Grendel|Ramshot X-Terminator": {
    "eeff": 1262898,
    "n": 9,
-   "np": 0.3943
+   "np": 0.3942
   },
   "6.5 Grendel|Accurate 2230": {
    "eeff": 1262898,
    "n": 9,
-   "np": 0.3943
+   "np": 0.3942
   },
   "6.5 Grendel|Accurate 2460": {
    "eeff": 1266917,
    "n": 5,
-   "np": 0.3944
+   "np": 0.3943
   },
   "6.5 Grendel|Accurate 4064": {
    "eeff": 1272176,
    "n": 5,
-   "np": 0.4699
+   "np": 0.4698
   },
   "6.5 Grendel|Ramshot Big Game": {
    "eeff": 1272235,
    "n": 5,
-   "np": 0.507
+   "np": 0.5069
   },
   "6.5 Grendel|Accurate 2700": {
    "eeff": 1248144,
    "n": 5,
-   "np": 0.5145
+   "np": 0.5144
   },
   "6.5 Grendel|Ramshot Hunter": {
    "eeff": 1224742,
    "n": 4,
-   "np": 0.5315
+   "np": 0.5314
   },
   "260 Rem.|Ramshot Big Game": {
    "eeff": 1184573,
    "n": 9,
-   "np": 0.4292
+   "np": 0.4282
   },
   "260 Rem.|Accurate 2700": {
    "eeff": 1170153,
    "n": 15,
-   "np": 0.4146
+   "np": 0.4136
   },
   "260 Rem.|Accurate 4350": {
    "eeff": 1214011,
    "n": 8,
-   "np": 0.4373
+   "np": 0.4362
   },
   "6.5-284 Norma|Accurate 5744": {
    "eeff": 1441656,
@@ -1697,12 +1697,12 @@
   "270 Weatherby Magnum|Accurate 4350": {
    "eeff": 1126933,
    "n": 3,
-   "np": 0.4684
+   "np": 0.4682
   },
   "7 -08 Rem.|Accurate 2700": {
    "eeff": 1195297,
    "n": 11,
-   "np": 0.373
+   "np": 0.3728
   },
   "284 Winchester|Accurate 2700": {
    "eeff": 1044225,
@@ -1764,32 +1764,32 @@
   "308 Marlin Express|Ramshot X-Terminator": {
    "eeff": 1343642,
    "n": 4,
-   "np": 0.3771
+   "np": 0.3772
   },
   "308 Marlin Express|Accurate 2230": {
    "eeff": 1343642,
    "n": 4,
-   "np": 0.3771
+   "np": 0.3772
   },
   "308 Marlin Express|Accurate 2460": {
    "eeff": 1339990,
    "n": 4,
-   "np": 0.3798
+   "np": 0.38
   },
   "308 Marlin Express|Ramshot TAC": {
    "eeff": 1305701,
    "n": 4,
-   "np": 0.3882
+   "np": 0.3884
   },
   "308 Marlin Express|Accurate 2495": {
    "eeff": 1295292,
    "n": 3,
-   "np": 0.3644
+   "np": 0.3646
   },
   "308 Marlin Express|Accurate 2520": {
    "eeff": 1309201,
    "n": 4,
-   "np": 0.4024
+   "np": 0.4026
   },
   "30 T/C|Ramshot X-Terminator": {
    "eeff": 1439473,
@@ -1849,17 +1849,17 @@
   "300 RCM|Ramshot Big Game": {
    "eeff": 1273693,
    "n": 7,
-   "np": 0.4371
+   "np": 0.4373
   },
   "300 RCM|Accurate 2700": {
    "eeff": 1262827,
    "n": 9,
-   "np": 0.4601
+   "np": 0.4604
   },
   "300 RCM|Ramshot Hunter": {
    "eeff": 1258113,
    "n": 14,
-   "np": 0.4594
+   "np": 0.4597
   },
   "300 Weatherby Magnum|Ramshot Magnum": {
    "eeff": 1068174,
@@ -1941,52 +1941,52 @@
   "375 H&H Mag.|Ramshot TAC": {
    "eeff": 1378300,
    "n": 6,
-   "np": 0.415
+   "np": 0.4153
   },
   "375 H&H Mag.|Ramshot Big Game": {
    "eeff": 1311512,
    "n": 5,
-   "np": 0.4423
+   "np": 0.4426
   },
   "375 H&H Mag.|Accurate 2700": {
    "eeff": 1286195,
    "n": 4,
-   "np": 0.4156
+   "np": 0.4159
   },
   "458 SOCOM|Accurate 5744": {
    "eeff": 1375035,
    "n": 26,
-   "np": 0.3447
+   "np": 0.3449
   },
   "458 SOCOM|Accurate 1680": {
    "eeff": 1301770,
    "n": 12,
-   "np": 0.3231
+   "np": 0.3232
   },
   "458 SOCOM|Accurate LT-30": {
    "eeff": 1163927,
    "n": 16,
-   "np": 0.3976
+   "np": 0.3977
   },
   "458 SOCOM|Accurate LT-32": {
    "eeff": 1192274,
    "n": 10,
-   "np": 0.4085
+   "np": 0.4087
   },
   "458 SOCOM|Accurate 2200": {
    "eeff": 1223753,
    "n": 16,
-   "np": 0.4614
+   "np": 0.4615
   },
   "458 SOCOM|Ramshot X-Terminator": {
    "eeff": 1327449,
    "n": 17,
-   "np": 0.4246
+   "np": 0.4248
   },
   "458 SOCOM|Accurate 2230": {
    "eeff": 1314871,
    "n": 13,
-   "np": 0.4208
+   "np": 0.4209
   },
   "9 mm Browning court|Accurate Nitro 100NF": {
    "eeff": 1334038,
@@ -2198,64 +2198,64 @@
   "454 Casull|Ramshot True Blue": {
    "eeff": 1588592,
    "n": 9,
-   "np": 0.2983
+   "np": 0.299
   },
   "454 Casull|Accurate No.9": {
    "eeff": 1392421,
    "n": 4,
-   "np": 0.4175
+   "np": 0.4184
   },
   "454 Casull|Accurate 4100": {
    "eeff": 1354047,
    "n": 18,
-   "np": 0.403
+   "np": 0.404
   },
   "454 Casull|Ramshot Enforcer": {
    "eeff": 1358207,
    "n": 19,
-   "np": 0.4091,
+   "np": 0.4101,
    "mhr": 1.9
   },
   "454 Casull|Accurate 5744": {
    "eeff": 928121,
    "n": 7,
-   "np": 0.4028
+   "np": 0.4038
   },
   "454 Casull|Accurate 1680": {
    "eeff": 1005177,
    "n": 6,
-   "np": 0.4214
+   "np": 0.4224
   },
   "475 Linebaugh|Accurate No.9": {
    "eeff": 1520628,
    "n": 11,
-   "np": 0.3875
+   "np": 0.3856
   },
   "475 Linebaugh|Accurate 4100": {
    "eeff": 1449963,
    "n": 8,
-   "np": 0.4023
+   "np": 0.4003
   },
   "475 Linebaugh|Ramshot Enforcer": {
    "eeff": 1377377,
    "n": 18,
-   "np": 0.4639,
-   "mhr": -5.3
+   "np": 0.4616,
+   "mhr": -5.2
   },
   "475 Linebaugh|Accurate 5744": {
    "eeff": 1261121,
    "n": 40,
-   "np": 0.518
+   "np": 0.5154
   },
   "475 Linebaugh|Accurate 1680": {
    "eeff": 1137163,
    "n": 16,
-   "np": 0.6374
+   "np": 0.6342
   },
   "475 Linebaugh|Accurate No. 2": {
    "eeff": 1387153,
    "n": 3,
-   "np": 0.4757
+   "np": 0.4734
   },
   "22 Hornet|Ramshot Enforcer": {
    "eeff": 1436391,
@@ -2271,32 +2271,32 @@
   "22 Hornet|Ramshot X-Terminator": {
    "eeff": 1158243,
    "n": 4,
-   "np": 0.4385
+   "np": 0.4386
   },
   "22 Hornet|Accurate 2230": {
    "eeff": 1170690,
    "n": 3,
-   "np": 0.4357
+   "np": 0.4358
   },
   "22 Hornet|Accurate 2460": {
    "eeff": 1133239,
    "n": 4,
-   "np": 0.4404
+   "np": 0.4405
   },
   "224 Valkyrie|Accurate 2495": {
    "eeff": 1196621,
    "n": 5,
-   "np": 0.3405
+   "np": 0.3403
   },
   "224 Valkyrie|Accurate 2520": {
    "eeff": 1244834,
    "n": 3,
-   "np": 0.382
+   "np": 0.3818
   },
   "224 Valkyrie|Accurate 4064": {
    "eeff": 1202483,
    "n": 5,
-   "np": 0.3467
+   "np": 0.3464
   },
   "22 Nosler|Accurate LT-32": {
    "eeff": 1134953,
@@ -2321,7 +2321,7 @@
   "22-250 Rem.|Accurate 2460": {
    "eeff": 1125204,
    "n": 10,
-   "np": 0.4485
+   "np": 0.4484
   },
   "22-250 Rem.|Ramshot TAC": {
    "eeff": 1208800,
@@ -2331,12 +2331,12 @@
   "22-250 Rem.|Accurate 2520": {
    "eeff": 1128329,
    "n": 9,
-   "np": 0.4447
+   "np": 0.4446
   },
   "22-250 Rem.|Accurate 4064": {
    "eeff": 1150624,
    "n": 9,
-   "np": 0.4372
+   "np": 0.4371
   },
   "22-250 Rem.|Ramshot Big Game": {
    "eeff": 1084408,
@@ -2346,7 +2346,7 @@
   "22-250 Rem.|Accurate 2700": {
    "eeff": 1191668,
    "n": 6,
-   "np": 0.3839
+   "np": 0.3838
   },
   "22-250 Rem.|Accurate 2200": {
    "eeff": 1412921,
@@ -2356,7 +2356,7 @@
   "22-250 Rem.|Ramshot X-Terminator": {
    "eeff": 1352508,
    "n": 6,
-   "np": 0.3981
+   "np": 0.398
   },
   "22-250 Rem.|Accurate 2230": {
    "eeff": 1366059,
@@ -2461,28 +2461,28 @@
   "257 Wby. Mag.|Accurate 5744": {
    "eeff": 1256247,
    "n": 6,
-   "np": 0.4526
+   "np": 0.4528
   },
   "257 Wby. Mag.|Accurate 4350": {
    "eeff": 1000778,
    "n": 16,
-   "np": 0.5065
+   "np": 0.5067
   },
   "257 Wby. Mag.|Accurate Magpro": {
    "eeff": 925705,
    "n": 22,
-   "np": 0.5154,
+   "np": 0.5155,
    "mhr": 8.6
   },
   "257 Wby. Mag.|Ramshot Magnum": {
    "eeff": 919503,
    "n": 22,
-   "np": 0.5138
+   "np": 0.514
   },
   "257 Wby. Mag.|Ramshot LRT": {
    "eeff": 892763,
    "n": 14,
-   "np": 0.5378
+   "np": 0.538
   },
   "6.5 Creedmoor|Accurate 4064": {
    "eeff": 1201190,
@@ -2600,17 +2600,17 @@
   "7 Rem. Mag.|Accurate 4350": {
    "eeff": 1117362,
    "n": 45,
-   "np": 0.4785
+   "np": 0.4773
   },
   "7 Rem. Mag.|Ramshot Hunter": {
    "eeff": 1112719,
    "n": 5,
-   "np": 0.4934
+   "np": 0.4923
   },
   "7 Rem. Mag.|Accurate Magpro": {
    "eeff": 1046076,
    "n": 36,
-   "np": 0.5255,
+   "np": 0.5242,
    "mhr": 4.4
   },
   "30 Carbine|Accurate No.9": {
@@ -2833,7 +2833,7 @@
   "444 Marlin|Ramshot X-Terminator": {
    "eeff": 1112516,
    "n": 3,
-   "np": 0.2953
+   "np": 0.2952
   },
   "444 Marlin|Ramshot TAC": {
    "eeff": 1241670,
@@ -3100,24 +3100,24 @@
   "22-250 Rem.|Winchester StaBall Match": {
    "eeff": 1171306,
    "n": 9,
-   "np": 0.4625,
+   "np": 0.4624,
    "mhr": 1.3
   },
   "22-250 Rem.|Hodgdon Varget": {
    "eeff": 1133157,
    "n": 9,
-   "np": 0.4532
+   "np": 0.4531
   },
   "22-250 Rem.|IMR 4895": {
    "eeff": 1157266,
    "n": 8,
-   "np": 0.4541,
+   "np": 0.454,
    "mhr": 3.4
   },
   "22-250 Rem.|Hodgdon H4895": {
    "eeff": 1161069,
    "n": 9,
-   "np": 0.4578
+   "np": 0.4577
   },
   "22-250 Rem.|IMR 8208 XBR": {
    "eeff": 1220137,
@@ -3127,27 +3127,27 @@
   "22-250 Rem.|IMR 4064": {
    "eeff": 1158430,
    "n": 8,
-   "np": 0.4542
+   "np": 0.4541
   },
   "22-250 Rem.|Hodgdon Benchmark": {
    "eeff": 1179593,
    "n": 7,
-   "np": 0.4366
+   "np": 0.4365
   },
   "22-250 Rem.|IMR 3031": {
    "eeff": 1217367,
    "n": 8,
-   "np": 0.4395
+   "np": 0.4394
   },
   "22-250 Rem.|Winchester StaBall 6.5": {
    "eeff": 1127983,
    "n": 7,
-   "np": 0.5015
+   "np": 0.5014
   },
   "22-250 Rem.|Hodgdon CFE-223": {
    "eeff": 1184873,
    "n": 7,
-   "np": 0.4823
+   "np": 0.4822
   },
   "22-250 Rem.|Winchester 760": {
    "eeff": 1038502,
@@ -3157,27 +3157,27 @@
   "22-250 Rem.|Hodgdon H380": {
    "eeff": 1028325,
    "n": 8,
-   "np": 0.4633
+   "np": 0.4632
   },
   "22-250 Rem.|Hodgdon BL-C(2)": {
    "eeff": 1166759,
    "n": 5,
-   "np": 0.4583
+   "np": 0.4582
   },
   "22-250 Rem.|Hodgdon H335": {
    "eeff": 1177186,
    "n": 5,
-   "np": 0.4325
+   "np": 0.4324
   },
   "22-250 Rem.|Hodgdon H322": {
    "eeff": 1170230,
    "n": 5,
-   "np": 0.4089
+   "np": 0.4088
   },
   "22-250 Rem.|Hodgdon H4350": {
    "eeff": 997876,
    "n": 6,
-   "np": 0.4743
+   "np": 0.4742
   },
   "220 Swift|Winchester 760": {
    "eeff": 1033794,
@@ -3874,68 +3874,68 @@
   "260 Rem.|Ramshot Hunter": {
    "eeff": 1113297,
    "n": 3,
-   "np": 0.4472
+   "np": 0.4462
   },
   "260 Rem.|Hodgdon H4831, H4831C": {
    "eeff": 1145010,
    "n": 11,
-   "np": 0.44
+   "np": 0.439
   },
   "260 Rem.|Hodgdon H4350": {
    "eeff": 1231170,
    "n": 11,
-   "np": 0.4361
+   "np": 0.4351
   },
   "260 Rem.|Winchester 760": {
    "eeff": 1231768,
    "n": 7,
-   "np": 0.4347
+   "np": 0.4337
   },
   "260 Rem.|Hodgdon H380": {
    "eeff": 1202539,
    "n": 6,
-   "np": 0.4138
+   "np": 0.4128
   },
   "260 Rem.|Hodgdon BL-C(2)": {
    "eeff": 1257740,
    "n": 5,
-   "np": 0.4004
+   "np": 0.3995
   },
   "260 Rem.|Winchester StaBall Match": {
    "eeff": 1295157,
    "n": 6,
-   "np": 0.3976,
-   "mhr": 0.1
+   "np": 0.3966,
+   "mhr": 0.2
   },
   "260 Rem.|Hodgdon Varget": {
    "eeff": 1318337,
    "n": 6,
-   "np": 0.4083
+   "np": 0.4073
   },
   "260 Rem.|Hodgdon H4895": {
    "eeff": 1304412,
    "n": 6,
-   "np": 0.3933
+   "np": 0.3924
   },
   "260 Rem.|Hodgdon H1000": {
    "eeff": 1061534,
    "n": 6,
-   "np": 0.4725
+   "np": 0.4714
   },
   "260 Rem.|Winchester StaBall 6.5": {
    "eeff": 1269790,
    "n": 6,
-   "np": 0.4371
+   "np": 0.436
   },
   "260 Rem.|IMR 4831": {
    "eeff": 1234707,
    "n": 4,
-   "np": 0.4411
+   "np": 0.4401
   },
   "260 Rem.|IMR 4350": {
    "eeff": 1269933,
    "n": 3,
-   "np": 0.4333
+   "np": 0.4323
   },
   "6.5-284 Norma|Ramshot LRT": {
    "eeff": 1044641,
@@ -4143,32 +4143,32 @@
   "7 -08 Rem.|Accurate 2495": {
    "eeff": 1320351,
    "n": 13,
-   "np": 0.3696
+   "np": 0.3694
   },
   "7 -08 Rem.|Accurate 4064": {
    "eeff": 1295139,
    "n": 11,
-   "np": 0.3771
+   "np": 0.377
   },
   "7 -08 Rem.|Accurate 2520": {
    "eeff": 1324338,
    "n": 3,
-   "np": 0.3836
+   "np": 0.3834
   },
   "7 -08 Rem.|Accurate 2460": {
    "eeff": 1346747,
    "n": 5,
-   "np": 0.3838
+   "np": 0.3837
   },
   "7 -08 Rem.|Winchester StaBall 6.5": {
    "eeff": 1336280,
    "n": 13,
-   "np": 0.4548
+   "np": 0.4546
   },
   "7 -08 Rem.|Hodgdon H4350": {
    "eeff": 1236083,
    "n": 13,
-   "np": 0.4031
+   "np": 0.4029
   },
   "7 -08 Rem.|Hodgdon CFE-223": {
    "eeff": 1294938,
@@ -4177,7 +4177,7 @@
   "7 -08 Rem.|Winchester 760": {
    "eeff": 1259958,
    "n": 13,
-   "np": 0.4117
+   "np": 0.4115
   },
   "7 -08 Rem.|Hodgdon H380": {
    "eeff": 1222792,
@@ -4186,7 +4186,7 @@
   "7 -08 Rem.|Winchester StaBall Match": {
    "eeff": 1311959,
    "n": 13,
-   "np": 0.3779,
+   "np": 0.3778,
    "mhr": 2.3
   },
   "7 -08 Rem.|Hodgdon BL-C(2)": {
@@ -4196,7 +4196,7 @@
   "7 -08 Rem.|Hodgdon Varget": {
    "eeff": 1352437,
    "n": 13,
-   "np": 0.3734
+   "np": 0.3733
   },
   "7 -08 Rem.|IMR 4895": {
    "eeff": 1338775,
@@ -4205,7 +4205,7 @@
   "7 -08 Rem.|IMR 4064": {
    "eeff": 1358330,
    "n": 13,
-   "np": 0.3705
+   "np": 0.3703
   },
   "7 -08 Rem.|Hodgdon H4895": {
    "eeff": 1351829,
@@ -4230,78 +4230,78 @@
   "7 -08 Rem.|IMR 4350": {
    "eeff": 1240974,
    "n": 12,
-   "np": 0.4118
+   "np": 0.4117
   },
   "7 -08 Rem.|Accurate 4350": {
    "eeff": 1220654,
    "n": 3,
-   "np": 0.3946
+   "np": 0.3944
   },
   "7 -08 Rem.|Ramshot Big Game": {
    "eeff": 1286827,
    "n": 8,
-   "np": 0.3973
+   "np": 0.3971
   },
   "7 -08 Rem.|Ramshot Hunter": {
    "eeff": 1219066,
    "n": 6,
-   "np": 0.4195
+   "np": 0.4194
   },
   "7 -08 Rem.|Hodgdon H4831, H4831C": {
    "eeff": 1144745,
    "n": 6,
-   "np": 0.4174
+   "np": 0.4172
   },
   "7 -08 Rem.|IMR 4831": {
    "eeff": 1204854,
    "n": 4,
-   "np": 0.4235
+   "np": 0.4233
   },
   "7 Rem. Mag.|Ramshot Magnum": {
    "eeff": 1036648,
    "n": 20,
-   "np": 0.5239
+   "np": 0.5227
   },
   "7 Rem. Mag.|Hodgdon H4831, H4831C": {
    "eeff": 1085455,
    "n": 12,
-   "np": 0.5279
+   "np": 0.5267
   },
   "7 Rem. Mag.|IMR 4831": {
    "eeff": 1118519,
    "n": 12,
-   "np": 0.5033
+   "np": 0.5022
   },
   "7 Rem. Mag.|IMR 4350": {
    "eeff": 1143179,
    "n": 12,
-   "np": 0.5023
+   "np": 0.5012
   },
   "7 Rem. Mag.|Hodgdon H4350": {
    "eeff": 1140527,
    "n": 12,
-   "np": 0.5045
+   "np": 0.5033
   },
   "7 Rem. Mag.|Winchester 760": {
    "eeff": 1097219,
    "n": 4,
-   "np": 0.483
+   "np": 0.4819
   },
   "7 Rem. Mag.|Winchester StaBall HD": {
    "eeff": 1070006,
    "n": 9,
-   "np": 0.5594,
+   "np": 0.5581,
    "mhr": 1.9
   },
   "7 Rem. Mag.|Hodgdon Retumbo": {
    "eeff": 1047222,
    "n": 10,
-   "np": 0.5619
+   "np": 0.5606
   },
   "7 Rem. Mag.|Hodgdon H1000": {
    "eeff": 1040140,
    "n": 10,
-   "np": 0.5485
+   "np": 0.5472
   },
   "7mm PRC|Ramshot LRT": {
    "eeff": 1097783,
@@ -5918,37 +5918,37 @@
   "460 S&W|Hodgdon H110": {
    "eeff": 1385088,
    "n": 12,
-   "np": 0.4313
+   "np": 0.4308
   },
   "460 S&W|Hodgdon H4227": {
    "eeff": 1384002,
    "n": 12,
-   "np": 0.4063
+   "np": 0.4058
   },
   "460 S&W|Winchester 296": {
    "eeff": 1406122,
    "n": 11,
-   "np": 0.425
+   "np": 0.4245
   },
   "460 S&W|Hodgdon CFE BLK": {
    "eeff": 1171603,
    "n": 6,
-   "np": 0.5539
+   "np": 0.5532
   },
   "460 S&W|Hodgdon Titegroup": {
    "eeff": 1933763,
    "n": 4,
-   "np": 0.2274
+   "np": 0.2271
   },
   "460 S&W|Hodgdon Trail Boss": {
    "eeff": 1247511,
    "n": 4,
-   "np": 0.2097
+   "np": 0.2095
   },
   "460 S&W|Hodgdon H4198": {
    "eeff": 1181168,
    "n": 3,
-   "np": 0.4246
+   "np": 0.4241
   },
   "204 Ruger|N530": {
    "eeff": 1113868,
@@ -6703,7 +6703,7 @@
   "7 Rem. Mag.|N160": {
    "eeff": 1103232,
    "n": 18,
-   "mhr": -1.5
+   "mhr": -1.4
   },
   "7 Rem. Mag.|N165": {
    "eeff": 1055409,
@@ -8376,17 +8376,17 @@
   "22-250 Rem.|Lovex S060": {
    "eeff": 1042641,
    "n": 6,
-   "np": 0.4597
+   "np": 0.4596
   },
   "22-250 Rem.|Lovex D073.4": {
    "eeff": 1127442,
    "n": 6,
-   "np": 0.481
+   "np": 0.4809
   },
   "22-250 Rem.|Lovex D073.5": {
    "eeff": 1071144,
    "n": 6,
-   "np": 0.4687
+   "np": 0.4686
   },
   "22-250 Rem.|Lovex D073.6": {
    "eeff": 1077085,
@@ -8396,7 +8396,7 @@
   "22-250 Rem.|Lovex S062": {
    "eeff": 1076989,
    "n": 6,
-   "np": 0.4685
+   "np": 0.4684
   },
   "5.6 x 50 R Mag.|Lovex S060": {
    "eeff": 1110354,
