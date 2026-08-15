@@ -70,9 +70,13 @@ Base de composants dérivée de <em>Gordon's Reloading Tool</em> (Gordon †) et
 <strong>~20&nbsp;% d'écart quadratique moyen</strong>, avec un biais qui va dans le mauvais sens
 &mdash; le modèle <strong>sous-estime</strong> la pression le plus souvent, et les écarts relevés en
 validation atteignent 25 à 35&nbsp;% sur certaines charges. Autrement dit, une charge réellement
-au-dessus de la limite CIP peut s'afficher « sûre ». L'estimation est
+au-dessus de la limite CIP peut s'afficher « sûre ». La <strong>vitesse</strong> est
 <strong>affinée automatiquement (~5&nbsp;%) pour les couples cartouche/poudre connus</strong> ;
-saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. Vérifiez toujours dans les données officielles du fabricant.
+saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte.
+<strong>Cela ne corrige pas la pression&nbsp;:</strong> la vitesse et la pression sortent de
+<em>deux</em> efficacités distinctes, et votre chronographe n'en contraint qu'une. Une vitesse
+qui tombe juste ne valide donc <em>pas</em> la pression affichée &mdash; c'est même ainsi qu'on
+se fabrique une fausse marge de sécurité. Vérifiez toujours dans les données officielles du fabricant.
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limites &rarr;</a>
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
@@ -177,9 +181,16 @@ saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte. V
 <p>La précision se resserre selon ce que vous lui fournissez&nbsp;:</p>
 <ul>
 <li><strong>à froid</strong> (cartouche + poudre + charge)&nbsp;: vitesse à <strong>±10&nbsp;%</strong>&nbsp;;</li>
-<li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: <strong>~5&nbsp;%</strong>&nbsp;;</li>
-<li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: <strong>quasi-exact</strong>.</li>
+<li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: vitesse à <strong>~5&nbsp;%</strong>&nbsp;;</li>
+<li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: vitesse <strong>quasi-exacte</strong>.</li>
 </ul>
+<p><strong>&#9888; Ces trois échelons ne valent que pour la vitesse.</strong> La pression reste à
+±20&nbsp;% quoi qu'on fournisse, parce qu'elle sort d'une <em>autre</em> relation (efficacité
+piézométrique) que la vitesse (efficacité balistique)&nbsp;: le chronographe cale la seconde et
+ne dit rien de la première. Nous l'avons vérifié par trois chemins indépendants, dont la
+similitude de Manning, où remonter à la pression depuis la vitesse <strong>amplifie l'erreur
+d'un facteur 6,8</strong>. <em>Croire qu'une vitesse juste garantit une pression juste est la
+manière la plus courante de se fabriquer une fausse marge de sécurité.</em></p>
 <p>Catalogue&nbsp;: <strong>~470 poudres</strong> (Reload Swiss, Accurate/Ramshot et Vihtavuori calibrées&nbsp;; autres marques en repli énergie effective). Les situations à risque (<strong>surpression vs limite CIP, surremplissage</strong>) sont signalées en couleur — à titre indicatif.</p>
 <p><strong>Pour aller plus loin&nbsp;:</strong>
 <a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
