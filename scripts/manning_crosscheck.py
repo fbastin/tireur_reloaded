@@ -55,10 +55,26 @@ sur-estime d'autant plus qu'on s'en éloigne — les charges de départ sortent 
 +3,1 %, les charges maxi à +1,6 %. Le terme d'expansion, lui, est plat sur toute
 la plage : c'est le mieux tenu des trois.
 
+POURQUOI CE BIAIS — la réponse a 97 ans. Le *Textbook of Small Arms* (War Office,
+1929, ch. III), qui expose la similitude de Housman dont Manning est l'héritier,
+donne un critère de combustion complète : la poudre brûle entièrement avant la
+bouche si **V × (W/d²) dépasse ~500 à ~600** (V en f/s, W/d² = densité
+sectionnelle) ; en deçà, « *loads … blow out some of their powder unconsumed from
+the muzzle* ». Ce critère prédit le résidu de Manning mieux que la pression :
+
+    V·W/d²   < 500     500-600    600-700    700-900    > 900
+    biais    +7,3 %     +4,7 %     +2,1 %     +1,0 %    +0,6 %
+
+et il ne se réduit PAS à la pression déguisée : à bande de pression fixée, il
+sépare encore de 2 à 4 points. Manning est calé sur des charges qui brûlent tout ;
+sous le seuil, il suppose une énergie que la charge n'a pas délivrée, et
+sur-estime. Un critère de 1929 explique le résidu d'un modèle de 1948, mesuré en
+2026 sur des poudres européennes modernes.
+
 CONSÉQUENCE D'USAGE. Comme détecteur d'erreur de transcription, l'outil ne vaut
-qu'au-dessus de ~50 kpsi, où son propre biais (0,7 %) est petit devant ce qu'on
-cherche. En dessous, son biais de domaine noierait le signal : ne pas y voir des
-erreurs de saisie.
+qu'au-dessus du seuil de 1929, où son propre biais (1,6 %) est petit devant ce
+qu'on cherche. En dessous, son biais de domaine noierait le signal : ne pas y voir
+des erreurs de saisie.
 """
 import argparse, json, math, os, statistics as st
 
@@ -100,9 +116,14 @@ def charger(tout=False):
         if not tout and not (CW_MIN <= cw <= CW_MAX and P_MIN <= p <= P_MAX):
             rejet('hors du domaine de la droite de Dickey'); continue
         v = manning_fps(cw, er, p) * FPS_TO_MS
+        # Critère d'« all-burnt » du Textbook of Small Arms (1929, ch. III) :
+        # la combustion est complète avant la bouche si V × (W/d²) dépasse ~500
+        # (cordite MDT 5,2) à ~600 (poudre Z). En deçà, « loads … blow out some of
+        # their powder unconsumed from the muzzle ». V en f/s, W/d² en lb/in².
+        sd = (r['m_gr'] / 7000.0) / (c['bore_mm'] / 25.4) ** 2
         gardees.append(dict(cartouche=r['cartridge'], poudre=r['powder'], niveau=r.get('level'),
-                            cw=cw, er=er, p=p, v_mes=r['v0'], v_man=v,
-                            ecart=100 * (v / r['v0'] - 1)))
+                            cw=cw, er=er, p=p, ab=(r['v0'] / FPS_TO_MS) * sd,
+                            v_mes=r['v0'], v_man=v, ecart=100 * (v / r['v0'] - 1)))
     return gardees, ecartees
 
 
@@ -133,7 +154,8 @@ def main():
     # structure est imprimée à chaque exécution, sans quoi on prendrait un défaut
     # de domaine pour une erreur de transcription.
     print("\n  Structure du résidu — le biais est une propriété du domaine, pas du bruit :")
-    for label, cle, bornes in (("P (kpsi)", 'p', [30, 38, 45, 50, 55, 60, 65]),
+    for label, cle, bornes in (("V·W/d²  ", 'ab', [0, 500, 600, 700, 900, 3000]),
+                               ("P (kpsi)", 'p', [30, 38, 45, 50, 55, 60, 65]),
                                ("C/W     ", 'cw', [0.25, 0.35, 0.45, 0.55, 0.70, 2.0]),
                                ("Um/U0   ", 'er', [5, 7, 9, 11, 25])):
         for lo, hi in zip(bornes, bornes[1:]):
