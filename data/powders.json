@@ -1,5 +1,5 @@
 {
-  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles).",
+  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance).",
   "powders": {
     "20N29": {
       "mfg": "Vihtavuori",
@@ -1283,9 +1283,10 @@
     "IMR 4320": {
       "mfg": "IMR",
       "name": "4320",
-      "base": "Double",
-      "type": "Spherical",
-      "energy_Jg": 3890
+      "base": "Single",
+      "type": "Extruded",
+      "energy_Jg": 3890,
+      "pcd": 900
     },
     "IMR 4350": {
       "mfg": "IMR",
