@@ -55,6 +55,20 @@ const CORRECTIONS = {
     src: 'Densité relevée à la main sur preciseload.com le 2026-08-15 ; '
       + 'reclassement déduit de la gamme IMR du catalogue lui-même.',
   },
+  'Alliant Power Pro Varmit': {
+    fields: { name: 'Power Pro Varmint' },
+    why: 'Faute de frappe du catalogue amont : le produit Alliant s\'appelle Power Pro '
+      + 'VARMINT. Elle avait deux effets, tous deux silencieux. L\'interface affiche '
+      + '`mfg + name`, donc la page servie annoncait « Alliant Power Pro Varmit » aux '
+      + 'lecteurs. Et l\'index des poudres etant construit sur la cle ET sur `name`, '
+      + 'aucune source ecrivant l\'orthographe correcte ne pouvait s\'y apparier : les '
+      + '18 charges Power Pro Varmint du 6,5 x 47 Lapua etaient jetees sans un mot. '
+      + 'La cle n\'est PAS renommee — rien d\'autre ne la reference, mais la corriger '
+      + 'par le champ `name` suffit a reparer l\'affichage et l\'appariement.',
+    src: 'Nomenclature Alliant (gamme Power Pro : 300-MP, 1200-R, 2000-MR, 4000-MR, '
+      + 'Varmint) ; anomalie relevee le 2026-08-18 par le garde-fou des poudres '
+      + 'orphelines de build_anchors.js.',
+  },
 };
 
 function appliquerCorrections(pj, catalog) {

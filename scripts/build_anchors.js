@@ -232,11 +232,13 @@ try {
 // Tous les fichiers data/sierra_*.local.json sont pris en compte.
 try {
   const VM = require('../velocity_model.js');
+  const orphanPwd = {};
   const sierraFiles = fs.readdirSync(path.join(__dirname, '..', 'data')).filter((f) => /^sierra_.*\.local\.json$/.test(f));
   for (const f of sierraFiles) {
     for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
       const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
-      const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
+      const pk = pwdIdx[norm(r.powder || '')];
+      if (!pk) { orphanPwd[r.powder] = (orphanPwd[r.powder] || 0) + 1; continue; }
       // ⚠️ `test_barrel_mm` n'est qu'un OVERRIDE : build_test_barrels.js ne l'écrit que
       // lorsque le canon modal diffère du défaut par type, donc 16 cartouches sur 112
       // n'en portent pas — et exiger `> 0` ici jetait TOUTE leur donnée Sierra en
@@ -249,6 +251,14 @@ try {
       const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // canon Sierra → canon de réf
       add(ck, pk, me * vRef * vRef / (2 * C), null, null);
     }
+  }
+  // Une poudre absente du catalogue emporte TOUS ses points en silence : « Viht N130 »
+  // et « Accurate 2015 » ont ainsi coute 51 des 175 points du .221 Fireball, sans un mot.
+  const orph = Object.entries(orphanPwd).sort((a, b) => b[1] - a[1]);
+  if (orph.length) {
+    console.error(`⚠️  ${orph.length} poudre(s) Sierra hors catalogue, ${orph.reduce((a, x) => a + x[1], 0)} point(s) perdus :`);
+    for (const [n, c] of orph) console.error(`     « ${n} » — ${c} point(s)`);
+    console.error('   Completer fixName() dans parse_sierra.js, ou le catalogue de poudres.');
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
 

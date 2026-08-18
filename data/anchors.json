@@ -5976,8 +5976,8 @@
    "mhr": 1.6
   },
   "221 Remington Fireball|N130": {
-   "eeff": 1057700,
-   "n": 8
+   "eeff": 886849,
+   "n": 34
   },
   "221 Remington Fireball|N133": {
    "eeff": 1012058,
@@ -8924,6 +8924,30 @@
    "eeff": 1345706,
    "n": 6
   },
+  "221 Remington Fireball|Hodgdon H4227": {
+   "eeff": 973739,
+   "n": 25
+  },
+  "221 Remington Fireball|Accurate 1680": {
+   "eeff": 885964,
+   "n": 26
+  },
+  "221 Remington Fireball|Hodgdon H4198": {
+   "eeff": 872283,
+   "n": 26
+  },
+  "221 Remington Fireball|Accurate 2015BR": {
+   "eeff": 782456,
+   "n": 25
+  },
+  "221 Remington Fireball|Alliant Reloder 7": {
+   "eeff": 862062,
+   "n": 30
+  },
+  "221 Remington Fireball|Hodgdon H322": {
+   "eeff": 837044,
+   "n": 17
+  },
   "6.5 x 47 Lapua|Hodgdon Benchmark": {
    "eeff": 1283056,
    "n": 13
@@ -8996,6 +9020,10 @@
    "eeff": 1242163,
    "n": 16
   },
+  "6.5 x 47 Lapua|Hodgdon H4831, H4831C": {
+   "eeff": 1161937,
+   "n": 15
+  },
   "6.5 x 47 Lapua|Alliant Reloder 19": {
    "eeff": 1173515,
    "n": 12
@@ -9035,6 +9063,10 @@
   "6 Norma BR|IMR 4064": {
    "eeff": 1145091,
    "n": 21
+  },
+  "6 Norma BR|Alliant Power Pro Varmit": {
+   "eeff": 1212876,
+   "n": 18
   },
   "6 Norma BR|Hodgdon Varget": {
    "eeff": 1143005,

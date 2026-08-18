@@ -40,7 +40,16 @@ const isVel = (t) => /^[1-4]\d[05]0$/.test(t);
 function fixName(n) {
   return n.replace(/\s+End\.$/, '')
     .replace(/^RE\s+(\d)/i, 'Reloder $1')
-    .replace(/^A\s+(\d{3,4})\b/, 'Accurate $1');
+    .replace(/^A\s+(\d{3,4})\b/, 'Accurate $1')
+    // « Viht N130 » -> « N130 » : le catalogue range les Vihtavuori sous leur seul code.
+    .replace(/^Viht\.?\s+/i, '')
+    // Renommage produit : Accurate 2015 BR est devenu Accurate 2015. Le catalogue porte
+    // encore l'ancienne graphie, et aucune entree « Accurate 2015 » ne lui fait
+    // concurrence — l'equivalence est une identification, pas une approximation.
+    .replace(/^Accurate 2015$/, 'Accurate 2015BR')
+    // Le catalogue GROUPE lui-meme H4831 et sa version Short Cut sous une entree
+    // unique « H4831, H4831C » : l'equivalence est la sienne, pas la notre.
+    .replace(/^H4831\s*sc$/i, 'H4831, H4831C');
 }
 
 const rows = [];
@@ -95,7 +104,10 @@ for (const pg of pages) {
       if (hit) cells.push({ charge: +hit.t, v: c.v });
     }
     if (cells.length < 2) continue;                      // not a real powder row
-    for (const cell of cells) rows.push({ cartridge, bullet_gr, powder, charge_gr: cell.charge, v0_fps: cell.v, barrel_mm });
+    // `powder` porte le nom du catalogue (c'est lui qui joint) ; `powder_src` garde
+    // le libelle imprime par Sierra, pour qu'une renomination reste verifiable.
+    for (const cell of cells) rows.push({ cartridge, bullet_gr, powder, powder_src: name,
+      charge_gr: cell.charge, v0_fps: cell.v, barrel_mm });
   }
 }
 
