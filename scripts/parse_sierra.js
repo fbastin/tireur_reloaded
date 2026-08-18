@@ -30,6 +30,13 @@ const barrel_mm = Math.round(barrelIn * 25.4);
 const xml = execFileSync('pdftotext', ['-bbox-layout', pdf, '-']).toString();
 const STOP = new Set(['this', 'data', 'is', 'for', 'individual', 'use', 'only', 'do', 'not', 'edit', 'ata', 'powder', 'velocity', 'special', 'load', 'accuracy', 'hunting', 'case', 'norma', 'remarks', 'components', 'energy']);
 const isCharge = (t) => /^\d{1,2}\.\d$/.test(t);
+// Le filigrane « This data is for individual use only… » est diagonal : ses fragments
+// tombent parfois DANS la colonne des poudres. Ceux en minuscules sont deja ecartes,
+// mais un fragment CAPITALISE survit — « RE Th 22 » au lieu de « RE 22 » sur la page
+// 225 gr du .338 Norma, soit une poudre fantome et 4 charges perdues. On n'ecarte que
+// des jetons qui ne peuvent pas etre un nom de poudre : surtout PAS la liste STOP
+// complete, qui contient « norma », un vrai fabricant.
+const WATERMARK_FRAG = new Set(['th', 'thi', 'ata', 'ividual', 'ndividual', 'edi', 'ribute', 'istribute']);
 // ⚠️ Les en-tetes de vitesse ne sont PAS toujours des multiples de 100 : la table
 // du 6,5 x 47 Lapua est cadencee 2550/2650/2750..., decalee de 50. L'ancienne
 // forme /^[1-4]\d00$/ ne reconnaissait alors qu'une colonne sur sept, la page
@@ -49,7 +56,12 @@ function fixName(n) {
     .replace(/^Accurate 2015$/, 'Accurate 2015BR')
     // Le catalogue GROUPE lui-meme H4831 et sa version Short Cut sous une entree
     // unique « H4831, H4831C » : l'equivalence est la sienne, pas la notre.
-    .replace(/^H4831\s*sc$/i, 'H4831, H4831C');
+    .replace(/^H4831\s*sc$/i, 'H4831, H4831C')
+    // ⚠️ DEDUCTION, pas un groupement du catalogue comme ci-dessus : celui-ci ne porte
+    // qu'une seule entree 7828, nommee « 7828SC », et IMR ne commercialise plus que la
+    // version Super Short Cut. Les deux designent donc le meme produit. A revoir si une
+    // entree « IMR 7828 » simple apparaissait un jour au catalogue.
+    .replace(/^IMR\s*7828\s*s?sc$/i, 'IMR 7828SC');
 }
 
 const rows = [];
@@ -95,7 +107,8 @@ for (const pg of pages) {
     // powder name = left-column tokens, minus the lowercase "for individual use only"
     // watermark fragments (real powder tokens are capitalized or alphanumeric).
     const name = line.filter((w) => w.x < x0 - 4 && w.x > 18).sort((a, b) => a.x - b.x)
-      .map((w) => w.t).filter((t) => !/^[a-z]+\.?$/.test(t)).join(' ').trim();
+      .map((w) => w.t).filter((t) => !/^[a-z]+\.?$/.test(t) && !WATERMARK_FRAG.has(t.toLowerCase()))
+      .join(' ').trim();
     if (!name || /^[\d.]/.test(name) || STOP.has(name.toLowerCase().split(' ')[0])) continue;
     const powder = fixName(name);
     const cells = [];
