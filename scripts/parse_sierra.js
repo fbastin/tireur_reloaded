@@ -16,6 +16,13 @@
  *
  * Output is LOCAL/gitignored (Sierra EULA: "for individual use only" — not
  * redistributed). Only derived coefficients/anchors are published.
+ *
+ * OU RANGER LE PDF SOURCE : /home/bastin/private_docs/, hors docroot et hors
+ * arborescence du depot. Convention de nom : sierra_<cartouche>_load_data.pdf,
+ * minuscules, le point du calibre devenant un tiret (6-5x47, 7-62x39).
+ * NE PAS le mettre dans books/libres/ : ce repertoire est SERVI publiquement, et
+ * la regle .gitignore qui y visait sierra_*.pdf a ete retiree parce qu'elle
+ * cachait la faute au depot sans l'empecher sur le web.
  */
 const fs = require('fs');
 const path = require('path');
