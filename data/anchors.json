@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-08-14",
+ "_date": "2026-08-18",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -50,19 +50,19 @@
   "22-250 Rem.|RS40": {
    "eeff": 1127368,
    "n": 4,
-   "np": 0.5046,
+   "np": 0.5045,
    "mhr": 3.1
   },
   "22-250 Rem.|RS50": {
    "eeff": 971183,
    "n": 4,
-   "np": 0.5086,
+   "np": 0.5085,
    "mhr": 7
   },
   "22-250 Rem.|RS52": {
    "eeff": 1025100,
    "n": 4,
-   "np": 0.5458,
+   "np": 0.5457,
    "mhr": 4.7
   },
   "223 Rem.|RS36": {
@@ -122,25 +122,25 @@
   "260 Rem.|RS52": {
    "eeff": 1180266,
    "n": 6,
-   "np": 0.4655,
+   "np": 0.4644,
    "mhr": 3.6
   },
   "260 Rem.|RS60": {
    "eeff": 1115980,
    "n": 8,
-   "np": 0.4745,
+   "np": 0.4734,
    "mhr": 5.9
   },
   "260 Rem.|RS62": {
    "eeff": 1103893,
    "n": 4,
-   "np": 0.4524,
+   "np": 0.4513,
    "mhr": 5
   },
   "260 Rem.|RS70": {
    "eeff": 1066750,
    "n": 4,
-   "np": 0.4714,
+   "np": 0.4703,
    "mhr": 7.1
   },
   "270 Win.|RS60": {
@@ -176,25 +176,25 @@
   "30 R Blaser|RS60": {
    "eeff": 1165381,
    "n": 6,
-   "np": 0.5019,
+   "np": 0.509,
    "mhr": 2.8
   },
   "30 R Blaser|RS62": {
    "eeff": 1095988,
    "n": 6,
-   "np": 0.5092,
+   "np": 0.5164,
    "mhr": 2.3
   },
   "30 R Blaser|RS70": {
    "eeff": 1068119,
    "n": 6,
-   "np": 0.5204,
+   "np": 0.5278,
    "mhr": 4.5
   },
   "300 AAC BLK|RS30": {
    "eeff": 1338457,
    "n": 12,
-   "np": 0.2182,
+   "np": 0.2183,
    "mhr": 12.9
   },
   "300 AAC BLK|RS36": {
@@ -206,19 +206,19 @@
   "300 PRC|RS70": {
    "eeff": 1096631,
    "n": 4,
-   "np": 0.5697,
+   "np": 0.5702,
    "mhr": 1.6
   },
   "300 PRC|RS76": {
    "eeff": 1028641,
    "n": 20,
-   "np": 0.5997,
+   "np": 0.6003,
    "mhr": 1.8
   },
   "300 PRC|RS80": {
    "eeff": 986442,
    "n": 14,
-   "np": 0.615,
+   "np": 0.6156,
    "mhr": 1.5
   },
   "300 Win. Mag.|RS60": {
@@ -394,37 +394,37 @@
   "375 H&H Mag.|RS40": {
    "eeff": 1443301,
    "n": 6,
-   "np": 0.408,
+   "np": 0.4082,
    "mhr": -0.7
   },
   "375 H&H Mag.|RS50": {
    "eeff": 1310860,
    "n": 6,
-   "np": 0.4136,
+   "np": 0.4139,
    "mhr": 1
   },
   "375 H&H Mag.|RS52": {
    "eeff": 1351404,
    "n": 6,
-   "np": 0.4434,
+   "np": 0.4437,
    "mhr": -0.2
   },
   "375 H&H Mag.|RS60": {
    "eeff": 1318140,
    "n": 4,
-   "np": 0.4372,
+   "np": 0.4375,
    "mhr": 2.3
   },
   "444 Marlin|RS30": {
    "eeff": 1496941,
    "n": 6,
-   "np": 0.3285,
+   "np": 0.3284,
    "mhr": 0.9
   },
   "444 Marlin|RS36": {
    "eeff": 1354038,
    "n": 8,
-   "np": 0.3539,
+   "np": 0.3538,
    "mhr": 2.6
   },
   "444 Marlin|RS14": {
@@ -461,31 +461,31 @@
   "6 Norma BR|RS52": {
    "eeff": 1250953,
    "n": 6,
-   "np": 0.4197,
+   "np": 0.4205,
    "mhr": 4
   },
   "6 XC|RS52": {
    "eeff": 1224288,
    "n": 4,
-   "np": 0.4569,
+   "np": 0.4571,
    "mhr": 1.7
   },
   "6 XC|RS60": {
    "eeff": 1165553,
    "n": 6,
-   "np": 0.4811,
+   "np": 0.4813,
    "mhr": 4
   },
   "6 XC|RS62": {
    "eeff": 1096121,
    "n": 6,
-   "np": 0.4874,
+   "np": 0.4877,
    "mhr": 3.4
   },
   "6 XC|RS70": {
    "eeff": 1077923,
    "n": 6,
-   "np": 0.4933,
+   "np": 0.4936,
    "mhr": 5.7
   },
   "6.5 x 47 Lapua|RS52": {
@@ -557,13 +557,13 @@
   "6.5 PRC|RS76": {
    "eeff": 993765,
    "n": 12,
-   "np": 0.5585,
+   "np": 0.5583,
    "mhr": 4.4
   },
   "6.5 PRC|RS70": {
    "eeff": 1101818,
    "n": 10,
-   "np": 0.5129,
+   "np": 0.5127,
    "mhr": 3.5
   },
   "7 x 57|RS50": {
@@ -685,37 +685,37 @@
   "7 -08 Rem.|RS50": {
    "eeff": 1039827,
    "n": 6,
-   "np": 0.442,
+   "np": 0.4417,
    "mhr": 8
   },
   "7 -08 Rem.|RS52": {
    "eeff": 1174540,
    "n": 6,
-   "np": 0.4511,
+   "np": 0.4509,
    "mhr": 4.6
   },
   "7 Rem. Mag.|RS62": {
    "eeff": 953056,
    "n": 4,
-   "np": 0.5219,
+   "np": 0.5208,
    "mhr": 6.2
   },
   "7 Rem. Mag.|RS70": {
    "eeff": 995996,
    "n": 12,
-   "np": 0.5259,
+   "np": 0.5248,
    "mhr": 6.4
   },
   "7 Rem. Mag.|RS76": {
    "eeff": 971308,
    "n": 18,
-   "np": 0.5721,
+   "np": 0.5708,
    "mhr": 4.4
   },
   "7 Rem. Mag.|RS80": {
    "eeff": 879640,
    "n": 12,
-   "np": 0.5803,
+   "np": 0.579,
    "mhr": 5.2
   },
   "8 x 57 IRS|RS50": {
@@ -829,13 +829,13 @@
   "10.3 x 60 R|RS40": {
    "eeff": 1105120,
    "n": 6,
-   "np": 0.4921,
+   "np": 0.4927,
    "mhr": -0.9
   },
   "10.3 x 60 R|RS50": {
    "eeff": 874666,
    "n": 4,
-   "np": 0.5558,
+   "np": 0.5565,
    "mhr": -32.8,
    "mhflag": true
   },
@@ -891,13 +891,13 @@
   "38 Super Auto|RS20": {
    "eeff": 1268399,
    "n": 14,
-   "np": 0.4442,
+   "np": 0.4439,
    "mhr": 2.4
   },
   "38 Super Auto|RS24": {
    "eeff": 973581,
    "n": 16,
-   "np": 0.4629,
+   "np": 0.4626,
    "mhr": 13.1
   },
   "40 S&W|RS12": {
@@ -8923,6 +8923,86 @@
   "38 Special|Alliant Red Dot": {
    "eeff": 1345706,
    "n": 6
+  },
+  "6.5 x 47 Lapua|Hodgdon Benchmark": {
+   "eeff": 1283056,
+   "n": 13
+  },
+  "6.5 x 47 Lapua|IMR 8208 XBR": {
+   "eeff": 1294085,
+   "n": 14
+  },
+  "6.5 x 47 Lapua|Hodgdon H4895": {
+   "eeff": 1308589,
+   "n": 12
+  },
+  "6.5 x 47 Lapua|IMR 4166": {
+   "eeff": 1261517,
+   "n": 20
+  },
+  "6.5 x 47 Lapua|Accurate 4064": {
+   "eeff": 1272378,
+   "n": 8
+  },
+  "6.5 x 47 Lapua|Accurate 2520": {
+   "eeff": 1267468,
+   "n": 14
+  },
+  "6.5 x 47 Lapua|Alliant Reloder 15": {
+   "eeff": 1279512,
+   "n": 20
+  },
+  "6.5 x 47 Lapua|N140": {
+   "eeff": 1236395,
+   "n": 17
+  },
+  "6.5 x 47 Lapua|Hodgdon Varget": {
+   "eeff": 1271203,
+   "n": 22
+  },
+  "6.5 x 47 Lapua|Ramshot Big Game": {
+   "eeff": 1215659,
+   "n": 35
+  },
+  "6.5 x 47 Lapua|N540": {
+   "eeff": 1246296,
+   "n": 23
+  },
+  "6.5 x 47 Lapua|IMR 4451": {
+   "eeff": 1163928,
+   "n": 30
+  },
+  "6.5 x 47 Lapua|Hodgdon H4350": {
+   "eeff": 1227977,
+   "n": 32
+  },
+  "6.5 x 47 Lapua|Alliant Reloder 17": {
+   "eeff": 1218563,
+   "n": 35
+  },
+  "6.5 x 47 Lapua|IMR 4350": {
+   "eeff": 1157858,
+   "n": 27
+  },
+  "6.5 x 47 Lapua|Accurate 4350": {
+   "eeff": 1209986,
+   "n": 15
+  },
+  "6.5 x 47 Lapua|Alliant Reloder 16": {
+   "eeff": 1268846,
+   "n": 15
+  },
+  "6.5 x 47 Lapua|Hodgdon Hybrid 100V": {
+   "eeff": 1242163,
+   "n": 16
+  },
+  "6.5 x 47 Lapua|Alliant Reloder 19": {
+   "eeff": 1173515,
+   "n": 12
+  },
+  "6.5 x 47 Lapua|Ramshot Hunter": {
+   "eeff": 1209980,
+   "n": 5
   },
   "6 Norma BR|Hodgdon Benchmark": {
    "eeff": 1226246,

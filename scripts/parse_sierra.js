@@ -28,9 +28,14 @@ if (!pdf || !cartridge) { console.error('usage: node scripts/parse_sierra.js <fi
 const barrel_mm = Math.round(barrelIn * 25.4);
 
 const xml = execFileSync('pdftotext', ['-bbox-layout', pdf, '-']).toString();
-const STOP = new Set(['this', 'data', 'is', 'for', 'individual', 'use', 'only', 'do', 'not', 'edit', 'ata', 'powder', 'velocity', 'special', 'load', 'accuracy', 'hunting', 'case', 'norma', 'remarks', 'components']);
+const STOP = new Set(['this', 'data', 'is', 'for', 'individual', 'use', 'only', 'do', 'not', 'edit', 'ata', 'powder', 'velocity', 'special', 'load', 'accuracy', 'hunting', 'case', 'norma', 'remarks', 'components', 'energy']);
 const isCharge = (t) => /^\d{1,2}\.\d$/.test(t);
-const isVel = (t) => /^[1-4]\d00$/.test(t);
+// ⚠️ Les en-tetes de vitesse ne sont PAS toujours des multiples de 100 : la table
+// du 6,5 x 47 Lapua est cadencee 2550/2650/2750..., decalee de 50. L'ancienne
+// forme /^[1-4]\d00$/ ne reconnaissait alors qu'une colonne sur sept, la page
+// tombait sous le seuil de 3 et etait abandonnee SANS UN MOT : 4 des 6 masses de
+// balle de ce PDF etaient perdues, et le script annoncait un succes.
+const isVel = (t) => /^[1-4]\d[05]0$/.test(t);
 // Sierra abbreviations -> catalogue names (RE 15 -> Reloder 15, A 2495 -> Accurate 2495).
 function fixName(n) {
   return n.replace(/\s+End\.$/, '')
@@ -40,7 +45,11 @@ function fixName(n) {
 
 const rows = [];
 const pages = xml.split('<page').slice(1);
+const skipped = [];      // pages portant une masse de balle mais sans en-tete lisible
+const seen = new Set();  // masses effectivement exploitees
+let pageNo = 0;
 for (const pg of pages) {
+  pageNo++;
   const W = [...pg.matchAll(/<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">([^<]*)<\/word>/g)]
     .map((m) => ({ x: +m[1], y: +m[2], t: m[5].trim() }));
   if (!W.length) continue;
@@ -55,7 +64,16 @@ for (const pg of pages) {
   for (const w of W) if (isVel(w.t)) (velsByY[Math.round(w.y)] = velsByY[Math.round(w.y)] || []).push(w);
   let hdr = null;
   for (const y of Object.keys(velsByY)) if (!hdr || velsByY[y].length > velsByY[hdr].length) hdr = y;
-  if (!hdr || velsByY[hdr].length < 3) continue;
+  if (!hdr || velsByY[hdr].length < 3) {
+    // Ne crier que pour une page qui porte VRAIMENT une matrice : la page de garde
+    // cite une masse de balle sans table, et une alerte qui crie pour rien finit
+    // ignoree — ce qui vaut une alerte absente.
+    if (W.filter((w) => isCharge(w.t)).length >= 5) {
+      skipped.push({ page: pageNo, bullet_gr, cols: hdr ? velsByY[hdr].length : 0 });
+    }
+    continue;
+  }
+  seen.add(bullet_gr);
   const cols = velsByY[hdr].map((w) => ({ x: w.x, v: +w.t })).sort((a, b) => a.x - b.x);
   const x0 = cols[0].x;                                  // first velocity column
 
@@ -87,6 +105,14 @@ const outPath = path.join(__dirname, '..', 'data', `sierra_${slug}.local.json`);
 fs.writeFileSync(outPath, JSON.stringify(out, null, 1));
 
 const pw = [...new Set(rows.map((r) => r.powder))].sort();
+// Bilan bruyant : le silence sur une page perdue est ce qui a coute 4 masses de
+// balle sur 6 le 2026-08-18. Une etape qui se saute doit crier, pas informer.
+if (skipped.length) {
+  console.error(`\n⚠️  ${skipped.length} page(s) PERDUE(S) — elles portent une masse de balle mais aucun`);
+  console.error('   en-tete de vitesse lisible (moins de 3 colonnes reconnues) :');
+  for (const s of skipped) console.error(`     page ${s.page} : ${s.bullet_gr} gr, ${s.cols} colonne(s) reconnue(s)`);
+  console.error('   Verifier isVel contre le cadencement reel des colonnes de ce PDF.\n');
+}
 const bl = [...new Set(rows.map((r) => r.bullet_gr))].sort((a, b) => a - b);
 console.log(`Sierra ${cartridge}: ${rows.length} points | bullets ${bl.join('/')} gr | ${pw.length} powders`);
 console.log('powders:', pw.join(', '));

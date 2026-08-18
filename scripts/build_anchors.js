@@ -237,9 +237,15 @@ try {
     for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
       const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
       const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
-      if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm && ca.test_barrel_mm > 0)) continue;
+      // ⚠️ `test_barrel_mm` n'est qu'un OVERRIDE : build_test_barrels.js ne l'écrit que
+      // lorsque le canon modal diffère du défaut par type, donc 16 cartouches sur 112
+      // n'en portent pas — et exiger `> 0` ici jetait TOUTE leur donnée Sierra en
+      // silence (400 points pour le seul 6,5 x 47 Lapua). L'outil servi, lui, replie
+      // déjà sur le défaut par type (index.php, refBbl). On fait comme lui.
+      const refBbl = ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600);
+      if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm && refBbl > ca.case_mm)) continue;
       const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
-      const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (ca.test_barrel_mm - ca.case_mm) / 1000;
+      const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (refBbl - ca.case_mm) / 1000;
       const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // canon Sierra → canon de réf
       add(ck, pk, me * vRef * vRef / (2 * C), null, null);
     }
