@@ -116,7 +116,13 @@ function cartridgeDiagram(cal, dim, targetW) {
   });
 
   const rMax = Math.max(rRim, rBase);
-  const l3Text = `L3: ${c.case_length_mm.toFixed(2)} mm`, l6Text = `L6: ${totalLen.toFixed(1)} mm`;
+  // La longueur de balle est un FACTEUR de style (2,4 calibres), pas une cote : le hors-tout
+  // qui en découle n'est donc pas la cote C.I.P. L6, qui est une longueur MAXIMALE de
+  // cartouche et sert au chambrage. L'étiqueter « L6 » invitait à lire 69,9 mm sur une .308
+  // Winchester dont le L6 vaut 71,12 — une cote de chambrage lue sur un dessin stylisé.
+  // Corrigé le 2026-08-19 : L3 (longueur d'étui) est une donnée, elle reste ; le hors-tout
+  // est annoncé comme ce qu'il est.
+  const l3Text = `L3: ${c.case_length_mm.toFixed(2)} mm`, l6Text = `hors-tout du dessin`;
   const l3Height = yRimBottom - yCaseMouth, l3FontSize = l3Height < 70 ? 7.5 : 8.5;
   const rightAnnsHtml = `
     <line x1="${cX + rMax + 4}" y1="${yRimBottom}" x2="262" y2="${yRimBottom}" stroke="var(--color-text-light, #888)" stroke-width="0.5" stroke-dasharray="2,2" />
