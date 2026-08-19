@@ -619,12 +619,17 @@ function calc(){
   // seuils selon la source de la pression max : CIP (P_K 1,15× / P_E 1,25×) ou
   // SAAMI (MPSM 1,065× / épreuve = MPLM×1,30 ≈ 1,334× MAP).
   // SAAMI : CV 0,04 (carabine) / 0,05 (pistolet) → MPSM 1,065×/1,078× et épreuve = MPLM×1,30.
-  const saami=cart.pmax_src==='SAAMI', hg=cart.type==='handgun';
+  // `hg30` : les familles auxquelles la C.I.P. impose +30 % à l'épreuve. La base ne contient
+  // aujourd'hui que 'rifle' et 'handgun', mais la table V (percussion annulaire) demande 1,30
+  // elle aussi : le jour où un .22 LR entrera dans la base il serait typé 'rifle' et verrait sa
+  // ligne d'épreuve tracée 5 points trop bas. Le cas est couvert d'avance. (2026-08-19)
+  const saami=cart.pmax_src==='SAAMI', hg=cart.type==='handgun',
+        hg30=hg||cart.type==='rimfire';
   // P_E C.I.P. : +25 % pour une arme RAYÉE à percussion centrale, +30 % pour pistolet, revolver
   // et percussion annulaire. La branche C.I.P. appliquait 1,25 à tout, alors que le drapeau `hg`
   // était déjà là et déjà utilisé par la branche SAAMI juste à côté — un 9 mm voyait donc sa
   // ligne d'épreuve tracée 5 points trop bas. Trouvé le 2026-07-29 en vérifiant technique:cip.
-  const kMul=saami?(hg?1.078:1.065):1.15, eMul=saami?((hg?1.0316:1.026)*1.30):(hg?1.30:1.25);
+  const kMul=saami?(hg?1.078:1.065):1.15, eMul=saami?((hg?1.0316:1.026)*1.30):(hg30?1.30:1.25);
   // si la limite est connue, on étend l'axe au-dessus de l'épreuve pour montrer toutes les zones
   const yTop=Math.max(pcipD?Math.max(Math.max.apply(null,ps),pcipD*eMul)*1.06:Math.max.apply(null,ps)*1.12, maxLadP*1.06);
   const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
