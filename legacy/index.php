@@ -4,7 +4,7 @@ $meta_description = "Simulateur de balistique interne basé sur les équations t
 include '../../../header.php';
 ?>
 
-<link rel="stylesheet" href="/css/ballistics.css?v=20260604a">
+<link rel="stylesheet" href="/css/ballistics.css?v=<?php echo filemtime($_SERVER['DOCUMENT_ROOT'].'/css/ballistics.css'); ?>">
 <!-- Plotly.js -->
 <script src="/js/vendor/plotly/plotly-2.35.2.min.js?v=2.35.2" charset="utf-8"></script>
 <script src="grt_solver.js"></script>
