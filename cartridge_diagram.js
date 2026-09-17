@@ -8,6 +8,20 @@
  * laiton/cuivre, fond quadrillé et cotes annotées. Les cotes (rim/base/épaulement/
  * collet) viennent de cartridge_dims.json quand elles existent ; sinon le corps est
  * estimé par classe (repli signalé). rim_type est dérivé (rim > base ⇒ à bourrelet).
+ *
+ * Deux entrées facultatives de `cal`, toutes deux sans effet si absentes :
+ *   oal_mm  — longueur hors-tout RÉELLE de la cartouche (cote C.I.P. L6). Quand elle est
+ *             fournie, la balle n'est plus dessinée sur un facteur de style : sa partie
+ *             visible vaut L6 − L3, et la cote de droite s'annonce alors comme L6.
+ *   tight_frame — recadre le viewBox sur le dessin. L'échelle est commune à toutes les
+ *             cartouches (plancher de 70 mm) pour qu'une .22 LR paraisse petite à côté
+ *             d'une .308 : c'est voulu sur une page de comparaison. Mais sur une page
+ *             dédiée, une cartouche de 25 mm laissait les deux tiers du cadre vides et
+ *             tassait ses cotes dans un coin. Le recadrage garde l'échelle et supprime
+ *             le vide. L'échelle n'est PAS touchée — seule la fenêtre l'est.
+ *   type    — 'rimfire' dessine une balle de PLOMB NU (percussion annulaire) et non une
+ *             balle chemisée cuivre. Sur le .22 LR, seule cartouche courante dont la balle
+ *             n'a pas de chemise, le dégradé cuivre était un contresens.
  */
 function cartridgeDiagram(cal, dim, targetW) {
   if (!cal || !(cal.case_mm > 0 && cal.bore_mm > 0)) return '';
@@ -26,7 +40,7 @@ function cartridgeDiagram(cal, dim, targetW) {
   }
   const c = {
     case_length_mm: L, bullet_diameter_mm: bore,
-    category: cal.type === 'handgun' ? 'Handgun' : 'Rifle',
+    category: cal.type === 'handgun' ? 'Handgun' : (cal.type === 'rimfire' ? 'Rimfire' : 'Rifle'),
     rim_diameter_mm: rim, base_diameter_mm: base,
     shoulder_diameter_mm: shoulder, neck_diameter_mm: neck, rim_type: rimType
   };
@@ -35,7 +49,9 @@ function cartridgeDiagram(cal, dim, targetW) {
   const caseLen = c.case_length_mm, bulletDia = c.bullet_diameter_mm;
   let bulletLenFactor = 1.3;
   if (c.category === 'Rifle') bulletLenFactor = 2.4; else if (c.category === 'Rimfire') bulletLenFactor = 1.1;
-  const bulletLen = bulletDia * bulletLenFactor;
+  // Le hors-tout est une COTE quand on la détient, un facteur de style sinon.
+  const oalExact = cal.oal_mm > caseLen;
+  const bulletLen = oalExact ? (cal.oal_mm - caseLen) : bulletDia * bulletLenFactor;
   const totalLen = caseLen + bulletLen;
   const maxLen = Math.max(totalLen, 70);
   const bottomY = 265;
@@ -122,7 +138,8 @@ function cartridgeDiagram(cal, dim, targetW) {
   // Winchester dont le L6 vaut 71,12 — une cote de chambrage lue sur un dessin stylisé.
   // Corrigé le 2026-08-19 : L3 (longueur d'étui) est une donnée, elle reste ; le hors-tout
   // est annoncé comme ce qu'il est.
-  const l3Text = `L3: ${c.case_length_mm.toFixed(2)} mm`, l6Text = `hors-tout du dessin`;
+  const l3Text = `L3: ${c.case_length_mm.toFixed(2)} mm`;
+  const l6Text = oalExact ? `L6: ${cal.oal_mm.toFixed(2)} mm` : `hors-tout du dessin`;
   const l3Height = yRimBottom - yCaseMouth, l3FontSize = l3Height < 70 ? 7.5 : 8.5;
   const rightAnnsHtml = `
     <line x1="${cX + rMax + 4}" y1="${yRimBottom}" x2="262" y2="${yRimBottom}" stroke="var(--color-text-light, #888)" stroke-width="0.5" stroke-dasharray="2,2" />
@@ -134,17 +151,21 @@ function cartridgeDiagram(cal, dim, targetW) {
     <text x="251" y="${(yRimBottom + yBulletTip) / 2}" transform="rotate(-90, 251, ${(yRimBottom + yBulletTip) / 2})" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" fill="var(--color-text-light, #666)" font-weight="600" text-anchor="middle">${l6Text}</text>`;
 
   const note = exact ? '' : `<text x="140" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#a60">profil estimé (cotes exactes : longueur + balle)</text>`;
-  const w = Math.max(170, Math.min(targetW || 300, 270)), h = Math.round(w * 300 / 280);
-  return `<svg viewBox="0 0 280 300" width="${w}" height="${h}" class="cartridge-svg" style="max-width:100%">
+  // Recadrage : on garde tout ce qui est dessiné — pointe de balle, cotes de gauche
+  // (repoussées jusqu'à y = 288) et note de repli (y = 297).
+  const frameY0 = cal.tight_frame ? Math.max(0, Math.round(yBulletTip - 22)) : 0;
+  const frameH = 300 - frameY0;
+  const w = Math.max(170, Math.min(targetW || 300, 270)), h = Math.round(w * frameH / 280);
+  return `<svg viewBox="0 ${frameY0} 280 ${frameH}" width="${w}" height="${h}" class="cartridge-svg" style="max-width:100%">
     <defs>
       <linearGradient id="brass-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#b8860b"/><stop offset="20%" stop-color="#f5d033"/><stop offset="50%" stop-color="#ffe680"/><stop offset="80%" stop-color="#d4af37"/><stop offset="100%" stop-color="#805500"/></linearGradient>
       <linearGradient id="copper-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#73250b"/><stop offset="25%" stop-color="#c45d3e"/><stop offset="50%" stop-color="#f8a488"/><stop offset="75%" stop-color="#c45d3e"/><stop offset="100%" stop-color="#541b08"/></linearGradient>
-      <pattern id="drawing-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M 15 0 L 0 0 0 15" fill="none" stroke="var(--color-border, rgba(128,128,128,0.12))" stroke-width="0.5"/></pattern>
+      ${c.category === 'Rimfire' ? '<linearGradient id="lead-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4f4f57"/><stop offset="25%" stop-color="#9a9aa4"/><stop offset="50%" stop-color="#cfcfd8"/><stop offset="75%" stop-color="#9a9aa4"/><stop offset="100%" stop-color="#3c3c43"/></linearGradient>\n      ' : ''}<pattern id="drawing-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M 15 0 L 0 0 0 15" fill="none" stroke="var(--color-border, rgba(128,128,128,0.12))" stroke-width="0.5"/></pattern>
       <marker id="dim-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 10 5 L 0 8 z" fill="var(--color-text-light, #888)"/></marker>
     </defs>
-    <rect width="280" height="300" fill="url(#drawing-grid)" rx="6"/>
+    <rect y="${frameY0}" width="280" height="${frameH}" fill="url(#drawing-grid)" rx="6"/>
     <line x1="${cX}" y1="${yBulletTip - 15}" x2="${cX}" y2="${yRimBottom + 15}" stroke="var(--color-text-light, rgba(128,128,128,0.25))" stroke-width="0.75" stroke-dasharray="10,2,2,2"/>
-    <path d="${bulletPath}" fill="url(#copper-grad)" stroke="#4d1a0b" stroke-width="0.5"/>
+    <path d="${bulletPath}" fill="url(#${c.category === 'Rimfire' ? 'lead' : 'copper'}-grad)" stroke="${c.category === 'Rimfire' ? '#4a4a52' : '#4d1a0b'}" stroke-width="0.5"/>
     <path d="${casingPath}" fill="url(#brass-grad)" stroke="#4d3300" stroke-width="0.5"/>
     ${leftAnnsHtml}${rightAnnsHtml}${note}
   </svg>`;
