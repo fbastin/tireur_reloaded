@@ -92,10 +92,10 @@ include '../../../header.php';
     transition: all 0.2s;
 }
 .grt-tab-btn:hover {
-    color: var(--color-accent);
+    color: var(--color-link);
 }
 .grt-tab-btn.active {
-    color: var(--color-accent);
+    color: var(--color-link);
     border-bottom-color: var(--color-accent);
 }
 .grt-tab-content {
@@ -118,7 +118,7 @@ include '../../../header.php';
     cursor: pointer;
 }
 .grt-override-header:hover {
-    color: var(--color-accent);
+    color: var(--color-link);
 }
 .grt-override-section {
     display: none;
@@ -413,9 +413,9 @@ include '../../../header.php';
             </button>
             <p style="font-size: 0.82rem; margin-top: 1rem; color: var(--color-text-light); text-align: center; line-height: 1.4;">
                 Pour en savoir plus sur la physique sous-jacente, lisez l'article de référence sur la 
-                <a href="/wiki/doku.php?id=technique:balistique_interieure" style="font-weight: 600; color: var(--color-accent);">Balistique Intérieure</a> 
+                <a href="/wiki/doku.php?id=technique:balistique_interieure" style="font-weight: 600; color: var(--color-link);">Balistique Intérieure</a> 
                 ou téléchargez notre guide LaTeX complet 
-                <a href="/reloading/The_Art_of_the_Precision_Rifle.pdf" target="_blank" style="font-weight: 600; color: var(--color-accent);">The Art of the Precision Rifle (PDF)</a>.
+                <a href="/reloading/The_Art_of_the_Precision_Rifle.pdf" target="_blank" style="font-weight: 600; color: var(--color-link);">The Art of the Precision Rifle (PDF)</a>.
             </p>
         </div>
     </div>

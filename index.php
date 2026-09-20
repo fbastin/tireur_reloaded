@@ -19,7 +19,7 @@ include '../../header.php';
 .vm-unit { display:inline-block; cursor:pointer; font-size:0.72rem; font-weight:600; padding:0.02rem 0.4rem; border-radius:10px; background:var(--color-border); color:var(--color-text); user-select:none; }
 .vm-unit:hover { background:var(--color-accent); color:#fff; }
 .vm-out small.vm-unit { font-size:0.78rem; font-weight:600; }
-.vm-out { font-size:1.6rem; font-weight:700; color:var(--color-accent); }
+.vm-out { font-size:1.6rem; font-weight:700; color:var(--color-link); }
 .vm-out small { font-size:0.8rem; font-weight:400; color:var(--color-text-light); }
 .vm-kpi { display:flex; gap:1.8rem; flex-wrap:wrap; margin:0.3rem 0 1rem; }
 .vm-banner { background:rgba(231,76,60,0.07); border:1px solid #e74c3c; border-left:4px solid #e74c3c; border-radius:var(--radius); padding:0.8rem 1rem; font-size:0.88rem; margin-bottom:1rem; }
@@ -37,7 +37,7 @@ include '../../header.php';
 .vm-bar.warn > span { background:#e67e22; } .vm-bar.danger > span { background:#c0392b; }
 .vm-print { background:var(--color-accent); color:#fff; border:none; border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
 .vm-btn2 { background:var(--color-bg); color:var(--color-text); border:1px solid var(--color-border); border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
-.vm-btn2:hover { border-color:var(--color-accent); color:var(--color-accent); }
+.vm-btn2:hover { border-color:var(--color-accent); color:var(--color-link); }
 .vm-io { margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
 @media print { .vm-noprint { display:none !important; } .vm-grid { grid-template-columns:1fr 2fr; } .vm-panel { border:none; background:#fff; }
   /* Ladder : imprimé seulement s'il est développé ; on garde les tables, on masque les contrôles */
@@ -463,7 +463,7 @@ function renderDiag(){
     ['Canon d\'essai', cart.test_barrel_mm?num(cart.test_barrel_mm,0)+' mm':'—'],
   ];
   const specs='<div style="flex:1 1 150px;min-width:150px;text-align:left;">'
-    +'<div style="font-weight:700;color:var(--color-accent);margin-bottom:0.35rem;">'+n+'</div>'
+    +'<div style="font-weight:700;color:var(--color-link);margin-bottom:0.35rem;">'+n+'</div>'
     +'<table style="font-size:0.82rem;border-collapse:collapse;width:100%;">'
     +rows.map(r=>'<tr><td style="color:var(--color-text-light);padding:0.13rem 0.6rem 0.13rem 0;white-space:nowrap;">'+r[0]+'</td><td style="text-align:right;font-weight:600;white-space:nowrap;">'+r[1]+'</td></tr>').join('')
     +'</table></div>';
