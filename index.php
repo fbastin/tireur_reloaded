@@ -56,15 +56,24 @@ $breadcrumb_links = [
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/breadcrumb.php';
 ?>
 
-<h1>Estimateur de balistique intérieure</h1>
+<div class="page-title-row">
+  <h1 class="lang-fr">Estimateur de balistique intérieure</h1>
+  <h1 class="lang-en">Internal Ballistics Estimator</h1>
+  <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/lang-toggle.php'; ?>
+</div>
 
-<p>Modèle <strong>énergie-efficacité</strong> : la vitesse vient de l'énergie de la poudre via une efficacité
+<p class="lang-fr">Modèle <strong>énergie-efficacité</strong> : la vitesse vient de l'énergie de la poudre via une efficacité
 balistique η<sub>b</sub>, la pression d'une efficacité piézométrique η<sub>p</sub> — deux relations
 <strong>calées sur plusieurs guides fabricant</strong> (Reload Swiss, Accurate/Ramshot, Vihtavuori),
 sans la fonction de forme propriétaire de l'ancien solveur.
 Base de composants dérivée de <em>Gordon's Reloading Tool</em> (Gordon †) et de la communauté (CC0).</p>
+<p class="lang-en">An <strong>energy-efficiency</strong> model: velocity comes from the powder's energy through a ballistic
+efficiency η<sub>b</sub>, pressure from a piezometric efficiency η<sub>p</sub> — two relations
+<strong>fitted to several manufacturers' load manuals</strong> (Reload Swiss, Accurate/Ramshot, Vihtavuori),
+without the proprietary form function of the former solver.
+Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) and the community (CC0).</p>
 
-<div class="vm-banner">
+<div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> À froid, la <strong>vitesse</strong> est donnée à
 <strong>±10&nbsp;%</strong> et la <strong>pression à titre purement indicatif</strong> :
 <strong>~20&nbsp;% d'écart quadratique moyen</strong>, avec un biais qui va dans le mauvais sens
@@ -80,99 +89,120 @@ se fabrique une fausse marge de sécurité. Vérifiez toujours dans les données
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limites &rarr;</a>
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
+<div class="vm-banner lang-en">
+<strong>&#9888; An estimate, not safety data.</strong> Uncalibrated, <strong>velocity</strong> is given to
+<strong>±10%</strong> and <strong>pressure for indication only</strong>:
+<strong>~20% root-mean-square error</strong>, with a bias in the wrong direction
+&mdash; the model most often <strong>underestimates</strong> pressure, and the deviations found in
+validation reach 25 to 35% on some loads. In other words, a load that is really
+above the C.I.P. limit can be displayed as “safe”. <strong>Velocity</strong> is
+<strong>automatically refined (~5%) for known cartridge/powder combinations</strong>;
+enter <strong>your measured velocity</strong> to make it near-exact.
+<strong>This does not correct the pressure:</strong> velocity and pressure come from
+<em>two</em> distinct efficiencies, and your chronograph constrains only one of them. A velocity
+that matches therefore does <em>not</em> validate the pressure shown &mdash; that is precisely how
+one builds a false safety margin. Always check against the manufacturer's official load data.
+<a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limits &rarr;</a>
+&middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">producing your own data &rarr;</a> <small>(in French)</small>
+</div>
 
-<div class="vm-noprint" style="text-align:right;margin-bottom:0.3rem;"><button type="button" class="vm-print" onclick="window.print()">&#128424;&nbsp;Imprimer</button></div>
+<div class="vm-noprint" style="text-align:right;margin-bottom:0.3rem;"><button type="button" class="vm-print" onclick="window.print()">&#128424;&nbsp;<span class="lang-fr">Imprimer</span><span class="lang-en">Print</span></button></div>
 
 <div class="vm-grid">
   <div class="vm-panel">
-    <div class="vm-field"><label>Préréglage système</label>
+    <div class="vm-field"><label><span class="lang-fr">Préréglage système</span><span class="lang-en">Unit system preset</span></label>
       <select id="unitSystem" onchange="applySystem()">
-        <option value="metric">Métrique international (g, mm, m/s, bar)</option>
-        <option value="imperial">Impérial (gr, in, fps, psi)</option>
-        <option value="mixed" selected>Hybride (gr, mm, m/s, bar)</option>
+        <option value="metric" data-en="International metric (g, mm, m/s, bar)">Métrique international (g, mm, m/s, bar)</option>
+        <option value="imperial" data-en="Imperial (gr, in, fps, psi)">Impérial (gr, in, fps, psi)</option>
+        <option value="mixed" selected data-en="Mixed (gr, mm, m/s, bar)">Hybride (gr, mm, m/s, bar)</option>
       </select></div>
-    <div class="vm-field"><label>Cartouche</label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select></div>
-    <div class="vm-field"><label>Poudre <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
-        <option value="az" selected>tri : A → Z</option>
-        <option value="za">tri : Z → A</option>
-        <option value="burn-fast">tri : combustion rapide → lente</option>
-        <option value="burn-slow">tri : combustion lente → rapide</option>
+    <div class="vm-field"><label><span class="lang-fr">Cartouche</span><span class="lang-en">Cartridge</span></label><select id="cart" onchange="onCart();applyStartLoad();renderDiag();calc()"></select></div>
+    <div class="vm-field"><label><span class="lang-fr">Poudre</span><span class="lang-en">Powder</span> <select id="pwdSort" onchange="populatePowders()" style="float:right;width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;">
+        <option value="az" selected data-en="sort: A → Z">tri : A → Z</option>
+        <option value="za" data-en="sort: Z → A">tri : Z → A</option>
+        <option value="burn-fast" data-en="sort: fast → slow burning">tri : combustion rapide → lente</option>
+        <option value="burn-slow" data-en="sort: slow → fast burning">tri : combustion lente → rapide</option>
       </select></label><select id="pwd" onchange="applyStartLoad();calc()"></select>
-      <small class="vm-note" style="display:block;margin-top:.15rem;">« <strong>●</strong> » = données fabricant pour ce calibre (ancrage ~5 % + fenêtre ladder). Sans « ● » : estimation à froid, ladder non borné.</small></div>
-    <div class="vm-field"><label>Masse de balle <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
-    <div class="vm-field"><label>Charge <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span> — <em>charge de départ (min) pré-remplie ; augmentez prudemment</em></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
-    <div class="vm-field"><label>Longueur de canon <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
+      <small class="vm-note" style="display:block;margin-top:.15rem;"><span class="lang-fr">« <strong>●</strong> » = données fabricant pour ce calibre (ancrage ~5 % + fenêtre ladder). Sans « ● » : estimation à froid, ladder non borné.</span><span class="lang-en">“<strong>●</strong>” = manufacturer data for this cartridge (~5% anchoring + ladder window). Without “●”: uncalibrated estimate, unbounded ladder.</span></small></div>
+    <div class="vm-field"><label><span class="lang-fr">Masse de balle</span><span class="lang-en">Bullet weight</span> <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
+    <div class="vm-field"><label><span class="lang-fr">Charge</span><span class="lang-en">Charge</span> <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span> — <em class="lang-fr">charge de départ (min) pré-remplie ; augmentez prudemment</em><em class="lang-en">starting (minimum) charge pre-filled; work up carefully</em></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
+    <div class="vm-field"><label><span class="lang-fr">Longueur de canon</span><span class="lang-en">Barrel length</span> <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
     <hr style="border:none;border-top:1px dashed var(--color-border);margin:0.6rem 0;">
-    <div class="vm-field"><label>Vitesse mesurée v&#8320; <span class="vm-unit" id="u_vmeas" onclick="toggleU('vmeas')">m/s</span> — <em>optionnel, pour ancrer</em></label><input type="number" id="vmeas" placeholder="ex. 845" step="1" oninput="calc()"></div>
-    <div class="vm-field"><label>Température <span class="vm-unit" id="u_temp" onclick="toggleU('temp')">°C</span> — <em>sensibilité thermique (Litz), réf. 21&nbsp;°C</em></label><input type="number" id="temp" value="21" step="1" oninput="calc()"></div>
-    <div class="vm-field"><label>Volume d'étui <span class="vm-unit" id="u_cvol" onclick="toggleCvolUnit()">cm³</span> — <em>avancé ; vide = nominal · <a href="/wiki/doku.php?id=rechargement:volume_etui_pression" target="_blank" rel="noopener">comment mesurer ?</a></em></label>
+    <div class="vm-field"><label><span class="lang-fr">Vitesse mesurée</span><span class="lang-en">Measured velocity</span> v&#8320; <span class="vm-unit" id="u_vmeas" onclick="toggleU('vmeas')">m/s</span> — <em class="lang-fr">optionnel, pour ancrer</em><em class="lang-en">optional, to anchor</em></label><input type="number" id="vmeas" placeholder="ex. 845" data-en-placeholder="e.g. 845" step="1" oninput="calc()"></div>
+    <div class="vm-field"><label><span class="lang-fr">Température</span><span class="lang-en">Temperature</span> <span class="vm-unit" id="u_temp" onclick="toggleU('temp')">°C</span> — <em class="lang-fr">sensibilité thermique (Litz), réf. 21&nbsp;°C</em><em class="lang-en">temperature sensitivity (Litz), ref. 21&nbsp;°C</em></label><input type="number" id="temp" value="21" step="1" oninput="calc()"></div>
+    <div class="vm-field"><label><span class="lang-fr">Volume d'étui</span><span class="lang-en">Case capacity</span> <span class="vm-unit" id="u_cvol" onclick="toggleCvolUnit()">cm³</span> — <em class="lang-fr">avancé ; vide = nominal · <a href="/wiki/doku.php?id=rechargement:volume_etui_pression" target="_blank" rel="noopener">comment mesurer ?</a></em><em class="lang-en">advanced; empty = nominal · <a href="/wiki/doku.php?id=rechargement:volume_etui_pression" target="_blank" rel="noopener">how to measure?</a> (in French)</em></label>
       <div style="display:flex;gap:.35rem;align-items:stretch;">
         <input type="number" id="cvol" placeholder="nominal" step="0.01" oninput="onCvol()" style="flex:1;min-width:0;">
-        <select id="cvolMode" onchange="updateCvolPlaceholder();onCvol()" style="width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;" title="utile = balle sertie (exact, méthode ogive dans l'eau) ; pleine = étui vide au ras (×facteur, approché)">
-          <option value="usable" selected>utile (balle sertie)</option>
-          <option value="full">pleine (étui vide)</option>
+        <select id="cvolMode" onchange="updateCvolPlaceholder();onCvol()" style="width:auto;padding:0.05rem 0.3rem;font-size:0.74rem;" title="utile = balle sertie (exact, méthode ogive dans l'eau) ; pleine = étui vide au ras (×facteur, approché)" data-en-title="usable = bullet seated (exact, water method with the bullet in place); full = empty case filled to the brim (×factor, approximate)">
+          <option value="usable" selected data-en="usable (bullet seated)">utile (balle sertie)</option>
+          <option value="full" data-en="full (empty case)">pleine (étui vide)</option>
         </select>
       </div></div>
     <p class="vm-note" id="derived"></p>
     <div class="vm-io vm-noprint">
-      <button type="button" class="vm-btn2" onclick="exportEstimateur()" title="Télécharger la configuration (et les résultats) en CSV">&#11015;&nbsp;Exporter CSV</button>
-      <button type="button" class="vm-btn2" onclick="document.getElementById('impEst').click()" title="Charger une configuration depuis un CSV">&#11014;&nbsp;Importer CSV</button>
+      <button type="button" class="vm-btn2" onclick="exportEstimateur()" title="Télécharger la configuration (et les résultats) en CSV" data-en-title="Download the configuration (and results) as CSV">&#11015;&nbsp;<span class="lang-fr">Exporter CSV</span><span class="lang-en">Export CSV</span></button>
+      <button type="button" class="vm-btn2" onclick="document.getElementById('impEst').click()" title="Charger une configuration depuis un CSV" data-en-title="Load a configuration from a CSV file">&#11014;&nbsp;<span class="lang-fr">Importer CSV</span><span class="lang-en">Import CSV</span></button>
       <input type="file" id="impEst" accept=".csv,text/csv" style="display:none" onchange="if(this.files[0]){importEstimateur(this.files[0]);this.value='';}">
     </div>
-    <p class="vm-note vm-noprint" style="margin-top:.3rem;">CSV <code>champ,valeur,unité</code> (lignes <code>#</code> = commentaires). À l'import, seules les <em>entrées</em> sont reprises ; vitesse et pression sont recalculées.</p>
+    <p class="vm-note vm-noprint lang-fr" style="margin-top:.3rem;">CSV <code>champ,valeur,unité</code> (lignes <code>#</code> = commentaires). À l'import, seules les <em>entrées</em> sont reprises ; vitesse et pression sont recalculées.</p>
+    <p class="vm-note vm-noprint lang-en" style="margin-top:.3rem;">CSV <code>champ,valeur,unité</code> (field, value, unit — the keys stay in French so that files remain interchangeable; <code>#</code> lines = comments). On import, only the <em>inputs</em> are read back; velocity and pressure are recalculated.</p>
   </div>
   <div class="vm-panel">
     <div id="cartdiag" style="text-align:center;margin-bottom:0.6rem;"></div>
     <div id="danger" class="vm-alert" style="display:none;"></div>
     <div class="vm-kpi">
-      <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small>vitesse <span id="o_vtag" class="vm-tag">à froid ±10%</span></small></div>
-      <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small>pression <span class="vm-tag">indicative</span> <span id="o_pcip"></span></small>
+      <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small><span class="lang-fr">vitesse</span><span class="lang-en">velocity</span> <span id="o_vtag" class="vm-tag">à froid ±10%</span></small></div>
+      <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small><span class="lang-fr">pression</span><span class="lang-en">pressure</span> <span class="vm-tag"><span class="lang-fr">indicative</span><span class="lang-en">indicative</span></span> <span id="o_pcip"></span></small>
         <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
     </div>
     <div style="position:relative;">
       <div id="plot" style="width:100%;height:440px;cursor:zoom-in;"></div>
-      <button type="button" id="plotZoom" class="vm-noprint" title="Agrandir le graphe (ou cliquez sur la courbe)" onclick="openPlotModal()" style="position:absolute;top:4px;right:6px;border:1px solid var(--color-border);background:rgba(255,255,255,0.85);border-radius:4px;cursor:pointer;font-size:1rem;line-height:1;padding:.15rem .35rem;">&#9974;</button>
+      <button type="button" id="plotZoom" class="vm-noprint" title="Agrandir le graphe (ou cliquez sur la courbe)" data-en-title="Enlarge the chart (or click on the curve)" onclick="openPlotModal()" style="position:absolute;top:4px;right:6px;border:1px solid var(--color-border);background:rgba(255,255,255,0.85);border-radius:4px;cursor:pointer;font-size:1rem;line-height:1;padding:.15rem .35rem;">&#9974;</button>
     </div>
     <p class="vm-note" id="warn"></p>
     <div class="vm-noprint" style="margin-top:0.5rem">
-      <button type="button" id="toExt" class="vm-print" onclick="toExterior()" disabled style="opacity:.5">&#127919;&nbsp;Vers la balistique extérieure</button>
-      <small class="vm-note" style="display:inline;margin-left:.4rem">envoie V₀, masse et calibre au calculateur de trajectoire (renseignez-y le CB et la longueur de balle)</small>
+      <button type="button" id="toExt" class="vm-print" onclick="toExterior()" disabled style="opacity:.5">&#127919;&nbsp;<span class="lang-fr">Vers la balistique extérieure</span><span class="lang-en">To external ballistics</span></button>
+      <small class="vm-note" style="display:inline;margin-left:.4rem"><span class="lang-fr">envoie V₀, masse et calibre au calculateur de trajectoire (renseignez-y le CB et la longueur de balle)</span><span class="lang-en">sends V₀, bullet weight and calibre to the trajectory calculator (enter the BC and bullet length there)</span></small>
     </div>
   </div>
 </div>
 
-<p class="vm-note vm-noprint" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
+<p class="vm-note vm-noprint lang-fr" style="margin-top:1rem;">Approche complémentaire pour l'effet de la <strong>longueur de canon</strong> et de la <strong>température</strong> :
 <a href="/techniques/balistique/velocite.php">estimateur de vitesse (loi de canon &amp; Le Duc)</a>.</p>
+<p class="vm-note vm-noprint lang-en" style="margin-top:1rem;">A complementary approach for the effect of <strong>barrel length</strong> and <strong>temperature</strong>:
+<a href="/techniques/balistique/velocite.php?lang=en">velocity estimator (barrel law &amp; Le Duc)</a>.</p>
 
 <details id="ladder" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
-<summary style="cursor:pointer;font-weight:600;">Ladder (développement de charge)</summary>
+<summary style="cursor:pointer;font-weight:600;"><span class="lang-fr">Ladder (développement de charge)</span><span class="lang-en">Ladder (load development)</span></summary>
 <div style="font-size:0.9rem;">
-<p class="vm-note">L'estimateur <strong>planifie</strong> et <strong>borne</strong> votre ladder, et <strong>exploite</strong> vos vitesses mesurées. Il <strong>ne désigne pas</strong> le nœud : le modèle est lisse (pas d'harmoniques de canon) — c'est au tir + à la statistique (≥ 20 coups, SD/ES) de trancher. <a href="/wiki/doku.php?id=technique:rechargement_balistique">méthode ladder &rarr;</a></p>
-<h4 style="margin:.6rem 0 .2rem;">1. Plan — fenêtre sûre (charge de départ → max fabricant)</h4>
+<p class="vm-note lang-fr">L'estimateur <strong>planifie</strong> et <strong>borne</strong> votre ladder, et <strong>exploite</strong> vos vitesses mesurées. Il <strong>ne désigne pas</strong> le nœud : le modèle est lisse (pas d'harmoniques de canon) — c'est au tir + à la statistique (≥ 20 coups, SD/ES) de trancher. <a href="/wiki/doku.php?id=technique:rechargement_balistique">méthode ladder &rarr;</a></p>
+<p class="vm-note lang-en">The estimator <strong>plans</strong> and <strong>bounds</strong> your ladder, and <strong>uses</strong> your measured velocities. It does <strong>not</strong> pick the node: the model is smooth (no barrel harmonics) — shooting plus statistics (≥ 20 shots, SD/ES) must decide. <a href="/wiki/doku.php?id=technique:rechargement_balistique">ladder method &rarr;</a> <small>(in French)</small></p>
+<h4 style="margin:.6rem 0 .2rem;"><span class="lang-fr">1. Plan — fenêtre sûre (charge de départ → max fabricant)</span><span class="lang-en">1. Plan — safe window (starting charge → manufacturer maximum)</span></h4>
 <div style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:flex-end;margin-bottom:.4rem;">
-  <div class="vm-field" style="max-width:110px;margin:0;"><label>Min <span class="vm-unit" id="u_lad" onclick="toggleLadUnit()">gr</span></label><input type="number" id="ladMin" step="0.1" placeholder="fabricant" oninput="calc()"></div>
-  <div class="vm-field" style="max-width:110px;margin:0;"><label>Départ</label><input type="number" id="ladStart" step="0.1" placeholder="= min" oninput="calc()"></div>
-  <div class="vm-field" style="max-width:110px;margin:0;"><label>Max</label><input type="number" id="ladMax" step="0.1" placeholder="fabricant" oninput="calc()"></div>
-  <div class="vm-field" style="max-width:110px;margin:0;"><label>Incrément</label><input type="number" id="ladStep" value="0.2" step="0.05" min="0.01" oninput="calc()"></div>
-  <label style="font-size:.8rem;display:flex;align-items:center;gap:.3rem;cursor:pointer;"><input type="checkbox" id="ladPlot" onchange="calc()"> courbes du ladder sur le graphe</label>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label>Min <span class="vm-unit" id="u_lad" onclick="toggleLadUnit()">gr</span></label><input type="number" id="ladMin" step="0.1" placeholder="fabricant" data-en-placeholder="manufacturer" oninput="calc()"></div>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label><span class="lang-fr">Départ</span><span class="lang-en">Start</span></label><input type="number" id="ladStart" step="0.1" placeholder="= min" oninput="calc()"></div>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label>Max</label><input type="number" id="ladMax" step="0.1" placeholder="fabricant" data-en-placeholder="manufacturer" oninput="calc()"></div>
+  <div class="vm-field" style="max-width:110px;margin:0;"><label><span class="lang-fr">Incrément</span><span class="lang-en">Step</span></label><input type="number" id="ladStep" value="0.2" step="0.05" min="0.01" oninput="calc()"></div>
+  <label style="font-size:.8rem;display:flex;align-items:center;gap:.3rem;cursor:pointer;"><input type="checkbox" id="ladPlot" onchange="calc()"> <span class="lang-fr">courbes du ladder sur le graphe</span><span class="lang-en">ladder curves on the chart</span></label>
 </div>
 <div id="ladTable" style="overflow-x:auto;"></div>
-<h4 style="margin:.8rem 0 .2rem;">2. Exploiter — vos vitesses mesurées (ancrage carabine)</h4>
-<p class="vm-note">Une ligne par tir : <code>charge,vitesse</code> (unités courantes). L'outil cale l'efficacité de <em>votre</em> carabine et compare mesuré vs courbe lisse.</p>
+<h4 style="margin:.8rem 0 .2rem;"><span class="lang-fr">2. Exploiter — vos vitesses mesurées (ancrage carabine)</span><span class="lang-en">2. Use — your measured velocities (rifle anchoring)</span></h4>
+<p class="vm-note lang-fr">Une ligne par tir : <code>charge,vitesse</code> (unités courantes). L'outil cale l'efficacité de <em>votre</em> carabine et compare mesuré vs courbe lisse.</p>
+<p class="vm-note lang-en">One line per shot: <code>charge,velocity</code> (current units). The tool fits the efficiency of <em>your</em> rifle and compares measured values with the smooth curve.</p>
 <textarea id="ladMeas" rows="5" style="width:100%;font-family:monospace;font-size:0.82rem;" placeholder="41.0, 845&#10;41.2, 851&#10;41.4, 858&#10;..." oninput="fitLadder()"></textarea>
 <div id="ladFit" style="margin-top:0.4rem;"></div>
 <div class="vm-io vm-noprint">
-  <button type="button" class="vm-btn2" onclick="exportLadder()" title="Télécharger les mesures en CSV">&#11015;&nbsp;Exporter CSV</button>
-  <button type="button" class="vm-btn2" onclick="document.getElementById('impLad').click()" title="Charger des mesures depuis un CSV">&#11014;&nbsp;Importer CSV</button>
+  <button type="button" class="vm-btn2" onclick="exportLadder()" title="Télécharger les mesures en CSV" data-en-title="Download the measurements as CSV">&#11015;&nbsp;<span class="lang-fr">Exporter CSV</span><span class="lang-en">Export CSV</span></button>
+  <button type="button" class="vm-btn2" onclick="document.getElementById('impLad').click()" title="Charger des mesures depuis un CSV" data-en-title="Load measurements from a CSV file">&#11014;&nbsp;<span class="lang-fr">Importer CSV</span><span class="lang-en">Import CSV</span></button>
   <input type="file" id="impLad" accept=".csv,text/csv" style="display:none" onchange="if(this.files[0]){importLadder(this.files[0]);this.value='';}">
-  <small class="vm-note">format : en-tête <code>charge,vitesse</code> puis une ligne par tir (valeurs dans les <strong>unités courantes</strong> ; lignes <code>#</code> ignorées)</small>
+  <small class="vm-note"><span class="lang-fr">format : en-tête <code>charge,vitesse</code> puis une ligne par tir (valeurs dans les <strong>unités courantes</strong> ; lignes <code>#</code> ignorées)</span><span class="lang-en">format: header <code>charge,vitesse</code> then one line per shot (values in the <strong>current units</strong>; <code>#</code> lines ignored)</span></small>
 </div>
 </div>
 </details>
 
 <details id="howto" class="vm-howto vm-noprint" style="margin-top:1.2rem;border:1px solid var(--color-border);border-radius:var(--radius);padding:0.4rem 1rem;">
-<summary style="cursor:pointer;font-weight:600;">Comment ça marche&nbsp;?</summary>
-<div style="font-size:0.9rem;">
+<summary style="cursor:pointer;font-weight:600;"><span class="lang-fr">Comment ça marche&nbsp;?</span><span class="lang-en">How does it work?</span></summary>
+<div style="font-size:0.9rem;" class="lang-fr">
 <p>L'estimateur n'effectue <strong>aucune simulation de combustion</strong> et n'utilise pas la « fonction de forme » propriétaire des logiciels fermés. Il repose sur deux <strong>efficacités</strong> physiquement interprétables, <strong>calées sur des données fabricant</strong>&nbsp;:</p>
 <ul>
 <li>la <strong>vitesse</strong> découle de l'énergie de la poudre via l'efficacité balistique η<sub>b</sub>&nbsp;;</li>
@@ -198,6 +228,32 @@ manière la plus courante de se fabriquer une fausse marge de sécurité.</em></
 <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données</a> ·
 <a href="https://github.com/fbastin/tireur_reloaded/blob/main/docs/MODEL.md" target="_blank" rel="noopener">description formelle du modèle (EN)</a>.</p>
 </div>
+<div style="font-size:0.9rem;" class="lang-en">
+<p>The estimator runs <strong>no combustion simulation</strong> and does not use the proprietary “form function” of closed-source software. It rests on two physically interpretable <strong>efficiencies</strong>, <strong>fitted to manufacturers' data</strong>:</p>
+<ul>
+<li><strong>velocity</strong> follows from the powder's energy through the ballistic efficiency η<sub>b</sub>;</li>
+<li><strong>pressure</strong> from a piezometric efficiency η<sub>p</sub> (the <strong>most uncertain</strong> output, given for indication only).</li>
+</ul>
+<p>Accuracy tightens with what you give it:</p>
+<ul>
+<li><strong>uncalibrated</strong> (cartridge + powder + charge): velocity to <strong>±10%</strong>;</li>
+<li><strong>anchored</strong> on the manufacturer's data for your cartridge/powder combination: velocity to <strong>~5%</strong>;</li>
+<li><strong>with your measured velocity</strong> from a chronograph (field above): <strong>near-exact</strong> velocity.</li>
+</ul>
+<p><strong>&#9888; These three levels apply to velocity only.</strong> Pressure stays at
+±20% whatever you provide, because it comes from a <em>different</em> relation (piezometric
+efficiency) than velocity (ballistic efficiency): the chronograph calibrates the latter and
+says nothing about the former. We checked this along three independent paths, including
+Manning similitude, where working back from velocity to pressure <strong>amplifies the error
+by a factor of 6.8</strong>. <em>Believing that a correct velocity guarantees a correct pressure is the
+most common way of building a false safety margin.</em></p>
+<p>Catalogue: <strong>~470 powders</strong> (Reload Swiss, Accurate/Ramshot and Vihtavuori calibrated; other brands fall back on an effective energy). Risky situations (<strong>overpressure against the C.I.P. limit, overfilling</strong>) are flagged in colour — for indication only.</p>
+<p><strong>Further reading:</strong>
+<a href="https://github.com/fbastin/tireur_reloaded/blob/main/docs/MODEL.md" target="_blank" rel="noopener">formal description of the model</a> ·
+in French: <a href="/wiki/doku.php?id=technique:balistique_interieure">theory</a> ·
+<a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limits</a> ·
+<a href="/wiki/doku.php?id=technique:donnees_balistiques">producing your own data</a>.</p>
+</div>
 </details>
 
 </div>
@@ -205,14 +261,24 @@ manière la plus courante de se fabriquer une fausse marge de sécurité.</em></
 <div id="plotModal" class="vm-noprint" onclick="if(event.target===this)closePlotModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:2vh 2vw;">
   <div style="background:#fff;border-radius:8px;width:96vw;max-width:1150px;height:92vh;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,0.45);">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem .8rem;border-bottom:1px solid #ddd;">
-      <strong style="color:#222;">Pression / vitesse &mdash; vue agrandie</strong>
-      <button type="button" onclick="closePlotModal()" title="Fermer (Échap)" style="border:none;background:none;font-size:1.4rem;line-height:1;cursor:pointer;color:#444;">&times;</button>
+      <strong style="color:#222;"><span class="lang-fr">Pression / vitesse &mdash; vue agrandie</span><span class="lang-en">Pressure / velocity &mdash; enlarged view</span></strong>
+      <button type="button" onclick="closePlotModal()" title="Fermer (Échap)" data-en-title="Close (Esc)" style="border:none;background:none;font-size:1.4rem;line-height:1;cursor:pointer;color:#444;">&times;</button>
     </div>
     <div id="plotBig" style="flex:1;min-height:0;"></div>
   </div>
 </div>
 
 <script>
+// --- Langue (FR/EN) : bascule commune du site, cf. /includes/lang-toggle.php ---
+const L=()=>(window.siteLang?window.siteLang():'fr');
+const T=(fr,en)=>L()==='en'?en:fr;
+const nf=(x,d)=>L()==='en'?x.toFixed(d):x.toFixed(d).replace('.',',');   // nombre affiché dans une phrase
+// Attributs et <option> fixes : data-en / data-en-title / data-en-placeholder.
+function applyStaticLang(){
+  document.querySelectorAll('option[data-en]').forEach(o=>{ if(!o.hasAttribute('data-fr')) o.setAttribute('data-fr',o.textContent); o.textContent=T(o.getAttribute('data-fr'),o.getAttribute('data-en')); });
+  document.querySelectorAll('[data-en-title]').forEach(o=>{ if(!o.hasAttribute('data-fr-title')) o.setAttribute('data-fr-title',o.title); o.title=T(o.getAttribute('data-fr-title'),o.getAttribute('data-en-title')); });
+  document.querySelectorAll('[data-en-placeholder]').forEach(o=>{ if(!o.hasAttribute('data-fr-placeholder')) o.setAttribute('data-fr-placeholder',o.placeholder); o.placeholder=T(o.getAttribute('data-fr-placeholder'),o.getAttribute('data-en-placeholder')); });
+}
 let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, DIMS={}, RIFLE={eeff:null,n:0}, LAST=null;
 let CVOL=null, CVOLUNIT='cm3';   // volume utile d'étui saisi (cm³ ; null = valeur nominale de la cartouche)
 let LADUNIT='gr';                // unité de masse des champs du ladder (gr | g)
@@ -272,10 +338,10 @@ Promise.all([
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{}; DIMS=cd.dims||{};
   const cs=document.getElementById('cart');
   const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
-  [['Armes longues','rifle'],['Armes de poing','handgun']].forEach(([label,type])=>{
+  [['Armes longues','Rifles','rifle'],['Armes de poing','Handguns','handgun']].forEach(([label,labelEn,type])=>{
     const keys=Object.keys(CAL).filter(k=>(CAL[k].type||'rifle')===type).sort(byName);
     if(!keys.length) return;
-    const og=document.createElement('optgroup'); og.label=label;
+    const og=document.createElement('optgroup'); og.label=T(label,labelEn); og.dataset.labelFr=label; og.dataset.labelEn=labelEn;   // pas data-en : applyStaticLang réécrirait le texte, et viderait le groupe
     keys.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;og.appendChild(o);});
     cs.appendChild(og);
   });
@@ -287,7 +353,14 @@ Promise.all([
   // si le tri par combustion n'a aucune donnée, masquer ces options
   if(!Object.keys(BRRANK).length){[...document.querySelectorAll('#pwdSort option')].forEach(o=>{if(o.value.startsWith('burn'))o.remove();});}
   populatePowders('RS52');
+  applyStaticLang();
   onCart(); applyStartLoad(); renderDiag(); calc();
+});
+// Changement de langue : tout ce que le script a écrit est réécrit dans la nouvelle langue.
+document.addEventListener('site:langchange',()=>{
+  applyStaticLang();
+  document.querySelectorAll('#cart optgroup').forEach(g=>{ g.label=T(g.dataset.labelFr,g.dataset.labelEn); });
+  populatePowders(); updateCvolPlaceholder(); renderDiag(); calc(); fitLadder();
 });
 // (re)peuple le menu poudres selon le tri choisi (#pwdSort), en conservant la sélection
 function populatePowders(defaultSel){
@@ -304,8 +377,8 @@ function populatePowders(defaultSel){
     const fast=mode==='burn-fast';
     const ranked=Object.keys(PWD).filter(k=>BRRANK[k]!=null).sort((a,b)=>fast?BRRANK[a]-BRRANK[b]:BRRANK[b]-BRRANK[a]);
     const rest=Object.keys(PWD).filter(k=>BRRANK[k]==null).sort(byName);
-    if(ranked.length){const g=document.createElement('optgroup');g.label='Vitesse de combustion ('+(fast?'rapide → lente':'lente → rapide')+')';ranked.forEach(k=>opt(g,k));ps.appendChild(g);}
-    const g2=document.createElement('optgroup');g2.label='Autres poudres (A → Z)';rest.forEach(k=>opt(g2,k));ps.appendChild(g2);
+    if(ranked.length){const g=document.createElement('optgroup');g.label=T('Vitesse de combustion ('+(fast?'rapide → lente':'lente → rapide')+')','Burning rate ('+(fast?'fast → slow':'slow → fast')+')');ranked.forEach(k=>opt(g,k));ps.appendChild(g);}
+    const g2=document.createElement('optgroup');g2.label=T('Autres poudres (A → Z)','Other powders (A → Z)');rest.forEach(k=>opt(g2,k));ps.appendChild(g2);
   } else {
     const keys=Object.keys(PWD).sort(byName); if(mode==='za')keys.reverse();
     keys.forEach(k=>opt(ps,k));
@@ -332,7 +405,7 @@ function refBbl(cart){ return cart.test_barrel_mm || (cart.type==='handgun'?122:
 // Source de la limite de pression. `pmax_src` n'est présent QUE si la valeur n'est pas
 // celle des tables C.I.P. : absent = C.I.P., 'SAAMI' = standard SAAMI, toute autre
 // valeur = limite sans normalisation (wildcat), à ne pas présenter comme officielle.
-const limSrc=(c)=> !c || !c.pmax_src ? 'C.I.P.' : (c.pmax_src==='SAAMI' ? 'SAAMI' : 'estimée');
+const limSrc=(c)=> !c || !c.pmax_src ? 'C.I.P.' : (c.pmax_src==='SAAMI' ? 'SAAMI' : T('estimée','estimated'));
 // volume utile d'étui effectif (cm³) : saisie utilisateur si fournie, sinon nominal cartouche.
 function effCV(cart){ return (CVOL>0 ? CVOL : cart.case_vol_cm3); }
 // Sensibilité au volume d'étui pour les prédictions ANCRÉES (eeff/np figés au volume
@@ -396,8 +469,8 @@ function ladderWindow(){
   const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value;
   const sc=STARTC[ck+'|'+pk];
   let mfgMin,mfgMax,note;
-  if(sc){ mfgMin=sc.c; mfgMax=sc.cmax; note='fenêtre fabricant '+ladDisp(sc.c).toFixed(2)+'–'+ladDisp(sc.cmax).toFixed(2)+' '+LADUNIT+' (balle '+sc.m+' gr)'; }
-  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note='⚠ <strong>pas de données fabricant</strong> pour ce couple (poudre sans « ● ») — choisissez une poudre marquée ● ou saisissez <strong>Min / Max / Incrément</strong> à la main.'; }
+  if(sc){ mfgMin=sc.c; mfgMax=sc.cmax; note=T('fenêtre fabricant ','manufacturer window ')+ladDisp(sc.c).toFixed(2)+'–'+ladDisp(sc.cmax).toFixed(2)+' '+LADUNIT+T(' (balle ',' (bullet ')+sc.m+' gr)'; }
+  else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note=T('⚠ <strong>pas de données fabricant</strong> pour ce couple (poudre sans « ● ») — choisissez une poudre marquée ● ou saisissez <strong>Min / Max / Incrément</strong> à la main.','⚠ <strong>no manufacturer data</strong> for this combination (powder without “●”) — choose a powder marked ● or enter <strong>Min / Max / Step</strong> by hand.'); }
   const fMin=parseFloat(document.getElementById('ladMin').value), fStart=parseFloat(document.getElementById('ladStart').value),
         fMax=parseFloat(document.getElementById('ladMax').value), fStep=parseFloat(document.getElementById('ladStep').value);
   const minG=fMin>0?ladToGr(fMin):mfgMin, cmax=fMax>0?ladToGr(fMax):mfgMax, over=cmax>mfgMax+1e-9;
@@ -415,14 +488,14 @@ function renderLadder(){
   if(!cart||!pw){el.innerHTML='';return;}
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
   const w=ladderWindow();
-  if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+' — plage trop étroite (départ ≥ max ou incrément nul).</p>';return;}
+  if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+T(' — plage trop étroite (départ ≥ max ou incrément nul).',' — range too narrow (start ≥ max or zero step).')+'</p>';return;}
   const anc=effAnchor(ck,pk), charges=ladderCharges(w);
-  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">Charge ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% '+limSrc(cart)+'</th></tr>';
+  let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">'+T('Charge','Charge')+' ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% '+limSrc(cart)+'</th></tr>';
   for(const Cg of charges){ const r=modelVP(cart,pw,m_gr,Cg,bbl,anc);
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
-  const overTxt = w.over ? ' <strong style="color:#c0392b">⚠ max saisi '+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+' &gt; max fabricant '+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+' — zone NON couverte par les données, danger.</strong>' : '';
-  el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?' · <strong>ancré carabine</strong>':'')+overTxt+' — Pmax/%'+limSrc(cart)+' indicatifs (sous-estimés). Ne dépassez pas le max fabricant.</p>'+t+'</table>';
+  const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
+  el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs (sous-estimés). Ne dépassez pas le max fabricant.',' for indication only (underestimated). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
 }
 function fitLadder(){
   const out=document.getElementById('ladFit'); if(!out)return;
@@ -430,15 +503,15 @@ function fitLadder(){
   const pts=document.getElementById('ladMeas').value.split('\n').map(l=>l.trim()).filter(Boolean)
     .map(l=>l.split(/[,;\t ]+/).map(parseFloat)).filter(a=>a.length>=2&&a[0]>0&&a[1]>0)
     .map(a=>({C:toGr(a[0],U.charge.cur), v:toMs(a[1],U.v.cur)}));
-  if(pts.length<2){out.innerHTML=pts.length?'<p class="vm-note">Au moins 2 lignes valides nécessaires.</p>':'';return;}
+  if(pts.length<2){out.innerHTML=pts.length?'<p class="vm-note">'+T('Au moins 2 lignes valides nécessaires.','At least 2 valid lines are needed.')+'</p>':'';return;}
   const eeffs=pts.map(p=>{const C=p.C*G,me=m+C/3;return me*p.v*p.v/(2*C);});
   const eeff=eeffs.reduce((a,b)=>a+b,0)/eeffs.length, vmean=pts.reduce((s,p)=>s+p.v,0)/pts.length;
   const resid=pts.map(p=>{const C=p.C*G,me=m+C/3;return p.v-Math.sqrt(2*eeff*C/me);});
   const rms=Math.sqrt(resid.reduce((s,x)=>s+x*x,0)/resid.length);
-  let t='<table style="width:100%;border-collapse:collapse;font-size:0.8rem;"><tr style="text-align:right"><th style="text-align:left">Charge</th><th>v₀ mes.</th><th>v₀ lissé</th><th>écart</th></tr>';
+  let t='<table style="width:100%;border-collapse:collapse;font-size:0.8rem;"><tr style="text-align:right"><th style="text-align:left">'+T('Charge','Charge')+'</th><th>'+T('v₀ mes.','v₀ meas.')+'</th><th>'+T('v₀ lissé','v₀ smoothed')+'</th><th>'+T('écart','diff.')+'</th></tr>';
   pts.forEach((p,i)=>{const C=p.C*G,me=m+C/3,vf=Math.sqrt(2*eeff*C/me);t+='<tr style="text-align:right;border-top:1px solid var(--color-border)"><td style="text-align:left">'+frChg(p.C).toFixed(2)+'</td><td>'+frMs(p.v,U.v.cur).toFixed(0)+'</td><td>'+frMs(vf,U.v.cur).toFixed(0)+'</td><td>'+(resid[i]>=0?'+':'')+frMs(resid[i],U.v.cur).toFixed(0)+'</td></tr>';});
-  out.innerHTML='<p class="vm-note">E_eff carabine ≈ <strong>'+Math.round(eeff)+'&nbsp;J/kg</strong> · écart mesuré/lissé <strong>'+frMs(rms,U.v.cur).toFixed(1)+'&nbsp;'+U.v.cur+'</strong> ('+(rms/vmean*100).toFixed(1)+'%) — <em>proxy de consistance ; un vrai SD/ES exige des tirs répétés à charge fixe</em>. '
-    +'<button type="button" class="vm-print" onclick="applyRifle('+eeff.toFixed(1)+','+pts.length+')">Ancrer cette carabine</button></p>'+t+'</table>';
+  out.innerHTML='<p class="vm-note">'+T('E_eff carabine','Rifle E_eff')+' ≈ <strong>'+Math.round(eeff)+'&nbsp;J/kg</strong> · '+T('écart mesuré/lissé','measured/smoothed deviation')+' <strong>'+nf(frMs(rms,U.v.cur),1)+'&nbsp;'+U.v.cur+'</strong> ('+nf(rms/vmean*100,1)+'%) — <em>'+T('proxy de consistance ; un vrai SD/ES exige des tirs répétés à charge fixe','a consistency proxy; a true SD/ES requires repeated shots at a fixed charge')+'</em>. '
+    +'<button type="button" class="vm-print" onclick="applyRifle('+eeff.toFixed(1)+','+pts.length+')">'+T('Ancrer cette carabine','Anchor this rifle')+'</button></p>'+t+'</table>';
 }
 function applyRifle(eeff,n){ RIFLE.eeff=eeff; RIFLE.n=n; calc(); renderLadder(); }
 // passe la sortie (V₀ m/s, masse gr, calibre mm) au calculateur de balistique extérieure
@@ -455,12 +528,12 @@ function renderDiag(){
   const svg=cartridgeDiagram(cart, DIMS[n]||null, 210);
   const num=(v,d)=> (v==null||!isFinite(v))?'—':(+v.toFixed(d)).toString();
   const rows=[
-    ['Type', cart.type==='handgun'?'Arme de poing':'Carabine'],
-    ['Ø balle', num(cart.bore_mm,2)+' mm'],
-    ['Longueur d\'étui', num(cart.case_mm,1)+' mm'],
-    ['Volume d\'étui', cart.case_vol_cm3?num(cart.case_vol_cm3,2)+' cm³':'—'],
-    ['Pression max '+limSrc(cart), cart.pmax_cip_bar?num(cart.pmax_cip_bar,0)+' bar':'—'],
-    ['Canon d\'essai', cart.test_barrel_mm?num(cart.test_barrel_mm,0)+' mm':'—'],
+    ['Type', cart.type==='handgun'?T('Arme de poing','Handgun'):T('Carabine','Rifle')],
+    [T('Ø balle','Bullet Ø'), num(cart.bore_mm,2)+' mm'],
+    [T('Longueur d\'étui','Case length'), num(cart.case_mm,1)+' mm'],
+    [T('Volume d\'étui','Case capacity'), cart.case_vol_cm3?num(cart.case_vol_cm3,2)+' cm³':'—'],
+    [T('Pression max ','Max pressure ')+limSrc(cart), cart.pmax_cip_bar?num(cart.pmax_cip_bar,0)+' bar':'—'],
+    [T('Canon d\'essai','Test barrel'), cart.test_barrel_mm?num(cart.test_barrel_mm,0)+' mm':'—'],
   ];
   const specs='<div style="flex:1 1 150px;min-width:150px;text-align:left;">'
     +'<div style="font-weight:700;color:var(--color-link);margin-bottom:0.35rem;">'+n+'</div>'
@@ -494,7 +567,7 @@ function updateCvolPlaceholder(){ const c=CAL[document.getElementById('cart').va
   const full = document.getElementById('cvolMode').value==='full';
   const nom_cm3 = full ? c.case_vol_cm3/cvFullFactor(c) : c.case_vol_cm3;   // nominal dans le mode courant
   const nom = CVOLUNIT==='grh2o' ? nom_cm3/0.0648 : nom_cm3;
-  el.placeholder = isFinite(nom) ? 'nominal '+nom.toFixed(2) : 'nominal'; }
+  el.placeholder = isFinite(nom) ? 'nominal '+nom.toFixed(2) : 'nominal'; }   // même mot dans les deux langues
 function lin(coef,feats){return coef.reduce((s,w,i)=>s+w*feats[i],0);}
 function calc(){
   const cart=CAL[document.getElementById('cart').value], pw=PWD[document.getElementById('pwd').value];
@@ -555,49 +628,49 @@ function calc(){
   const pcip=cart.pmax_cip_bar||null, pct=pcip?Pmax/pcip*100:null;
   let lvl='ok'; const al=[];
   if(pct!=null){
-    if(pct>100){al.push(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite ${limSrc(cart)} (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`);lvl='danger';}
-    else if(pct>=85){al.push(`Pression proche de la limite ${limSrc(cart)} (${pct.toFixed(0)} %)`);lvl='warn';}
+    if(pct>100){al.push(T(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite ${limSrc(cart)} (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`,`Estimated overpressure: <strong>${pct.toFixed(0)}%</strong> of the ${limSrc(cart)} limit (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`));lvl='danger';}
+    else if(pct>=85){al.push(T(`Pression proche de la limite ${limSrc(cart)} (${pct.toFixed(0)} %)`,`Pressure close to the ${limSrc(cart)} limit (${pct.toFixed(0)}%)`));lvl='warn';}
   }
   if(hasPcd){
-    if(fill>110){al.push(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`);lvl='danger';}
-    else if(fill>105){al.push(`Charge comprimée (${fill.toFixed(0)} %)`);if(lvl!=='danger')lvl='warn';}
-    else if(fill<55){al.push(`Charge très faible (${fill.toFixed(0)} %)`);if(lvl!=='danger')lvl='warn';}
+    if(fill>110){al.push(T(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`,`Overfilled case: load density <strong>${fill.toFixed(0)}%</strong>`));lvl='danger';}
+    else if(fill>105){al.push(T(`Charge comprimée (${fill.toFixed(0)} %)`,`Compressed charge (${fill.toFixed(0)}%)`));if(lvl!=='danger')lvl='warn';}
+    else if(fill<55){al.push(T(`Charge très faible (${fill.toFixed(0)} %)`,`Very low load density (${fill.toFixed(0)}%)`));if(lvl!=='danger')lvl='warn';}
   }
   const dz=document.getElementById('danger');
   if(al.length){dz.style.display='block';dz.className='vm-alert '+(lvl==='danger'?'danger':'warn');
-    dz.innerHTML=`<strong>${lvl==='danger'?'⛔ DANGER':'⚠ Attention'}</strong> — ${al.join(' · ')}. <em>Estimation indicative — confirmez dans les données fabricant.</em>`;}
+    dz.innerHTML=`<strong>${lvl==='danger'?'⛔ DANGER':T('⚠ Attention','⚠ Caution')}</strong> — ${al.join(' · ')}. <em>${T('Estimation indicative — confirmez dans les données fabricant.','Indicative estimate — confirm against the manufacturer\'s data.')}</em>`;}
   else dz.style.display='none';
   document.getElementById('pbox').className='vm-out'+(pct==null?'':(pct>100?' danger':pct>=85?' warn':''));
-  document.getElementById('o_pcip').textContent = pct!=null ? `· ${pct.toFixed(0)} % ${limSrc(cart)}` : '(limite de pression non renseignée)';
+  document.getElementById('o_pcip').textContent = pct!=null ? T(`· ${pct.toFixed(0)} % ${limSrc(cart)}`,`· ${pct.toFixed(0)}% of ${limSrc(cart)}`) : T('(limite de pression non renseignée)','(no pressure limit on record)');
   const pbar=document.getElementById('pbar');
   if(pct!=null){pbar.style.display='block';pbar.className='vm-bar'+(pct>100?' danger':pct>=85?' warn':'');pbar.firstElementChild.style.width=Math.min(pct,100)+'%';}
   else pbar.style.display='none';
   const ancFlag = !!(anc && anc.mhflag);                 // couple fabricant atypique (garde-fou Mayer-Hart)
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?'ancrée (vos données)':dataAnchor?(anc&&anc.rifle?'ancrée carabine (ladder)':ancFlag?'ancrée fabricant (à vérifier)':'ancrée fabricant ~5%'):'à froid ±10%';
+  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(anc&&anc.rifle?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~5%','manufacturer-anchored ~5%')):T('à froid ±10%','uncalibrated ±10%');
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
-  const fillTxt = (hasPcd ? `Remplissage ${fill.toFixed(0)} %` : 'Remplissage inconnu (densité bulk absente)') + (CVOL>0?` · volume étui perso ${cv_cm3.toFixed(2)} cm³`:'');
-  const mode = anchored?'mesure perso' : dataAnchor?`${anc&&anc.rifle?'ancré carabine':'ancré fabricant'} (n=${anc.n}${anc.np==null?', vitesse seule — pression η_p global':''})` : (viaEeff?'énergie générique (Qex/Ba inconnus)':'η_b '+eta_b.toFixed(3));
-  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? `  ·  v₀ mise à l'échelle du canon saisi (loi Powley/Litz), pression au canon réf. ${frMm(refBbl_mm,U.bbl.cur).toFixed(U.bbl.cur==='in'?1:0)} ${U.bbl.cur}` : '';
+  const fillTxt = (hasPcd ? T(`Remplissage ${fill.toFixed(0)} %`,`Load density ${fill.toFixed(0)}%`) : T('Remplissage inconnu (densité bulk absente)','Load density unknown (no bulk density)')) + (CVOL>0?T(` · volume étui perso ${nf(cv_cm3,2)} cm³`,` · custom case capacity ${nf(cv_cm3,2)} cm³`):'');
+  const mode = anchored?T('mesure perso','your measurement') : dataAnchor?`${anc&&anc.rifle?T('ancré carabine','rifle-anchored'):T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
+  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? T(`  ·  v₀ mise à l'échelle du canon saisi (loi Powley/Litz), pression au canon réf. ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`,`  ·  v₀ scaled to the entered barrel (Powley/Litz law), pressure at the ref. barrel ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`) : '';
   document.getElementById('derived').textContent=
-    `${fillTxt}  ·  rapport de détente ${Re.toFixed(1)}  ·  ${mode}  ·  η_p ${eta_p.toFixed(3)}${pRefTxt}`;
-  let w='Pression indicative (η_p : ~20 % RMS, biais vers la SOUS-estimation) — ne jamais valider une charge sur cette base.';
-  if(hasPcd && fill>110) w='⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.';
-  else if(hasPcd && fill<55) w='⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.';
-  if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w='⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). '+w; }
-  if(!pcip) w='ℹ Cartouche sans limite de pression publiée dans nos données (absente du standard SAAMI carabine ; valeur CIP non renseignée) → pas de bandes de sécurité ni de % limite sur cette cartouche. '+w;
-  if(!hasPcd) w='Densité bulk inconnue : remplissage et pression approximés (nominal). '+w;
-  if(viaEeff) w='Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). '+w;
-  if(ancFlag) w='⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. '+w;
-  if(tempApplied) w='Vitesse ajustée à '+Tc.toFixed(0)+' °C (réf. 21 °C, sensibilité Litz générique ~1,8 fps/°C — indicatif, varie selon la poudre). '+w;
+    `${fillTxt}  ·  ${T('rapport de détente','expansion ratio')} ${nf(Re,1)}  ·  ${mode}  ·  η_p ${nf(eta_p,3)}${pRefTxt}`;
+  let w=T('Pression indicative (η_p : ~20 % RMS, biais vers la SOUS-estimation) — ne jamais valider une charge sur cette base.','Pressure for indication only (η_p: ~20% RMS, biased towards UNDERestimation) — never validate a load on this basis.');
+  if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.','⚠ Load density > 110% (compressed charge outside the usual range): unreliable estimate.');
+  else if(hasPcd && fill<55) w=T('⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.','⚠ Low load density (< 55%): outside the usual range, unreliable estimate.');
+  if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w=T('⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). ','⚠ Case capacity (converted to usable) far from nominal ('+(r*100).toFixed(0)+'%) — check the unit (cm³ / gr H₂O) and the mode (usable, bullet seated / full, empty case). ')+w; }
+  if(!pcip) w=T('ℹ Cartouche sans limite de pression publiée dans nos données (absente du standard SAAMI carabine ; valeur CIP non renseignée) → pas de bandes de sécurité ni de % limite sur cette cartouche. ','ℹ No published pressure limit for this cartridge in our data (not in the SAAMI rifle standard; no C.I.P. value on record) → no safety bands or % of limit for it. ')+w;
+  if(!hasPcd) w=T('Densité bulk inconnue : remplissage et pression approximés (nominal). ','Bulk density unknown: load density and pressure approximated (nominal). ')+w;
+  if(viaEeff) w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). ','Powder without known Qex/Ba: velocity from a generic energy (±10%). ')+w;
+  if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
+  if(tempApplied) w=T('Vitesse ajustée à '+Tc.toFixed(0)+' °C (réf. 21 °C, sensibilité Litz générique ~1,8 fps/°C — indicatif, varie selon la poudre). ','Velocity adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C, generic Litz sensitivity ~1.8 fps/°C — indicative, varies with the powder). ')+w;
   const bRatio=travel/refTravel;
-  if(bRatio<0.6||bRatio>1.7) w='⚠ Canon très éloigné de la longueur de référence ('+frMm(refBbl_mm,U.bbl.cur).toFixed(U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée (loi de puissance), à confirmer au chronographe. '+w;
+  if(bRatio<0.6||bRatio>1.7) w=T('⚠ Canon très éloigné de la longueur de référence ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée (loi de puissance), à confirmer au chronographe. ','⚠ Barrel far from the reference length ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+'): v₀ scaling extrapolated (power law), confirm with a chronograph. ')+w;
   document.getElementById('warn').textContent=w;
   renderLadder();
   // courbe Le Duc (couche 3)
   const ld=VelocityModel.leDuc(v0,Pmax,m,C,d,travel);
   if(!ld){Plotly.purge('plot');
-    document.getElementById('warn').textContent='Courbe pression/vitesse indisponible : paramètres hors domaine du modèle Le Duc (combinaison inhabituelle). Les estimations chiffrées ci-dessus restent valides. '+w;
+    document.getElementById('warn').textContent=T('Courbe pression/vitesse indisponible : paramètres hors domaine du modèle Le Duc (combinaison inhabituelle). Les estimations chiffrées ci-dessus restent valides. ','Pressure/velocity curve unavailable: parameters outside the Le Duc model range (unusual combination). The figures above remain valid. ')+w;
     return;}
   const xs=[],vs=[],ps=[];
   for(let i=0;i<=100;i++){const x=travel*i/100;xs.push(frMm(x*1000,U.bbl.cur));vs.push(frMs(ld.v(x),U.v.cur));ps.push(frBar(ld.P_bar(x),U.p.cur));}
@@ -633,9 +706,9 @@ function calc(){
   // si la limite est connue, on étend l'axe au-dessus de l'épreuve pour montrer toutes les zones
   const yTop=Math.max(pcipD?Math.max(Math.max.apply(null,ps),pcipD*eMul)*1.06:Math.max.apply(null,ps)*1.12, maxLadP*1.06);
   const lay={margin:{t:10,r:55,l:55,b:80},legend:{orientation:'h',x:0.5,xanchor:'center',y:-0.28,yanchor:'top'},
-     xaxis:{title:'Course de la balle ('+U.bbl.cur+')'},
-     yaxis:{title:'Pression ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
-     yaxis2:{title:'Vitesse ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
+     xaxis:{title:T('Course de la balle','Bullet travel')+' ('+U.bbl.cur+')'},
+     yaxis:{title:T('Pression','Pressure')+' ('+U.p.cur+')',rangemode:'tozero',range:[0,yTop]},
+     yaxis2:{title:T('Vitesse','Velocity')+' ('+U.v.cur+')',overlaying:'y',side:'right',rangemode:'tozero'}};
   if(pcipD){
     // Seuils : limite moyenne (P_max CIP / MAP SAAMI), seuil intermédiaire (P_K 1,15× cartouche
     // CIP / MPSM 1,065× échantillon SAAMI) et épreuve arme (P_E). ATTENTION : le coefficient de
@@ -645,8 +718,8 @@ function calc(){
     // pWarn=0,90× : bande de garde, PAS une correction chiffrée — aucun biais de pression n'est
     // établi pour ce modèle ; une estimation entrant ici peut déjà valoir la limite en réalité.
     const pK=pcipD*kMul, pE=pcipD*eMul, pWarn=pcipD*0.9, u=U.p.cur;
-    const fx=(x,n)=>x.toFixed(n).replace('.',',');
-    const limLab=saami?'MAP SAAMI':'P_max C.I.P.', kLab=saami?('MPSM '+fx(kMul,3)+'× (échantillon)'):'P_K 1,15× (cartouche)', eLab=saami?('épreuve '+fx(eMul,2)+'× (proof)'):('P_E '+fx(eMul,2)+'× (épreuve arme)');
+    const fx=(x,n)=>nf(x,n);
+    const limLab=saami?'MAP SAAMI':'P_max C.I.P.', kLab=saami?('MPSM '+fx(kMul,3)+T('× (échantillon)','× (sample)')):T('P_K 1,15× (cartouche)','P_K 1.15× (cartridge)'), eLab=saami?(T('épreuve ','proof ')+fx(eMul,2)+T('× (proof)','×')):('P_E '+fx(eMul,2)+T('× (épreuve arme)','× (firearm proof)'));
     lay.shapes=[
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pWarn,y1:pcipD,fillcolor:'rgba(243,156,18,0.13)',line:{width:0},layer:'below'},
       {type:'rect',xref:'paper',x0:0,x1:1,yref:'y',y0:pcipD,y1:pK,fillcolor:'rgba(192,57,43,0.12)',line:{width:0},layer:'below'},
@@ -659,7 +732,7 @@ function calc(){
     ];
     const lab=(y,anchor,text,color,bold)=>({xref:'paper',x:0.99,xanchor:'right',yref:'y',y:y,yanchor:anchor,text:bold?'<b>'+text+'</b>':text,showarrow:false,font:{size:10,color:color},bgcolor:'rgba(255,255,255,0.72)'});
     lay.annotations=[
-      lab(pWarn,'top','≈90 % · marge modèle',  '#b9770e',false),
+      lab(pWarn,'top',T('≈90 % · marge modèle','≈90% · model margin'),  '#b9770e',false),
       lab(pcipD,'bottom',limLab+' '+pcipD.toFixed(0)+' '+u,'#c0392b',true),
       lab(pK,'bottom',kLab,'#a93226',false),
       lab(pE,'bottom',eLab,'#7b241c',false)
@@ -667,8 +740,8 @@ function calc(){
   }
   const plotData=[
     ...ladTraces,                                            // courbes du ladder (clair) sous les courbes principales
-    {x:xs,y:ps,name:'Pression ('+U.p.cur+')'+(ladTraces.length?' · charge courante':''),yaxis:'y',line:{color:'#c0392b',width:2.5}},
-    {x:xs,y:vs,name:'Vitesse ('+U.v.cur+')'+(ladTraces.length?' · charge courante':''),yaxis:'y2',line:{color:'#2980b9',width:2.5}}
+    {x:xs,y:ps,name:T('Pression','Pressure')+' ('+U.p.cur+')'+(ladTraces.length?T(' · charge courante',' · current charge'):''),yaxis:'y',line:{color:'#c0392b',width:2.5}},
+    {x:xs,y:vs,name:T('Vitesse','Velocity')+' ('+U.v.cur+')'+(ladTraces.length?T(' · charge courante',' · current charge'):''),yaxis:'y2',line:{color:'#2980b9',width:2.5}}
   ];
   LASTPLOT={data:plotData,layout:lay};                       // mémorisé pour la vue agrandie
   Plotly.react('plot',plotData,lay,{displayModeBar:false,responsive:true});

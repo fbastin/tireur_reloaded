@@ -24,6 +24,9 @@
  *             n'a pas de chemise, le dégradé cuivre était un contresens.
  */
 function cartridgeDiagram(cal, dim, targetW) {
+  // Libellés dans la langue de la page (bascule FR/EN du site, window.siteLang) ; français à défaut.
+  const en = typeof window !== 'undefined' && window.siteLang && window.siteLang() === 'en';
+  const tr = (fr, eng) => en ? eng : fr;
   if (!cal || !(cal.case_mm > 0 && cal.bore_mm > 0)) return '';
   const L = cal.case_mm, bore = cal.bore_mm, exact = !!(dim && dim.base);
   const bn = exact ? !!(dim.shoulder) : (cal.type !== 'handgun');
@@ -103,7 +106,7 @@ function cartridgeDiagram(cal, dim, targetW) {
 
   const grooveHeightVal = c.rim_type !== 'Rimmed' ? Math.max(2.5 * scale, 7) : 0;
   const yBaseBottom = c.rim_type !== 'Rimmed' ? (yRimTop - grooveHeightVal) : yRimTop;
-  const rimLabel = c.rim_type === 'Rimmed' ? 'Ø R1 (Bourr.)' : 'Ø R1 (Culot)';
+  const rimLabel = c.rim_type === 'Rimmed' ? tr('Ø R1 (Bourr.)', 'Ø R1 (Rim)') : tr('Ø R1 (Culot)', 'Ø R1 (Rim)');
   let yShoulderBottomVal = yRimBottom;
   if (isBottleneck) {
     const neckLen = Math.min(bulletDia * 0.9 * scale, hCase * 0.28);
@@ -111,10 +114,10 @@ function cartridgeDiagram(cal, dim, targetW) {
     yShoulderBottomVal = yShoulderTop + shoulderLen;
   }
   const leftAnns = [
-    { label: 'Ø G1 (Balle)', val: c.bullet_diameter_mm, measY: yCaseMouth - hBullet * 0.1, r: rBullet },
-    { label: 'Ø H2 (Collet)', val: c.neck_diameter_mm, measY: yCaseMouth, r: rNeck }
+    { label: tr('Ø G1 (Balle)', 'Ø G1 (Bullet)'), val: c.bullet_diameter_mm, measY: yCaseMouth - hBullet * 0.1, r: rBullet },
+    { label: tr('Ø H2 (Collet)', 'Ø H2 (Neck)'), val: c.neck_diameter_mm, measY: yCaseMouth, r: rNeck }
   ];
-  if (isBottleneck && c.shoulder_diameter_mm) leftAnns.push({ label: 'Ø P2 (Épaul.)', val: c.shoulder_diameter_mm, measY: yShoulderBottomVal, r: rShoulder });
+  if (isBottleneck && c.shoulder_diameter_mm) leftAnns.push({ label: tr('Ø P2 (Épaul.)', 'Ø P2 (Should.)'), val: c.shoulder_diameter_mm, measY: yShoulderBottomVal, r: rShoulder });
   leftAnns.push({ label: 'Ø P1 (Base)', val: c.base_diameter_mm, measY: yBaseBottom, r: rBase },
     { label: rimLabel, val: c.rim_diameter_mm, measY: yRimBottom - rimThickness / 2, r: rRim });
   leftAnns.forEach(ann => { ann.textY = ann.measY; });
@@ -139,7 +142,7 @@ function cartridgeDiagram(cal, dim, targetW) {
   // Corrigé le 2026-08-19 : L3 (longueur d'étui) est une donnée, elle reste ; le hors-tout
   // est annoncé comme ce qu'il est.
   const l3Text = `L3: ${c.case_length_mm.toFixed(2)} mm`;
-  const l6Text = oalExact ? `L6: ${cal.oal_mm.toFixed(2)} mm` : `hors-tout du dessin`;
+  const l6Text = oalExact ? `L6: ${cal.oal_mm.toFixed(2)} mm` : tr('hors-tout du dessin', 'drawing overall length');
   const l3Height = yRimBottom - yCaseMouth, l3FontSize = l3Height < 70 ? 7.5 : 8.5;
   const rightAnnsHtml = `
     <line x1="${cX + rMax + 4}" y1="${yRimBottom}" x2="262" y2="${yRimBottom}" stroke="var(--color-text-light, #888)" stroke-width="0.5" stroke-dasharray="2,2" />
@@ -150,7 +153,7 @@ function cartridgeDiagram(cal, dim, targetW) {
     <line x1="255" y1="${yRimBottom}" x2="255" y2="${yBulletTip}" stroke="var(--color-text-light, #888)" stroke-width="0.75" marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)" />
     <text x="251" y="${(yRimBottom + yBulletTip) / 2}" transform="rotate(-90, 251, ${(yRimBottom + yBulletTip) / 2})" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" fill="var(--color-text-light, #666)" font-weight="600" text-anchor="middle">${l6Text}</text>`;
 
-  const note = exact ? '' : `<text x="140" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#a60">profil estimé (cotes exactes : longueur + balle)</text>`;
+  const note = exact ? '' : `<text x="140" y="297" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#a60">${tr('profil estimé (cotes exactes : longueur + balle)', 'estimated profile (exact dimensions: length + bullet)')}</text>`;
   // Recadrage : on garde tout ce qui est dessiné — pointe de balle, cotes de gauche
   // (repoussées jusqu'à y = 288) et note de repli (y = 297).
   const frameY0 = cal.tight_frame ? Math.max(0, Math.round(yBulletTip - 22)) : 0;
