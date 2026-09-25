@@ -306,7 +306,9 @@ const frMs =(v,u)=>u==='fps'?v*MS_FPS : v;
 const frBar=(v,u)=>u==='psi'?v*BAR_PSI: v;
 const frChg=(gr)=>U.charge.cur==='g'? gr*GR_G : gr;          // charge gr -> unité d'affichage
 function toggleU(k){
-  const u=U[k]; u.cur=u.opt[(u.opt.indexOf(u.cur)+1)%u.opt.length];
+  const u=U[k], avant=u.cur; u.cur=u.opt[(u.opt.indexOf(u.cur)+1)%u.opt.length];
+  if(k==='charge') ladderConvertir(0, x=>u.cur==='g'? toGr(x,avant)*GR_G : toGr(x,avant));
+  if(k==='v')      ladderConvertir(1, x=>frMs(toMs(x,avant),u.cur));
   document.getElementById('u_'+k).textContent=u.cur;
   if(u.el){const el=document.getElementById(u.el),v=parseFloat(el.value);
     if(el.value!==''&&isFinite(v)){
@@ -497,12 +499,39 @@ function renderLadder(){
   const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
   el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs (sous-estimés). Ne dépassez pas le max fabricant.',' for indication only (underestimated). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
 }
+// Une ligne de mesures de l'échelle de charge -> [charge, vitesse] (nombres), ou null.
+// Accepte « 41.0, 845 » (point décimal, virgule séparatrice : le format de l'exemple),
+// « 41,2 851 » et « 41,2;851 » (virgule décimale à la française, séparateur espace,
+// point-virgule ou tabulation). L'ancien découpage, sur [,; \t], faisait de « 41,2 851 »
+// trois nombres, et de la charge 41,2 le point (41 ; 2) — sans rien signaler (2026-09-25).
+function ladderLigne(l){
+  l=String(l).replace(/^﻿/,'').trim().replace(/^"|"$/g,'');
+  if(!l||l[0]==='#')return null;
+  let parts;
+  if(/[;\t]/.test(l)) parts=l.split(/\s*[;\t]\s*/).map(x=>x.replace(',','.'));
+  else if(/\d,\d/.test(l) && !/\./.test(l) && /\s/.test(l)) parts=l.split(/\s+/).map(x=>x.replace(',','.'));
+  else parts=l.split(/[,\s]+/);
+  const a=parts.map(x=>parseFloat(x.replace(/^"|"$/g,'')));
+  return (a.length>=2 && a[0]>0 && a[1]>0) ? [a[0],a[1]] : null;
+}
+function ladderPoints(){
+  return document.getElementById('ladMeas').value.split('\n').map(ladderLigne).filter(Boolean);
+}
+// Réécrit les mesures saisies dans d'autres unités. Appelé quand l'unité de charge ou de
+// vitesse change : sans cela, « 845 » restait 845 et passait de m/s à fps — E_eff chutait
+// de 91 % au simple passage de l'affichage en impérial.
+function ladderConvertir(col, f){
+  const el=document.getElementById('ladMeas'); if(!el||!el.value.trim())return;
+  const pts=ladderPoints(); if(!pts.length)return;
+  // Charge au millième en grammes (0,015 gr), au centième en grains : 0,01 g vaut 0,15 gr,
+  // l'ordre du pas d'une échelle — un aller-retour gr -> g -> gr ramenait 41 à 41,05.
+  const dec=U.charge.cur==='g'?3:2;
+  el.value=pts.map(a=>{ const b=a.slice(); b[col]=f(b[col]); return b[0].toFixed(dec).replace(/\.?0+$/,'')+', '+Math.round(b[1]); }).join('\n');
+}
 function fitLadder(){
   const out=document.getElementById('ladFit'); if(!out)return;
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), m=m_gr*G;
-  const pts=document.getElementById('ladMeas').value.split('\n').map(l=>l.trim()).filter(Boolean)
-    .map(l=>l.split(/[,;\t ]+/).map(parseFloat)).filter(a=>a.length>=2&&a[0]>0&&a[1]>0)
-    .map(a=>({C:toGr(a[0],U.charge.cur), v:toMs(a[1],U.v.cur)}));
+  const pts=ladderPoints().map(a=>({C:toGr(a[0],U.charge.cur), v:toMs(a[1],U.v.cur)}));
   if(pts.length<2){out.innerHTML=pts.length?'<p class="vm-note">'+T('Au moins 2 lignes valides nécessaires.','At least 2 valid lines are needed.')+'</p>':'';return;}
   const eeffs=pts.map(p=>{const C=p.C*G,me=m+C/3;return me*p.v*p.v/(2*C);});
   const eeff=eeffs.reduce((a,b)=>a+b,0)/eeffs.length, vmean=pts.reduce((s,p)=>s+p.v,0)/pts.length;
@@ -780,6 +809,7 @@ function csvSplit(line){
 // Écrit une entrée numérique (clé U) à partir d'une valeur exprimée dans `unit`, convertie vers l'unité d'affichage courante
 function importField(key,val,unit){
   const el=document.getElementById(U[key].el); if(!el)return;
+  val=String(val==null?'':val).trim().replace(',','.');   // tableur français : « 175,5 »
   if(val===''||!isFinite(parseFloat(val))){ if(key==='vmeas')el.value=''; return; }
   val=parseFloat(val); unit=unit||U[key].cur; const cur=U[key].cur; let out;
   if(key==='mass'||key==='charge'){ const gr=toGr(val,unit); out=cur==='g'?gr*GR_G:gr; el.value=out.toFixed(key==='mass'?1:2); }
@@ -815,7 +845,7 @@ function importEstimateur(file){
   r.onload=()=>{
     const map={};
     r.result.split(/\r?\n/).forEach(l=>{ l=l.replace(/^﻿/,'').trim();
-      if(!l||l[0]==='#')return; const f=csvSplit(l);
+      if(!l||l[0]==='#')return; const f=l.includes(';')? l.split(';').map(x=>x.trim().replace(/^"|"$/g,'')) : csvSplit(l);
       if(f.length>=2 && f[0].toLowerCase()!=='champ') map[f[0].toLowerCase()]=f; });
     RIFLE.eeff=null;                                   // couple potentiellement changé -> réinit ancrage carabine
     if(map.cartouche && CAL[map.cartouche[1]]){ document.getElementById('cart').value=map.cartouche[1]; renderDiag(); }
@@ -829,12 +859,11 @@ function importEstimateur(file){
 // Ladder : exporte les mesures saisies (charge,vitesse) dans les unités courantes
 function exportLadder(){
   const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value;
-  const pts=document.getElementById('ladMeas').value.split('\n').map(l=>l.trim()).filter(Boolean)
-    .map(l=>l.split(/[,;\t ]+/).map(parseFloat)).filter(a=>a.length>=2&&a[0]>0&&a[1]>0);
+  const pts=ladderPoints();
   const rows=[
     ['# Tireur.org — Ladder (mesures de vitesse)'],
     ['# couple: '+ck+' | '+pk+' — unités: charge='+U.charge.cur+', vitesse='+U.v.cur],
-    ['charge','vitesse'],
+    ['charge ('+U.charge.cur+')','vitesse ('+U.v.cur+')'],   // unités lues à l'import
     ...pts.map(a=>[a[0],a[1]]),
   ];
   csvDownload('ladder_'+ck.replace(/\W+/g,'_')+'.csv',csvRows(rows));
@@ -843,10 +872,17 @@ function exportLadder(){
 function importLadder(file){
   const r=new FileReader();
   r.onload=()=>{
-    const lines=r.result.split(/\r?\n/).map(l=>l.replace(/^﻿/,'').trim())
-      .filter(l=>l&&l[0]!=='#').map(csvSplit)
-      .filter(a=>a.length>=2&&isFinite(parseFloat(a[0]))&&isFinite(parseFloat(a[1])))
-      .map(a=>parseFloat(a[0])+', '+parseFloat(a[1]));
+    const texte=r.result.replace(/^﻿/,'');
+    // Unités du fichier : en-tête « charge (gr),vitesse (m/s) », ou, dans les fichiers
+    // exportés avant le 2026-09-25, le commentaire « unités: charge=gr, vitesse=m/s ».
+    // Faute de mieux, les unités d'affichage courantes (comportement d'avant).
+    const uc=(texte.match(/charge\s*(?:\(|=)\s*(gr|g)\b/i)||[])[1]||U.charge.cur;
+    const uv=(texte.match(/vitesse\s*(?:\(|=)\s*(m\/s|fps)/i)||[])[1]||U.v.cur;
+    const lines=texte.split(/\r?\n/).map(ladderLigne).filter(Boolean).map(a=>{
+      const gr=toGr(a[0],uc.toLowerCase()), c=U.charge.cur==='g'? gr*GR_G : gr;
+      const v=frMs(toMs(a[1],uv.toLowerCase()),U.v.cur);
+      return c.toFixed(U.charge.cur==='g'?3:2).replace(/\.?0+$/,'')+', '+Math.round(v);
+    });
     document.getElementById('ladMeas').value=lines.join('\n');
     fitLadder();
   };
