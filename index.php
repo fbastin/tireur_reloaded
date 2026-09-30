@@ -3,7 +3,7 @@ $title = "Estimateur de balistique intérieure — Tireur.org";
 $meta_description = "Estimateur de vitesse et de pression au rechargement par modèle énergie-efficacité, calé sur données fabricant et affinable sur vos propres mesures. Courbe pression/vitesse (Le Duc).";
 include '../../header.php';
 ?>
-<link rel="stylesheet" href="/rechargement/css/reloading.css" />
+<link rel="stylesheet" href="/rechargement/css/reloading.css?v=<?php echo filemtime($_SERVER['DOCUMENT_ROOT'].'/rechargement/css/reloading.css'); ?>" />
 <script src="/js/vendor/plotly/plotly-2.35.2.min.js?v=2.35.2" charset="utf-8"></script>
 <script src="energy_model.js"></script>
 <script src="velocity_model.js"></script>
