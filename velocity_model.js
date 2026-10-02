@@ -3,12 +3,16 @@
  *
  * Ne modélise PAS la combustion : s'appuie sur des corrélations publiques,
  * ancrées sur des données mesurées (chronographe) ou fabricant. Borné à
- * l'enveloppe des données. Réfs : Powley ; Litz (2011) loi de puissance canon ;
+ * l'enveloppe des données. Réfs : loi de puissance canon recoupée sur Marr (2014) et Litz (2015, p. 322) ;
  * Le Duc v(x). Voir docs/balistique_interieure_roadmap.md (Chantier 3).
  */
 const VelocityModel = {
-  /** Loi de puissance Powley/Litz : v0(L) = vRef * (L/LRef)^k  (k ≈ 0,15–0,30). */
-  scaleByBarrel(vRef, LRef, L, k = 0.27) {
+  /** Loi de puissance v0(L) = vRef * (L/LRef)^k, L = COURSE de la balle (canon − étui) : c'est ce
+   *  que passent l'estimateur et build_anchors. k = 0,17 : médiane de six essais .308 publiés
+   *  (Marr 2014, quatre munitions 28″→16,5″ ; Litz 2015 p. 322 ; tableau du manuel), 0,16–0,18 sur
+   *  la course (0,18–0,20 sur la longueur du canon). L'ancien 0,27, « Powley/Litz », ne venait
+   *  d'aucune mesure retrouvée. Voir verification:technique:estimateur_vitesse (2026-10-02). */
+  scaleByBarrel(vRef, LRef, L, k = 0.17) {
     return vRef * Math.pow(L / LRef, k);
   },
 

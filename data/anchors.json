@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-08-18",
+ "_date": "2026-10-02",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -2369,7 +2369,7 @@
    "np": 0.3324
   },
   "6 Norma BR|Accurate LT-32": {
-   "eeff": 1237984,
+   "eeff": 1218797,
    "n": 26,
    "np": 0.4139
   },
@@ -5976,7 +5976,7 @@
    "mhr": 1.6
   },
   "221 Remington Fireball|N130": {
-   "eeff": 886849,
+   "eeff": 938363,
    "n": 34
   },
   "221 Remington Fireball|N133": {
@@ -6230,7 +6230,7 @@
    "n": 14
   },
   "6 Norma BR|N540": {
-   "eeff": 1221647,
+   "eeff": 1217094,
    "n": 18
   },
   "6 Norma BR|N150": {
@@ -6515,7 +6515,7 @@
   "270 Weatherby Magnum|N160": {
    "eeff": 1020260,
    "n": 6,
-   "mhr": 1.6
+   "mhr": 1.8
   },
   "270 Weatherby Magnum|N165": {
    "eeff": 983138,
@@ -6720,7 +6720,7 @@
   "7mm Weatherby Magnum|N160": {
    "eeff": 1058222,
    "n": 8,
-   "mhr": 2.2
+   "mhr": 1.9
   },
   "7mm Weatherby Magnum|N560": {
    "eeff": 1061001,
@@ -6737,7 +6737,7 @@
   "7mm PRC|N160": {
    "eeff": 1133257,
    "n": 8,
-   "mhr": 1.5
+   "mhr": 1.3
   },
   "7mm PRC|N165": {
    "eeff": 1096814,
@@ -7098,7 +7098,7 @@
   "300 Weatherby Magnum|N160": {
    "eeff": 1092239,
    "n": 8,
-   "mhr": 2.4
+   "mhr": 2.2
   },
   "300 Weatherby Magnum|N165": {
    "eeff": 1069018,
@@ -8925,319 +8925,319 @@
    "n": 6
   },
   "221 Remington Fireball|Hodgdon H4227": {
-   "eeff": 973739,
+   "eeff": 1052364,
    "n": 25
   },
   "221 Remington Fireball|Accurate 1680": {
-   "eeff": 885964,
+   "eeff": 957501,
    "n": 26
   },
   "221 Remington Fireball|Hodgdon H4198": {
-   "eeff": 872283,
+   "eeff": 942716,
    "n": 26
   },
   "221 Remington Fireball|Accurate 2015BR": {
-   "eeff": 782456,
+   "eeff": 845635,
    "n": 25
   },
   "221 Remington Fireball|Alliant Reloder 7": {
-   "eeff": 862062,
+   "eeff": 931670,
    "n": 30
   },
   "221 Remington Fireball|Hodgdon H322": {
-   "eeff": 837044,
+   "eeff": 904632,
    "n": 17
   },
   "338 Norma Mag.|Hodgdon H4831, H4831C": {
-   "eeff": 1107070,
+   "eeff": 1111165,
    "n": 19
   },
   "338 Norma Mag.|IMR 4955": {
-   "eeff": 1099164,
+   "eeff": 1103230,
    "n": 17
   },
   "338 Norma Mag.|Alliant Reloder 22": {
-   "eeff": 1129938,
+   "eeff": 1134118,
    "n": 15
   },
   "338 Norma Mag.|N560": {
-   "eeff": 1120541,
+   "eeff": 1124686,
    "n": 20
   },
   "338 Norma Mag.|N165": {
-   "eeff": 1058541,
+   "eeff": 1062457,
    "n": 10
   },
   "338 Norma Mag.|Alliant Reloder 23": {
-   "eeff": 1144795,
+   "eeff": 1149030,
    "n": 19
   },
   "338 Norma Mag.|IMR 7828SC": {
-   "eeff": 1086957,
+   "eeff": 1090978,
    "n": 19
   },
   "338 Norma Mag.|Alliant Reloder 25": {
-   "eeff": 1074718,
+   "eeff": 1078694,
    "n": 21
   },
   "338 Norma Mag.|Hodgdon H1000": {
-   "eeff": 1074460,
+   "eeff": 1078434,
    "n": 20
   },
   "338 Norma Mag.|Alliant Reloder 26": {
-   "eeff": 1108562,
+   "eeff": 1112663,
    "n": 20
   },
   "338 Norma Mag.|Norma Magnum": {
-   "eeff": 1033433,
+   "eeff": 1037256,
    "n": 19
   },
   "338 Norma Mag.|Hodgdon Retumbo": {
-   "eeff": 1106088,
+   "eeff": 1110180,
    "n": 9
   },
   "338 Norma Mag.|N570": {
-   "eeff": 1115407,
+   "eeff": 1119533,
    "n": 6
   },
   "338 Norma Mag.|Alliant Reloder 33": {
-   "eeff": 1039360,
+   "eeff": 1043205,
    "n": 8
   },
   "338 Norma Mag.|IMR 8133": {
-   "eeff": 1025785,
+   "eeff": 1029580,
    "n": 7
   },
   "6.5 x 47 Lapua|Hodgdon Benchmark": {
-   "eeff": 1283056,
+   "eeff": 1287663,
    "n": 13
   },
   "6.5 x 47 Lapua|IMR 8208 XBR": {
-   "eeff": 1294085,
+   "eeff": 1298732,
    "n": 14
   },
   "6.5 x 47 Lapua|Hodgdon H4895": {
-   "eeff": 1308589,
+   "eeff": 1313288,
    "n": 12
   },
   "6.5 x 47 Lapua|IMR 4166": {
-   "eeff": 1261517,
+   "eeff": 1266047,
    "n": 20
   },
   "6.5 x 47 Lapua|Accurate 4064": {
-   "eeff": 1272378,
+   "eeff": 1276946,
    "n": 8
   },
   "6.5 x 47 Lapua|Accurate 2520": {
-   "eeff": 1267468,
+   "eeff": 1272019,
    "n": 14
   },
   "6.5 x 47 Lapua|Alliant Reloder 15": {
-   "eeff": 1279512,
+   "eeff": 1284106,
    "n": 20
   },
   "6.5 x 47 Lapua|N140": {
-   "eeff": 1236395,
+   "eeff": 1240834,
    "n": 17
   },
   "6.5 x 47 Lapua|Hodgdon Varget": {
-   "eeff": 1271203,
+   "eeff": 1275767,
    "n": 22
   },
   "6.5 x 47 Lapua|Ramshot Big Game": {
-   "eeff": 1215659,
+   "eeff": 1220025,
    "n": 35
   },
   "6.5 x 47 Lapua|N540": {
-   "eeff": 1246296,
+   "eeff": 1250771,
    "n": 23
   },
   "6.5 x 47 Lapua|IMR 4451": {
-   "eeff": 1163928,
+   "eeff": 1168108,
    "n": 30
   },
   "6.5 x 47 Lapua|Hodgdon H4350": {
-   "eeff": 1227977,
+   "eeff": 1232387,
    "n": 32
   },
   "6.5 x 47 Lapua|Alliant Reloder 17": {
-   "eeff": 1218563,
+   "eeff": 1222939,
    "n": 35
   },
   "6.5 x 47 Lapua|IMR 4350": {
-   "eeff": 1157858,
+   "eeff": 1162016,
    "n": 27
   },
   "6.5 x 47 Lapua|Accurate 4350": {
-   "eeff": 1209986,
+   "eeff": 1214330,
    "n": 15
   },
   "6.5 x 47 Lapua|Alliant Reloder 16": {
-   "eeff": 1268846,
+   "eeff": 1273402,
    "n": 15
   },
   "6.5 x 47 Lapua|Hodgdon Hybrid 100V": {
-   "eeff": 1242163,
+   "eeff": 1246623,
    "n": 16
   },
   "6.5 x 47 Lapua|Hodgdon H4831, H4831C": {
-   "eeff": 1161937,
+   "eeff": 1166109,
    "n": 15
   },
   "6.5 x 47 Lapua|Alliant Reloder 19": {
-   "eeff": 1173515,
+   "eeff": 1177729,
    "n": 12
   },
   "6.5 x 47 Lapua|Ramshot Hunter": {
-   "eeff": 1209980,
+   "eeff": 1214325,
    "n": 5
   },
   "6 Norma BR|Hodgdon Benchmark": {
-   "eeff": 1226246,
+   "eeff": 1205810,
    "n": 25
   },
   "6 Norma BR|Hodgdon H335": {
-   "eeff": 1185976,
+   "eeff": 1166211,
    "n": 31
   },
   "6 Norma BR|IMR 8208 XBR": {
-   "eeff": 1209822,
+   "eeff": 1189660,
    "n": 27
   },
   "6 Norma BR|Shooters World Tactical Rifle": {
-   "eeff": 1191050,
+   "eeff": 1171201,
    "n": 25
   },
   "6 Norma BR|Hodgdon H4895": {
-   "eeff": 1199723,
+   "eeff": 1179729,
    "n": 29
   },
   "6 Norma BR|IMR 4895": {
-   "eeff": 1152465,
+   "eeff": 1133258,
    "n": 30
   },
   "6 Norma BR|IMR 4166": {
-   "eeff": 1172319,
+   "eeff": 1152781,
    "n": 24
   },
   "6 Norma BR|IMR 4064": {
-   "eeff": 1145091,
+   "eeff": 1126007,
    "n": 21
   },
   "6 Norma BR|Alliant Power Pro Varmit": {
-   "eeff": 1212876,
+   "eeff": 1192663,
    "n": 18
   },
   "6 Norma BR|Hodgdon Varget": {
-   "eeff": 1143005,
+   "eeff": 1123957,
    "n": 28
   },
   "6 Norma BR|Alliant Reloder 10X": {
-   "eeff": 1293851,
+   "eeff": 1272288,
    "n": 13
   },
   "6 Norma BR|N130": {
-   "eeff": 1272808,
+   "eeff": 1251596,
    "n": 12
   },
   "6 Norma BR|Ramshot TAC": {
-   "eeff": 1208909,
+   "eeff": 1188762,
    "n": 15
   },
   "6 Norma BR|Accurate 2495": {
-   "eeff": 1177416,
+   "eeff": 1157794,
    "n": 20
   },
   "6 Norma BR|Accurate 4064": {
-   "eeff": 1158758,
+   "eeff": 1139447,
    "n": 19
   },
   "6 Norma BR|Alliant Reloder 15": {
-   "eeff": 1204966,
+   "eeff": 1184885,
    "n": 20
   },
   "6 Norma BR|Alliant Power Pro 2000-MR": {
-   "eeff": 1234432,
+   "eeff": 1213859,
    "n": 5
   },
   "6 Norma BR|Hodgdon H4350": {
-   "eeff": 1199259,
+   "eeff": 1179273,
    "n": 4
   },
   "6 Norma BR|Alliant Reloder 17": {
-   "eeff": 1170554,
+   "eeff": 1151047,
    "n": 5
   },
   "7.5 x 55 Swiss|IMR 3031": {
-   "eeff": 1049768,
+   "eeff": 1092128,
    "n": 10
   },
   "7.5 x 55 Swiss|IMR 4895": {
-   "eeff": 1059982,
+   "eeff": 1102754,
    "n": 18
   },
   "7.5 x 55 Swiss|IMR 4064": {
-   "eeff": 1066331,
+   "eeff": 1109359,
    "n": 22
   },
   "7.5 x 55 Swiss|IMR 4320": {
-   "eeff": 1063753,
+   "eeff": 1106677,
    "n": 16
   },
   "7.5 x 55 Swiss|IMR 4350": {
-   "eeff": 976419,
+   "eeff": 1015819,
    "n": 14
   },
   "7.5 x 55 Swiss|IMR 4831": {
-   "eeff": 974163,
+   "eeff": 1013472,
    "n": 8
   },
   "7.5 x 55 Swiss|Hodgdon H4831, H4831C": {
-   "eeff": 932049,
+   "eeff": 969658,
    "n": 8
   },
   "7.62 x 39|N120": {
-   "eeff": 1413897,
+   "eeff": 1341327,
    "n": 23
   },
   "7.62 x 39|IMR 4227": {
-   "eeff": 1484005,
+   "eeff": 1407836,
    "n": 20
   },
   "7.62 x 39|Hodgdon H4227": {
-   "eeff": 1537237,
+   "eeff": 1458336,
    "n": 5
   },
   "7.62 x 39|Accurate 1680": {
-   "eeff": 1390807,
+   "eeff": 1319422,
    "n": 27
   },
   "7.62 x 39|Hodgdon H4198": {
-   "eeff": 1335479,
+   "eeff": 1266934,
    "n": 17
   },
   "7.62 x 39|IMR 4198": {
-   "eeff": 1367928,
+   "eeff": 1297717,
    "n": 30
   },
   "7.62 x 39|Accurate 2015BR": {
-   "eeff": 1183620,
+   "eeff": 1122869,
    "n": 21
   },
   "7.62 x 39|Alliant Reloder 7": {
-   "eeff": 1330199,
+   "eeff": 1261925,
    "n": 29
   },
   "7.62 x 39|N130": {
-   "eeff": 1323629,
+   "eeff": 1255692,
    "n": 26
   },
   "7.62 x 39|Hodgdon Benchmark": {
-   "eeff": 1160529,
+   "eeff": 1100964,
    "n": 20
   },
   "7.62 x 39|Hodgdon H322": {
-   "eeff": 1201154,
+   "eeff": 1139503,
    "n": 19
   }
  }
