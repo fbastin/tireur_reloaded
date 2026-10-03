@@ -748,7 +748,7 @@ anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it 
    Chapman & Hall, London, 1950 (viii + 442 pp.). Contains the lumped-parameter theory
    and the Mayer–Hart-type closed-form solution.
 3. Carlucci & Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*.
-4. P. R. Alger, « The Le Duc Velocity Formula », *Proceedings of the U.S. Naval Institute* 37 (2), whole no. 138, 1911, p. 535–540. [Scan](https://www.tireur.org/articles/Alger1911_Le_Duc_velocity_formula.pdf). Formula attributed to Captain Le Duc, from J. Challéat, « Théorie des affûts à déformation », *Revue d'artillerie*, 1904–1905 (not read).
+4. P. R. Alger, « The Le Duc Velocity Formula », *Proceedings of the U.S. Naval Institute* 37 (2), whole no. 138, 1911, p. 535–540. [Scan](https://www.tireur.org/articles/Alger1911_Le_Duc_velocity_formula.pdf). Formula attributed to Captain Le Duc (spelt *Leduc* in the French source), from J. Challéat, « Théorie des affûts à déformation, à lien élastique et bêche de crosse », *Revue d'artillerie* 65, Dec. 1904, p. 184–185 ([Gallica](https://gallica.bnf.fr/ark:/12148/bpt6k64398706/f190.item)): $V_0 = a\,u_0/(b+u_0)$, $b = \beta\,(s/p)^{3/8}(1-\tfrac34\Delta)$, taken « sous la forme qui leur a été donnée dans les cours de l'École d'application de Fontainebleau ». Leduc built them from measured velocity–travel curves (p. 194, note).
 5. zen/grt_databases (CC0 1.0) — community GRT component data.
 6. F. Ongaro, C. Robbe, A. Papy, B. Stirbu, A. Chabotier — *Modelling of internal
    ballistics of gun systems: A review*, Defence Technology 41 (2024) 35–58,
