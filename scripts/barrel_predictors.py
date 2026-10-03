@@ -58,7 +58,7 @@ MASS = {('223 Rem.', 'BH 68 HM'): 68, ('223 Rem.', 'Win M855'): 62,
         ('300 Win. Mag.', '(article 2013)'): 190}
 CHARGE = {('7.62 x 39', 'Brown Bear'): 25.4, ('7.62 x 39', 'TCW'): 25.0}
 
-# JEU DE VALIDATION, ajouté APRÈS le choix de k = 0,167 sur les 19 séries : deux cartouches que
+# JEU DE VALIDATION, ajouté APRÈS le choix de k = 0,167 sur les 19 séries : trois cartouches que
 # rien n'a servi à régler. Rifleshooter.com (Marr), tableaux lus en image le 2026-10-03 ; les
 # totaux publiés (« Change from 28" », « CHG 30" ») recoupent les lignes.
 #   7 mm Rem. Mag. (2015-04) : Federal Premium 150 gr GameKing (commerce, 5 coups) ; 160 gr Swift
@@ -66,6 +66,10 @@ CHARGE = {('7.62 x 39', 'Brown Bear'): 25.4, ('7.62 x 39', 'TCW'): 25.0}
 #   (3 à 4 coups) ; 28 → 20 po.
 #   .338 Lapua Mag. (2017-03) : 250 gr SMK, 89,0 gr H4831SC ; 300 gr SMK, 93,3 gr Retumbo ;
 #   4 coups ; 30 → 17 po.
+#   7.62 × 54 R : B. L. Clark, Effect of Barrel Length on the Muzzle Velocity and Report from a
+#   Mosin-Nagant 7.62x54R Rifle, Honors Thesis, University of South Florida, 2011, tableau 1
+#   (moyennes de 10 coups, recalculées sur les tableaux 2 à 8) ; surplus bulgare 147 gr ; vitesse
+#   à environ 10 pieds de la bouche ; 28,75 → 16,75 po par pas de 2 po. SEUL autre expérimentateur.
 L7 = list(range(28, 19, -1))
 L338 = list(range(30, 16, -1))
 EXT = {
@@ -76,10 +80,14 @@ EXT = {
    '175 GK': list(zip(L7, [2685, 2645, 2640, 2646, 2615, 2585, 2573, 2560, 2455]))},
  '338 Lapua Mag.': {
    '250 SMK': list(zip(L338, [2942, 2928, 2919, 2891, 2868, 2848, 2820, 2785, 2751, 2711, 2682, 2639, 2602, 2547])),
-   '300 SMK': list(zip(L338, [2833, 2871, 2835, 2818, 2799, 2790, 2760, 2732, 2708, 2690, 2620, 2595, 2529, 2492]))}}
+   '300 SMK': list(zip(L338, [2833, 2871, 2835, 2818, 2799, 2790, 2760, 2732, 2708, 2690, 2620, 2595, 2529, 2492]))},
+ '7.62 x 54 R': {
+   'Clark 147 (BG)': list(zip([28.75, 26.75, 24.75, 22.75, 20.75, 18.75, 16.75],
+                              [2827, 2778, 2751, 2698, 2632, 2578, 2521]))}}
 MASS.update({('7 Rem. Mag.', 'Fed 150 GK'): 150, ('7 Rem. Mag.', '160 A-Frame'): 160,
              ('7 Rem. Mag.', '165 GK'): 165, ('7 Rem. Mag.', '175 GK'): 175,
-             ('338 Lapua Mag.', '250 SMK'): 250, ('338 Lapua Mag.', '300 SMK'): 300})
+             ('338 Lapua Mag.', '250 SMK'): 250, ('338 Lapua Mag.', '300 SMK'): 300,
+             ('7.62 x 54 R', 'Clark 147 (BG)'): 147})
 CHARGE.update({('7 Rem. Mag.', '160 A-Frame'): 66.0, ('7 Rem. Mag.', '165 GK'): 66.5,
                ('7 Rem. Mag.', '175 GK'): 60.0, ('338 Lapua Mag.', '250 SMK'): 89.0,
                ('338 Lapua Mag.', '300 SMK'): 93.3})
@@ -255,7 +263,7 @@ def main():
              '19 séries de référence ; k constant en validation croisée par cartouche')
     k19 = st.median(kall.values())
     evaluate(list(series(ext=True)), lambda cart: k19,
-             f'Jeu de validation (2 cartouches nouvelles) ; k constant = {k19:.3f}, médiane des 19')
+             f'Jeu de validation (cartouches nouvelles) ; k constant = {k19:.3f}, médiane des 19')
     paired(S + list(series(ext=True)))
 
 
