@@ -24,7 +24,7 @@ cartridge labels used by the calibration guide.
       "test_barrel_mm": 610    // optional: reference test-barrel length. Peak PRESSURE is
                                // evaluated at this travel (peak forms near the chamber,
                                // ~independent of the real barrel), and predicted VELOCITY is
-                               // anchored here then scaled to the user's barrel (Powley/Litz).
+                               // anchored here then scaled to the user's barrel (power law, k = 0.15 on travel).
                                // Auto-derived per cartridge by `scripts/build_test_barrels.js`
                                // (modal calibration barrel across RS/Western/Vihtavuori).
                                // Falls back to 600 (rifle) / 122 (handgun) when absent.

@@ -7,7 +7,9 @@ recopiées le 2026-10-02 :
   * Rifleshooter.com (Bill Marr), essais de canon raccourci 2013-2018 : tableaux publiés en IMAGE,
     relus à l'écran (un outil de lecture automatique en avait inventé un : ne jamais recopier
     sans regarder l'image) ; .243 Win. et .308 Win. : vitesses extrêmes du texte des articles ;
-  * Litz, Applied Ballistics, 3e éd., p. 322 (.308 Win. 175 gr, 16″ et 30″).
+  * PAS Litz, Applied Ballistics, 3e éd., p. 322-323 : « about 2500 fps … over 2800 fps » et la
+    fig. 16.43 (100 fps exactement tous les 4″) illustrent un calcul de probabilité de toucher ;
+    ce n'est pas une mesure. Comptée à tort comme une série jusqu'au 2026-10-03.
 Longueurs d'étui : data/calibers.json. Résultat et usage : velocity_model.js (k par défaut) et la
 fiche wiki verification:technique:estimateur_vitesse.
 """
@@ -31,7 +33,7 @@ D = {  # cartouche: (étui mm, {charge: [(L po, v fps), ...]})
    '120 A-MAX': list(zip(range(27,15,-1),[2961,2949,2937,2918,2892,2872,2847,2819,2822,2761,2752,2728])),
    '142 SMK':   list(zip(range(27,15,-1),[2663,2677,2679,2683,2666,2649,2641,2609,2590,2562,2551,2505]))}),
  '243 Win.': (51.94, {'Rem 80 PSP': [(24,3123),(16,2806)], 'Win 100 PP': [(24,2826),(16,2488)]}),
- '308 Win.': (51.18, {'Win 147':[(28,2965),(16.5,2682)],'IMI 150':[(28,2823),(16.5,2561)],'GMM 168':[(28,2706),(16.5,2466)],'Win 180':[(28,2632),(16.5,2373)],'Litz 175':[(30,2800),(16,2500)]}),
+ '308 Win.': (51.18, {'Win 147':[(28,2965),(16.5,2682)],'IMI 150':[(28,2823),(16.5,2561)],'GMM 168':[(28,2706),(16.5,2466)],'Win 180':[(28,2632),(16.5,2373)]}),
  '300 Win. Mag.': (66.55, {'(article 2013)': list(zip([24.25,23.25,22.25,21.25,20.25,19.25,18.25,17.25,16.25],[2892,2851,2786,2789,2752,2727,2696,2640,2575]))}),
 }
 def slope(pts):

@@ -3,17 +3,17 @@
  *
  * Ne modélise PAS la combustion : s'appuie sur des corrélations publiques,
  * ancrées sur des données mesurées (chronographe) ou fabricant. Borné à
- * l'enveloppe des données. Réfs : loi de puissance canon recoupée sur Marr (2014) et Litz (2015, p. 322) ;
+ * l'enveloppe des données. Réfs : loi de puissance canon recoupée sur 19 séries publiées (Marr, Rifleshooter.com) ;
  * Le Duc v(x). Voir docs/balistique_interieure_roadmap.md (Chantier 3).
  */
 const VelocityModel = {
   /** Loi de puissance v0(L) = vRef * (L/LRef)^k, L = COURSE de la balle (canon − étui) : c'est ce
-   *  que passent l'estimateur et build_anchors. k = 0,17 : 20 séries publiées sur 8 cartouches
-   *  (scripts/barrel_exponent_fit.py) donnent une médiane de 0,16 sur la course, mais de 0,10 à 0,28
+   *  que passent l'estimateur et build_anchors. k = 0,15 : 19 séries publiées sur 8 cartouches
+   *  (scripts/barrel_exponent_fit.py) donnent une médiane de 0,15 sur la course, mais de 0,10 à 0,28
    *  selon la cartouche et la charge (.243 Win. et .300 Win. Mag. hautes, 7.62×39 et 6.5 Creedmoor
    *  basses) : une mesure sur la carabine prime. L'ancien 0,27, « Powley/Litz », ne venait d'aucune
    *  mesure retrouvée. Voir verification:technique:estimateur_vitesse (2026-10-02). */
-  scaleByBarrel(vRef, LRef, L, k = 0.17) {
+  scaleByBarrel(vRef, LRef, L, k = 0.15) {
     return vRef * Math.pow(L / LRef, k);
   },
 

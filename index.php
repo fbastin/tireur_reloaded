@@ -621,7 +621,7 @@ function calc(){
   const anc=effAnchor(document.getElementById('cart').value,document.getElementById('pwd').value);
   let vRef, vUser, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
   const npGlobal=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(ReP)]);   // η_p à la course de référence
-  // Loi de canon (k = 0,17 sur la course, velocity_model.js) : v à La -> v à Lb. La calibration (η_b, eeff fabricant) donne la
+  // Loi de canon (k = 0,15 sur la course, velocity_model.js) : v à La -> v à Lb. La calibration (η_b, eeff fabricant) donne la
   // vitesse au canon de RÉFÉRENCE ; on la met à l'échelle du canon réel. Une vitesse fournie par
   // l'utilisateur (mesure, ancrage carabine) est déjà au canon réel -> on la ramène à la réf. pour la pression.
   const sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
@@ -680,7 +680,7 @@ function calc(){
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = (hasPcd ? T(`Remplissage ${fill.toFixed(0)} %`,`Load density ${fill.toFixed(0)}%`) : T('Remplissage inconnu (densité bulk absente)','Load density unknown (no bulk density)')) + (CVOL>0?T(` · volume étui perso ${nf(cv_cm3,2)} cm³`,` · custom case capacity ${nf(cv_cm3,2)} cm³`):'');
   const mode = anchored?T('mesure perso','your measurement') : dataAnchor?`${anc&&anc.rifle?T('ancré carabine','rifle-anchored'):T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
-  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? T(`  ·  v₀ mise à l'échelle du canon saisi (loi de puissance, k = 0,17), pression au canon réf. ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`,`  ·  v₀ scaled to the entered barrel (power law, k = 0.17), pressure at the ref. barrel ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`) : '';
+  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? T(`  ·  v₀ mise à l'échelle du canon saisi (loi de puissance, k = 0,15), pression au canon réf. ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`,`  ·  v₀ scaled to the entered barrel (power law, k = 0.15), pressure at the ref. barrel ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`) : '';
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  ${T('rapport de détente','expansion ratio')} ${nf(Re,1)}  ·  ${mode}  ·  η_p ${nf(eta_p,3)}${pRefTxt}`;
   let w=T('Pression indicative (η_p : ~20 % RMS, biais vers la SOUS-estimation) — ne jamais valider une charge sur cette base.','Pressure for indication only (η_p: ~20% RMS, biased towards UNDERestimation) — never validate a load on this basis.');

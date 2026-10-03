@@ -108,8 +108,11 @@ needs only charge and bullet mass.
 **Barrel-length scaling.** $\eta_b$ is geometry-free, so the equation above yields the
 velocity **at the calibration (reference) barrel** $L_\text{ref}$ — the test-barrel length
 the manufacturer data was measured at. The muzzle velocity at the *user's* barrel
-$L_\text{user}$ is then obtained with the empirical **Powley/Litz power law**
-$v_0(L) = v_\text{ref}\,(L/L_\text{ref})^{k}$, $k\approx0.27$ (`VelocityModel.scaleByBarrel`).
+$L_\text{user}$ is then obtained with an empirical **power law**
+$v_0(L) = v_\text{ref}\,(L/L_\text{ref})^{k}$, $k = 0.15$ on bullet travel (`VelocityModel.scaleByBarrel`):
+the median of 19 published cut-down series (0.10–0.28; `scripts/barrel_exponent_fit.py`).
+The former 0.27, credited to Powley/Litz, matched no measurement found; Powley's own
+rule is $R^{1/4}$ on the expansion ratio, not a power of barrel length.
 Conversely, a velocity the user *supplies* (chronograph `vmeas`, or a rifle anchor fitted
 from a chrono ladder) is already at $L_\text{user}$, so it is scaled **back** to
 $L_\text{ref}$ before feeding the pressure equation (§3.2). At $L_\text{user}=L_\text{ref}$
