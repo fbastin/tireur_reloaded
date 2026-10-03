@@ -27,6 +27,8 @@ Only points of 16 inches or longer are used.
 
 **A third source.** *Hatcher's Notebook* (2nd ed., 1957), p. 399, item 14, gives Springfield Armory tests with Browning machine-gun barrels of 24, 28, 30 and 32 inches. Ammunition and shot count are not stated; a 172 gr M1 bullet is assumed (table on p. 400), which only Le Duc uses. The .50-calibre column of the same table is left out: there is no verified chamber volume for the .50 BMG in `data/calibers.json`.
 
+**Considered and not used.** Ballistics By The Inch (archived 2020) cut a .223 test barrel from 18 to 3 inches, 3 shots per length. Only the 18- and 16-inch points fall in the range studied here. The exponent from that single 2-inch step is 0.115, 0.249 and 0.280 for its three loads: the full spread seen elsewhere, so the step measures mostly noise. The short barrels (3–14 in.) would be a separate test, where the powder is not fully burnt and the expansion-ratio formulas are not expected to hold.
+
 **How the values were taken.**
 - Most tables are published as images, so they were read on screen.
 - The published column totals ("Change from 28″", "CHG 30″") were checked against the row values.
@@ -114,7 +116,7 @@ The log-log slope of each predictor's own predictions is compared with the measu
 - **Small sample.** There are 12 cartridges, one gun each, and 3 to 10 shots per point (not stated for Hatcher). The Powley vs. fixed-$k$ result points the same way in every test (bootstrap interval excludes zero), but the sign test is not significant (p = 0.073): it is not strong evidence.
 - **Charges partly estimated.** For factory ammunition the charge is unknown; Reload Swiss medians stand in for it. Only the Mayer–Hart and Le Duc predictors use it.
 - **Chamber volumes are aggregates.** $U$ is a per-cartridge median derived from Reload Swiss fill ratios, not a measured volume for each load.
-- **Mostly one data source.** 25 of the 27 series come from one experimenter and one chronograph type (barrel-mounted MagnetoSpeed); Clark's and Hatcher's are the only independent series, and Hatcher's has four points. More would be needed before publication, for instance Ballistics By The Inch for the .223.
+- **Mostly one data source.** 25 of the 27 series come from one experimenter and one chronograph type (barrel-mounted MagnetoSpeed); Clark's and Hatcher's are the only independent series, and Hatcher's has four points. More would be needed before publication; Ballistics By The Inch does not help in this range (see Data).
 
 ## Prior work
 
