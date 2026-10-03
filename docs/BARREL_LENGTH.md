@@ -1,4 +1,4 @@
-# Muzzle velocity versus barrel length: four predictors tested on 26 cut-down series
+# Muzzle velocity versus barrel length: four predictors tested on 27 cut-down series
 
 *Working note, 2026-10-03. Every number below is printed by
 [`scripts/barrel_predictors.py`](../scripts/barrel_predictors.py) and
@@ -21,9 +21,11 @@ Only points of 16 inches or longer are used.
 | Set | Cartridges | Series | Use |
 |---|---|---|---|
 | Reference | .223 Rem., .224 Valkyrie, 7.62×39, 6 mm Creedmoor, 6.5 Creedmoor, .243 Win., .308 Win., .300 Win. Mag. | 19 | Fixed the default $k$ (median 0.167 on barrel length) |
-| Validation | 7 mm Rem. Mag., .338 Lapua Mag. (Marr); 7.62×54R (Clark 2011) | 7 | Added afterwards; nothing was tuned on it |
+| Validation | 7 mm Rem. Mag., .338 Lapua Mag. (Marr); 7.62×54R (Clark 2011); .30-06 (Hatcher) | 8 | Added afterwards; nothing was tuned on it |
 
 **A second experimenter.** B. L. Clark's honors thesis (University of South Florida, 2011) cut a Mosin-Nagant from 28.75 to 16.75 inches in 2-inch steps, with 10 shots of Bulgarian 147 gr surplus per length, measured about 10 feet from the muzzle. The table 1 means were recomputed from the shot-by-shot tables 2 to 8.
+
+**A third source.** *Hatcher's Notebook* (2nd ed., 1957), p. 399, item 14, gives Springfield Armory tests with Browning machine-gun barrels of 24, 28, 30 and 32 inches. Ammunition and shot count are not stated; a 172 gr M1 bullet is assumed (table on p. 400), which only Le Duc uses. The .50-calibre column of the same table is left out: there is no verified chamber volume for the .50 BMG in `data/calibers.json`.
 
 **How the values were taken.**
 - Most tables are published as images, so they were read on screen.
@@ -61,24 +63,24 @@ The score is the root-mean-square error over those points.
 
 ### Median RMS error over the predicted points (fps)
 
-| Predictor | Reference (19 series, 8 cartridges) | Validation (7 series, 3 new cartridges) |
+| Predictor | Reference (19 series, 8 cartridges) | Validation (8 series, 4 new cartridges) |
 |---|---|---|
-| K, fixed exponent | 40.8 | 43.4 |
-| P, Powley | 30.1 | 30.7 |
-| MH, Mayer–Hart | 25.2 | 22.3 |
-| MH, φ = 0 | 38.9 | 56.8 |
-| LD, Le Duc (C.I.P. pressure) | 41.1 | 40.7 |
+| K, fixed exponent | 40.8 | 41.8 |
+| P, Powley | 30.1 | 27.4 |
+| MH, Mayer–Hart | 25.2 | 19.8 |
+| MH, φ = 0 | 38.9 | 50.4 |
+| LD, Le Duc (C.I.P. pressure) | 41.1 | 37.0 |
 
 ### Paired comparison by cartridge
 
-Series of one cartridge share a rifle, so they are not independent. The 26 series are therefore averaged per cartridge, giving 11 cartridges. $k$ is fixed leave-one-cartridge-out; 10 000 bootstrap resamples are drawn over cartridges.
+Series of one cartridge share a rifle, so they are not independent. The 27 series are therefore averaged per cartridge, giving 12 cartridges. $k$ is fixed leave-one-cartridge-out; 10 000 bootstrap resamples are drawn over cartridges.
 
 | Comparison | Better on | Mean difference | 95 % interval | Sign test (one-sided) |
 |---|---|---|---|---|
-| Powley vs. fixed $k$ | 8/11 | −11.5 fps | [−21.2 ; −2.2] | p = 0.113 |
-| Mayer–Hart vs. fixed $k$ | 7/11 | −14.5 fps | [−27.9 ; −3.6] | p = 0.274 |
-| Le Duc vs. fixed $k$ | 8/11 | −2.3 fps | [−17.3 ; +14.1] | p = 0.113 |
-| Mayer–Hart vs. Powley | 6/11 | −2.9 fps | [−9.6 ; +3.3] | p = 0.500 |
+| Powley vs. fixed $k$ | 9/12 | −10.4 fps | [−19.6 ; −1.9] | p = 0.073 |
+| Mayer–Hart vs. fixed $k$ | 8/12 | −13.1 fps | [−25.9 ; −3.3] | p = 0.194 |
+| Le Duc vs. fixed $k$ | 8/12 | −0.8 fps | [−14.3 ; +13.8] | p = 0.194 |
+| Mayer–Hart vs. Powley | 7/12 | −2.7 fps | [−8.8 ; +3.0] | p = 0.387 |
 
 ### Implied exponent on the reference set
 
@@ -95,9 +97,9 @@ The log-log slope of each predictor's own predictions is compared with the measu
 1. **The expansion ratio explains much of why the exponent changes from one cartridge to another.**
    - Cartridges with a large case for their bore lose more velocity per inch: measured $k$ is 0.26–0.31 for the .243 Win., 0.26 for the .300 Win. Mag., 0.20–0.29 for the 7 mm Rem. Mag. and 0.24–0.26 for the .338 Lapua. It is 0.11–0.16 for the 7.62×39.
    - The fixed exponent cannot follow this. Powley's formula, which uses only geometry, does.
-   - On the three cartridges held out of everything, the median error falls from 43.4 fps (fixed exponent) to 30.7 (Powley) and 22.3 (Mayer–Hart). On the two magnums alone Powley roughly halves it; on Clark's 7.62×54R Powley gains little (33 against 40 fps) and Mayer–Hart does best (17 fps).
-2. **Mayer–Hart is not distinguishably better than Powley** (−2.9 fps, interval spanning zero). It also needs a charge, a powder energy and a pressure, and the $\varphi$ values it uses (0.42 to 0.79) all lie at or above its formal validity bound $\varphi \le 1/(2\gamma) \approx 0.42$ (eq. 33′).
-   - Its burning term still matters. With $\varphi = 0$ the model loses its advantage (validation: 56.8 fps, worse than the fixed exponent).
+   - On the four cartridges held out of everything, the median error falls from 41.8 fps (fixed exponent) to 27.4 (Powley) and 19.8 (Mayer–Hart). On the two magnums alone Powley roughly halves it; on Clark's 7.62×54R Powley gains little (33 against 40 fps) and Mayer–Hart does best (17 fps); on Hatcher's .30-06, whose $k$ (0.182) is close to the median, all three are within 10–11 fps.
+2. **Mayer–Hart is not distinguishably better than Powley** (−2.7 fps, interval spanning zero). It also needs a charge, a powder energy and a pressure, and the $\varphi$ values it uses (0.42 to 0.79) all lie at or above its formal validity bound $\varphi \le 1/(2\gamma) \approx 0.42$ (eq. 33′).
+   - Its burning term still matters. With $\varphi = 0$ the model loses its advantage (validation: 50.4 fps, worse than the fixed exponent).
    - Powley's formula (γ = 1.25, no burning term) nevertheless does about as well as the full Mayer–Hart model. Why the cruder formula matches is not established here.
 3. **Le Duc anchored on the C.I.P. pressure is not reliably better than a fixed exponent.** Its result depends on the assumed peak pressure, which is not known for factory ammunition.
 4. **Powley and Mayer–Hart miss the flattening of the 6 mm and 6.5 Creedmoor series beyond about 24 inches.**
@@ -109,10 +111,10 @@ The log-log slope of each predictor's own predictions is compared with the measu
 
 ## Limitations
 
-- **Small sample.** There are 11 cartridges, one rifle each, and 3 to 10 shots per point. The Powley vs. fixed-$k$ result points the same way in every test (bootstrap interval excludes zero), but the sign test is not significant (p = 0.113): it is not strong evidence.
+- **Small sample.** There are 12 cartridges, one gun each, and 3 to 10 shots per point (not stated for Hatcher). The Powley vs. fixed-$k$ result points the same way in every test (bootstrap interval excludes zero), but the sign test is not significant (p = 0.073): it is not strong evidence.
 - **Charges partly estimated.** For factory ammunition the charge is unknown; Reload Swiss medians stand in for it. Only the Mayer–Hart and Le Duc predictors use it.
 - **Chamber volumes are aggregates.** $U$ is a per-cartridge median derived from Reload Swiss fill ratios, not a measured volume for each load.
-- **Mostly one data source.** 25 of the 26 series come from one experimenter and one chronograph type (barrel-mounted MagnetoSpeed); Clark's is the only independent series. More would be needed before publication: Hatcher's .30-06 points and Ballistics By The Inch for the .223.
+- **Mostly one data source.** 25 of the 27 series come from one experimenter and one chronograph type (barrel-mounted MagnetoSpeed); Clark's and Hatcher's are the only independent series, and Hatcher's has four points. More would be needed before publication, for instance Ballistics By The Inch for the .223.
 
 ## Prior work
 

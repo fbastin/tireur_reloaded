@@ -58,7 +58,7 @@ MASS = {('223 Rem.', 'BH 68 HM'): 68, ('223 Rem.', 'Win M855'): 62,
         ('300 Win. Mag.', '(article 2013)'): 190}
 CHARGE = {('7.62 x 39', 'Brown Bear'): 25.4, ('7.62 x 39', 'TCW'): 25.0}
 
-# JEU DE VALIDATION, ajouté APRÈS le choix de k = 0,167 sur les 19 séries : trois cartouches que
+# JEU DE VALIDATION, ajouté APRÈS le choix de k = 0,167 sur les 19 séries : quatre cartouches que
 # rien n'a servi à régler. Rifleshooter.com (Marr), tableaux lus en image le 2026-10-03 ; les
 # totaux publiés (« Change from 28" », « CHG 30" ») recoupent les lignes.
 #   7 mm Rem. Mag. (2015-04) : Federal Premium 150 gr GameKing (commerce, 5 coups) ; 160 gr Swift
@@ -69,7 +69,12 @@ CHARGE = {('7.62 x 39', 'Brown Bear'): 25.4, ('7.62 x 39', 'TCW'): 25.0}
 #   7.62 × 54 R : B. L. Clark, Effect of Barrel Length on the Muzzle Velocity and Report from a
 #   Mosin-Nagant 7.62x54R Rifle, Honors Thesis, University of South Florida, 2011, tableau 1
 #   (moyennes de 10 coups, recalculées sur les tableaux 2 à 8) ; surplus bulgare 147 gr ; vitesse
-#   à environ 10 pieds de la bouche ; 28,75 → 16,75 po par pas de 2 po. SEUL autre expérimentateur.
+#   à environ 10 pieds de la bouche ; 28,75 → 16,75 po par pas de 2 po.
+#   .30-06 : Hatcher's Notebook (2e éd., 1957), p. 399, item 14 « Velocity vs. Barrel Length »,
+#   lu en image le 2026-10-03 : essais de Springfield Armory, mitrailleuse Browning, 24 / 28 / 30 /
+#   32 po ; munition et nombre de coups non précisés ; balle de 172 gr SUPPOSÉE (M1, table de la
+#   p. 400 ; ne sert qu'à Le Duc). La colonne .50 de la même table n'est pas reprise : pas de volume
+#   de chambre vérifié pour la .50 BMG dans calibers.json.
 L7 = list(range(28, 19, -1))
 L338 = list(range(30, 16, -1))
 EXT = {
@@ -83,11 +88,13 @@ EXT = {
    '300 SMK': list(zip(L338, [2833, 2871, 2835, 2818, 2799, 2790, 2760, 2732, 2708, 2690, 2620, 2595, 2529, 2492]))},
  '7.62 x 54 R': {
    'Clark 147 (BG)': list(zip([28.75, 26.75, 24.75, 22.75, 20.75, 18.75, 16.75],
-                              [2827, 2778, 2751, 2698, 2632, 2578, 2521]))}}
+                              [2827, 2778, 2751, 2698, 2632, 2578, 2521]))},
+ '30-06 Spring.': {
+   'Hatcher, Browning MG': [(24, 2709), (28, 2776), (30, 2833), (32, 2848)]}}
 MASS.update({('7 Rem. Mag.', 'Fed 150 GK'): 150, ('7 Rem. Mag.', '160 A-Frame'): 160,
              ('7 Rem. Mag.', '165 GK'): 165, ('7 Rem. Mag.', '175 GK'): 175,
              ('338 Lapua Mag.', '250 SMK'): 250, ('338 Lapua Mag.', '300 SMK'): 300,
-             ('7.62 x 54 R', 'Clark 147 (BG)'): 147})
+             ('7.62 x 54 R', 'Clark 147 (BG)'): 147, ('30-06 Spring.', 'Hatcher, Browning MG'): 172})
 CHARGE.update({('7 Rem. Mag.', '160 A-Frame'): 66.0, ('7 Rem. Mag.', '165 GK'): 66.5,
                ('7 Rem. Mag.', '175 GK'): 60.0, ('338 Lapua Mag.', '250 SMK'): 89.0,
                ('338 Lapua Mag.', '300 SMK'): 93.3})
