@@ -23,6 +23,23 @@ Données de composants pour le simulateur de balistique intérieure (compilées 
 Doublons **strictement identiques** (octet pour octet) retirés ; toutes les
 variantes distinctes sont conservées.
 
+## Dernière synchronisation
+
+| Source | Date de l'export | Fichier d'origine |
+|---|---|---|
+| Projectiles communauté GRT | 2026-08-14 (00:40 UTC) | `Projectiles-20260814T004027Z-1-001.zip` |
+| Poudres communauté GRT | 2026-08-14 (00:40 UTC) | `Propellants-20260814T004057Z-1-001.zip` |
+| Pack officiel Reload Swiss | 2023-08-21 | `Reload-Swiss-GRT.zip` (`GRT_RS_Propellant_Files_RS_2023_08_21/`) |
+
+Comparés le 2026-10-03 : tout le contenu de ces exports est dans la base, sauf
+deux variantes de projectiles écartées volontairement — `Hornady_ELD-VT_24372`
+du 2023-12-02 (la version du 2024-04-13, documentée « Lot 24372 », est gardée)
+et une troisième version de `Sierra_HPBT_MK_1755` (grtuser, 2023-04-30) qui ne
+diffère que par la géométrie du culot.
+
+Pour la prochaine mise à jour, seuls les fichiers dont `cdate` ou `mdate` est
+postérieur au 2026-08-14 sont à examiner.
+
 ## Licence & avertissement
 
 - Les données issues de zen/grt_databases sont en **CC0 1.0** (`LICENSE`).
