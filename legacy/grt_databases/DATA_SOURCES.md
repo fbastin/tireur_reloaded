@@ -6,7 +6,7 @@ Données de composants pour le simulateur de balistique intérieure (compilées 
 | Type | Fichiers |
 |---|---|
 | `calibers/` (`.caliber`) | 48 |
-| `projectiles/` (`.projectile`) | 177 |
+| `projectiles/` (`.projectile`) | 181 |
 | `powders/` (`.propellant`) | 32 |
 | `loads/` (`.grtload`) | 7 |
 

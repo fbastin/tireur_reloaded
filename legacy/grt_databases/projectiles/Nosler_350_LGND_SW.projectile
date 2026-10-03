@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Nosler" />
+    <var name="pname" value="350%20LGND%20SW" />
+    <var name="lotid" value="38064" />
+    <var name="caliber" value=".355" />
+    <var name="gdia" value="9.02" />
+    <var name="glen" value="21.79" />
+    <var name="gmass" value="180.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="0.00" />
+    <var name="gtailDiaB" value="0.00" />
+    <var name="gtailh" value="0.00" />
+    <var name="gtailType" value="0" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.245" />
+    <var name="g7bc" value="0.000" />
+    <var name="gUBCS" value="H0S1F2S4N3" />
+    <var name="cdate" value="2026-07-14" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="import" />
+    <var name="origin" value="" />
+    <var name="descr" value="Nosler%20Straight%20Wall%20350%20LGND%20180gr%20%2838064%29" />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>

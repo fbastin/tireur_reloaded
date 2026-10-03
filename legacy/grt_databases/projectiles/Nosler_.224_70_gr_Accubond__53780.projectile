@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<GordonsReloadingTool>
+  <projectilefile>
+    <var name="mname" value="Nosler" />
+    <var name="pname" value="Accubond%20%2353780" />
+    <var name="lotid" value="" />
+    <var name="caliber" value=".224" />
+    <var name="gdia" value="5.69" />
+    <var name="glen" value="24.51" />
+    <var name="gmass" value="70.0" />
+    <var name="gpressure" value="250" />
+    <var name="gfriction" value="0" />
+    <var name="gtailDiaA" value="5.69" />
+    <var name="gtailDiaB" value="4.40" />
+    <var name="gtailh" value="3.30" />
+    <var name="gtailType" value="2" />
+    <var name="gdepthmax" value="0.00" />
+    <var name="g1bc" value="0.370" />
+    <var name="g7bc" value="0.185" />
+    <var name="gUBCS" value="" />
+    <var name="cdate" value="2026-07-13" />
+    <var name="cby" value="grtuser" />
+    <var name="mdate" value="2026-07-13" />
+    <var name="mby" value="" />
+    <var name="type" value="" />
+    <var name="mode" value="userfile" />
+    <var name="status" value="" />
+    <var name="origin" value="" />
+    <var name="descr" value="From%20Nosler%20website%20and%20New%20with%20Copy%20from%20GRT%20Nosler%20RDF.%20%20G1%20BC%20is%20from%20website%2C%20and%20G7%20is%20estimated.%0DWebsite%20shows%20bullet%20length%20the%20same%20for%20both%2C%20but%20BC%20different%20as%20the%20Accubond%20is%20plastic%20tipped%20and%20the%20RDF%20is%20%0Dmore%20or%20less%20HPBT." />
+    <var name="imageUuid" value="" />
+  </projectilefile>
+</GordonsReloadingTool>
