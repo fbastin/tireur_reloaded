@@ -748,7 +748,7 @@ anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it 
    Chapman & Hall, London, 1950 (viii + 442 pp.). Contains the lumped-parameter theory
    and the Mayer–Hart-type closed-form solution.
 3. Carlucci & Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*.
-4. P. R. Alger, « The Le Duc Velocity Formula », *Proceedings of the U.S. Naval Institute* 37 (2), whole no. 138, 1911, p. 535–540. Formula attributed to Captain Le Duc, from J. Challéat, « Théorie des affûts à déformation », *Revue d'artillerie*, 1904–1905 (not read).
+4. P. R. Alger, « The Le Duc Velocity Formula », *Proceedings of the U.S. Naval Institute* 37 (2), whole no. 138, 1911, p. 535–540. [Scan](https://www.tireur.org/articles/Alger1911_Le_Duc_velocity_formula.pdf). Formula attributed to Captain Le Duc, from J. Challéat, « Théorie des affûts à déformation », *Revue d'artillerie*, 1904–1905 (not read).
 5. zen/grt_databases (CC0 1.0) — community GRT component data.
 6. F. Ongaro, C. Robbe, A. Papy, B. Stirbu, A. Chabotier — *Modelling of internal
    ballistics of gun systems: A review*, Defence Technology 41 (2024) 35–58,
@@ -758,4 +758,4 @@ anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it 
 7. J. E. Mayer & B. I. Hart, *Simplified Equations of Interior Ballistics*, Journal of
    the Franklin Institute, vol. 240, no. 5, Nov. 1945, pp. 401–411. Primary source for
    the closed-form $P_\max$ / muzzle-energy expressions and the constants $P_q,\varphi,r$.
-8. G. W. Patterson, « The Le Duc Ballistic Formulæ », *Proceedings of the U.S. Naval Institute* 38 (3), whole no. 143, 1912, p. 885 ff. Constants refitted on cut-off 5-inch guns; chamber pressure taken as 12 % above the effective pressure on the shell.
+8. G. W. Patterson, « The Le Duc Ballistic Formulæ », *Proceedings of the U.S. Naval Institute* 38 (3), whole no. 143, 1912, p. 885–892. [Scan](https://www.tireur.org/articles/Patterson1912_Le_Duc_ballistic_formulae.pdf). Constants refitted on cut-off 5-inch guns; chamber pressure taken as 12 % above the effective pressure on the shell.
