@@ -60,6 +60,7 @@ The score is the root-mean-square error over those points.
 - **LD — Le Duc.**
   - $v = a x/(b+x)$, anchored on the reference point and on the peak pressure $P_\max = 4 m_e a^2/(27 A b)$, as in [`MODEL.md` § 3.4](MODEL.md).
   - $P_\max$ is the C.I.P. value. This is an upper bound for factory ammunition; the 85 % variant is printed only as a sensitivity check, not as a predictor.
+  - Le Duc's pressure is the *effective* pressure on the projectile base. Alger (1911) puts the chamber pressure, where gauges read it, 15–20 % above it, and Patterson (1912) 12 %. Anchoring on a chamber $P_\max$ therefore overstates the peak, which may be why the 85 % variant fits better; the effective mass $m_e = m + C/3$ already absorbs part of the gap, and the correct factor for small arms has not been established here.
 
 ## Results
 
@@ -123,7 +124,7 @@ The log-log slope of each predictor's own predictions is compared with the measu
 - **Already known.**
   - The expansion ratio as the governing variable: Corner (1950), Carlucci & Jacobson.
   - Closed-form energy and its logarithmic derivative: Mayer & Hart (1945).
-  - Le Duc's hyperbolic law.
+  - Le Duc's hyperbolic law, as given by Alger (*Proceedings of the U.S. Naval Institute*, 1911), who tested it on barrel length: three 6-inch guns of 30, 35 and 40 calibres, and two cut-off 8-inch guns, each predicted within a few f.s. from a constant fitted on one gun. Patterson (*id.*, 1912) refitted its constants on cut-off 5-inch guns.
   - Powley's $R^{-1/4}$ (Davis, *Handloading*, NRA, 1981, as implemented by kwk.us; the 1961 manual and Davis were not read).
   - Manual rules of thumb in "fps per inch" that grow with velocity.
   - Sharpe, *Complete Guide to Handloading* (3rd ed., 1953, p. 44): to go from the 30–32-inch laboratory barrels to a 24-inch rifle, "deduct from 150 to 200 fs." Around 2800 fps this is $k \approx 0.19$–$0.33$, at the high end of the measured range; Hatcher's .30-06 loses 139 fps from 32 to 24 inches ($k = 0.174$).

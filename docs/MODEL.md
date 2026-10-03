@@ -162,6 +162,15 @@ on the predicted pair $(v_0, P_\max)$. With $P(x) = \dfrac{m_e\,a^2 b\,x}{A\,(b+
 and peak at $x = b/2$, the constants $(a,b)$ are obtained in closed form from
 $v(L)=v_0$ and $P_\max$. This layer adds **no new degrees of freedom**.
 
+These are the formulas given by Alger [4] (*a* the velocity in a bore of infinite length, *b*
+twice the travel to peak pressure, $P_\max = 4\,p\,a^2/(27\,g\,\omega\,b)$). **The pressure they
+give is the *effective* pressure on the projectile base.** Alger adds that the gas pressure at
+the base is somewhat higher still, and that the chamber pressure where gauges read it is
+15–20 % above the base pressure; Patterson [8] adds 12 %. Anchoring $b$ on a chamber $P_\max$
+(C.I.P.) therefore takes the curve's peak as too high, by roughly that margin, partly offset
+here by the effective mass $m_e = m + C/3$; the size of the remaining bias for small arms has
+not been measured. The layer is used for display only.
+
 ## 4. Model unknowns
 
 The model has exactly **two free (calibrated) unknowns**:
@@ -739,13 +748,14 @@ anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it 
    Chapman & Hall, London, 1950 (viii + 442 pp.). Contains the lumped-parameter theory
    and the Mayer–Hart-type closed-form solution.
 3. Carlucci & Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*.
-4. Le Duc, empirical $v(x)$ velocity–travel relation.
+4. P. R. Alger, « The Le Duc Velocity Formula », *Proceedings of the U.S. Naval Institute* 37 (2), whole no. 138, 1911, p. 535–540. Formula attributed to Captain Le Duc, from J. Challéat, « Théorie des affûts à déformation », *Revue d'artillerie*, 1904–1905 (not read).
 5. zen/grt_databases (CC0 1.0) — community GRT component data.
 6. F. Ongaro, C. Robbe, A. Papy, B. Stirbu, A. Chabotier — *Modelling of internal
    ballistics of gun systems: A review*, Defence Technology 41 (2024) 35–58,
    doi:10.1016/j.dt.2024.05.004 (open access). Classifies lumped-parameter vs CFD
    models; documents Baer–Frankle, IBHVG2, STANAG 4367, Mayer–Hart; notes the
    small-calibre gap.
-7. J. R. Mayer & B. I. Hart, *Simplified Equations of Interior Ballistics*, Journal of
+7. J. E. Mayer & B. I. Hart, *Simplified Equations of Interior Ballistics*, Journal of
    the Franklin Institute, vol. 240, no. 5, Nov. 1945, pp. 401–411. Primary source for
    the closed-form $P_\max$ / muzzle-energy expressions and the constants $P_q,\varphi,r$.
+8. G. W. Patterson, « The Le Duc Ballistic Formulæ », *Proceedings of the U.S. Naval Institute* 38 (3), whole no. 143, 1912, p. 885 ff. Constants refitted on cut-off 5-inch guns; chamber pressure taken as 12 % above the effective pressure on the shell.
