@@ -126,6 +126,7 @@ The log-log slope of each predictor's own predictions is compared with the measu
   - Le Duc's hyperbolic law.
   - Powley's $R^{-1/4}$ (Davis, *Handloading*, NRA, 1981, as implemented by kwk.us; the 1961 manual and Davis were not read).
   - Manual rules of thumb in "fps per inch" that grow with velocity.
+  - Sharpe, *Complete Guide to Handloading* (3rd ed., 1953, p. 44): to go from the 30–32-inch laboratory barrels to a 24-inch rifle, "deduct from 150 to 200 fs." Around 2800 fps this is $k \approx 0.19$–$0.33$, at the high end of the measured range; Hatcher's .30-06 loses 139 fps from 32 to 24 inches ($k = 0.174$).
 - **Not found elsewhere** (search of 2026-10-03):
   - a systematic test of these predictors against cut-down measurements;
   - the observation that the "0.27 Powley/Litz" exponent formerly used in this tool has no published source; Powley's ¼ applies to the expansion ratio, not to the length.
