@@ -391,7 +391,7 @@
     },
     "7.62 x 39": {
       "type": "rifle",
-      "bore_mm": 7.85,
+      "bore_mm": 7.9,
       "case_mm": 38.7,
       "case_vol_cm3": 1.77,
       "pmax_cip_bar": 3550
@@ -418,7 +418,7 @@
     },
     "10.3 x 60 R": {
       "type": "rifle",
-      "bore_mm": 10.3,
+      "bore_mm": 10.54,
       "case_mm": 60.8,
       "case_vol_cm3": 4.786,
       "test_barrel_mm": 680,

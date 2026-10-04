@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-10-03",
+ "_date": "2026-10-04",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1118275,
@@ -673,8 +673,8 @@
   "7.62 x 39|RS36": {
    "eeff": 1367674,
    "n": 8,
-   "np": 0.326,
-   "mhr": 4.8
+   "np": 0.3219,
+   "mhr": 5
   },
   "7.62 x 54 R|RS40": {
    "eeff": 1250071,
@@ -829,14 +829,14 @@
   "10.3 x 60 R|RS40": {
    "eeff": 1105120,
    "n": 6,
-   "np": 0.4927,
-   "mhr": -0.9
+   "np": 0.4705,
+   "mhr": 0.3
   },
   "10.3 x 60 R|RS50": {
    "eeff": 874666,
    "n": 4,
-   "np": 0.5565,
-   "mhr": -32.8,
+   "np": 0.5315,
+   "mhr": -29.9,
    "mhflag": true
   },
   "357 Magnum|RS14": {
@@ -916,7 +916,8 @@
    "eeff": 1033959,
    "n": 4,
    "np": 0.3605,
-   "mhr": 15.7
+   "mhr": 15.7,
+   "mhflag": true
   },
   "44 Rem. Mag.|RS12": {
    "eeff": 1311805,
@@ -8671,12 +8672,12 @@
   "7.62 x 39|Lovex S053": {
    "eeff": 1491792,
    "n": 4,
-   "np": 0.2598
+   "np": 0.2566
   },
   "7.62 x 39|Lovex D063": {
    "eeff": 1508072,
    "n": 4,
-   "np": 0.2617
+   "np": 0.2584
   },
   "7.62 x 54 R|Lovex S060": {
    "eeff": 1434207,
