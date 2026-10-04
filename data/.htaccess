@@ -1,0 +1,12 @@
+# Extractions des guides de rechargement des fabricants (*.local.json) : accès web interdit.
+# Elles servent à calibrer l'estimateur sur ce serveur ; les documents d'origine ne sont
+# jamais redistribués (même règle que reloading/guides/). Constaté le 2026-10-04 : ces
+# fichiers étaient téléchargeables (hodgdon.local.json : 2,4 Mo), sans qu'aucun tiers ne
+# l'ait fait dans les journaux conservés. Exception : start_charges.local.json, que la page
+# de l'estimateur charge pour afficher ses charges de départ (valeurs citées).
+<FilesMatch "\.local\.json$">
+    Require all denied
+</FilesMatch>
+<Files "start_charges.local.json">
+    Require all granted
+</Files>
