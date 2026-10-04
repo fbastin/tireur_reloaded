@@ -893,4 +893,14 @@ function importLadder(file){
 window.addEventListener('hashchange',openHowto);openHowto();})();
 </script>
 
+<script>
+// Hors ligne au stand : le service worker (/sw.js) met cette page, ses scripts et ses
+// données (calibres, poudres, coefficients) en cache, comme le calculateur balistique.
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .catch(err => console.warn('Service worker non enregistré :', err));
+    });
+}
+</script>
 <?php include '../../foot.php'; ?>
