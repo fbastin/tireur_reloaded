@@ -131,7 +131,7 @@
       "case_mm": 32.77,
       "case_vol_cm3": 1.12,
       "pmax_cip_bar": 3000,
-      "test_barrel_mm": 175
+      "test_barrel_mm": 152
     },
     "44 Rem. Mag.": {
       "type": "handgun",
@@ -139,7 +139,7 @@
       "case_mm": 32.61,
       "case_vol_cm3": 1.56,
       "pmax_cip_bar": 2800,
-      "test_barrel_mm": 150
+      "test_barrel_mm": 208
     },
     "300 PRC": {
       "type": "rifle",
@@ -194,7 +194,7 @@
       "case_mm": 43.18,
       "case_vol_cm3": 1.61,
       "pmax_cip_bar": 3700,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 580
     },
     "270 Win.": {
       "type": "rifle",
@@ -328,7 +328,7 @@
       "case_mm": 34.75,
       "case_vol_cm3": 1.044,
       "pmax_cip_bar": 3900,
-      "test_barrel_mm": 406
+      "test_barrel_mm": 400
     },
     "10 mm Auto": {
       "type": "handgun",
@@ -344,7 +344,7 @@
       "case_mm": 48.46,
       "case_vol_cm3": 2.736,
       "pmax_cip_bar": 4050,
-      "test_barrel_mm": 610
+      "test_barrel_mm": 580
     },
     "45 Colt": {
       "type": "handgun",
@@ -844,7 +844,7 @@
       "bore_mm": 6.17,
       "case_mm": 56.7,
       "case_vol_cm3": 3.261,
-      "test_barrel_mm": 660,
+      "test_barrel_mm": 610,
       "pmax_cip_bar": 4300,
       "pmax_saami_bar": 4482
     },
@@ -999,7 +999,7 @@
       "bore_mm": 7.21,
       "case_mm": 53.3,
       "case_vol_cm3": 4.539,
-      "test_barrel_mm": 610,
+      "test_barrel_mm": 660,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4482
     },
