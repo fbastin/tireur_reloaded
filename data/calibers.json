@@ -1033,7 +1033,7 @@
       "case_mm": 56.01,
       "case_vol_cm3": 2.59,
       "pmax_cip_bar": 4300,
-      "test_barrel_mm": 600,
+      "test_barrel_mm": 610,
       "aliases": [
         "220 Swift"
       ]
