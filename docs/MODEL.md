@@ -572,7 +572,8 @@ which is the property they were chosen for.
 > every left column before every right column (1 998 of 4 717 rows filed under the wrong
 > cartridge, e.g. .357 Magnum as « 38 Special +P », .223 as « 222 Remington ») and dropped every
 > **compressed** max load (trailing « C »: 1 369 rows). ADI skipped 185 indented cartridge headers
-> (1 268 of 3 563 rows re-labelled). Lyman dropped compressed loads too (« 57.0+ »: 345 rows).
+> (1 268 of 3 563 rows re-labelled). Lyman dropped compressed loads too (« 57.0+ »: 345 rows),
+> and Hodgdon every row published without a starting load (258 rows, 127 of them .38 Special +P).
 > Every Western, ADI or Lyman figure in this document that predates the fix was measured on
 > those sets. With the **same** η_p coefficients, the corrected sets take Western's Pmax RMS from
 > 21.5 % to 13.2 % and the pooled RMS from 20.3 % to 17.4 %; refitting would only reach 17.2 %,

@@ -355,9 +355,9 @@
    "angle": null
   },
   "357 Magnum": {
-   "rim": 11.2,
-   "base": 9.6,
-   "neck": 9.6
+   "rim": 11.18,
+   "base": 9.63,
+   "neck": 9.63
   },
   "357 Maximum": {
    "rim": 11.18,
@@ -385,8 +385,8 @@
   },
   "38 Special": {
    "rim": 11.18,
-   "base": 9.6,
-   "neck": 9.6
+   "base": 9.63,
+   "neck": 9.63
   },
   "38 Super Auto": {
    "rim": 10.31,
