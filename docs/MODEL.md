@@ -598,6 +598,19 @@ which is the property they were chosen for.
 > names (« 1+110 », « Jnique »), max-only rows (no start load), powders whose identity or density
 > is not established (see `data/powder_aliases.json`). The values published from Lyman on the
 > wiki were re-checked against the page images.
+>
+> **Powder aliases with a source, 2026-10-08.** ADI states that it exports propellant « rebranded
+> by Hodgdon » and pairs BM2 with Benchmark and Bench Mark 8208 with 8208 XBR (FAQ, 2021-02-24);
+> Hodgdon's own manual names LEVERevolution « LVR »; IMR 7828 SSC is matched to the « 7828SC » key
+> by deduction (documented in `data/powder_aliases.json`, `_sources`). Lil'Gun received a bulk
+> density (956 kg/m³, community GRT files, QuickLOAD value) through `CORRECTIONS` in
+> `scripts/import_catalog.js`. Rows recovered: Hodgdon +179, ADI +727, none lost. Anchors 1 936 →
+> 1 953 (17 new, none changed), LOO velocity RMS 4.1 % before and after. **ADI reprints Hodgdon
+> data**: BM2 and Benchmark share the same max charge in all 96 common cartridge × bullet pairs, and
+> 1 201 of 4 289 ADI rows copy a Hodgdon row exactly (cartridge, bullet, charge, velocity) — 985 of
+> them under ADI powder names before any alias (AR2208 for Varget…). ADI does not feed the anchors,
+> but `adi_crosscheck.js` therefore partly re-tests Hodgdon data, and any pooled count across
+> guides must drop these copies (the wiki medians now do).
 
 The anchored-vs-cold gap (6.1 % vs 9.0 %) reproduces on independent data, on a small sample
 (25 couples — ADI's powders are mostly unanchored by construction).

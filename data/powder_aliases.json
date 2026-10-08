@@ -2,7 +2,7 @@
   "_provenance": {
     "objet": "Alias entre les libelles de poudre des guides de rechargement et les cles de powders.json.",
     "pourquoi_un_fichier_separe": "powders.json est ECRIT par scripts/ingest_propellants.js et scripts/import_grt_qex.js. Y inscrire des alias les exposerait a disparaitre au prochain import — la faute exacte du 2026-08-11 sur calibers.json. Ce fichier-ci est cure a la main et n'est genere par rien.",
-    "critere": "Un alias n'est pose que si la CLE de powders.json contient le libelle du guide comme composant distinct (« Hodgdon H4831, H4831C » contient « H4831 »). Deux noms qui se ressemblent ne suffisent pas : IMR 7828 et IMR 7828SC sont des produits differents, de densite apparente differente.",
+    "critere": "Un alias n'est pose que si la CLE de powders.json contient le libelle du guide comme composant distinct (« Hodgdon H4831, H4831C » contient « H4831 »). Deux noms qui se ressemblent ne suffisent pas : IMR 7828 et IMR 7828SC sont des produits differents, de densite apparente differente. Depuis le 2026-10-08, un alias peut aussi reposer sur une source qui ETABLIT l'identite des deux produits (declaration du fabricant, ou manuel du fabricant lui-meme) : elle est citee et datee dans « _sources ». Une identite seulement deduite y est dite deduite.",
     "etabli_le": "2026-08-11"
   },
 
@@ -17,22 +17,32 @@
     "No. 11 FS": "Accurate 11FS",
     "No. 11FS": "Accurate 11FS",
     "NO. 11FS": "Accurate 11FS",
-    "NO.11FS": "Accurate 11FS"
+    "NO.11FS": "Accurate 11FS",
+    "Bench Mark 2": "Hodgdon Benchmark",
+    "Bench Mark 8208": "IMR 8208 XBR",
+    "LVR": "Hodgdon Leverevolution",
+    "IMR 7828 SSC": "IMR 7828SC",
+    "IMR 7828SSC": "IMR 7828SC"
+  },
+
+  "_sources": {
+    "Bench Mark 2, Bench Mark 8208 (ADI)": "ADI (Thales Australia), FAQ « Is Hodgdon propellant the same as ADI propellant? » du 2021-02-24 : « ADI export a range of propellant to the US market where they are rebranded by Hodgdon Powder Company » ; table des equivalences : BM2 = Benchmark, Bench Mark 8208 = 8208 XBR (et AR2213SC = H4831SC). https://www.adiworldclass.com.au/faq-items/is-hodgdon-propellant-the-same-as-adi-propellant/ — lu le 2026-10-08 (table lue dans le HTML brut).",
+    "LVR (Hodgdon)": "Manuel Hodgdon 2024 (guides/AM24.pdf) : « LVR » dans les tableaux de charges ; la liste de vivacite du meme manuel ne compte qu'une poudre de ce nom, « Hodgdon LEVERevolution ». La cle « Hodgdon Leverevolution » (pcd 920) existait : l'entree « LVR » de _absentes etait fausse.",
+    "IMR 7828 SSC (Hodgdon)": "Fiche produit Hodgdon (https://shop.hodgdon.com/imr-7828-ssc, lue le 2026-10-08) : « exactly the same burn rate as standard IMR 7828 and uses the same data », mais « up to 4% more powder space in the case » — densite differente de la 7828 standard. Hodgdon ne vend que deux 7828, la standard et la SSC ; « 7828SC » est l'abreviation des revendeurs pour la Super Short Cut. Identite DEDUITE, non ecrite par le fabricant. « IMR 7828 » sans suffixe reste NON apparie.",
+    "Hodgdon Lil Gun (densite)": "Pas d'alias : le libelle s'apparie deja, il manquait la densite. pcd 956 posee dans CORRECTIONS de scripts/import_catalog.js, avec sa provenance (fichiers communautaires GRT, valeur QuickLOAD)."
   },
 
   "_a_confirmer": {
     "_note": "Identites PROBABLES mais non etablies : il faudrait une source fabricant, pas un souvenir. Non appariees en attendant — une charge perdue vaut mieux qu'une charge attribuee a la mauvaise poudre.",
-    "A-2015 (56 charges)": "seule « Accurate 2015BR » existe (pcd 962). Le 2015BR aurait ete renomme 2015, a verifier chez Western.",
-    "IMR 7828 SSC (70 charges)": "seule « IMR 7828SC » existe (pcd 945). SSC = Super Short Cut ; probablement la meme, mais « IMR 7828 » SANS suffixe est un produit DISTINCT, ce qui interdit de deviner.",
-    "H4831SC (5 charges)": "la cle « Hodgdon H4831, H4831C » nomme H4831 et H4831C, pas H4831SC — coupe courte, densite differente.",
-    "Bench Mark 2 / Bench Mark 1 (196 charges, ADI)": "« Hodgdon Benchmark » existe (pcd 906). ADI fabrique les poudres Hodgdon Extreme, mais l'equivalence Bench Mark 2 = Benchmark n'est pas etablie."
+    "A-2015 (56 charges)": "seule « Accurate 2015BR » existe (pcd 962). Le 2015BR aurait ete renomme 2015, a verifier chez Western. Recherche du 2026-10-08 : seuls des forums parlent du changement de nom (2015BR, puis XMR-2015, puis 2015), et un tireur y mesure environ 100 fps d'ecart a charge egale entre un ancien lot 2015BR et un lot 2015. Aucune source fabricant : reste non apparie.",
+    "H4831SC (5 charges)": "Identite etablie (ADI : AR2213SC = H4831SC), mais la DENSITE bloque : « Hodgdon H4831, H4831C » et « ADI AR 2213, AR 2213SC » portent une seule pcd (930) pour la coupe longue et la coupe courte, alors qu'un fichier communautaire GRT donne 968 pour la H4831SC. Non apparie tant que la densite de la coupe courte n'est pas sourcee.",
+    "Bench Mark 1 (6 charges, ADI)": "la table d'equivalences ADI ne lui donne aucun equivalent Hodgdon, et aucune entree n'existe sous ce nom."
   },
 
   "_sans_densite": {
-    "_note": "Entrees PRESENTES dans powders.json mais sans densite apparente (pcd). Un alias n'y changerait rien : sans pcd, le taux de remplissage — variable des deux regressions — n'est pas calculable. Il leur faut une densite SOURCEE ; ne pas en inventer.",
+    "_note": "Entrees PRESENTES dans powders.json mais sans densite apparente (pcd). Un alias n'y changerait rien : sans pcd, le taux de remplissage — variable des deux regressions — n'est pas calculable. Il leur faut une densite SOURCEE ; ne pas en inventer. Recherche du 2026-10-08 : aucun fabricant ne publie ces valeurs ; la FDS Hodgdon des poudres spheriques (2022) donne « Bulk density 0.5 - 1 (g/cc) » pour toute la gamme. Superformance : 1011 dans un fichier communautaire GRT marque « Experimental », non retenu.",
     "Hodgdon Hybrid 100V": 184,
     "Winchester Autocomp": 140,
-    "Hodgdon Lil Gun": 107,
     "Ramshot Competition": 62,
     "Hodgdon US869": 59,
     "Accurate Nitro 100NF": 48,
@@ -42,13 +52,11 @@
     "Hodgdon Superformance": 65,
     "Winchester WSF Super-Field": 47,
     "IMR IMR 700X": 72,
-    "ADI Benchmark 8208": 182,
     "ADI AR 2206": 3
   },
 
   "_absentes": {
-    "_note": "Aucune entree, sous aucun nom. Il faudrait creer la fiche poudre (mfg, name, pcd) depuis une source fabricant.",
-    "Grand": 127,
-    "LVR": 11
+    "_note": "Aucune entree, sous aucun nom. Il faudrait creer la fiche poudre (mfg, name, pcd) depuis une source fabricant. « Grand » = Ramshot Grand (Hodgdon, double base, spherique, annoncee en 2024) : aucune densite publiee trouvee le 2026-10-08.",
+    "Grand": 127
   }
 }

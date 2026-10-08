@@ -1161,7 +1161,8 @@
       "mfg": "Hodgdon",
       "name": "Lil Gun",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 956
     },
     "Hodgdon Long Shot": {
       "mfg": "Hodgdon",

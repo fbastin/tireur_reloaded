@@ -69,6 +69,17 @@ const CORRECTIONS = {
       + 'Varmint) ; anomalie relevee le 2026-08-18 par le garde-fou des poudres '
       + 'orphelines de build_anchors.js.',
   },
+  'Hodgdon Lil Gun': {
+    fields: { pcd: 956 },
+    why: 'Le catalogue ne donne pas de densité apparente : sans elle, les 110 charges '
+      + 'Lil\'Gun du manuel Hodgdon 2024 (.357, .44, .410…) étaient écartées par les '
+      + 'parseurs, qui n\'indexent que les poudres dotées d\'une densité. Aucun fabricant '
+      + 'ne publie la valeur (la FDS Hodgdon des sphériques donne « 0.5 - 1 g/cc » pour '
+      + 'toute la gamme).',
+    src: 'Fichiers communautaires GRT de la base locale (legacy/grt_databases/powders) : '
+      + '« Lil\' Gun QL » (Tom24, 2023-05-05, « QL Clone » : valeurs reprises de QuickLOAD) '
+      + 'et « Lil\'Gun (sub-sonic) » (2023-05-07), tous deux à 956 kg/m³. Posée le 2026-10-08.',
+  },
 };
 
 function appliquerCorrections(pj, catalog) {

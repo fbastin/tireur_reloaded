@@ -3139,6 +3139,10 @@
    "n": 4,
    "np": 0.298
   },
+  "22 Hornet|Hodgdon Lil Gun": {
+   "eeff": 1312443,
+   "n": 7
+  },
   "22 Hornet|Hodgdon H110": {
    "eeff": 1397465,
    "n": 6
@@ -3470,6 +3474,11 @@
    "n": 7,
    "np": 0.4864
   },
+  "22 Creedmoor|IMR 7828SC": {
+   "eeff": 1058204,
+   "n": 7,
+   "np": 0.4844
+  },
   "22 Creedmoor|Ramshot Hunter": {
    "eeff": 1081164,
    "n": 7,
@@ -3510,6 +3519,11 @@
    "eeff": 1359364,
    "n": 4,
    "np": 0.4193
+  },
+  "6mm ARC|Hodgdon Leverevolution": {
+   "eeff": 1365025,
+   "n": 4,
+   "np": 0.4132
   },
   "6mm ARC|Hodgdon BL-C(2)": {
    "eeff": 1300550,
@@ -3948,6 +3962,11 @@
    "n": 3,
    "np": 0.5267
   },
+  "25-06 Remington|IMR 7828SC": {
+   "eeff": 1027446,
+   "n": 4,
+   "np": 0.4996
+  },
   "257 Wby. Mag.|Hodgdon H1000": {
    "eeff": 921493,
    "n": 7
@@ -4133,6 +4152,11 @@
    "eeff": 1177312,
    "n": 9,
    "np": 0.49
+  },
+  "6.8 Western|IMR 7828SC": {
+   "eeff": 1169831,
+   "n": 9,
+   "np": 0.4865
   },
   "6.8 Western|Ramshot Hunter": {
    "eeff": 1160928,
@@ -4423,6 +4447,11 @@
    "n": 6,
    "np": 0.5308
   },
+  "7mm PRC|IMR 7828SC": {
+   "eeff": 1215348,
+   "n": 6,
+   "np": 0.5118
+  },
   "7mm PRC|Hodgdon H4831, H4831C": {
    "eeff": 1228661,
    "n": 6,
@@ -4461,6 +4490,10 @@
    "eeff": 1247659,
    "n": 6
   },
+  "30 Carbine|Hodgdon Lil Gun": {
+   "eeff": 1429549,
+   "n": 3
+  },
   "30 Carbine|Hodgdon H4227": {
    "eeff": 1131532,
    "n": 6
@@ -4474,6 +4507,11 @@
    "eeff": 1224008,
    "n": 12,
    "np": 0.391
+  },
+  "300 AAC BLK|Hodgdon Lil Gun": {
+   "eeff": 1619998,
+   "n": 12,
+   "np": 0.2974
   },
   "300 AAC BLK|IMR 4227": {
    "eeff": 1368187,
@@ -4562,6 +4600,11 @@
    "eeff": 1210753,
    "n": 4,
    "np": 0.4081
+  },
+  "30-30 Win.|Hodgdon Leverevolution": {
+   "eeff": 1254278,
+   "n": 4,
+   "np": 0.3686
   },
   "30-30 Win.|IMR 8208 XBR": {
    "eeff": 1274134,
@@ -4892,6 +4935,11 @@
    "n": 4,
    "np": 0.5063
   },
+  "300 PRC|IMR 7828SC": {
+   "eeff": 1163192,
+   "n": 10,
+   "np": 0.5109
+  },
   "300 PRC|Hodgdon Retumbo": {
    "eeff": 1142445,
    "n": 10,
@@ -5153,6 +5201,11 @@
    "n": 10,
    "np": 0.2953
   },
+  "44 Rem. Mag.|Hodgdon Lil Gun": {
+   "eeff": 1329881,
+   "n": 10,
+   "np": 0.3091
+  },
   "444 Marlin|Hodgdon H335": {
    "eeff": 1079621,
    "n": 9
@@ -5407,6 +5460,10 @@
    "eeff": 1583250,
    "n": 5
   },
+  "38 Super Auto|Hodgdon Lil Gun": {
+   "eeff": 843357,
+   "n": 8
+  },
   "38 Special|Winchester 572": {
    "eeff": 1090671,
    "n": 22,
@@ -5546,6 +5603,11 @@
    "eeff": 1080674,
    "n": 5
   },
+  "357 Magnum|Hodgdon Lil Gun": {
+   "eeff": 1070275,
+   "n": 5,
+   "np": 0.4095
+  },
   "40 S&W|Winchester 572": {
    "eeff": 1358852,
    "n": 14,
@@ -5631,6 +5693,10 @@
   },
   "41 Rem. Mag.|Hodgdon H4227": {
    "eeff": 1278548,
+   "n": 3
+  },
+  "41 Rem. Mag.|Hodgdon Lil Gun": {
+   "eeff": 1406735,
    "n": 3
   },
   "41 Rem. Mag.|Hodgdon CFE Pistol": {
@@ -5806,6 +5872,11 @@
    "n": 9,
    "np": 0.5182
   },
+  "45 Colt|Hodgdon Lil Gun": {
+   "eeff": 1045078,
+   "n": 9,
+   "np": 0.5503
+  },
   "45 Colt|Hodgdon Long Shot": {
    "eeff": 1424729,
    "n": 6,
@@ -5836,6 +5907,10 @@
   },
   "454 Casull|Hodgdon H110": {
    "eeff": 1405529,
+   "n": 9
+  },
+  "454 Casull|Hodgdon Lil Gun": {
+   "eeff": 1459635,
    "n": 9
   },
   "454 Casull|Hodgdon H4227": {
@@ -5876,6 +5951,11 @@
    "eeff": 1406122,
    "n": 11,
    "np": 0.4245
+  },
+  "460 S&W|Hodgdon Lil Gun": {
+   "eeff": 1398513,
+   "n": 9,
+   "np": 0.4746
   },
   "460 S&W|Hodgdon CFE BLK": {
    "eeff": 1171603,
