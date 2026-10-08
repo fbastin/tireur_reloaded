@@ -17,15 +17,29 @@ const path = require('path');
 const pdf = process.argv[2];
 if (!pdf) { console.error('usage: node scripts/import_western.js <guide.pdf>'); process.exit(1); }
 
-const col = (x, w) => execSync(`pdftotext -layout -x ${x} -y 0 -W ${w} -H 800 "${pdf}" - 2>/dev/null`, { maxBuffer: 1 << 26 }).toString().split('\n');
-const lines = col(0, 292).concat(col(292, 293));     // left column then right column
+const col = (x, w) => execSync(`pdftotext -layout -x ${x} -y 0 -W ${w} -H 800 "${pdf}" - 2>/dev/null`, { maxBuffer: 1 << 26 }).toString().split('\f');
+// Reading order, PAGE BY PAGE: left column, then right column. Concatenating every left
+// column before every right column made a right column inherit the cartridge of the
+// previous page's right column: on p. 30, .357 Magnum rows came out as « 38 SPECIAL +P »
+// (33 000-35 000 psi) and on p. 31 .357 Maximum rows as « 357 MAGNUM ».
+const L = col(0, 292), R = col(292, 293);
+const lines = L.flatMap((page, i) => page.split('\n').concat((R[i] || '').split('\n')));
 
 const ds = (s) => s.replace(/\s+/g, '');
 const num = (s) => parseFloat(String(s).replace(/,/g, ''));
 // six trailing numbers anchored at end of the despaced line
 const SIX = /(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3},\d{3})(\d\.\d{3})$/;
 
-let cart = null, bore = null, barrel = null, powder = null, prev = '';
+// A sub-heading may sit between the cartridge name and the "Barrel … Diameter" line
+// (« 223 REMINGTON » / « 55,000 PSI -- STANDARD SAAMI … », « 7MM REMINGTON SHORT ACTION
+// ULTRA » / « MAGNUM (SAUM) »). Taken alone it hid the cartridge: 207 rows of .223 / 5.56
+// came out under the previous title, « 222 REMINGTON ». A data row is letter-spaced
+// (« 6 0 SIE R R A »), a title is not (« 20 PPC (59,000 PSI) » is a title on its own).
+const SUBHEAD = /PSI|SPECIFICATION|These loads|For chambers|^MAGNUM\b|TRAPDOOR/i;
+const isData = (s) => /^\d( \d)+\b/.test(s.trim()) || /^(ACCURATE|RAMSHOT)/.test(ds(s));
+const title = (s) => s.trim().replace(/\s{2,}.*$/, '');
+
+let cart = null, bore = null, barrel = null, powder = null, prev = '', prev2 = '';
 const rows = [];
 for (const line of lines) {
   const d = ds(line);
@@ -33,10 +47,10 @@ for (const line of lines) {
   if (/iameter/i.test(d)) {                                  // "Barrel: 5” … Bullet Diameter: 0.224”"
     const m = d.match(/iameter:?(\d\.\d{3})/i); if (m) bore = +(parseFloat(m[1]) * 25.4).toFixed(2);
     const b = d.match(/Barrel:?(\d{1,2}(?:\.\d)?)/i); if (b) barrel = +(parseFloat(b[1]) * 25.4).toFixed(1);
-    if (prev && !/^(ACCURATE|RAMSHOT)/.test(ds(prev))) cart = prev.trim().replace(/\s{2,}.*$/, '');
-    prev = line; continue;
+    if (prev && !isData(prev)) cart = SUBHEAD.test(prev) && prev2 && !isData(prev2) ? `${title(prev2)} ${title(prev)}` : title(prev);
+    prev2 = prev; prev = line; continue;
   }
-  if (/^(ACCURATE|RAMSHOT)/.test(d) && !SIX.test(d)) { powder = line.trim().replace(/\s{2,}/g, ' '); prev = line; continue; }
+  if (/^(ACCURATE|RAMSHOT)/.test(d) && !SIX.test(d)) { powder = line.trim().replace(/\s{2,}/g, ' '); prev2 = prev; prev = line; continue; }
   const m = d.match(SIX), bm = d.match(/^(\d{1,3})/);
   if (m && bm && cart) {
     const bullet = +bm[1];
@@ -46,7 +60,7 @@ for (const line of lines) {
       bullet_gr: bullet, bullet_desc: desc, charge_gr: num(m[3]), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]),
     });
   }
-  prev = line;
+  prev2 = prev; prev = line;
 }
 
 const out = path.join(__dirname, '..', 'data', 'western.local.json');

@@ -568,6 +568,15 @@ explaining it away: no single η_p can be right on all five. Across those five s
 coefficients keep |bias| ≤ ~10 % (RS +9.8, VV-CIP −9.9, ADI −3.9, Hodgdon +0.6, Western −0.2),
 which is the property they were chosen for.
 
+> **Label error in the Western and ADI extractions, corrected 2026-10-07.** Both parsers filed
+> rows under the wrong cartridge: Western read every left column before every right column
+> (1 998 of 4 717 rows re-labelled, e.g. .357 Magnum as « 38 Special +P », .223 as « 222
+> Remington »), ADI skipped 185 indented cartridge headers (1 268 of 3 563 rows). Every Western
+> and ADI figure in this document that predates the fix was measured on those labels. With the
+> **same** η_p coefficients, clean labels alone take Western's Pmax RMS from 21.5 % to 14.1 % and
+> the pooled RMS from 20.3 % to 18.0 %; the anchors were rebuilt (LOO velocity RMS 4.2 → 4.0 %,
+> 1 949 → 1 887 combos). The coefficients themselves have **not** been refitted.
+
 The anchored-vs-cold gap (6.1 % vs 9.0 %) reproduces on independent data, on a small sample
 (25 couples — ADI's powders are mostly unanchored by construction).
 

@@ -45,7 +45,8 @@ const LOAD = new RegExp(
   '^\\s*(?:(\\d{1,3})\\s*GR\\.\\s*(.*?))?\\s{2,}' +      // 1 masse  2 description
   '([A-Za-z][A-Za-z0-9 .\\-]{1,18}?)\\s{2,}' +           // 3 poudre
   '\\.(\\d{3})"\\s+([\\d.]+)"\\s+' +                     // 4 Ø  5 COL
-  '([\\d.]+)C?\\s+([\\d,]+)\\s*fps\\s+([\\d,]+)\\s*(PSI|CUP)\\s+' +   // 6-9 départ
+  // 6-9 départ — « - - - » quand le guide ne publie que le maximum (38 Special +P)
+  '(?:([\\d.]+)C?\\s+([\\d,]+)\\s*fps\\s+([\\d,]+)\\s*(PSI|CUP)|-\\s+-\\s+-)\\s+' +
   '([\\d.]+)C?\\s+([\\d,]+)\\s*fps\\s+([\\d,]+)\\s*(PSI|CUP)\\s*$');  // 10-13 maximum
 
 let cartridge = null, barrel = null, bullet_gr = null, bullet_desc = null;
@@ -58,7 +59,10 @@ for (let i = 0; i < lignes.length; i++) {
   const l = lignes[i];
   const mb = l.match(/Barrel length:\s*([\d.]+)\s*"/i);
   if (mb) barrel = +(num(mb[1]) * IN).toFixed(1);        // imprimé AVANT le nom de cartouche
-  const mc = l.match(/^(\S.{0,45}?)\s{2,}Twist:/);
+  // The name may be indented (185 headers are, « 357 Magnum », « 30-06 Springfield »,
+  // « 223 Remington (5.6 x 45mm) »…). Anchored on column 0 they were skipped and their
+  // rows filed under the previous cartridge: .357 Magnum loads as « 38 Special +P ».
+  const mc = l.match(/^\s*(\S.{0,45}?)\s{2,}Twist:/);
   if (mc) { cartridge = mc[1].trim(); bullet_gr = null; continue; }
 
   const m = l.match(LOAD);
