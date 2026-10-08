@@ -27,8 +27,9 @@ const lines = L.flatMap((page, i) => page.split('\n').concat((R[i] || '').split(
 
 const ds = (s) => s.replace(/\s+/g, '');
 const num = (s) => parseFloat(String(s).replace(/,/g, ''));
-// six trailing numbers anchored at end of the despaced line
-const SIX = /(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3},\d{3})(\d\.\d{3})$/;
+// six trailing numbers anchored at end of the despaced line, then an optional « C » =
+// compressed charge (without it, every compressed max load was silently dropped)
+const SIX = /(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3},\d{3})(\d\.\d{3})(C?)$/;
 
 // A sub-heading may sit between the cartridge name and the "Barrel … Diameter" line
 // (« 223 REMINGTON » / « 55,000 PSI -- STANDARD SAAMI … », « 7MM REMINGTON SHORT ACTION
@@ -57,7 +58,7 @@ for (const line of lines) {
     const desc = d.slice(bm[1].length, d.length - m[0].length).replace(/[*]/g, '');   // maker+type (despacé)
     if (bullet > 10 && bullet < 800) rows.push({
       cartridge: cart, bore_mm: bore, barrel_mm: barrel, powder,
-      bullet_gr: bullet, bullet_desc: desc, charge_gr: num(m[3]), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]),
+      bullet_gr: bullet, bullet_desc: desc, charge_gr: num(m[3]), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]), compressed: m[7] === 'C',
     });
   }
   prev2 = prev; prev = line;

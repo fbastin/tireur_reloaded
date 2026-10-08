@@ -121,7 +121,8 @@ const powderKey = (raw) => {
   return null;
 };
 
-const isChg = (t) => /^\d{1,3}\.\d$/.test(t);
+// « 57.0+ » = charge comprimée : sans le « + » toléré, tous les maxima comprimés partaient en rejet.
+const isChg = (t) => /^\d{1,3}\.\d\+?$/.test(t);
 const isVel = (t) => /^\d{3,4}$/.test(t);
 
 const txt = execFileSync('pdftotext', ['-layout', pdf, '-'], { maxBuffer: 1 << 28 }).toString();
@@ -221,14 +222,15 @@ for (const page of pages) {
       if (!/[A-Za-z]/.test(rawPowder)) return;
 
       // départ : charge puis vitesse ; max : charge suivante puis vitesse
-      const start_gr = +toks[iChg];
+      const start_gr = parseFloat(toks[iChg]);
       const iSv = toks.findIndex((t, i) => i > iChg && isVel(t));
       if (iSv < 0) { rej.incomplet++; return; }
       const iMg = toks.findIndex((t, i) => i > iSv && isChg(t));
       if (iMg < 0) { rej.incomplet++; return; }
       const iMv = toks.findIndex((t, i) => i > iMg && isVel(t));
       if (iMv < 0) { rej.incomplet++; return; }
-      const start_v = +toks[iSv], max_gr = +toks[iMg], max_v = +toks[iMv];
+      const start_v = +toks[iSv], max_gr = parseFloat(toks[iMg]), max_v = +toks[iMv];
+      const compressed = toks[iMg].endsWith('+');
 
       const bullet_gr = weights[col];
       if (!bullet_gr) { rej.balle_illisible++; return; }
@@ -257,7 +259,7 @@ for (const page of pages) {
       rows.push({
         cartridge: ck, bullet_gr, powder: pk,
         start_gr, start_ms: Math.round(start_v * FPS2MS),
-        max_gr, max_ms: Math.round(max_v * FPS2MS),
+        max_gr, max_ms: Math.round(max_v * FPS2MS), compressed,
         barrel_mm: barrelOf[ck] || null,
       });
     });
