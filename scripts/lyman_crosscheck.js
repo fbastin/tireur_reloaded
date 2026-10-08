@@ -28,6 +28,10 @@ const ANCH = JSON.parse(fs.readFileSync(d('anchors.json'))).anchors;
 let LY;
 try { LY = JSON.parse(fs.readFileSync(d('lyman.local.json'))).rows; }
 catch (e) { console.error('data/lyman.local.json absent — lancer d\'abord scripts/parse_lyman.js'); process.exit(1); }
+// Balles coulées (charges réduites, plomb) : gardées pour le contrôle de l'extraction (§ 0),
+// écartées des comparaisons au modèle (§ 1 et 2), qui décrit des balles chemisées.
+const LY_ALL = LY;
+LY = LY.filter((r) => !r.cast);
 
 const G = 6.479891e-5;                       // grain -> kg
 const [e0, e1] = COEF.e_eff.coef;            // E_eff = e0 + e1·(fill/100)   [J/kg]
@@ -56,16 +60,19 @@ const eeffOf = (m_gr, C_gr, v) => {
 // C'est une contrainte purement physique : la violer signe une ligne corrompue par l'OCR
 // (masse ou vitesse mal lue). On la mesure AVANT tout usage du modèle — filtrer le jeu de
 // validation avec le modèle qu'on valide serait circulaire.
+// À canon et à type de balle identiques AUSSI : le livre traite le .357 au revolver 4″, à la
+// carabine 20″ et à la Contender 10″, et en balle coulée à charge réduite. Les mêler comptait
+// pour « incohérente » une 158 gr à 20″ plus rapide qu'une 110 gr à 4″ (17,7 % au lieu de 7,9 %).
 {
   const g = new Map();
-  for (const r of LY) { const k = r.cartridge + '|' + r.powder; if (!g.has(k)) g.set(k, []); g.get(k).push(r); }
+  for (const r of LY_ALL) { const k = [r.cartridge, r.powder, r.barrel_mm, r.cast].join('|'); if (!g.has(k)) g.set(k, []); g.get(k).push(r); }
   let pairs = 0, viol = 0;
   for (const rows of g.values()) for (const a of rows) for (const b of rows) {
     if (!(a.bullet_gr < b.bullet_gr)) continue;
     for (const t of ['start', 'max']) { pairs++; if (b[t + '_ms'] > a[t + '_ms'] * 1.02) viol++; }
   }
   console.log('=== 0. Qualité de l\'extraction OCR (test physique, sans modèle) ===');
-  console.log(`  lignes : ${LY.length}   comparaisons contraignantes : ${pairs}`);
+  console.log(`  lignes : ${LY_ALL.length} (dont ${LY_ALL.length - LY.length} en balle coulée)   comparaisons contraignantes : ${pairs}`);
   console.log(`  incohérences (balle plus lourde ET plus rapide) : ${viol} = ${(100 * viol / pairs).toFixed(1)} %`);
   console.log('  → bruit résiduel de l\'OCR : le Lyman ne peut PAS servir d\'ancre, seulement d\'ordre de grandeur.\n');
 }

@@ -578,6 +578,26 @@ which is the property they were chosen for.
 > those sets. With the **same** η_p coefficients, the corrected sets take Western's Pmax RMS from
 > 21.5 % to 13.2 % and the pooled RMS from 20.3 % to 17.4 %; refitting would only reach 17.2 %,
 > so the coefficients have **not** been refitted. Anchors rebuilt (LOO velocity RMS 4.2 → 4.0 %).
+>
+> **Lyman, second pass, 2026-10-08** (cross-check only — no anchor, no coefficient depends on it).
+> 1 622 → 3 275 rows (860 of them cast bullets), none lost, no existing row altered. Recovered:
+> powders Lyman names by number only (2400, 231, 748, 760: any label without a letter was dropped
+> silently); continuation pages whose title the OCR truncated (« 43 WINCHESTER », « 08 Winchester »:
+> a page with a table and no « Test Components » block now inherits the previous page's
+> cartridge — checked page by page, no counter-example; this alone recovered every jacketed .222
+> row); the first page of a section whose banner title was missed (the whole .357 Magnum 4″
+> section); tables whose « Powder … Grains » header the OCR split over two lines; cast-bullet
+> tables (« 150 gr. (#358477) », « 90 gr. (Linotype) »: now flagged `cast`, kept out of the model
+> comparisons); start loads below 500 fps (.38 Special, 473 fps). Barrel lengths: one-digit values
+> (« 4" ») and long leader dots were missed, so the .357/.44 revolver rows inherited the 20″
+> carbine barrel; 227 rows still have no barrel. The extraction self-test (heavier bullet faster)
+> now compares within the same barrel and bullet type: mixing the 4″, 10″ and 20″ sections had
+> inflated it (8.1 % now). Cross-check after the pass: rifle n = 3 676, RMS 10.6 % (was 2 480,
+> 11.0 %); handgun n = 946, RMS 26.1 % (was 608, 37.0 %, mostly the wrong 20″ barrel); Lyman ↔
+> anchors, rifle 255 pairs, E_eff RMS 9.5 % (was 213, 10.1 %). Still lost: OCR-mangled powder
+> names (« 1+110 », « Jnique »), max-only rows (no start load), powders whose identity or density
+> is not established (see `data/powder_aliases.json`). The values published from Lyman on the
+> wiki were re-checked against the page images.
 
 The anchored-vs-cold gap (6.1 % vs 9.0 %) reproduces on independent data, on a small sample
 (25 couples — ADI's powders are mostly unanchored by construction).

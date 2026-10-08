@@ -104,7 +104,7 @@ const fixPowder = (s) => s
   .replace(/^X(?:MR|MP)[\s-]*(\d+)/i, 'Accurate $1')
   .replace(/^AA\s*#\s*(\d+)/i, 'Accurate No. $1') // AA#9 → Accurate No.9
   .replace(/^AA[\s-]*(\d)/i, 'Accurate $1')       // AA-2230 → Accurate 2230
-  .replace(/^MR\s*(\d)/i, 'IMR$1')                // « MR4895 » : le I initial saute à l'OCR
+  .replace(/^MR[\s-]*(\d)/i, 'IMR$1')             // « MR4895 », « MR-3031 » : le I initial saute à l'OCR
   .replace(/^H[\s-]+(\d)/i, 'H$1')                // H-4831 → H4831
   .replace(/^IMR[\s-]+(\d)/i, 'IMR$1')
   .replace(/\s+/g, ' ')
@@ -135,14 +135,13 @@ let pagesData = 0;
 
 const barrelOf = {};   // cartouche -> canon d'essai Lyman (mm)
 
-for (const page of pages) {
+// 1. cartouche = premier libellé de la page qui résout dans notre base (sinon on saute)
+// L'en-tête de section porte souvent des désignations en plus (« 308 Winchester
+// (7.62 x 51mm) (7.62 NATO) ») : on essaie la ligne entière, puis son premier bloc
+// (avant deux espaces ou une parenthèse). Sans cela toute la section est perdue —
+// et avec elle le bloc « Barrel Length », qui n'est imprimé que sur sa première page.
+function cartoucheDe(page) {
   const lines = page.split('\n');
-
-  // 1. cartouche = premier libellé de la page qui résout dans notre base (sinon on saute)
-  // L'en-tête de section porte souvent des désignations en plus (« 308 Winchester
-  // (7.62 x 51mm) (7.62 NATO) ») : on essaie la ligne entière, puis son premier bloc
-  // (avant deux espaces ou une parenthèse). Sans cela toute la section est perdue —
-  // et avec elle le bloc « Barrel Length », qui n'est imprimé que sur sa première page.
   let ck = null;
   for (const l of lines.slice(0, 4)) {
     const s = l.trim();
@@ -154,12 +153,45 @@ for (const page of pages) {
     }
     if (ck) break;
   }
+  return ck;
+}
+// abscisses de chaque « Powder » d'une ligne d'en-tête
+const powderCols = (l) => [...l.matchAll(/powder/gi)].map((m) => m.index);
+const COMPOSANTS = /Test\s*C\s*o\s*m\s*p\s*o\s*n\s*e\s*n\s*t\s*s/i;
+const cks = pages.map(cartoucheDe);
+const aTableau = (p) => p.split('\n').some((l) => /Powder/i.test(l) && /Grains/i.test(l));
+
+// Cartouche EFFECTIVE de chaque page, deux replis quand l'OCR a manqué le titre :
+// 1. Première page d'une section (bloc « Test Components ») : la page suivante, simple suite
+//    sans ce bloc, porte le titre. Sans ce repli, la section .357 Magnum au revolver 4″
+//    (p. 336 imprimée) était perdue en entier.
+// 2. Page de SUITE (tableau, pas de « Test Components ») : elle continue la section de la page
+//    précédente. L'OCR y mange souvent le premier caractère du titre (« 43 WINCHESTER »,
+//    « 57 WEATHERBY », « 00 SAVAGE ») ; contrôlé page par page le 2026-10-08, aucune page de
+//    suite n'y appartenait à une autre cartouche. Une page sans tableau (article) n'hérite de
+//    rien et coupe la chaîne ; une section dont la première page reste inconnue reste inconnue.
+const eff = [];
+for (let pi = 0; pi < pages.length; pi++) {
+  let ck = cks[pi];
+  const tc = COMPOSANTS.test(pages[pi]);
+  if (!ck && tc && cks[pi + 1] && !COMPOSANTS.test(pages[pi + 1] || '')) ck = cks[pi + 1];
+  if (!ck && !tc && pi > 0 && eff[pi - 1] && aTableau(pages[pi])) ck = eff[pi - 1];
+  eff.push(ck);
+}
+
+for (let pi = 0; pi < pages.length; pi++) {
+  const page = pages[pi];
+  const lines = page.split('\n');
+  const ck = eff[pi];
 
   // Canon d'essai (bloc « Test Specifications », présent sur la 1re page de la section
   // seulement → mémorisé pour les pages suivantes de la même cartouche). Il rend le
   // cross-check honnête : la vitesse Lyman peut être ramenée au canon de référence.
   if (ck) {
-    const mb = page.match(/Barrel\s+Length\s+([\d.]{2,4})\s*"/i);
+    // Un chiffre suffit (« 4" », « 6" ») ; guillemet droit ou typographique ; quelques débris
+    // d'OCR tolérés avant le nombre (« Barrel Length Winchester; 20" »). L'ancienne forme
+    // exigeait deux caractères et un guillemet droit : 42 en-têtes sur 139 étaient manqués.
+    const mb = page.match(/Barrel\s+Length[^\d\n]{0,80}(\d{1,2}(?:\.\d{1,2})?)\s*["”″]/i);
     if (mb) {
       const inches = parseFloat(mb[1]);
       if (inches >= 4 && inches <= 32) barrelOf[ck] = Math.round(inches * 25.4);
@@ -170,20 +202,30 @@ for (const page of pages) {
   // « Powder … Grains » ouvre un bloc ; les masses d'un bloc se lisent entre l'en-tête
   // précédent et le sien. Appliquer les masses du premier bloc à toute la page corrompait
   // ~28 % des lignes (balle plus lourde donnée pour plus rapide — impossible).
+  // En-tête coupé sur deux lignes voisines : à l'OCR, les deux colonnes sont parfois décalées
+  // d'une ligne (p. 224 : « Powder … Grains » de droite en ligne 34, de gauche en 35). Compter
+  // deux tableaux laissait le second sans masse de balle — tout le tableau en « balle illisible ».
+  // Des lignes d'en-tête à deux lignes d'écart au plus forment donc UN en-tête.
   const hdrs = [];
-  lines.forEach((l, i) => { if (/Powder/i.test(l) && /Grains/i.test(l)) hdrs.push(i); });
+  lines.forEach((l, i) => {
+    if (!(/Powder/i.test(l) && /Grains/i.test(l))) return;
+    const g = hdrs[hdrs.length - 1];
+    if (g && i - g.last <= 2) { g.last = i; g.pos.push(...powderCols(l)); }
+    else hdrs.push({ first: i, last: i, pos: powderCols(l) });
+  });
   if (!hdrs.length) continue;
   if (!ck) { rej.page_sans_cartouche++; continue; }
   pagesData++;
 
   for (let bi = 0; bi < hdrs.length; bi++) {
-  const hdr = hdrs[bi];
-  const blockStart = bi === 0 ? 0 : hdrs[bi - 1] + 1;      // zone où chercher les masses
-  const blockEnd = bi + 1 < hdrs.length ? hdrs[bi + 1] : lines.length;
+  const hdr = hdrs[bi].last;
+  const blockStart = bi === 0 ? 0 : hdrs[bi - 1].last + 1;   // zone où chercher les masses
+  const blockEnd = bi + 1 < hdrs.length ? hdrs[bi + 1].first : lines.length;
 
-  const hdrLine = lines[hdr];
-  const second = hdrLine.toLowerCase().indexOf('powder', hdrLine.toLowerCase().indexOf('powder') + 1);
-  const cut = second > 0 ? second : Infinity;   // page à une seule colonne si pas de 2e « Powder »
+  // 2e colonne = un « Powder » nettement à droite du premier ; sinon page à une seule colonne
+  const p0 = Math.min(...hdrs[bi].pos);
+  const right = hdrs[bi].pos.filter((x) => x > p0 + 30);
+  const cut = right.length ? Math.min(...right) : Infinity;
 
   // 3. masses de balle. PIÈGE : le bloc « Test Components » liste TOUTES les balles de la
   // cartouche (110 gr, 125 gr, 150 gr…) ; y puiser donne une masse fausse — c'était la cause
@@ -194,17 +236,23 @@ for (const page of pages) {
   // (« 110 gr. Jacketed HP ») ; dans la LISTE DES COMPOSANTS elle SUIT une référence et une
   // virgule (« Sierra HP #2110, 110 gr. »). Exiger le type de balle derrière la masse suffit
   // donc à ne lire que le bon libellé.
-  const TYPE = 'Jacketed|Cast|Lead|Plated|Full|FMJ|HP|SP|SPT|RN|SWC|BT|Bullet';
-  const weights = [null, null];
-  for (const l of lines.slice(blockStart, hdr)) {
-    const re = new RegExp(`([lIOo0-9]{2,3})\\s*gr\\.?\\s+(?:${TYPE})`, 'gi');
+  // « 150 gr. (#358477) » et « 90 gr. (Linotype) » (balles coulées : 214 en-têtes), Barnes,
+  // Solid, TMJ, A-Frame, Silvertip, JTC SIL et quelques graphies d'OCR étaient manqués : leurs
+  // tableaux partaient en « balle illisible ».
+  const TYPE = 'Jacketed|Cast|Lead|Plated|Full|FMJ|HP|SP|SPT|RN|SWC|BT|Bullet|\\(|Barnes|Solid|TMJ|Gold|A-?Frame|Silver|Sierra|JTC|Jacke|Jock';
+  // Balle COULÉE : Lyman l'annonce par un numéro de moule ou un alliage entre parenthèses
+  // (« 150 gr. (#358477) », « 90 gr. (Linotype) »). Ses charges sont réduites (plomb) : la
+  // ligne est marquée `cast` pour que les usages qui comparent des vitesses la séparent.
+  const weights = [null, null], casts = [false, false];
+  for (const l of lines.slice(blockStart, hdrs[bi].first)) {
+    const re = new RegExp(`([lIOo0-9]{2,3})\\s*gr\\.?\\s+(${TYPE})`, 'gi');
     let m;
     while ((m = re.exec(l)) !== null) {
       if (/[,#]\s*$/.test(l.slice(0, m.index))) continue;   // « …#2110, 110 gr. » = composants
       const w = parseInt(fixDigits(m[1]), 10);
       if (!(w >= 15 && w <= 700)) continue;
       const col = m.index < cut ? 0 : 1;
-      if (weights[col] === null) weights[col] = w;
+      if (weights[col] === null) { weights[col] = w; casts[col] = /^(\(|Cast|Lead)/i.test(m[2]); }
     }
   }
 
@@ -219,7 +267,11 @@ for (const page of pages) {
       const iChg = toks.findIndex(isChg);
       if (iChg < 1) return;
       const rawPowder = toks.slice(0, iChg).join(' ');
-      if (!/[A-Za-z]/.test(rawPowder)) return;
+      // Lyman nomme la 2400 d'Alliant et les poudres Winchester par leur seul numéro (2400, 231,
+      // 296, 748, 760). Exiger une lettre les écartait EN SILENCE : ~440 lignes. Un nom tout en
+      // chiffres n'est admis que s'il désigne EXACTEMENT une poudre de l'index (« 4350 », commun
+      // à trois poudres, y est neutralisé) ; sinon c'est un débris de ligne, écarté comme avant.
+      if (!/[A-Za-z]/.test(rawPowder) && !(/^\d{3,4}$/.test(rawPowder) && powderKey(rawPowder))) return;
 
       // départ : charge puis vitesse ; max : charge suivante puis vitesse
       const start_gr = parseFloat(toks[iChg]);
@@ -232,7 +284,7 @@ for (const page of pages) {
       const start_v = +toks[iSv], max_gr = parseFloat(toks[iMg]), max_v = +toks[iMv];
       const compressed = toks[iMg].endsWith('+');
 
-      const bullet_gr = weights[col];
+      const bullet_gr = weights[col], cast = casts[col];
       if (!bullet_gr) { rej.balle_illisible++; return; }
 
       // Plausibilité PHYSIQUE de la masse de balle : l'OCR tronque parfois l'en-tête de
@@ -254,12 +306,14 @@ for (const page of pages) {
       // invariants physiques : la charge max dépasse la charge de départ, et la vitesse
       // croît avec la charge. Un chiffre mal océrisé les viole le plus souvent.
       if (!(max_gr > start_gr && max_v > start_v)) { rej.invariant++; return; }
-      if (!(start_gr >= 1 && max_gr <= 150 && start_v >= 500 && max_v <= 4500)) { rej.invariant++; return; }
+      // Plancher à 400 fps, pas 500 : les charges de départ du .38 Special descendent à 473 fps
+      // (700X, 125 gr, p. 333) — le plancher à 500 rejetait des lignes vraies.
+      if (!(start_gr >= 1 && max_gr <= 150 && start_v >= 400 && max_v <= 4500)) { rej.invariant++; return; }
 
       rows.push({
         cartridge: ck, bullet_gr, powder: pk,
         start_gr, start_ms: Math.round(start_v * FPS2MS),
-        max_gr, max_ms: Math.round(max_v * FPS2MS), compressed,
+        max_gr, max_ms: Math.round(max_v * FPS2MS), compressed, cast,
         barrel_mm: barrelOf[ck] || null,
       });
     });
