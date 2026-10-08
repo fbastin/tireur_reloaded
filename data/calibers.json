@@ -140,7 +140,7 @@
       "case_mm": 32.61,
       "case_vol_cm3": 1.56,
       "pmax_cip_bar": 2800,
-      "test_barrel_mm": 208
+      "test_barrel_mm": 210
     },
     "300 PRC": {
       "type": "rifle",
@@ -168,7 +168,7 @@
       "case_mm": 29.34,
       "case_vol_cm3": 1.032,
       "pmax_cip_bar": 1500,
-      "test_barrel_mm": 196
+      "test_barrel_mm": 197
     },
     "38 Super Auto": {
       "type": "handgun",
@@ -367,7 +367,7 @@
       "case_mm": 17.27,
       "case_vol_cm3": 0.434,
       "pmax_cip_bar": 1350,
-      "test_barrel_mm": 94
+      "test_barrel_mm": 95
     },
     "30-30 Win.": {
       "type": "rifle",
@@ -589,7 +589,7 @@
       "case_mm": 45.72,
       "case_vol_cm3": 3.07,
       "pmax_cip_bar": 3950,
-      "test_barrel_mm": 211
+      "test_barrel_mm": 213
     },
     "6mm PPC": {
       "type": "rifle",

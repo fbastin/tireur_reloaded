@@ -47,7 +47,7 @@ for (const line of lines) {
   if (!d) continue;
   if (/iameter/i.test(d)) {                                  // "Barrel: 5” … Bullet Diameter: 0.224”"
     const m = d.match(/iameter:?(\d\.\d{3})/i); if (m) bore = +(parseFloat(m[1]) * 25.4).toFixed(2);
-    const b = d.match(/Barrel:?(\d{1,2}(?:\.\d)?)/i); if (b) barrel = +(parseFloat(b[1]) * 25.4).toFixed(1);
+    const b = d.match(/Barrel:?(\d{1,2}(?:\.\d{1,3})?)/i); if (b) barrel = +(parseFloat(b[1]) * 25.4).toFixed(1);   // « 7.75” » : jusqu'à trois décimales
     if (prev && !isData(prev)) cart = SUBHEAD.test(prev) && prev2 && !isData(prev2) ? `${title(prev2)} ${title(prev)}` : title(prev);
     prev2 = prev; prev = line; continue;
   }
