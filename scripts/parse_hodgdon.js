@@ -60,8 +60,9 @@ const IN = 25.4;
 const num = (s) => parseFloat(String(s).replace(/,/g, ''));
 
 // Une ligne de charge : poudre, puis départ (grains, vitesse, pression+unité) puis maximum.
-// Le « C » suffixe une charge comprimée.
-const LOAD = /^(.+?)\s+([\d.]+)C?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s+([\d.]+)C?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s*$/;
+// Le « C » suffixe une charge comprimée. Le départ est FACULTATIF : les sections +P
+// (38 Special +P…) ne publient que le maximum, et exiger un départ les faisait disparaître.
+const LOAD = /^(.+?)\s+(?:([\d.]+)C?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s+)?([\d.]+)C?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s*$/;
 
 let cartridge = null, barrel = null, bullet_gr = null, bullet_desc = null, bore = null, coal = null;
 const rows = [];

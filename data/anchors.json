@@ -1202,34 +1202,39 @@
    "np": 0.2701
   },
   "38 Special|Ramshot Zip": {
-   "eeff": 1358171,
-   "n": 21,
-   "np": 0.3212
+   "eeff": 1342001,
+   "n": 24,
+   "np": 0.3152
   },
   "38 Special|Accurate Solo 1000": {
-   "eeff": 1433440,
-   "n": 12,
-   "np": 0.2773
+   "eeff": 1429420,
+   "n": 17,
+   "np": 0.2743
   },
   "38 Special|Accurate No. 2": {
-   "eeff": 1227466,
-   "n": 37,
-   "np": 0.2732
+   "eeff": 1247827,
+   "n": 47,
+   "np": 0.2753
   },
   "38 Special|Ramshot Silhouette": {
-   "eeff": 1238665,
-   "n": 37,
-   "np": 0.3725
+   "eeff": 1243039,
+   "n": 47,
+   "np": 0.3676
   },
   "38 Special|Ramshot True Blue": {
-   "eeff": 1139608,
-   "n": 41,
-   "np": 0.3306
+   "eeff": 1147493,
+   "n": 53,
+   "np": 0.3267
   },
   "38 Special|Accurate No. 5": {
-   "eeff": 1015876,
-   "n": 43,
-   "np": 0.3152
+   "eeff": 1037919,
+   "n": 55,
+   "np": 0.3179
+  },
+  "38 Special|Accurate No. 7": {
+   "eeff": 1047492,
+   "n": 4,
+   "np": 0.309
   },
   "357 Magnum|Ramshot Zip": {
    "eeff": 1499233,
@@ -2452,20 +2457,20 @@
    "np": 0.5445
   },
   "30 Carbine|Accurate No.9": {
-   "eeff": 1711706,
-   "n": 7,
-   "np": 0.2226
+   "eeff": 1577833,
+   "n": 14,
+   "np": 0.1927
   },
   "30 Carbine|Ramshot Enforcer": {
-   "eeff": 1591562,
-   "n": 7,
-   "np": 0.2626,
-   "mhr": 3.1
+   "eeff": 1501438,
+   "n": 14,
+   "np": 0.232,
+   "mhr": 7.6
   },
   "30 Carbine|Accurate 4100": {
-   "eeff": 1591562,
-   "n": 7,
-   "np": 0.2626
+   "eeff": 1487990,
+   "n": 14,
+   "np": 0.2296
   },
   "300 AAC BLK|Ramshot Enforcer": {
    "eeff": 1619847,
@@ -2479,14 +2484,14 @@
    "np": 0.2772
   },
   "300 AAC BLK|Accurate 5744": {
-   "eeff": 1498745,
-   "n": 18,
-   "np": 0.265
+   "eeff": 1446804,
+   "n": 21,
+   "np": 0.2544
   },
   "300 AAC BLK|Accurate 1680": {
-   "eeff": 1404715,
-   "n": 18,
-   "np": 0.2811
+   "eeff": 1364752,
+   "n": 21,
+   "np": 0.2705
   },
   "30-30 Win.|Accurate 5744": {
    "eeff": 1537216,
@@ -2624,9 +2629,9 @@
    "np": 0.3819
   },
   "308 Win.|Accurate 5744": {
-   "eeff": 1731847,
-   "n": 6,
-   "np": 0.3616
+   "eeff": 1354940,
+   "n": 10,
+   "np": 0.2947
   },
   "308 Win.|Accurate LT-30": {
    "eeff": 1429355,
@@ -3028,9 +3033,9 @@
    "np": 0.3017
   },
   "458 SOCOM|Accurate 5744": {
-   "eeff": 1310565,
-   "n": 14,
-   "np": 0.2942
+   "eeff": 1239365,
+   "n": 18,
+   "np": 0.274
   },
   "458 SOCOM|Accurate 1680": {
    "eeff": 1305863,
@@ -3038,19 +3043,19 @@
    "np": 0.323
   },
   "458 SOCOM|Accurate LT-30": {
-   "eeff": 1101641,
-   "n": 13,
-   "np": 0.3204
+   "eeff": 1092036,
+   "n": 15,
+   "np": 0.3091
   },
   "458 SOCOM|Accurate LT-32": {
-   "eeff": 1063782,
-   "n": 6,
-   "np": 0.309
+   "eeff": 1024691,
+   "n": 7,
+   "np": 0.3055
   },
   "458 SOCOM|Accurate 2200": {
-   "eeff": 1210257,
-   "n": 13,
-   "np": 0.3566
+   "eeff": 1211725,
+   "n": 14,
+   "np": 0.3484
   },
   "458 SOCOM|Ramshot X-Terminator": {
    "eeff": 1016269,
@@ -3850,24 +3855,24 @@
    "n": 3
   },
   "257 Roberts|IMR 4350": {
-   "eeff": 1044118,
-   "n": 6
+   "eeff": 1060348,
+   "n": 7
   },
   "257 Roberts|IMR 4831": {
-   "eeff": 1033756,
-   "n": 5
+   "eeff": 1048561,
+   "n": 6
   },
   "257 Roberts|Winchester StaBall 6.5": {
    "eeff": 1071621,
    "n": 6
   },
   "257 Roberts|IMR 4064": {
-   "eeff": 1167357,
-   "n": 6
+   "eeff": 1179577,
+   "n": 7
   },
   "257 Roberts|IMR 4895": {
-   "eeff": 1168535,
-   "n": 6
+   "eeff": 1179275,
+   "n": 7
   },
   "257 Roberts|IMR 8208 XBR": {
    "eeff": 1204546,
@@ -4461,29 +4466,44 @@
    "n": 6
   },
   "300 AAC BLK|Accurate 11FS": {
-   "eeff": 1505689,
-   "n": 3,
-   "np": 0.2858
+   "eeff": 1432256,
+   "n": 5,
+   "np": 0.2383
   },
   "300 AAC BLK|Hodgdon CFE BLK": {
-   "eeff": 1321396,
-   "n": 9,
-   "np": 0.4083
+   "eeff": 1224008,
+   "n": 12,
+   "np": 0.391
   },
   "300 AAC BLK|IMR 4227": {
-   "eeff": 1459429,
-   "n": 9,
-   "np": 0.2803
+   "eeff": 1368187,
+   "n": 12,
+   "np": 0.2592
   },
   "300 AAC BLK|Winchester 296": {
-   "eeff": 1575615,
-   "n": 9,
-   "np": 0.2819
+   "eeff": 1482364,
+   "n": 12,
+   "np": 0.2689
   },
   "300 AAC BLK|Hodgdon H110": {
-   "eeff": 1575615,
-   "n": 9,
-   "np": 0.2819
+   "eeff": 1482364,
+   "n": 12,
+   "np": 0.2689
+  },
+  "300 AAC BLK|Hodgdon Trail Boss": {
+   "eeff": 918495,
+   "n": 6,
+   "np": 0.1295
+  },
+  "300 AAC BLK|Hodgdon H4198": {
+   "eeff": 1094140,
+   "n": 4,
+   "np": 0.2799
+  },
+  "300 AAC BLK|IMR 4198": {
+   "eeff": 1095267,
+   "n": 4,
+   "np": 0.2603
   },
   "30-30 Win.|Winchester StaBall Match": {
    "eeff": 1123688,
@@ -4507,9 +4527,9 @@
    "np": 0.3036
   },
   "30-30 Win.|Hodgdon H4895": {
-   "eeff": 1157193,
-   "n": 7,
-   "np": 0.3132
+   "eeff": 1131893,
+   "n": 8,
+   "np": 0.2181
   },
   "30-30 Win.|IMR 4895": {
    "eeff": 1075081,
@@ -4526,9 +4546,9 @@
    "np": 0.2876
   },
   "30-30 Win.|Hodgdon Benchmark": {
-   "eeff": 1171403,
-   "n": 6,
-   "np": 0.2926
+   "eeff": 1141580,
+   "n": 7,
+   "np": 0.1791
   },
   "30-30 Win.|Hodgdon H4198": {
    "eeff": 1290358,
@@ -4553,9 +4573,9 @@
    "np": 0.4704
   },
   "308 Win.|Hodgdon Benchmark": {
-   "eeff": 1376961,
-   "n": 15,
-   "np": 0.3734
+   "eeff": 1339229,
+   "n": 16,
+   "np": 0.3444
   },
   "308 Win.|IMR 8208 XBR": {
    "eeff": 1408190,
@@ -4569,14 +4589,14 @@
    "mhr": 1
   },
   "308 Win.|Hodgdon H4895": {
-   "eeff": 1389767,
-   "n": 15,
-   "np": 0.393
+   "eeff": 1349166,
+   "n": 16,
+   "np": 0.3622
   },
   "308 Win.|Hodgdon H322": {
-   "eeff": 1358987,
-   "n": 6,
-   "np": 0.3848
+   "eeff": 1275886,
+   "n": 7,
+   "np": 0.2958
   },
   "308 Win.|IMR 3031": {
    "eeff": 1438719,
@@ -4617,6 +4637,16 @@
   "308 Win.|Winchester 760": {
    "eeff": 1229755,
    "n": 5
+  },
+  "308 Win.|Accurate No. 2": {
+   "eeff": 1030948,
+   "n": 4,
+   "np": 0.117
+  },
+  "308 Win.|Hodgdon Titegroup": {
+   "eeff": 1099691,
+   "n": 4,
+   "np": 0.157
   },
   "30-06 Spring.|Winchester 760": {
    "eeff": 1221744,
@@ -4679,6 +4709,11 @@
    "eeff": 1362705,
    "n": 8,
    "np": 0.4114
+  },
+  "30-06 Spring.|Winchester 748": {
+   "eeff": 1237836,
+   "n": 4,
+   "np": 0.4104
   },
   "30-06 Spring.|Winchester StaBall 6.5": {
    "eeff": 1297194,
@@ -5109,8 +5144,8 @@
    "np": 0.2953
   },
   "44 Rem. Mag.|IMR 4227": {
-   "eeff": 1256834,
-   "n": 16,
+   "eeff": 1235620,
+   "n": 17,
    "np": 0.2237
   },
   "44 Rem. Mag.|Winchester 296": {
@@ -5155,12 +5190,23 @@
    "n": 6
   },
   "458 SOCOM|IMR 4198": {
-   "eeff": 1180946,
-   "n": 6
+   "eeff": 1209663,
+   "n": 7,
+   "np": 0.2414
   },
   "458 SOCOM|IMR 4227": {
    "eeff": 1225162,
    "n": 6
+  },
+  "458 SOCOM|Hodgdon Benchmark": {
+   "eeff": 933291,
+   "n": 3,
+   "np": 0.287
+  },
+  "458 SOCOM|Hodgdon H322": {
+   "eeff": 1152649,
+   "n": 3,
+   "np": 0.2639
   },
   "45 - 70 Govt.|Hodgdon Varget": {
    "eeff": 1069332,
@@ -5178,9 +5224,9 @@
    "np": 0.3346
   },
   "45 - 70 Govt.|IMR 4064": {
-   "eeff": 1043787,
-   "n": 8,
-   "np": 0.3168
+   "eeff": 996458,
+   "n": 9,
+   "np": 0.2698
   },
   "45 - 70 Govt.|IMR 3031": {
    "eeff": 1130936,
@@ -5218,9 +5264,9 @@
    "np": 0.3048
   },
   "45 - 70 Govt.|Accurate 5744": {
-   "eeff": 1390942,
-   "n": 14,
-   "np": 0.2872
+   "eeff": 1356375,
+   "n": 15,
+   "np": 0.2812
   },
   "45 - 70 Govt.|Hodgdon Trail Boss": {
    "eeff": 1460411,
@@ -5362,29 +5408,29 @@
    "n": 5
   },
   "38 Special|Winchester 572": {
-   "eeff": 1107211,
-   "n": 14,
-   "np": 0.3256
+   "eeff": 1090671,
+   "n": 22,
+   "np": 0.3276
   },
   "38 Special|Hodgdon CFE Pistol": {
-   "eeff": 1211784,
-   "n": 18,
-   "np": 0.3767
+   "eeff": 1202477,
+   "n": 29,
+   "np": 0.3694
   },
   "38 Special|Hodgdon Universal": {
-   "eeff": 1162260,
-   "n": 24,
-   "np": 0.3214
+   "eeff": 1160731,
+   "n": 36,
+   "np": 0.3159
   },
   "38 Special|Winchester 231": {
-   "eeff": 1229693,
-   "n": 13,
-   "np": 0.3472
+   "eeff": 1213786,
+   "n": 21,
+   "np": 0.3492
   },
   "38 Special|Hodgdon Titegroup": {
-   "eeff": 1354926,
-   "n": 18,
-   "np": 0.3382
+   "eeff": 1362517,
+   "n": 27,
+   "np": 0.3385
   },
   "38 Special|Hodgdon Trail Boss": {
    "eeff": 1072661,
@@ -5398,18 +5444,18 @@
    "mhr": 5.1
   },
   "38 Special|Hodgdon HS-6": {
-   "eeff": 922578,
-   "n": 13,
-   "np": 0.3112
+   "eeff": 917845,
+   "n": 23,
+   "np": 0.3046
   },
   "38 Special|Hodgdon Long Shot": {
-   "eeff": 869325,
-   "n": 4,
-   "np": 0.2969
+   "eeff": 1065265,
+   "n": 14,
+   "np": 0.3445
   },
   "38 Special|Hodgdon H4227": {
-   "eeff": 638382,
-   "n": 4
+   "eeff": 654541,
+   "n": 8
   },
   "357 SIG|Hodgdon HS-6": {
    "eeff": 1180070,
