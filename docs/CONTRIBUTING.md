@@ -147,8 +147,13 @@ worst at reduced charges) to **~3 %** against Sierra's measured data.
 ### Starting-charge pre-fill & the Ladder window
 
 `node scripts/build_start_charges.js` regenerates `data/start_charges.local.json` — the
-real manufacturer **minimum and maximum** charge (`c`, `cmax`) for the typical (median)
-bullet of each cartridge×powder. The UI uses it twice: it **pre-fills** the start charge
+real manufacturer **starting and maximum** charge (`c`, `cmax`) for the typical (median)
+bullet of each cartridge×powder. Each table row is one bullet with its own start and max;
+when several bullets share the typical weight (`nb`), the window takes the **lowest** start
+and the **lowest** max, so the most cautious bullet sets the ceiling. Every source must
+contribute *both* columns: Western's start column was once dropped by the extraction, and
+430 Accurate/Ramshot combos then pre-filled a **maximum** load as the starting charge
+(fixed 2026-10-10). The UI uses it twice: it **pre-fills** the start charge
 when the user changes cartridge/powder, and it bounds the **Ladder** planner's safe window
 (start → max). It is **gitignored** (real charges → golden rule): the live site ships it,
 the public repo does not, and the UI degrades gracefully when it is absent (no pre-fill;

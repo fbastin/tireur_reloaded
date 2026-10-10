@@ -40,6 +40,23 @@ const SUBHEAD = /PSI|SPECIFICATION|These loads|For chambers|^MAGNUM\b|TRAPDOOR/i
 const isData = (s) => /^\d( \d)+\b/.test(s.trim()) || /^(ACCURATE|RAMSHOT)/.test(ds(s));
 const title = (s) => s.trim().replace(/\s{2,}.*$/, '');
 
+// Deux découpages ambigus de la ligne despacée, que la charge de départ rend visibles
+// (2026-10-10, 54 lignes) :
+//  - la référence de la balle finit par un chiffre (moule Lyman « #311359 », « MILM855 ») qui
+//    se colle à la charge de départ : « 910.0 » pour 10.0 ;
+//  - une vitesse de départ imprimée sans séparateur de milliers (« 2596 ») cède son dernier
+//    chiffre à la charge maximale : « 259 » et « 623.5 » pour 2596 et 23.5.
+// La charge de départ vaut 90 % du maximum dans ce guide (médiane) : une charge max plus de
+// deux fois supérieure, ou une charge de départ au-dessus du max, trahit le mauvais découpage.
+function reparer(depart, vDepart, max) {
+  if (num(max) > 2 * num(depart) && /^\d{3}$/.test(vDepart) && max.length > 3) {
+    vDepart += max[0]; max = max.slice(1);
+  }
+  let colle = '';
+  while (num(depart) > num(max) && depart.length > 3) { colle += depart[0]; depart = depart.slice(1); }
+  return { depart, vDepart, max, colle };
+}
+
 let cart = null, bore = null, barrel = null, powder = null, prev = '', prev2 = '';
 const rows = [];
 for (const line of lines) {
@@ -55,17 +72,22 @@ for (const line of lines) {
   const m = d.match(SIX), bm = d.match(/^(\d{1,3})/);
   if (m && bm && cart) {
     const bullet = +bm[1];
-    const desc = d.slice(bm[1].length, d.length - m[0].length).replace(/[*]/g, '');   // maker+type (despacé)
+    const f = reparer(m[1], m[2], m[3]);
+    const desc = (d.slice(bm[1].length, d.length - m[0].length) + f.colle).replace(/[*]/g, '');   // maker+type (despacé)
     if (bullet > 10 && bullet < 800) rows.push({
       cartridge: cart, bore_mm: bore, barrel_mm: barrel, powder,
-      bullet_gr: bullet, bullet_desc: desc, charge_gr: num(m[3]), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]), compressed: m[7] === 'C',
+      bullet_gr: bullet, bullet_desc: desc,
+      // La charge de DÉPART (colonne « START LOAD ») était capturée puis jetée : la fenêtre du
+      // ladder prenait alors la charge maximale pour charge de départ (2026-10-10).
+      start_gr: num(f.depart), start_v0_fps: num(f.vDepart),
+      charge_gr: num(f.max), v0_fps: num(m[4]), Pmax_psi: num(m[5]), coal_in: num(m[6]), compressed: m[7] === 'C',
     });
   }
   prev2 = prev; prev = line;
 }
 
 const out = path.join(__dirname, '..', 'data', 'western.local.json');
-fs.writeFileSync(out, JSON.stringify({ _doc: 'Western Powders Handloading Guide 8.0 (Accurate/Ramshot) — donnees brutes, LOCAL/gitignore, non redistribue (EULA). Charge max + v0(fps) + Pmax(psi) + COAL(in).', rows }, null, 1));
+fs.writeFileSync(out, JSON.stringify({ _doc: 'Western Powders Handloading Guide 8.0 (Accurate/Ramshot) — donnees brutes, LOCAL/gitignore, non redistribue (EULA). Charge de départ + v0 de départ (fps), charge max + v0(fps) + Pmax(psi) + COAL(in).', rows }, null, 1));
 const carts = [...new Set(rows.map((r) => r.cartridge))], pwd = [...new Set(rows.map((r) => r.powder))];
 console.log(`max-load rows: ${rows.length} | cartridges ${carts.length} | powders ${pwd.length}`);
 console.log('sample:', rows.slice(0, 3).map((r) => `${r.cartridge}/${r.powder} ${r.bullet_gr}gr ${r.charge_gr}gr ${r.v0_fps}fps ${r.Pmax_psi}psi`).join(' | '));

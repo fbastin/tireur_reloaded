@@ -328,14 +328,19 @@ function applySystem(){
             :                    {mass:'gr',charge:'gr',bbl:'mm', vmeas:'m/s', temp:'°C', v:'m/s', p:'bar'}; // hybride
   Object.keys(want).forEach(k=>{ if(U[k].cur!==want[k]) toggleU(k); });
 }
+// Données revalidées à chaque chargement (304 si inchangées) : le serveur n'envoie pas de
+// Cache-Control, et un navigateur peut garder plusieurs jours, sans la redemander, une copie
+// vieille de quelques mois. C'est ainsi qu'une correction des charges de départ (2026-10-10)
+// aurait mis des jours à atteindre les visiteurs.
+const getData=(f)=>fetch('data/'+f,{cache:'no-cache'});
 Promise.all([
-  fetch('data/calibers.json').then(r=>r.json()),
-  fetch('data/powders.json').then(r=>r.json()),
-  fetch('data/model_coefficients.json').then(r=>r.json()),
-  fetch('data/anchors.json').then(r=>r.json()).catch(()=>({anchors:{}})),
-  fetch('data/burn_rate_chart.txt').then(r=>r.text()).catch(()=>''),   // classement vitesse de combustion (optionnel)
-  fetch('data/start_charges.local.json').then(r=>r.json()).catch(()=>({charges:{}})), // charges de départ (optionnel, live)
-  fetch('data/cartridge_dims.json').then(r=>r.json()).catch(()=>({dims:{}})), // cotes pour le schéma (optionnel)
+  getData('calibers.json').then(r=>r.json()),
+  getData('powders.json').then(r=>r.json()),
+  getData('model_coefficients.json').then(r=>r.json()),
+  getData('anchors.json').then(r=>r.json()).catch(()=>({anchors:{}})),
+  getData('burn_rate_chart.txt').then(r=>r.text()).catch(()=>''),   // classement vitesse de combustion (optionnel)
+  getData('start_charges.local.json').then(r=>r.json()).catch(()=>({charges:{}})), // charges de départ (optionnel, live)
+  getData('cartridge_dims.json').then(r=>r.json()).catch(()=>({dims:{}})), // cotes pour le schéma (optionnel)
 ]).then(([cal,pwd,coef,anc,brTxt,sc,cd])=>{
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{}; DIMS=cd.dims||{};
   const cs=document.getElementById('cart');
@@ -471,7 +476,8 @@ function ladderWindow(){
   const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value;
   const sc=STARTC[ck+'|'+pk];
   let mfgMin,mfgMax,note;
-  if(sc){ mfgMin=sc.c; mfgMax=sc.cmax; note=T('fenêtre fabricant ','manufacturer window ')+ladDisp(sc.c).toFixed(2)+'–'+ladDisp(sc.cmax).toFixed(2)+' '+LADUNIT+T(' (balle ',' (bullet ')+sc.m+' gr)'; }
+  // Plusieurs balles de cette masse : départ et max sont ceux de la plus prudente (build_start_charges.js).
+  if(sc){ mfgMin=sc.c; mfgMax=sc.cmax; note=T('fenêtre fabricant ','manufacturer window ')+ladDisp(sc.c).toFixed(2)+'–'+ladDisp(sc.cmax).toFixed(2)+' '+LADUNIT+T(' (balle ',' (bullet ')+sc.m+' gr'+(sc.nb>1?T(` ; ${sc.nb} balles de cette masse dans les guides : départ et max les plus bas`,`; ${sc.nb} bullets of this weight in the manuals: lowest start and lowest max`):'')+')'; }
   else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note=T('⚠ <strong>pas de données fabricant</strong> pour ce couple (poudre sans « ● ») — choisissez une poudre marquée ● ou saisissez <strong>Min / Max / Incrément</strong> à la main.','⚠ <strong>no manufacturer data</strong> for this combination (powder without “●”) — choose a powder marked ● or enter <strong>Min / Max / Step</strong> by hand.'); }
   const fMin=parseFloat(document.getElementById('ladMin').value), fStart=parseFloat(document.getElementById('ladStart').value),
         fMax=parseFloat(document.getElementById('ladMax').value), fStep=parseFloat(document.getElementById('ladStep').value);
