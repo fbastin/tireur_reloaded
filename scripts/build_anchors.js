@@ -49,23 +49,45 @@ function mhResidual(ca, m_gr, C_gr, v0_ms, Pmax_bar, Qex) {
   return (Math.sqrt(2 * Em / meff) / v0_ms - 1) * 100;
 }
 
-const groups = {};   // "calKey|pwdKey" -> [{eeff, np, mhr}]
-function add(calKey, pwdKey, eeff, np, mhr) {
+// Chaque charge garde sa source, sa balle (bid : une ligne de table, ou une table entière pour
+// les sources qui publient une échelle de charges) et ses masses en grains : les lois locales
+// (charge, masse de balle) s'estiment balle par balle (scripts/fit_local_laws.js).
+const groups = {};   // "calKey|pwdKey" -> [{eeff, np, mhr, src, bid, m, C}]
+// Chaque charge est ramenée au canon de RÉFÉRENCE de la cartouche (test_barrel_mm), celui où
+// l'outil évalue vitesse et pression : vitesse par la loi de canon (velocity_model.js), énergie
+// en conséquence (kE), et η_p = E·C/(P·A·L) recalculé à la course de référence, la pression de
+// pic ne dépendant pas de la longueur du canon (kN). Jusqu'au 2026-10-10, E et η_p restaient
+// ceux du canon de la source : une charge Reload Swiss de 9 mm, mesurée sur 122 mm, était
+// relue sur le canon d'essai de 102 mm, et sa pression gonflée d'un quart. Sources sans
+// longueur de canon publiée (bbl absent) : prises telles quelles, comme avant.
+const VMb = require('../velocity_model.js');
+function add(calKey, pwdKey, eeff, np, mhr, x) {
   if (!calKey || !pwdKey) return;
+  let kE = 1, kN = 1;
+  const ca = CAL[calKey];
+  if (x && x.bbl > 0 && ca) {
+    const Lr = x.bbl - ca.case_mm, Lf = (ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm;
+    if (Lr > 0 && Lf > 0) { kE = Math.pow(VMb.scaleByBarrel(1, Lr, Lf), 2); kN = kE * Lr / Lf; }
+  }
   const k = calKey + '|' + pwdKey;
-  (groups[k] = groups[k] || []).push({ eeff, np, mhr });
+  (groups[k] = groups[k] || []).push({ ...x, eeff: eeff * kE, np: np != null ? np * kN : null, mhr, kE, kN });
 }
 
 // Reload Swiss (cartridge/powder already match our keys; eta_p known; compute E_eff)
-for (const r of JSON.parse(fs.readFileSync(d('rs_dataset.local.json')))) {
+{
+const RS = JSON.parse(fs.readFileSync(d('rs_dataset.local.json'))); let rsBid = 0;
+RS.forEach((r, i) => {
+  const p = RS[i - 1];   // une ligne « max » suit la ligne « min » de la même balle
+  if (!(r.level === 'max' && p && p.level === 'min' && p.cartridge === r.cartridge && p.powder === r.powder && p.m_gr === r.m_gr)) rsBid++;
   const ck = calIdx[norm(r.cartridge)];
   const m = r.m_gr * G, C = r.C_gr * G;
   const eeff = (m + C / 3) * r.v0 * r.v0 / (2 * C);
   const mhr = ck ? mhResidual({ ...CAL[ck], _bbl: r.barrel_mm }, r.m_gr, r.C_gr, r.v0, r.Pmax, r.Qex) : null;
-  add(ck, pwdIdx[norm(r.powder)] || r.powder, eeff, r.eta_p, mhr);
+  add(ck, pwdIdx[norm(r.powder)] || r.powder, eeff, r.eta_p, mhr, { src: 'RS', bbl: r.barrel_mm, bid: 'RS' + rsBid, m: r.m_gr, C: r.C_gr, P: r.Pmax, max: r.level === 'max' });
+});
 }
 // Western (Accurate/Ramshot) — match keys, bore guard
-for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
+for (const [i, r] of JSON.parse(fs.readFileSync(d('western.local.json'))).rows.entries()) {
   if (isJunkCart(r.cartridge)) continue;
   const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
   if (r.bore_mm && Math.abs(r.bore_mm - ca.bore_mm) > 0.3) continue;
@@ -75,7 +97,11 @@ for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
   const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
   const v0 = r.v0_fps * 0.3048, Pmax = r.Pmax_psi * 0.0689476 * 1e5;
   const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
-  add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr);
+  add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr, { src: 'West', bbl: r.barrel_mm, bid: 'W' + i, m: r.bullet_gr, C: r.charge_gr, P: Pmax / 1e5, max: true });
+  if (r.start_gr > 0 && r.start_v0_fps > 0) {   // charge de départ : vitesse seule
+    const Cs = r.start_gr * G, mes = m + Cs / 3, vs = r.start_v0_fps * 0.3048;
+    add(ck, pk, mes * vs * vs / (2 * Cs), null, null, { src: 'West', bbl: r.barrel_mm, bid: 'W' + i, m: r.bullet_gr, C: r.start_gr, max: false });
+  }
 }
 
 // Hodgdon Annual Manual (AM24, parsé par scripts/parse_hodgdon.js). Comble la lacune
@@ -96,9 +122,9 @@ try {
     if (r.Pmax_psi > 0) {
       const Pmax = r.Pmax_psi * 0.0689476 * 1e5;
       const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
-      add(ck, pk, eeff, 0.5 * me * v0 * v0 / (Pmax * A * L), mhr);
+      add(ck, pk, eeff, 0.5 * me * v0 * v0 / (Pmax * A * L), mhr, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.charge_gr, P: Pmax / 1e5, max: true });
     } else {
-      add(ck, pk, eeff, null, null);                   // ligne en CUP : vitesse seule
+      add(ck, pk, eeff, null, null, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.charge_gr, max: true });   // ligne en CUP : vitesse seule
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -107,7 +133,7 @@ try {
 // régime différent du np moyenné RS/Western → non mêlé (les couples VV-seuls retombent sur
 // le η_p global pour la pression). 2 points vitesse par ligne (start + max).
 try {
-  for (const r of JSON.parse(fs.readFileSync(d('vihtavuori.local.json'))).rows) {
+  for (const [i, r] of JSON.parse(fs.readFileSync(d('vihtavuori.local.json'))).rows.entries()) {
     const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
     const m = r.bullet_gr * G;
@@ -118,7 +144,7 @@ try {
       const isMax = cgr === r.max_gr;
       const mhr = (isMax && ca.pmax_cip_bar && r.barrel_mm)
         ? mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, cgr, v, ca.pmax_cip_bar, PWD[pk] && PWD[pk].Qex) : null;
-      add(ck, pk, me * v * v / (2 * C), null, mhr);     // np=null : VV ne contribue qu'à la vitesse
+      add(ck, pk, me * v * v / (2 * C), null, mhr, { src: 'VV', bbl: r.barrel_mm, bid: 'VV' + i, m: r.bullet_gr, C: cgr, max: isMax });     // np=null : VV ne contribue qu'à la vitesse
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -127,14 +153,14 @@ try {
 // η_p global). Poudres Norma SANS Qex (→ mhr=null). Pas de longueur de canon publiée :
 // v0 traitée comme au canon de référence (comme Vihtavuori). 2 points par ligne.
 try {
-  for (const r of JSON.parse(fs.readFileSync(d('norma.local.json'))).rows) {
+  for (const [i, r] of JSON.parse(fs.readFileSync(d('norma.local.json'))).rows.entries()) {
     const ck = matchCal(r.cartridge); if (!ck) continue;
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
     const m = r.bullet_gr * G;
     for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
       if (!(cgr > 0 && v > 0)) continue;
       const C = cgr * G, me = m + C / 3;
-      add(ck, pk, me * v * v / (2 * C), null, null);   // np=null : Norma ne contribue qu'à la vitesse
+      add(ck, pk, me * v * v / (2 * C), null, null, { src: 'Norma', bid: 'NO' + i, m: r.bullet_gr, C: cgr, max: cgr === r.max_gr });   // np=null : Norma ne contribue qu'à la vitesse
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -145,14 +171,14 @@ try {
 try {
   const speerFiles = fs.readdirSync(path.join(__dirname, '..', 'data')).filter((f) => /^speer_.*\.local\.json$/.test(f));
   for (const f of speerFiles) {
-    for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
+    for (const [i, r] of JSON.parse(fs.readFileSync(d(f))).rows.entries()) {
       const ck = matchCal(r.cartridge); if (!ck) continue;
       const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
       const m = r.bullet_gr * G;
       for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
         if (!(cgr > 0 && v > 0)) continue;
         const C = cgr * G, me = m + C / 3;
-        add(ck, pk, me * v * v / (2 * C), null, null);
+        add(ck, pk, me * v * v / (2 * C), null, null, { src: 'Speer', bid: f + i, m: r.bullet_gr, C: cgr, max: cgr === r.max_gr });
       }
     }
   }
@@ -163,12 +189,12 @@ try {
 // d'essai SAAMI NON VENTÉ, longueur non publiée → v0 au canon de référence (comme Norma).
 // Balles plomb écartées à l'extraction (coefficients calés sur du chemisé).
 try {
-  for (const r of JSON.parse(fs.readFileSync(d('alliant.local.json'))).rows) {
+  for (const [i, r] of JSON.parse(fs.readFileSync(d('alliant.local.json'))).rows.entries()) {
     const ck = matchCal(r.cartridge); if (!ck) continue;
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
     if (!(r.charge_gr > 0 && r.v0_fps > 0)) continue;
     const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3, v = r.v0_fps * 0.3048;
-    add(ck, pk, me * v * v / (2 * C), null, null);
+    add(ck, pk, me * v * v / (2 * C), null, null, { src: 'Alliant', bid: 'AL' + i, m: r.bullet_gr, C: r.charge_gr, max: true });
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 
@@ -177,7 +203,7 @@ try {
 // (η_p), comme Reload Swiss / Western, et pas seulement E_eff. La pression publiée est celle
 // de la charge MAX -> np n'est calculé que sur ce point ; la charge de départ ne donne que eeff.
 try {
-  for (const r of JSON.parse(fs.readFileSync(d('lovex.local.json'))).rows) {
+  for (const [i, r] of JSON.parse(fs.readFileSync(d('lovex.local.json'))).rows.entries()) {
     const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
     if (!(r.barrel_mm > ca.case_mm)) continue;
@@ -188,7 +214,7 @@ try {
       const C = cgr * G, me = m + C / 3;
       const np = pbar > 0 ? 0.5 * me * v * v / (pbar * 1e5 * A * L) : null;
       const mhr = pbar > 0 ? mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, cgr, v, pbar, PWD[pk] && PWD[pk].Qex) : null;
-      add(ck, pk, me * v * v / (2 * C), np, mhr);
+      add(ck, pk, me * v * v / (2 * C), np, mhr, { src: 'Lovex', bbl: r.barrel_mm, bid: 'LX' + i, m: r.bullet_gr, C: cgr, P: pbar > 0 ? pbar : undefined, max: cgr === r.max_gr });
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -197,14 +223,14 @@ try {
 // VITESSE seule (eeff ; np=null). Pas de longueur de canon publiée → v0 au canon de référence
 // (comme Norma). Seules les lignes dont la balle est NON AMBIGUË sont extraites (cf. parseur).
 try {
-  for (const r of JSON.parse(fs.readFileSync(d('vectan.local.json'))).rows) {
+  for (const [i, r] of JSON.parse(fs.readFileSync(d('vectan.local.json'))).rows.entries()) {
     const ck = matchCal(r.cartridge); if (!ck) continue;
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
     const m = r.bullet_gr * G;
     for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
       if (!(cgr > 0 && v > 0)) continue;
       const C = cgr * G, me = m + C / 3;
-      add(ck, pk, me * v * v / (2 * C), null, null);
+      add(ck, pk, me * v * v / (2 * C), null, null, { src: 'Vectan', bid: 'VE' + i, m: r.bullet_gr, C: cgr, max: cgr === r.max_gr });
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -220,7 +246,7 @@ try {
       const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
       if (!(r.charge_gr > 0 && r.v0_fps > 0)) continue;
       const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3, v = r.v0_fps * 0.3048;
-      add(ck, pk, me * v * v / (2 * C), null, null);
+      add(ck, pk, me * v * v / (2 * C), null, null, { src: 'LoadData', bid: f + '|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + (r.bullet || ''), m: r.bullet_gr, C: r.charge_gr });
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
@@ -249,7 +275,7 @@ try {
       const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
       const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (refBbl - ca.case_mm) / 1000;
       const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // canon Sierra → canon de réf
-      add(ck, pk, me * vRef * vRef / (2 * C), null, null);
+      add(ck, pk, me * vRef * vRef / (2 * C), null, null, { src: 'Sierra', bid: f + '|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr, m: r.bullet_gr, C: r.charge_gr });
     }
   }
   // Une poudre absente du catalogue emporte TOUS ses points en silence : « Viht N130 »
@@ -262,22 +288,65 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
 
+// Référence de chaque CARTOUCHE pour le modèle à froid : masse de balle et remplissage
+// typiques des guides (moyennes géométriques de toutes ses charges). Les lois locales s'y
+// appliquent quand le couple n'a pas d'ancre.
+function cartRefs(groups) {
+  const acc = {};
+  for (const [k, arr] of Object.entries(groups)) {
+    const ck = k.split('|')[0], pw = PWD[k.slice(ck.length + 1)], ca = CAL[ck];
+    const a = (acc[ck] = acc[ck] || { lm: [], lf: [] });
+    for (const r of arr) {
+      if (!(r.m > 0 && r.C > 0)) continue;
+      a.lm.push(Math.log(r.m));
+      if (pw && pw.pcd > 0 && ca && ca.case_vol_cm3 > 0) a.lf.push(Math.log((r.C * GR2G / (pw.pcd / 1000)) / ca.case_vol_cm3));
+    }
+  }
+  const avg = (v) => v.reduce((s, x) => s + x, 0) / v.length, out = {};
+  for (const [ck, a] of Object.entries(acc)) {
+    if (a.lm.length < 3) continue;
+    out[ck] = { m: +Math.exp(avg(a.lm)).toFixed(1) };
+    if (a.lf.length >= 3) out[ck].ff = +Math.exp(avg(a.lf)).toFixed(3);
+  }
+  return out;
+}
+
+// Chargé comme module (scripts/fit_local_laws.js) : les charges, sans rien écrire.
+if (require.main !== module) { module.exports = { groups, CAL, PWD, cartRefs }; return; }
+
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
 const anchors = {}; let kept = 0;
 const looErr = [];
-for (const [k, arr] of Object.entries(groups)) {
+// Lois locales (scripts/fit_local_laws.js --write) : l'ancre est un POINT DE RÉFÉRENCE (C, m,
+// moyennes géométriques du couple), et chaque charge y est ramenée par les exposants avant la
+// moyenne. Sans le bloc `local`, on retombe sur les moyennes constantes d'avant le 2026-10-10.
+const LOC = JSON.parse(fs.readFileSync(d('model_coefficients.json'))).local || null;
+const lnm = (a) => mean(a.map(Math.log));
+function refAncre(arr) {
+  const lc = lnm(arr.map((x) => x.C)), lm = lnm(arr.map((x) => x.m));
+  const dE = (x) => LOC ? LOC.delta * (Math.log(x.C) - lc) + LOC.beta * (Math.log(x.m) - lm) : 0;
+  const dN = (x) => LOC ? LOC.eps * (Math.log(x.C) - lc) + LOC.zeta * (Math.log(x.m) - lm) : 0;
+  const pr = arr.filter((x) => x.np > 0);
+  return {
+    lc, lm, eeff: Math.exp(mean(arr.map((x) => Math.log(x.eeff) - dE(x)))),
+    np: pr.length ? Math.exp(mean(pr.map((x) => Math.log(x.np) - dN(x)))) : null,
+  };
+}
+for (const [k, arr0] of Object.entries(groups)) {
+  const arr = arr0.filter((x) => x.m > 0 && x.C > 0 && x.eeff > 0);
   if (arr.length < 3) continue;                       // need a few loads
-  anchors[k] = { eeff: Math.round(mean(arr.map((x) => x.eeff))), n: arr.length };
-  const nps = arr.map((x) => x.np).filter((v) => v != null);   // VV ne fournit pas de np
-  if (nps.length) anchors[k].np = +mean(nps).toFixed(4);       // sinon η_p global (UI)
+  const ref = refAncre(arr);
+  anchors[k] = { eeff: Math.round(ref.eeff), n: arr.length, C: +Math.exp(ref.lc).toFixed(2), m: +Math.exp(ref.lm).toFixed(1) };
+  if (ref.np != null) anchors[k].np = +ref.np.toFixed(4);        // VV ne fournit pas de np : sinon η_p global (UI)
   // résidu MH moyen du groupe (si ≥3 charges avec Qex)
   const mhrs = arr.map((x) => x.mhr).filter((v) => v != null);
   if (mhrs.length >= 3) anchors[k].mhr = +mean(mhrs).toFixed(1);
   kept++;
-  // leave-one-out on E_eff -> velocity relative error (~ proportional, /2 for sqrt)
+  // une charge laissée de côté, prédite par les autres au moyen des lois locales -> erreur de vitesse
   for (let i = 0; i < arr.length; i++) {
-    const others = arr.filter((_, j) => j !== i);
-    looErr.push((Math.sqrt(mean(others.map((x) => x.eeff)) / arr[i].eeff) - 1) * 100);
+    const o = refAncre(arr.filter((_, j) => j !== i)), x = arr[i];
+    const Ep = o.eeff * (LOC ? Math.exp(LOC.delta * (Math.log(x.C) - o.lc) + LOC.beta * (Math.log(x.m) - o.lm)) : 1);
+    looErr.push((Math.sqrt(Ep / x.eeff) - 1) * 100);
   }
 }
 const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
@@ -297,7 +366,7 @@ if (covered.length > 5) {
   console.log(`garde-fou MH : ${covered.length} ancres couvertes (Qex) | moyenne ${gm.toFixed(1)}% σ ${gsd.toFixed(1)}% | ${flagged} flaguées (|écart|>${thr.toFixed(0)}pts)`);
 }
 
-const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff moyen J/kg, η_p moyen, n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
+const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
 console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}%`);
 console.log('-> data/anchors.json');

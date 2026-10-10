@@ -5,9 +5,14 @@ include '../../header.php';
 ?>
 <link rel="stylesheet" href="/rechargement/css/reloading.css?v=<?php echo filemtime($_SERVER['DOCUMENT_ROOT'].'/rechargement/css/reloading.css'); ?>" />
 <script src="/js/vendor/plotly/plotly-2.35.2.min.js?v=2.35.2" charset="utf-8"></script>
-<script src="energy_model.js"></script>
-<script src="velocity_model.js"></script>
-<script src="cartridge_diagram.js"></script>
+<?php
+// Scripts du modèle versionnés par leur date : sans paramètre, un navigateur peut garder des
+// jours un ancien energy_model.js (servi sans Cache-Control) face à une page qui appelle une
+// fonction ajoutée depuis — la page cassait chez les visiteurs réguliers (2026-10-10).
+foreach (['energy_model.js', 'velocity_model.js', 'cartridge_diagram.js'] as $js) {
+    echo '<script src="' . $js . '?v=' . filemtime(__DIR__ . '/' . $js) . '"></script>' . "\n";
+}
+?>
 
 <style>
 .vm-grid { display:grid; grid-template-columns: 340px 1fr; gap:1.5rem; margin-top:1rem; align-items:start; }
@@ -73,35 +78,38 @@ efficiency η<sub>b</sub>, pressure from a piezometric efficiency η<sub>p</sub>
 without the proprietary form function of the former solver.
 Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) and the community (CC0).</p>
 
+<?php /* Chiffres du bandeau : validation du 2026-10-10 (docs/MODEL.md § 3.5), outil tel qu'il
+   calcule, chaque balle prédite sans ses propres données. Pression : avec données fabricant 14,5 %
+   d'écart quadratique, 7,9 % des charges sous-estimées de plus de 15 % ; à froid 25,4 % et 19,2 % ;
+   centile 1 % : −36 % et −39 %. Vitesse : 3,8 % et 8,0 %. */ ?>
 <div class="vm-banner lang-fr">
-<strong>&#9888; Estimation, pas une donnée de sécurité.</strong> À froid, la <strong>vitesse</strong> est donnée à
-<strong>±10&nbsp;%</strong> et la <strong>pression à titre purement indicatif</strong> :
-<strong>~20&nbsp;% d'écart quadratique moyen</strong>, avec un biais qui va dans le mauvais sens
-&mdash; le modèle <strong>sous-estime</strong> la pression le plus souvent, et les écarts relevés en
-validation atteignent 25 à 35&nbsp;% sur certaines charges. Autrement dit, une charge réellement
-au-dessus de la limite CIP peut s'afficher « sûre ». La <strong>vitesse</strong> est
-<strong>affinée automatiquement (~5&nbsp;%) pour les couples cartouche/poudre connus</strong> ;
-saisissez <strong>votre vitesse mesurée</strong> pour la rendre quasi-exacte.
-<strong>Cela ne corrige pas la pression&nbsp;:</strong> la vitesse et la pression sortent de
-<em>deux</em> efficacités distinctes, et votre chronographe n'en contraint qu'une. Une vitesse
-qui tombe juste ne valide donc <em>pas</em> la pression affichée &mdash; c'est même ainsi qu'on
-se fabrique une fausse marge de sécurité. Vérifiez toujours dans les données officielles du fabricant.
+<strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
+±10&nbsp;% à froid, à ~5&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
+fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
+qu'indicative&nbsp;: ~15&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
+Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur treize avec
+données fabricant, une sur cinq sans, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
+réellement au-dessus de la limite C.I.P. peut donc s'afficher «&nbsp;sûre&nbsp;». D'une charge à l'autre,
+la pression réelle monte aussi plus vite que celle affichée&nbsp;: au-delà du maximum publié, l'écart
+se creuse.
+<strong>Votre vitesse mesurée ne corrige pas la pression&nbsp;:</strong> vitesse et pression sortent de
+<em>deux</em> efficacités distinctes, et le chronographe n'en contraint qu'une. Vérifiez toujours dans
+les données officielles du fabricant.
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limites &rarr;</a>
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
 <div class="vm-banner lang-en">
-<strong>&#9888; An estimate, not safety data.</strong> Uncalibrated, <strong>velocity</strong> is given to
-<strong>±10%</strong> and <strong>pressure for indication only</strong>:
-<strong>~20% root-mean-square error</strong>, with a bias in the wrong direction
-&mdash; the model most often <strong>underestimates</strong> pressure, and the deviations found in
-validation reach 25 to 35% on some loads. In other words, a load that is really
-above the C.I.P. limit can be displayed as “safe”. <strong>Velocity</strong> is
-<strong>automatically refined (~5%) for known cartridge/powder combinations</strong>;
-enter <strong>your measured velocity</strong> to make it near-exact.
-<strong>This does not correct the pressure:</strong> velocity and pressure come from
-<em>two</em> distinct efficiencies, and your chronograph constrains only one of them. A velocity
-that matches therefore does <em>not</em> validate the pressure shown &mdash; that is precisely how
-one builds a false safety margin. Always check against the manufacturer's official load data.
+<strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ±10% uncalibrated,
+to ~5% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
+measured velocity. <strong>Pressure</strong> is for indication only: ~15% root-mean-square error for a
+“●” combination, ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
+load in thirteen with manufacturer data, one in five without, and by more than 35% for one load in a
+hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
+charge to the next, real pressure also rises faster than the displayed one: beyond the published
+maximum, the gap widens.
+<strong>Your measured velocity does not correct the pressure:</strong> velocity and pressure come from
+<em>two</em> distinct efficiencies, and your chronograph constrains only one of them. Always check
+against the manufacturer's official load data.
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">Validation &amp; limits &rarr;</a>
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">producing your own data &rarr;</a> <small>(in French)</small>
 </div>
@@ -214,13 +222,21 @@ one builds a false safety margin. Always check against the manufacturer's offici
 <li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: vitesse à <strong>~5&nbsp;%</strong>&nbsp;;</li>
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: vitesse <strong>quasi-exacte</strong>.</li>
 </ul>
-<p><strong>&#9888; Ces trois échelons ne valent que pour la vitesse.</strong> La pression reste à
-±20&nbsp;% quoi qu'on fournisse, parce qu'elle sort d'une <em>autre</em> relation (efficacité
+<p><strong>&#9888; Ces trois échelons ne valent que pour la vitesse.</strong> La pression reste
+indicative quoi qu'on fournisse (~15&nbsp;% d'écart quadratique avec données fabricant, ~25&nbsp;% sans),
+parce qu'elle sort d'une <em>autre</em> relation (efficacité
 piézométrique) que la vitesse (efficacité balistique)&nbsp;: le chronographe cale la seconde et
 ne dit rien de la première. Nous l'avons vérifié par trois chemins indépendants, dont la
 similitude de Manning, où remonter à la pression depuis la vitesse <strong>amplifie l'erreur
 d'un facteur 6,8</strong>. <em>Croire qu'une vitesse juste garantit une pression juste est la
 manière la plus courante de se fabriquer une fausse marge de sécurité.</em></p>
+<p>Pour un couple cartouche/poudre ancré, vitesse et pression suivent la <strong>charge</strong> et la
+<strong>masse de balle</strong> selon des lois mesurées dans les guides&nbsp;: à charge égale, une balle
+plus lourde donne une pression plus forte. D'une charge à l'autre, la pression affichée monte
+pourtant moins vite qu'en réalité (pente de 1,95 contre 2,7 en médiane dans les guides)&nbsp;:
+au-delà du maximum publié, l'écart joue contre vous. La <strong>température</strong> corrige la
+vitesse (sensibilité générique de Litz) et la pression, supposée réagir comme à la variation de
+charge équivalente.</p>
 <p>Catalogue&nbsp;: <strong>~470 poudres</strong> (Reload Swiss, Accurate/Ramshot et Vihtavuori calibrées&nbsp;; autres marques en repli énergie effective). Les situations à risque (<strong>surpression vs limite CIP, surremplissage</strong>) sont signalées en couleur — à titre indicatif.</p>
 <p><strong>Pour aller plus loin&nbsp;:</strong>
 <a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
@@ -240,13 +256,20 @@ manière la plus courante de se fabriquer une fausse marge de sécurité.</em></
 <li><strong>anchored</strong> on the manufacturer's data for your cartridge/powder combination: velocity to <strong>~5%</strong>;</li>
 <li><strong>with your measured velocity</strong> from a chronograph (field above): <strong>near-exact</strong> velocity.</li>
 </ul>
-<p><strong>&#9888; These three levels apply to velocity only.</strong> Pressure stays at
-±20% whatever you provide, because it comes from a <em>different</em> relation (piezometric
+<p><strong>&#9888; These three levels apply to velocity only.</strong> Pressure stays
+indicative whatever you provide (~15% root-mean-square error with manufacturer data, ~25% without),
+because it comes from a <em>different</em> relation (piezometric
 efficiency) than velocity (ballistic efficiency): the chronograph calibrates the latter and
 says nothing about the former. We checked this along three independent paths, including
 Manning similitude, where working back from velocity to pressure <strong>amplifies the error
 by a factor of 6.8</strong>. <em>Believing that a correct velocity guarantees a correct pressure is the
 most common way of building a false safety margin.</em></p>
+<p>For an anchored cartridge/powder combination, velocity and pressure follow the <strong>charge</strong>
+and the <strong>bullet weight</strong> through laws measured in the manuals: at equal charge, a heavier
+bullet gives a higher pressure. From one charge to the next, however, the displayed pressure rises
+more slowly than in reality (slope 1.95 against a median of 2.7 in the manuals): beyond the
+published maximum, the difference works against you. <strong>Temperature</strong> corrects velocity
+(Litz's generic sensitivity) and pressure, assumed to react as to the equivalent change of charge.</p>
 <p>Catalogue: <strong>~470 powders</strong> (Reload Swiss, Accurate/Ramshot and Vihtavuori calibrated; other brands fall back on an effective energy). Risky situations (<strong>overpressure against the C.I.P. limit, overfilling</strong>) are flagged in colour — for indication only.</p>
 <p><strong>Further reading:</strong>
 <a href="https://github.com/fbastin/tireur_reloaded/blob/main/docs/MODEL.md" target="_blank" rel="noopener">formal description of the model</a> ·
@@ -428,30 +451,48 @@ function cvScales(cart,pw,C_gr){
   const npg=(ff,cv)=>lin(COEF.eta_p.coef,[1,ff,Math.log(1+(A*refTravel)/(cv*1e-6))]);
   return { e: eg(ffU)/eg(ffN), np: npg(ffU,cvU)/npg(ffN,cvN) };
 }
-// ancre effective : override carabine (ladder) > ancre fabricant du couple
-function effAnchor(ck,pk){
-  const anc=ANCH[ck+'|'+pk]||null;
-  if(RIFLE.eeff!=null) return {eeff:RIFLE.eeff, np:anc?anc.np:null, n:RIFLE.n, rifle:true};
-  return anc;
-}
-// prédiction modèle (v0, Pmax, fill, %CIP) pour une charge ARBITRAIRE (sans vmeas/température)
-function modelVP(cart,pw,m_gr,C_gr,bbl,anc){
-  const C=C_gr*G, d=cart.bore_mm/1000, A=Math.PI*d*d/4;
+// Ancres du couple : celle du fabricant (énergie et η_p à un point de référence C, m) et, si
+// l'utilisateur l'a demandé, celle de sa carabine (énergie seule, tirée de ses vitesses).
+function anchorsFor(ck,pk){ return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.eeff!=null ? RIFLE : null }; }
+// Exposant de la pression sur la vitesse quand la température change : on la traite comme la
+// variation de charge équivalente, P ∝ v^(2γ/(δ+1)) par les lois locales (2 sans elles). C'est
+// une HYPOTHÈSE, faute de mesures de pression en température dans nos données.
+const kTempP=()=> COEF.local ? 2*COEF.local.gamma/(COEF.local.delta+1) : 2;
+// UNE prédiction pour l'affichage principal ET le tableau du ladder. Jusqu'au 2026-10-10 il y en
+// avait deux copies, et le tableau ignorait la température. opt : {vmeas (m/s, au canon de
+// l'utilisateur), Tc (°C)}.
+function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
+  opt=opt||{};
+  const d=cart.bore_mm/1000, A=Math.PI*d*d/4;
   const uT=(bbl-cart.case_mm)/1000, refTravel=(refBbl(cart)-cart.case_mm)/1000;  // course canon réel / référence
-  const cv=effCV(cart);
-  const ReP=1+(A*refTravel)/(cv*1e-6), hasPcd=pw.pcd>0, Cg=C_gr*GR_G;
-  const fill=hasPcd?(Cg/(pw.pcd/1000))/cv*100:null, ff=hasPcd?fill/100:1;
+  const cv=effCV(cart), hasPcd=pw.pcd>0;
+  const fill=hasPcd?(C_gr*GR_G/(pw.pcd/1000))/cv*100:null;
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
   const loadP={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:refBbl(cart),case_mm:cart.case_mm};
-  const npG=lin(COEF.eta_p.coef,[1,ff,Math.log(ReP)]), sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
+  const sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
   const S=cvScales(cart,pw,C_gr);                        // sensibilité au volume d'étui saisi (1,1 si nominal)
-  let vRef,vUser,eta_p;
-  if(anc && anc.rifle){ vUser=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vRef=sc(vUser,uT,refTravel); eta_p=anc.np!=null?anc.np*S.np:npG; }
-  else if(anc){ vRef=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vUser=sc(vRef,refTravel,uT); eta_p=anc.np!=null?anc.np*S.np:npG; }
-  else if(pw.Qex&&pw.Ba){ eta_p=npG; vRef=EnergyModel.velocityFromEnergy(load,lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex*1000); vUser=sc(vRef,refTravel,uT); }
-  else { eta_p=npG; vRef=EnergyModel.velocityFromEnergy(load,lin(COEF.e_eff.coef,[1,ff])); vUser=sc(vRef,refTravel,uT); }
-  const Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);        // pression au canon de référence (depuis vRef)
-  return {v0:vUser,Pmax,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null};
+  // Énergie et η_p : ancre fabricant (lois locales comprises) ou modèle à froid. La pression est
+  // évaluée au canon de RÉFÉRENCE (ln Re à la course de référence).
+  const base=EnergyModel.energyAndEtaP(COEF,pw,hasPcd?fill/100:null,Math.log(1+(A*refTravel)/(cv*1e-6)),m_gr,C_gr,an.anc);
+  const eta_p=base.np*S.np;
+  let vRef,vUser,mode;
+  if(opt.vmeas>0){                                       // vitesse MESURÉE au canon de l'utilisateur
+    vUser=opt.vmeas; vRef=sc(vUser,uT,refTravel); mode='mesure';
+  } else if(an.rifle){                                   // ancrage carabine : énergie au canon réel, avec son étui (pas de S.e)
+    vUser=EnergyModel.velocityFromEnergy(load,an.rifle.eeff*EnergyModel.localE(COEF.local,C_gr,m_gr,an.rifle.C,an.rifle.m));
+    vRef=sc(vUser,uT,refTravel); mode='carabine';
+  } else {                                               // ancre fabricant ou à froid : vitesse au canon de référence
+    vRef=EnergyModel.velocityFromEnergy(load,base.E*S.e); vUser=sc(vRef,refTravel,uT); mode=base.path;
+  }
+  let Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);   // bar — canon de référence
+  // Température (réf. 21 °C), sur une vitesse PRÉDITE seulement : vitesse par la sensibilité de
+  // Litz, pression par kTempP(). Jusqu'au 2026-10-10, la pression restait celle de 21 °C.
+  let tempApplied=false;
+  if(!(opt.vmeas>0) && isFinite(opt.Tc) && opt.Tc!==21){
+    const vT=VelocityModel.tempCorrect(vUser,opt.Tc-21);
+    Pmax*=Math.pow(vT/vUser,kTempP()); vUser=vT; tempApplied=true;
+  }
+  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied};
 }
 // --- unité de masse du ladder (gr <-> g) ---
 const ladToGr=(v)=> LADUNIT==='g' ? v/GR_G : v;           // saisie (LADUNIT) -> grains
@@ -501,13 +542,13 @@ function renderLadder(){
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
   const w=ladderWindow();
   if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+T(' — plage trop étroite (départ ≥ max ou incrément nul).',' — range too narrow (start ≥ max or zero step).')+'</p>';return;}
-  const anc=effAnchor(ck,pk), charges=ladderCharges(w);
+  const an=anchorsFor(ck,pk), charges=ladderCharges(w), Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
   let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">'+T('Charge','Charge')+' ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% '+limSrc(cart)+'</th></tr>';
-  for(const Cg of charges){ const r=modelVP(cart,pw,m_gr,Cg,bbl,anc);
+  for(const Cg of charges){ const r=predict(cart,pw,m_gr,Cg,bbl,an,{Tc});
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
   const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
-  el.innerHTML='<p class="vm-note">'+w.note+(anc&&anc.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs (sous-estimés). Ne dépassez pas le max fabricant.',' for indication only (underestimated). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
+  el.innerHTML='<p class="vm-note">'+w.note+(an.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs. D\'une charge à l\'autre, la pression réelle monte plus vite que celle du tableau (pente médiane des guides 2,7 contre 1,95 ici). Ne dépassez pas le max fabricant.',' for indication only. From one charge to the next, real pressure rises faster than in this table (median slope in the manuals 2.7, against 1.95 here). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
 }
 // Une ligne de mesures de l'échelle de charge -> [charge, vitesse] (nombres), ou null.
 // Accepte « 41.0, 845 » (point décimal, virgule séparatrice : le format de l'exemple),
@@ -538,21 +579,28 @@ function ladderConvertir(col, f){
   const dec=U.charge.cur==='g'?3:2;
   el.value=pts.map(a=>{ const b=a.slice(); b[col]=f(b[col]); return b[0].toFixed(dec).replace(/\.?0+$/,'')+', '+Math.round(b[1]); }).join('\n');
 }
+// Ancrage carabine : l'énergie effective de VOTRE arme, tirée de vos vitesses mesurées, ramenée
+// à un point de référence (charge moyenne géométrique, masse de balle courante) par la loi de
+// charge δ. Avant le 2026-10-10, une moyenne simple et une courbe lissée en √C : la courbe montait
+// deux fois moins vite que les mesures, et l'écart mesuré/lissé mesurait surtout ce défaut.
 function fitLadder(){
   const out=document.getElementById('ladFit'); if(!out)return;
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), m=m_gr*G;
   const pts=ladderPoints().map(a=>({C:toGr(a[0],U.charge.cur), v:toMs(a[1],U.v.cur)}));
   if(pts.length<2){out.innerHTML=pts.length?'<p class="vm-note">'+T('Au moins 2 lignes valides nécessaires.','At least 2 valid lines are needed.')+'</p>':'';return;}
-  const eeffs=pts.map(p=>{const C=p.C*G,me=m+C/3;return me*p.v*p.v/(2*C);});
-  const eeff=eeffs.reduce((a,b)=>a+b,0)/eeffs.length, vmean=pts.reduce((s,p)=>s+p.v,0)/pts.length;
-  const resid=pts.map(p=>{const C=p.C*G,me=m+C/3;return p.v-Math.sqrt(2*eeff*C/me);});
+  const dl=(COEF.local&&COEF.local.delta)||0;
+  const lc=pts.reduce((s,p)=>s+Math.log(p.C),0)/pts.length, Cref=Math.exp(lc);
+  const eeff=Math.exp(pts.reduce((s,p)=>{const C=p.C*G,me=m+C/3;return s+Math.log(me*p.v*p.v/(2*C))-dl*(Math.log(p.C)-lc);},0)/pts.length);
+  const vfit=(Cgr)=>{const C=Cgr*G,me=m+C/3;return Math.sqrt(2*eeff*Math.pow(Cgr/Cref,dl)*C/me);};
+  const vmean=pts.reduce((s,p)=>s+p.v,0)/pts.length;
+  const resid=pts.map(p=>p.v-vfit(p.C));
   const rms=Math.sqrt(resid.reduce((s,x)=>s+x*x,0)/resid.length);
   let t='<table style="width:100%;border-collapse:collapse;font-size:0.8rem;"><tr style="text-align:right"><th style="text-align:left">'+T('Charge','Charge')+'</th><th>'+T('v₀ mes.','v₀ meas.')+'</th><th>'+T('v₀ lissé','v₀ smoothed')+'</th><th>'+T('écart','diff.')+'</th></tr>';
-  pts.forEach((p,i)=>{const C=p.C*G,me=m+C/3,vf=Math.sqrt(2*eeff*C/me);t+='<tr style="text-align:right;border-top:1px solid var(--color-border)"><td style="text-align:left">'+frChg(p.C).toFixed(2)+'</td><td>'+frMs(p.v,U.v.cur).toFixed(0)+'</td><td>'+frMs(vf,U.v.cur).toFixed(0)+'</td><td>'+(resid[i]>=0?'+':'')+frMs(resid[i],U.v.cur).toFixed(0)+'</td></tr>';});
-  out.innerHTML='<p class="vm-note">'+T('E_eff carabine','Rifle E_eff')+' ≈ <strong>'+Math.round(eeff)+'&nbsp;J/kg</strong> · '+T('écart mesuré/lissé','measured/smoothed deviation')+' <strong>'+nf(frMs(rms,U.v.cur),1)+'&nbsp;'+U.v.cur+'</strong> ('+nf(rms/vmean*100,1)+'%) — <em>'+T('proxy de consistance ; un vrai SD/ES exige des tirs répétés à charge fixe','a consistency proxy; a true SD/ES requires repeated shots at a fixed charge')+'</em>. '
-    +'<button type="button" class="vm-print" onclick="applyRifle('+eeff.toFixed(1)+','+pts.length+')">'+T('Ancrer cette carabine','Anchor this rifle')+'</button></p>'+t+'</table>';
+  pts.forEach((p,i)=>{const vf=vfit(p.C);t+='<tr style="text-align:right;border-top:1px solid var(--color-border)"><td style="text-align:left">'+frChg(p.C).toFixed(2)+'</td><td>'+frMs(p.v,U.v.cur).toFixed(0)+'</td><td>'+frMs(vf,U.v.cur).toFixed(0)+'</td><td>'+(resid[i]>=0?'+':'')+frMs(resid[i],U.v.cur).toFixed(0)+'</td></tr>';});
+  out.innerHTML='<p class="vm-note">'+T('E_eff carabine','Rifle E_eff')+' ≈ <strong>'+Math.round(eeff)+'&nbsp;J/kg</strong> '+T('à ','at ')+nf(frChg(Cref),2)+'&nbsp;'+U.charge.cur+' · '+T('écart mesuré/lissé','measured/smoothed deviation')+' <strong>'+nf(frMs(rms,U.v.cur),1)+'&nbsp;'+U.v.cur+'</strong> ('+nf(rms/vmean*100,1)+'%) — <em>'+T('proxy de consistance ; un vrai SD/ES exige des tirs répétés à charge fixe','a consistency proxy; a true SD/ES requires repeated shots at a fixed charge')+'</em>. '
+    +'<button type="button" class="vm-print" onclick="applyRifle('+eeff.toFixed(1)+','+pts.length+','+Cref.toFixed(4)+','+m_gr.toFixed(2)+')">'+T('Ancrer cette carabine','Anchor this rifle')+'</button></p>'+t+'</table>';
 }
-function applyRifle(eeff,n){ RIFLE.eeff=eeff; RIFLE.n=n; calc(); renderLadder(); }
+function applyRifle(eeff,n,C,m){ RIFLE.eeff=eeff; RIFLE.n=n; RIFLE.C=C; RIFLE.m=m; calc(); renderLadder(); }
 // passe la sortie (V₀ m/s, masse gr, calibre mm) au calculateur de balistique extérieure
 function toExterior(){
   if(!LAST) return;
@@ -614,49 +662,19 @@ function calc(){
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), C_gr=toGr(+document.getElementById('c').value,U.charge.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
   const vmeas=toMs(parseFloat(document.getElementById('vmeas').value),U.vmeas.cur);
   if(!(m_gr>0&&C_gr>0&&bbl>cart.case_mm)) return;
-  const m=m_gr*G, C=C_gr*G;            // m_e=m+C/3 désormais calculé dans EnergyModel
+  const m=m_gr*G, C=C_gr*G;
   const d=cart.bore_mm/1000, A=Math.PI*d*d/4, travel=(bbl-cart.case_mm)/1000;
-  const Cg=C_gr*0.06479891;                             // charge (g)
   const hasPcd=pw.pcd>0;                                 // densité bulk optionnelle
-  const cv_cm3=effCV(cart), caseVol=cv_cm3*1e-6;         // volume utile (saisi ou nominal), m³
-  const Re=1+(A*travel)/caseVol;                         // rapport de détente du canon réel (affichage, courbe Le Duc)
-  // Pression : course de RÉFÉRENCE (tube d'essai), indépendante du canon utilisateur
-  const refBbl_mm=refBbl(cart), refTravel=(refBbl_mm-cart.case_mm)/1000, ReP=1+(A*refTravel)/caseVol;
-  const fill = hasPcd ? (Cg/(pw.pcd/1000))/cv_cm3*100 : null;
-  const fillFrac = hasPcd ? fill/100 : 1.0;             // nominal 100 % si pcd inconnu
-  // formules physiques centralisées dans EnergyModel (évite la duplication) ; load reprend la géométrie courante
-  const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
-  const loadP={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:refBbl_mm,case_mm:cart.case_mm}; // pour la pression (canon réf.)
-  // priorité : mesure utilisateur > ancrage fabricant (couple connu) > à froid
-  const anc=effAnchor(document.getElementById('cart').value,document.getElementById('pwd').value);
-  let vRef, vUser, eta_p, anchored=false, dataAnchor=false, viaEeff=false, eta_b=null;
-  const npGlobal=lin(COEF.eta_p.coef,[1,fillFrac,Math.log(ReP)]);   // η_p à la course de référence
-  // Loi de canon (k = 0,15 sur la course, velocity_model.js) : v à La -> v à Lb. La calibration (η_b, eeff fabricant) donne la
-  // vitesse au canon de RÉFÉRENCE ; on la met à l'échelle du canon réel. Une vitesse fournie par
-  // l'utilisateur (mesure, ancrage carabine) est déjà au canon réel -> on la ramène à la réf. pour la pression.
-  const sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
-  const S=cvScales(cart,pw,C_gr);                        // sensibilité au volume d'étui saisi (1,1 si nominal)
-  if(vmeas>0){                                          // vitesse MESURÉE au canon de l'utilisateur
-    vUser=vmeas; vRef=sc(vmeas,travel,refTravel); anchored=true;
-    eta_p=(anc&&anc.np!=null)?anc.np*S.np:npGlobal;      // ancre sans np (VV, vitesse seule) -> η_p global
-  } else if(anc && anc.rifle){                          // ancrage carabine (ladder) : eeff au canon réel
-    vUser=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vRef=sc(vUser,travel,refTravel); eta_p=(anc.np!=null)?anc.np*S.np:npGlobal; dataAnchor=true;
-  } else if(anc){                                       // données fabricant (canon d'essai ≈ réf.)
-    vRef=EnergyModel.velocityFromEnergy(load,anc.eeff*S.e); vUser=sc(vRef,refTravel,travel); eta_p=(anc.np!=null)?anc.np*S.np:npGlobal; dataAnchor=true;
-  } else if(pw.Qex && pw.Ba){
-    eta_p=npGlobal;
-    eta_b=lin(COEF.eta_b.coef,[1,fillFrac,pw.Ba]);
-    vRef=EnergyModel.velocityFromEnergy(load,eta_b*pw.Qex*1000); vUser=sc(vRef,refTravel,travel);
-  } else {                                               // repli énergie effective E_eff
-    eta_p=npGlobal;
-    const Eeff=lin(COEF.e_eff.coef,[1,fillFrac]); vRef=EnergyModel.velocityFromEnergy(load,Eeff); vUser=sc(vRef,refTravel,travel); viaEeff=true;
-  }
-  // correction thermique (Litz) sur la vitesse PRÉDITE (pas sur une vitesse mesurée par l'utilisateur), réf. 21 °C
+  const cv_cm3=effCV(cart);                              // volume utile (saisi ou nominal), cm³
+  const Re=1+(A*travel)/(cv_cm3*1e-6);                   // rapport de détente du canon réel (affichage, courbe Le Duc)
+  const refBbl_mm=refBbl(cart), refTravel=(refBbl_mm-cart.case_mm)/1000;
+  // priorité : mesure utilisateur > ancrage carabine > ancrage fabricant (couple connu) > à froid
+  const an=anchorsFor(document.getElementById('cart').value,document.getElementById('pwd').value), anc=an.anc;
   const Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
-  let tempApplied=false;
-  if(!anchored && isFinite(Tc) && Tc!==21){ vUser=VelocityModel.tempCorrect(vUser,Tc-21); tempApplied=true; }
-  const v0=vUser;                                        // vitesse affichée = au canon de l'utilisateur
-  const Pmax=EnergyModel.predictPmax(loadP,vRef,eta_p);  // bar — canon de référence (pic chambre ~indép. du canon réel)
+  const r=predict(cart,pw,m_gr,C_gr,bbl,an,{vmeas,Tc});
+  const v0=r.v0, Pmax=r.Pmax, eta_p=r.eta_p, fill=r.fill, tempApplied=r.tempApplied;
+  const anchored=r.mode==='mesure', dataAnchor=r.mode==='carabine'||r.mode==='anchor';
+  const viaEeff=r.mode==='e_eff', eta_b=r.mode==='eta_b'?r.base.eta_b:null;
   // affichage
   document.getElementById('o_v').textContent=frMs(v0,U.v.cur).toFixed(0);
   document.getElementById('o_p').textContent=frBar(Pmax,U.p.cur).toFixed(0);
@@ -686,14 +704,17 @@ function calc(){
   else pbar.style.display='none';
   const ancFlag = !!(anc && anc.mhflag);                 // couple fabricant atypique (garde-fou Mayer-Hart)
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(anc&&anc.rifle?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~5%','manufacturer-anchored ~5%')):T('à froid ±10%','uncalibrated ±10%');
+  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(r.mode==='carabine'?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~5%','manufacturer-anchored ~5%')):T('à froid ±10%','uncalibrated ±10%');
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = (hasPcd ? T(`Remplissage ${fill.toFixed(0)} %`,`Load density ${fill.toFixed(0)}%`) : T('Remplissage inconnu (densité bulk absente)','Load density unknown (no bulk density)')) + (CVOL>0?T(` · volume étui perso ${nf(cv_cm3,2)} cm³`,` · custom case capacity ${nf(cv_cm3,2)} cm³`):'');
-  const mode = anchored?T('mesure perso','your measurement') : dataAnchor?`${anc&&anc.rifle?T('ancré carabine','rifle-anchored'):T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
+  const mode = anchored?T('mesure perso','your measurement') : r.mode==='carabine'?`${T('ancré carabine','rifle-anchored')} (n=${an.rifle.n})` : dataAnchor?`${T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
   const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? T(`  ·  v₀ mise à l'échelle du canon saisi (loi de puissance, k = 0,15), pression au canon réf. ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`,`  ·  v₀ scaled to the entered barrel (power law, k = 0.15), pressure at the ref. barrel ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`) : '';
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  ${T('rapport de détente','expansion ratio')} ${nf(Re,1)}  ·  ${mode}  ·  η_p ${nf(eta_p,3)}${pRefTxt}`;
-  let w=T('Pression indicative (η_p : ~20 % RMS, biais vers la SOUS-estimation) — ne jamais valider une charge sur cette base.','Pressure for indication only (η_p: ~20% RMS, biased towards UNDERestimation) — never validate a load on this basis.');
+  // Précision de la pression selon sa source (validation du 2026-10-10, docs/MODEL.md § 3.5).
+  let w = (anc && anc.np!=null)
+    ? T('Pression indicative (~15 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur treize) — ne jamais valider une charge sur cette base.','Pressure for indication only (~15% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirteen) — never validate a load on this basis.')
+    : T('Pression indicative (~25 % d\'écart quadratique sans données fabricant de pression pour ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq) — ne jamais valider une charge sur cette base.','Pressure for indication only (~25% RMS error without manufacturer pressure data for this combination; underestimated by more than 15% for one load in five) — never validate a load on this basis.');
   if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.','⚠ Load density > 110% (compressed charge outside the usual range): unreliable estimate.');
   else if(hasPcd && fill<55) w=T('⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.','⚠ Low load density (< 55%): outside the usual range, unreliable estimate.');
   if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w=T('⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). ','⚠ Case capacity (converted to usable) far from nominal ('+(r*100).toFixed(0)+'%) — check the unit (cm³ / gr H₂O) and the mode (usable, bullet seated / full, empty case). ')+w; }
@@ -701,7 +722,7 @@ function calc(){
   if(!hasPcd) w=T('Densité bulk inconnue : remplissage et pression approximés (nominal). ','Bulk density unknown: load density and pressure approximated (nominal). ')+w;
   if(viaEeff) w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). ','Powder without known Qex/Ba: velocity from a generic energy (±10%). ')+w;
   if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
-  if(tempApplied) w=T('Vitesse ajustée à '+Tc.toFixed(0)+' °C (réf. 21 °C, sensibilité Litz générique ~1,8 fps/°C — indicatif, varie selon la poudre). ','Velocity adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C, generic Litz sensitivity ~1.8 fps/°C — indicative, varies with the powder). ')+w;
+  if(tempApplied) w=T('Vitesse et pression ajustées à '+Tc.toFixed(0)+' °C (réf. 21 °C) : vitesse par la sensibilité générique de Litz, ~1,8 fps/°C, qui varie selon la poudre ; pression comme pour la variation de charge équivalente (hypothèse, P ∝ v^'+nf(kTempP(),1)+'). ','Velocity and pressure adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C): velocity by Litz\'s generic sensitivity, ~1.8 fps/°C, which varies with the powder; pressure as for the equivalent change of charge (an assumption, P ∝ v^'+nf(kTempP(),1)+'). ')+w;
   const bRatio=travel/refTravel;
   if(bRatio<0.6||bRatio>1.7) w=T('⚠ Canon très éloigné de la longueur de référence ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée (loi de puissance), à confirmer au chronographe. ','⚠ Barrel far from the reference length ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+'): v₀ scaling extrapolated (power law), confirm with a chronograph. ')+w;
   document.getElementById('warn').textContent=w;
@@ -717,11 +738,11 @@ function calc(){
   // Superposition des courbes du LADDER (en plus clair) : une P(x)/v(x) par charge de la fenêtre.
   const ladTraces=[]; let maxLadP=0;
   if(document.getElementById('ladPlot') && document.getElementById('ladPlot').checked){
-    const w=ladderWindow(), chgs=ladderCharges(w), anc2=effAnchor(document.getElementById('cart').value,document.getElementById('pwd').value);
+    const w=ladderWindow(), chgs=ladderCharges(w);
     const stride=Math.max(1,Math.ceil(chgs.length/14));     // ~14 courbes max pour rester lisible
     for(let k=0;k<chgs.length;k+=stride){ const Cg=chgs[k];
-      const r=modelVP(cart,pw,m_gr,Cg,bbl,anc2); if(!(r.v0>0&&r.Pmax>0))continue;
-      const lk=VelocityModel.leDuc(r.v0,r.Pmax,m,Cg*G,d,travel); if(!lk)continue;
+      const rk=predict(cart,pw,m_gr,Cg,bbl,an,{Tc}); if(!(rk.v0>0&&rk.Pmax>0))continue;
+      const lk=VelocityModel.leDuc(rk.v0,rk.Pmax,m,Cg*G,d,travel); if(!lk)continue;
       const xk=[],vk=[],pk2=[]; for(let i=0;i<=50;i++){const x=travel*i/50;xk.push(frMm(x*1000,U.bbl.cur));vk.push(frMs(lk.v(x),U.v.cur));const P=frBar(lk.P_bar(x),U.p.cur);pk2.push(P);if(P>maxLadP)maxLadP=P;}
       const nm=ladDisp(Cg).toFixed(LADUNIT==='gr'?1:3)+' '+LADUNIT;
       ladTraces.push({x:xk,y:pk2,yaxis:'y',name:nm,legendgroup:'lad',showlegend:false,line:{color:'rgba(192,57,43,0.20)',width:1},hoverinfo:'name'});

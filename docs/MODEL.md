@@ -171,12 +171,126 @@ the base is somewhat higher still, and that the chamber pressure where gauges re
 here by the effective mass $m_e = m + C/3$; the size of the remaining bias for small arms has
 not been measured. The layer is used for display only.
 
+### 3.5 Local laws around an anchor: charge and bullet mass (2026-10-10)
+
+Until 2026-10-10 an anchor was a constant pair (mean $E_\mathrm{eff}$, mean $\eta_p$). With the
+energy constant, a given bullet followed $v_0 \propto \sqrt{C/m_e}$ and $P_\max \propto C$, and
+$P_\max$ did not depend on bullet mass at all. The manuals say otherwise. Same bullet, start to
+maximum load (medians of the per-bullet slopes):
+
+| | model before | manuals |
+|---|---|---|
+| $v_0$ vs $C$ | $C^{0.5}$ | $C^{0.92}$ Western (6 083 bullets), $C^{0.93}$ Vihtavuori (4 550), $C^{1.04}$ Reload Swiss (849) |
+| $P_\max$ vs $C$ | $C^{1}$ | $C^{2.7}$ Reload Swiss — the only guide measuring pressure at both charges (quartiles 2.2–3.1) |
+
+Holding one bullet out and predicting it from the pair's other bullets (1 976 anchored pairs),
+the anchored pressure was **9 % low at Reload Swiss maximum loads**, 16 % high at their
+starting loads, **11 % low for bullets more than 16 % heavier** than the pair's mean, and 13 %
+high for lighter ones — the low errors in the dangerous direction.
+
+**Reference barrel.** Each published load is now brought back to the cartridge's reference
+barrel (`test_barrel_mm`) before it enters an anchor: velocity by the barrel law of §3.1,
+energy accordingly, and $\eta_p$ recomputed at the reference travel, since peak pressure does
+not depend on barrel length. Until then an anchor kept the energy and $\eta_p$ of each source's
+own barrel, while the tool reads them at the reference travel: a Reload Swiss 9 mm load measured
+on 122 mm was read on the 102 mm test barrel, its pressure inflated by a quarter. Sources that
+publish no barrel length are taken as they are, as before.
+
+The anchor is now a **reference point** $(\bar C, \bar m)$, the geometric means of the pair's
+charges and bullet masses, and
+
+$$E_\mathrm{eff}(C,m) = \bar E\,(C/\bar C)^{\delta}(m/\bar m)^{\beta},\qquad
+\eta_p(C,m) = \bar\eta_p\,(C/\bar C)^{\varepsilon}(m/\bar m)^{\zeta},$$
+
+with $\varepsilon = \delta + 1 - \gamma$ and $\zeta = \beta - \alpha$ (since
+$\eta_p = E_\mathrm{eff}\,C/(P_\max A L)$), so that $P_\max \propto C^{\gamma} m^{\alpha}$.
+$\bar E$ and $\bar\eta_p$ are the geometric means of the pair's loads, each brought back to
+the reference point first. Exponents (`scripts/fit_local_laws.js`, fixed-effects least squares,
+block `local` of `model_coefficients.json`):
+
+| | value | definition | estimated on |
+|---|---|---|---|
+| $\delta$ | 0.824 | $\partial\ln E_\mathrm{eff}/\partial\ln C$, same bullet | 21 890 loads, all sources |
+| $\gamma$ | 1.948 | $\partial\ln P_\max/\partial\ln C$, same bullet | Reload Swiss (1 706 loads) |
+| $\beta$ | 0.581 | $\partial\ln E_\mathrm{eff}/\partial\ln m$, between bullets of a pair and source, charge brought back by $\delta$ | 29 167 loads |
+| $\alpha$ | 0.921 | $\partial\ln P_\max/\partial\ln m$, idem, charge brought back by $\gamma$ | 10 855 loads with pressure |
+
+**Order matters.** Manufacturers' maximum loads all sit at the pressure ceiling, so between
+bullets charge and mass move together ($C_\max \propto m^{-0.44}$, Western). Only $\gamma$
+measured *within* a bullet separates the two effects; it is estimated first. Applying the
+charge law without the mass law is worse than nothing (pressure RMS 15.0 → 22.5 %, light bullets
++27 %).
+
+**Why $\gamma = 1.95$ and not 2.7.** The median per-bullet slope, 2.7, is the real slope of a
+charge ladder (2.6–2.9 for the 85 % of bullets whose start–max spread is under 22 %; about a
+hundred wide-spread Reload Swiss bullets pull the pooled estimate down to 1.95). But between two
+bullets of the same weight the maximum charge also varies with construction (bearing surface,
+monolithic bullets), which the model cannot see; a large $\gamma$ amplifies that scatter, and a
+"hard" bullet at its own maximum then reads well below the limit — a false margin. Scan, $\alpha$
+re-estimated for each $\gamma$, pressure, bullet held out:
+
+| $\gamma$ | $\alpha$ | all: bias / RMS | RS max: bias / RMS | other max loads | under by >15 % |
+|---|---|---|---|---|---|
+| 1.00 | 0.49 | +0.2 / 10.7 % | −10.6 / 14.1 % | 0.0 / 9.0 % | 4.1 % |
+| 1.50 | 0.72 | +0.4 / 12.0 % | −6.7 / 14.1 % | +0.2 / 11.1 % | 5.9 % |
+| **1.95** | **0.92** | **+0.6 / 14.5 %** | **−2.8 / 16.4 %** | **+0.5 / 13.9 %** | **7.9 %** |
+| 2.45 | 1.15 | +1.2 / 18.7 % | +1.8 / 21.6 % | +1.0 / 18.3 % | 10.4 % |
+| 2.70 | 1.26 | +1.5 / 21.4 % | +4.3 / 24.9 % | +1.3 / 21.1 % | 11.5 % |
+
+(`node scripts/fit_local_laws.js --scan`.) A small $\gamma$ fits held-out bullets at their own
+maximum best, but leaves every ladder about 10 % low near its top; a large one gets ladders right
+and multiplies the large under-predictions. The ordinary estimator (pooled least squares, 1.95)
+is kept, without hand tuning: against the anchor it replaces, it is better on every line of the
+table below. **A ladder's slope stays below the real one** (1.95 against 2.7):
+beyond the published maximum, real pressure climbs faster than the displayed one, and the UI's
+ladder table says so.
+
+**Validation, bullet held out** (`node scripts/fit_local_laws.js`), as the tool computes it — at
+the reference barrel — bias / RMS:
+
+| | constant anchor at the sources' barrels (before) | local laws, reference barrel |
+|---|---|---|
+| velocity, all (27 344) | +0.3 / 4.5 % | +0.1 / 3.8 % |
+| pressure, all (10 425) | −0.4 / 18.3 % | +0.6 / 14.5 % |
+| — Reload Swiss start loads | +15.5 / 29.5 % | +5.7 / 18.8 % |
+| — Reload Swiss maximum loads | **−9.2** / 19.1 % | −2.8 / 16.4 % |
+| — other maximum loads | −1.0 / 17.0 % | +0.5 / 13.9 % |
+| — bullets > 16 % heavier than the pair mean | **−11.3** / 17.0 % | 0.0 / 15.8 % |
+| — bullets > 14 % lighter | +12.6 / 23.2 % | −0.4 / 16.4 % |
+| pressure under-predicted by more than 15 % | 10.5 % | 7.9 % |
+
+Two sets the anchors never see. **Lyman** (start and maximum velocities): rifle
+$E_\mathrm{eff}$ agreement with the anchors 9.5 → 8.1 % RMS, bias −6.2 → −3.7 %, pairs off by
+more than 15 %: 28 → 19; handguns 19.7 → 17.7 %, bias −14.1 → −7.9 %
+(`scripts/lyman_crosscheck.js`). **ADI** (174 maximum loads with PSI on anchored pairs, pressure
+at the reference barrel, `scripts/adi_crosscheck.js`): bias +4.2 → +1.6 %, RMS 16.9 → 16.0 %,
+heavy bullets −8.1 → +6.7 %, light +15.2 → −2.4 %; under-predicted by more than 15 %: 3 → 6
+loads of 174. Anchored velocity unchanged (6.3 % RMS).
+
+**Not applied to the cold model.** Two attempts, both rejected (pressure, all published
+loads): charge and mass laws around the cartridge's typical fill and bullet mass, RMS
+24.6 → 37.6 % — across powders, fill follows burning rate, not a charge ladder; mass law alone,
+heavy bullets −1 → +21 %, light +9 → −15 %. The cold model had no mass bias to fix: its fill and
+$B_a$ terms already compensate.
+
+**Temperature.** A predicted velocity is corrected by Litz's generic sensitivity (§ velocity
+tool). Pressure, which used to stay at its 21 °C value, now follows as for the equivalent
+change of charge: $P \propto v^{2\gamma/(\delta+1)} \approx v^{2.14}$. This is an
+**assumption** — no pressure-versus-temperature measurement is in the data.
+
+**User data.** A measured velocity gives the pressure through $\eta_p(C,m)$ of the anchor. A
+rifle anchor (ladder) is fitted with the same charge law $\delta$ around its own reference
+charge, so its smoothed curve now follows the measurements instead of rising as $\sqrt C$.
+
 ## 4. Model unknowns
 
 The model has exactly **two free (calibrated) unknowns**:
 
 1. $\eta_b$ — ballistic efficiency (velocity);
 2. $\eta_p$ — piezometric efficiency (pressure).
+
+Around an anchor, four global exponents (§3.5) describe how both efficiencies move with charge
+and bullet mass; they are constants of the model, not per-load unknowns.
 
 Everything the proprietary solvers compute explicitly — burn rate, the 3-stage form
 function, heat loss to the barrel, friction, gas leakage, the energy-partition /
@@ -194,7 +308,8 @@ Empirically the two unknowns are bounded and stable, but not constant:
 ### Design note — why only bullet mass (not a full projectile database)
 
 QuickLOAD/GRT take detailed projectile inputs (length, bearing surface, seating).
-This model deliberately uses **only bullet mass**, because:
+This model deliberately uses **only bullet mass** (since 2026-10-10 it moves both velocity
+and pressure on anchored pairs, §3.5), because:
 
 - friction / engraving / bearing-surface losses are **absorbed empirically** into
   η_b, η_p (they are not modelled, by design);
@@ -291,7 +406,7 @@ Accuracy improves as data closer to the user's load becomes available:
 | Tier | Information used | Velocity RMS |
 |---|---|---|
 | Cold start | global coefficients only | ~10 % |
-| Anchored | manufacturer $(v_0,P_\max)$ for that cartridge × powder (per-group $\eta_b(\varphi)$, LOO over 171 groups) | ~5 % |
+| Anchored | manufacturer $(v_0,P_\max)$ for that cartridge × powder: a reference point plus the local laws of §3.5 (1 976 pairs, one load held out: 3.7 %) | ~4–5 % |
 | User-anchored | user's own chronograph $v_0$ (efficiency recovered directly) | near-exact along the charge ladder |
 
 This matches the tool's intent: the global model is a *cold prior*; supplying data
@@ -302,12 +417,15 @@ tightens it.
 `data/model_coefficients.json` stores the feature lists, fitted coefficients and the
 reported LOPO RMS. The estimator loads these at runtime.
 
-**It is produced by TWO passes, in this order.** Running the first alone leaves the model in
-the state §6.0 tested and rejected — better on its own training set, unsafe elsewhere:
+**It is produced by TWO passes, in this order**, then the local laws and the anchors. Running the
+first alone leaves the model in the state §6.0 tested and rejected — better on its own training
+set, unsafe elsewhere:
 
 ```bash
 node scripts/03_fit_and_validate.js      # η_b, η_p, E_eff on Reload Swiss alone — INCOMPLETE
 node scripts/fit_pressure_multibrand.js  # rewrites η_p (3 equiponderated sources) and E_eff
+node scripts/fit_local_laws.js --write   # block `local` (§3.5); the first pass keeps it
+node scripts/build_anchors.js            # anchors = reference points, read with `local`
 ```
 
 The first pass writes a `_calage: "INCOMPLET…"` marker and prints a warning; the second

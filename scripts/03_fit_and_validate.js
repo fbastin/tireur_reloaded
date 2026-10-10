@@ -105,6 +105,10 @@ const coef = {
 // Le marqueur rend l'état intermédiaire DÉTECTABLE et pas seulement annoncé : le 2026-08-11,
 // lancer ce script « pour mesurer » a écrasé les coefficients de production sans un mot.
 coef._calage = 'INCOMPLET — Reload Swiss seul. Lancer scripts/fit_pressure_multibrand.js.';
+// Le bloc `local` (lois locales de l'ancrage, scripts/fit_local_laws.js) ne vient pas de ce
+// calage : il est conservé, sinon relancer ce script les effacerait sans un mot.
+try { const prev = JSON.parse(fs.readFileSync(d('model_coefficients.json'))); if (prev.local) coef.local = prev.local; }
+catch (e) { if (e.code !== 'ENOENT') throw e; }
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2));
 
 console.log(`records ${D.length} | powders ${powders.length}`);

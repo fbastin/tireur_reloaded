@@ -5,6 +5,8 @@ pressure** for handloads, plus an approximate pressure/velocity curve.
 
 It uses an open **energy–efficiency model** calibrated on manufacturer data, rather
 than a proprietary internal-ballistics solver.
+Around a known cartridge × powder combination, velocity and pressure follow the charge and
+the bullet weight through local laws measured in the manuals (`docs/MODEL.md` §3.5).
 
 ## Documentation
 

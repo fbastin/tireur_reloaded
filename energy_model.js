@@ -44,6 +44,53 @@ const EnergyModel = {
     return this.velocityFromEnergy(load, eta_b * load.Qex_kJkg * 1000);
   },
 
+  /**
+   * Lois LOCALES (model_coefficients.json, bloc `local`, scripts/fit_local_laws.js) : facteurs
+   * multiplicatifs de E_eff et de η_p autour d'un point de référence (C0, m0), en grains.
+   * Sans elles, E_eff et η_p ne dépendaient ni de la charge (à poudre donnée) ni de la masse de
+   * balle : v ∝ √C et P ∝ C à balle donnée, P indépendant de la masse — d'où, avant le
+   * 2026-10-10, une pression sous-estimée au max d'une échelle (−10 %) et pour les balles
+   * lourdes (−12 %).
+   */
+  localE(L, C, m, C0, m0) {
+    return (L && C0 > 0 && m0 > 0) ? Math.pow(C / C0, L.delta) * Math.pow(m / m0, L.beta) : 1;
+  },
+  localNp(L, C, m, C0, m0) {
+    return (L && C0 > 0 && m0 > 0) ? Math.pow(C / C0, L.eps) * Math.pow(m / m0, L.zeta) : 1;
+  },
+
+  /**
+   * Énergie effective E (J/kg, au canon de référence) et η_p d'une charge, hors mesure de
+   * l'utilisateur. Ancre du couple si elle existe (E, et η_p si l'ancre en porte un), lois
+   * locales comprises ; sinon modèle à froid : η_b·Qex (poudre à constantes) ou E_eff
+   * générique, et η_p global.
+   *   coef : model_coefficients.json   pw : {Qex, Ba, pcd}   ff : remplissage (fraction), null
+   *   si la densité de la poudre est inconnue   lnRe : ln du rapport de détente au canon de réf.
+   *   anc : {eeff, np, C, m} ou null.
+   * Le modèle à froid reste SANS lois locales. Essayé et rejeté le 2026-10-10 (pression, toutes
+   * charges publiées) : lois de charge et de masse autour du remplissage et de la masse typiques
+   * de la cartouche, RMS 24,6 → 37,6 % — d'une poudre à l'autre, φ suit la vivacité, pas une
+   * échelle de charge ; masse seule, balles lourdes −1 → +21 %, légères +9 → −15 %. Le modèle à
+   * froid n'avait pas le biais de masse de l'ancrage : ses termes φ et B_a le compensent déjà.
+   */
+  energyAndEtaP(coef, pw, ff, lnRe, m_gr, C_gr, anc) {
+    const L = coef.local || null, lin = (c, f) => c.reduce((s, w, i) => s + w * f[i], 0);
+    const ffx = ff == null ? 1 : ff;                          // remplissage nominal si densité inconnue
+    const npCold = lin(coef.eta_p.coef, [1, ffx, lnRe]);
+    if (anc) {
+      return {
+        E: anc.eeff * this.localE(L, C_gr, m_gr, anc.C, anc.m),
+        np: anc.np != null ? anc.np * this.localNp(L, C_gr, m_gr, anc.C, anc.m) : npCold,
+        path: 'anchor', npFromAnchor: anc.np != null,
+      };
+    }
+    if (pw.Qex && pw.Ba) {
+      const eta_b = lin(coef.eta_b.coef, [1, ffx, pw.Ba]);
+      return { E: eta_b * pw.Qex * 1000, np: npCold, path: 'eta_b', eta_b };
+    }
+    return { E: lin(coef.e_eff.coef, [1, ffx]), np: npCold, path: 'e_eff' };
+  },
+
   /** Prédiction de Pmax à partir de v0 et η_p. */
   predictPmax(load, v0, eta_p) {
     const m = load.m_gr * this.G2KG, C = load.C_gr * this.G2KG;

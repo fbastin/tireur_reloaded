@@ -18,6 +18,7 @@ const d = (f) => path.join(__dirname, '..', 'data', f);
 const CAL = JSON.parse(fs.readFileSync(d('calibers.json'))).calibers;
 const PWD = JSON.parse(fs.readFileSync(d('powders.json'))).powders;
 const COEF = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
+const EM = require('../energy_model.js');   // ancres = point de référence + lois locales (2026-10-10)
 const ANC = JSON.parse(fs.readFileSync(d('anchors.json'))).anchors;
 const G = 6.479891e-5, GR2G = 0.06479891;
 
@@ -34,7 +35,7 @@ const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
 const med = (a) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(b.length / 2)]; };
 
 const rows = JSON.parse(fs.readFileSync(d('adi.local.json'))).rows;
-const etas = [], errP = [], errVanc = [], errVfall = [];
+const etas = [], errP = [], errVanc = [], errVfall = [], errPanc = [], lmAnc = [];
 let used = 0, ancres = 0, skipped = 0;
 
 for (const r of rows) {
@@ -56,12 +57,22 @@ for (const r of rows) {
   const eFall = COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill / 100;
   const vFall = Math.sqrt(2 * eFall * C / me);
   errVfall.push((vFall / v0 - 1) * 100);
-  if (a && a.eeff) { ancres++; errVanc.push((Math.sqrt(2 * a.eeff * C / me) / v0 - 1) * 100); }
+  if (a && a.eeff) { ancres++; errVanc.push((Math.sqrt(2 * a.eeff * EM.localE(COEF.local, r.charge_gr, r.bullet_gr, a.C, a.m) * C / me) / v0 - 1) * 100); }
 
   // --- pression : seulement sur les lignes en PSI ---
   if (!r.Pmax_psi) continue;
   const Pmax = r.Pmax_psi * 0.0689476 * 1e5;
   etas.push(0.5 * me * v0 * v0 / (Pmax * A * L));
+  // Pression ANCRÉE (couples dont l'ancre porte un η_p) : énergie et η_p de l'ancre, ramenés à la
+  // charge et à la balle de la ligne par les lois locales, au canon de RÉFÉRENCE de la cartouche
+  // — exactement ce qu'affiche l'outil ; la pression de pic publiée ne dépend pas du canon.
+  if (a && a.eeff && a.np) {
+    const E = a.eeff * EM.localE(COEF.local, r.charge_gr, r.bullet_gr, a.C, a.m);
+    const n = a.np * EM.localNp(COEF.local, r.charge_gr, r.bullet_gr, a.C, a.m);
+    const Lref = ((ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm) / 1000;
+    errPanc.push((E * C / (n * A * Lref) / Pmax - 1) * 100);
+    lmAnc.push(Math.log(r.bullet_gr / a.m));
+  }
   const np = COEF.eta_p.coef[0] + COEF.eta_p.coef[1] * fill / 100 + COEF.eta_p.coef[2] * Math.log(Re);
   errP.push(((0.5 * me * v0 * v0 / (np * A * L)) / Pmax - 1) * 100);   // Pmax | v0 réel → isole η_p
 }
@@ -72,6 +83,10 @@ console.log(`η_p mesuré        : moyenne ${mean(etas).toFixed(3)}  médiane ${
 console.log(`   pour mémoire   : Reload Swiss 0,447 · Hodgdon 0,418 · Western 0,399 · Lovex 0,384`);
 console.log('');
 console.log(`Pression (| v0 réel, isole η_p) : biais ${mean(errP).toFixed(1)}%  RMS ${rms(errP).toFixed(1)}%   n=${errP.length}`);
+if (errPanc.length) {
+  const h = errPanc.filter((_, i) => lmAnc[i] > 0.15), l = errPanc.filter((_, i) => lmAnc[i] < -0.15);
+  console.log(`Pression, couples ancrés        : biais ${mean(errPanc).toFixed(1)}%  RMS ${rms(errPanc).toFixed(1)}%   n=${errPanc.length} (balles lourdes ${mean(h).toFixed(1)}%, légères ${mean(l).toFixed(1)}%)`);
+}
 console.log(`Vitesse, repli à froid          : biais ${mean(errVfall).toFixed(1)}%  RMS ${rms(errVfall).toFixed(1)}%   n=${errVfall.length}`);
 if (errVanc.length) {
   console.log(`Vitesse, couples ancrés         : biais ${mean(errVanc).toFixed(1)}%  RMS ${rms(errVanc).toFixed(1)}%   n=${errVanc.length}`);

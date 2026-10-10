@@ -83,6 +83,7 @@ const eeffOf = (m_gr, C_gr, v) => {
 // plus basse que dans notre référence CIP à canon fermé. Comparer les deux mesure cette
 // différence de convention, pas le modèle — les deux familles sont donc séparées.
 const VM = require('../velocity_model.js');
+const EM = require('../energy_model.js');   // ancres = point de référence + lois locales (2026-10-10)
 // Lyman publie le canon d'essai employé (24" en général) : on ramène sa vitesse au canon de
 // référence de la cartouche avant toute comparaison, comme build_anchors le fait pour Sierra.
 const toRef = (ck, v, barrel_mm) => {
@@ -130,14 +131,17 @@ for (const [key, a] of Object.entries(ANCH)) {
   const [ck, pk] = key.split('|');
   const rows = LY.filter((r) => r.cartridge === ck && r.powder === pk);
   if (!rows.length || !a.eeff) continue;
+  // Chaque point Lyman comparé à l'énergie de l'ancre AU MÊME POINT (charge, masse) : l'ancre
+  // est un point de référence, ramené à la charge et à la balle par les lois locales.
   const es = [];
+  const aE = (m_gr, C_gr) => a.eeff * EM.localE(COEF.local, C_gr, m_gr, a.C, a.m);
   for (const r of rows) {
     const vs = r.barrel_mm ? toRef(ck, r.start_ms, r.barrel_mm) : r.start_ms;
     const vm = r.barrel_mm ? toRef(ck, r.max_ms, r.barrel_mm) : r.max_ms;
-    es.push(eeffOf(r.bullet_gr, r.start_gr, vs));
-    es.push(eeffOf(r.bullet_gr, r.max_gr, vm));
+    es.push(eeffOf(r.bullet_gr, r.start_gr, vs) / aE(r.bullet_gr, r.start_gr) - 1);
+    es.push(eeffOf(r.bullet_gr, r.max_gr, vm) / aE(r.bullet_gr, r.max_gr) - 1);
   }
-  dev.push({ key, type: CAL[ck].type === 'handgun' ? 'handgun' : 'rifle', d: (mean(es) - a.eeff) / a.eeff * 100, n: es.length });
+  dev.push({ key, type: CAL[ck].type === 'handgun' ? 'handgun' : 'rifle', d: mean(es) * 100, n: es.length });
 }
 console.log('\n=== 2. Accord Lyman ↔ ancres existantes (contrôle de l\'extraction OCR) ===');
 if (!dev.length) { console.log('  aucun couple commun.'); }
