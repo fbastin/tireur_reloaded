@@ -457,8 +457,11 @@ function modelVP(cart,pw,m_gr,C_gr,bbl,anc){
 const ladToGr=(v)=> LADUNIT==='g' ? v/GR_G : v;           // saisie (LADUNIT) -> grains
 const ladDisp=(gr)=> LADUNIT==='g' ? gr*GR_G : gr;        // grains -> affichage (LADUNIT)
 function toggleLadUnit(){
-  ['ladMin','ladStart','ladStep'].forEach(id=>{const el=document.getElementById(id);const v=parseFloat(el.value);
-    if(v>0) el.value=(LADUNIT==='gr'? v*GR_G : v/GR_G).toFixed(LADUNIT==='gr'?3:2);});
+  // Les quatre champs : Max était oublié, et 37,20 gr devenait 37,20 g (574 gr) au passage en grammes.
+  ['ladMin','ladStart','ladMax','ladStep'].forEach(id=>{const el=document.getElementById(id);const v=parseFloat(el.value);
+    // Quatre décimales en grammes : avec trois, un aller-retour gr -> g -> gr déplaçait le max
+    // de ±0,01 gr (42,40 revenait 42,39), assez pour fausser la comparaison au max fabricant.
+    if(v>0) el.value=(LADUNIT==='gr'? v*GR_G : v/GR_G).toFixed(LADUNIT==='gr'?4:2);});
   LADUNIT = LADUNIT==='gr' ? 'g' : 'gr';
   document.getElementById('u_lad').textContent=LADUNIT;
   calc();
@@ -466,7 +469,7 @@ function toggleLadUnit(){
 // pré-remplit Min/Départ depuis la fenêtre fabricant (au changement de couple)
 function setLadderDefaults(){
   const sc=STARTC[document.getElementById('cart').value+'|'+document.getElementById('pwd').value];
-  const dp=(gr)=>ladDisp(gr).toFixed(LADUNIT==='gr'?2:3);
+  const dp=(gr)=>ladDisp(gr).toFixed(LADUNIT==='gr'?2:4);
   document.getElementById('ladMin').value   = sc ? dp(sc.c)    : '';
   document.getElementById('ladStart').value = sc ? dp(sc.c)    : '';
   document.getElementById('ladMax').value   = sc ? dp(sc.cmax) : '';
@@ -481,7 +484,8 @@ function ladderWindow(){
   else { const cur=toGr(+document.getElementById('c').value,U.charge.cur); mfgMin=cur*0.95; mfgMax=cur; note=T('⚠ <strong>pas de données fabricant</strong> pour ce couple (poudre sans « ● ») — choisissez une poudre marquée ● ou saisissez <strong>Min / Max / Incrément</strong> à la main.','⚠ <strong>no manufacturer data</strong> for this combination (powder without “●”) — choose a powder marked ● or enter <strong>Min / Max / Step</strong> by hand.'); }
   const fMin=parseFloat(document.getElementById('ladMin').value), fStart=parseFloat(document.getElementById('ladStart').value),
         fMax=parseFloat(document.getElementById('ladMax').value), fStep=parseFloat(document.getElementById('ladStep').value);
-  const minG=fMin>0?ladToGr(fMin):mfgMin, cmax=fMax>0?ladToGr(fMax):mfgMax, over=cmax>mfgMax+1e-9;
+  // Sans données fabricant, mfgMax n'est que la charge courante : la dépasser n'est pas sortir des données.
+  const minG=fMin>0?ladToGr(fMin):mfgMin, cmax=fMax>0?ladToGr(fMax):mfgMax, over=!!sc&&cmax>mfgMax+1e-9;
   let startG=fStart>0?ladToGr(fStart):minG; startG=Math.max(minG,Math.min(startG,cmax));
   const stepG=fStep>0?ladToGr(fStep):0.2;
   return {minG,startG,cmax,stepG,mfgMax,over,note};
@@ -823,6 +827,14 @@ function importField(key,val,unit){
   else if(key==='vmeas'){ el.value=frMs(toMs(val,unit),cur).toFixed(0); }
   else if(key==='temp'){ const c=toC(val,unit); el.value=(cur==='°F'?c*9/5+32:c).toFixed(0); }
 }
+// Volume d'étui importé : toujours en capacité UTILE (c'est ce que l'export écrit), en cm³ ou gr H₂O.
+function importCvol(val,unit){
+  const v=parseFloat(String(val==null?'':val).replace(',','.')); if(!(v>0)) return;
+  const cm3=/h2o|h₂o/i.test(unit||'') ? v*0.0648 : v;
+  document.getElementById('cvolMode').value='usable';
+  document.getElementById('cvol').value=(CVOLUNIT==='grh2o'? cm3/0.0648 : cm3).toFixed(2);
+  onCvol();
+}
 // Estimateur : exporte la configuration courante + les résultats affichés
 function exportEstimateur(){
   const v=id=>document.getElementById(id).value;
@@ -838,6 +850,7 @@ function exportEstimateur(){
     ['vitesse_mesuree',v('vmeas'),U.vmeas.cur],
     ['temperature',v('temp'),U.temp.cur],
   ];
+  if(CVOL>0) rows.push(['volume_etui',CVOL.toFixed(3),'cm3']);   // capacité utile, déjà convertie
   if(LAST){
     rows.push(['# résultats (indicatifs — recalculés à l\'import)']);
     rows.push(['v0',document.getElementById('o_v').textContent,U.v.cur]);
@@ -854,10 +867,14 @@ function importEstimateur(file){
       if(!l||l[0]==='#')return; const f=l.includes(';')? l.split(';').map(x=>x.trim().replace(/^"|"$/g,'')) : csvSplit(l);
       if(f.length>=2 && f[0].toLowerCase()!=='champ') map[f[0].toLowerCase()]=f; });
     RIFLE.eeff=null;                                   // couple potentiellement changé -> réinit ancrage carabine
-    if(map.cartouche && CAL[map.cartouche[1]]){ document.getElementById('cart').value=map.cartouche[1]; renderDiag(); }
+    // onCart() remet à zéro ce qui appartient à la cartouche (volume d'étui saisi, canon par défaut,
+    // marqueurs « ● ») : sans lui, un volume saisi pour un .308 restait appliqué au 9 mm importé.
+    if(map.cartouche && CAL[map.cartouche[1]]){ document.getElementById('cart').value=map.cartouche[1]; onCart(); renderDiag(); }
     if(map.poudre && PWD[map.poudre[1]]) populatePowders(map.poudre[1]);
+    setLadderDefaults();                               // fenêtre du ladder : celle du couple importé
     [['masse','mass'],['charge','charge'],['canon','bbl'],['vitesse_mesuree','vmeas'],['temperature','temp']]
       .forEach(([k,key])=>{ if(map[k]) importField(key,map[k][1],map[k][2]); });
+    if(map.volume_etui) importCvol(map.volume_etui[1],map.volume_etui[2]);
     calc();
   };
   r.readAsText(file);

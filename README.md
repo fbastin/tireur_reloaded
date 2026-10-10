@@ -94,7 +94,8 @@ pmax,3850,bar
 ```
 
 Recognised field keys: `cartouche`, `poudre` (must match a catalogue entry), `masse`,
-`charge`, `canon`, `vitesse_mesuree`, `temperature`. Unknown keys are ignored, so the file
+`charge`, `canon`, `vitesse_mesuree`, `temperature`, `volume_etui` (usable case capacity, written
+only when one was entered; unit `cm3` or `gr H2O`). Unknown keys are ignored, so the file
 is forward-compatible.
 
 **Ladder measurements** — a `charge,vitesse` table, one row per shot, plus optional `#`
