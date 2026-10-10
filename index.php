@@ -242,6 +242,7 @@ charge équivalente.</p>
 <a href="/wiki/doku.php?id=technique:balistique_interieure">théorie</a> ·
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limites</a> ·
 <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données</a> ·
+<a href="/wiki/doku.php?id=technique:formule_le_duc">courbe de Le Duc</a> ·
 <a href="https://github.com/fbastin/tireur_reloaded/blob/main/docs/MODEL.md" target="_blank" rel="noopener">description formelle du modèle (EN)</a>.</p>
 </div>
 <div style="font-size:0.9rem;" class="lang-en">
@@ -275,7 +276,8 @@ published maximum, the difference works against you. <strong>Temperature</strong
 <a href="https://github.com/fbastin/tireur_reloaded/blob/main/docs/MODEL.md" target="_blank" rel="noopener">formal description of the model</a> ·
 in French: <a href="/wiki/doku.php?id=technique:balistique_interieure">theory</a> ·
 <a href="/wiki/doku.php?id=technique:balistique_interieure_validation">validation &amp; limits</a> ·
-<a href="/wiki/doku.php?id=technique:donnees_balistiques">producing your own data</a>.</p>
+<a href="/wiki/doku.php?id=technique:donnees_balistiques">producing your own data</a> ·
+<a href="/wiki/doku.php?id=technique:formule_le_duc">the Le Duc curve</a>.</p>
 </div>
 </details>
 
