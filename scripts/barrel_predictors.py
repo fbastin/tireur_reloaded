@@ -1,6 +1,7 @@
 """Quatre prédicteurs de la vitesse en fonction de la longueur de canon, confrontés aux 19 séries.
 
     python3 scripts/barrel_predictors.py
+    python3 scripts/barrel_predictors.py --tableau   # tableau par cartouche de la page wiki
 
 QUESTION. Une vitesse est mesurée sur un canon de longueur L_ref ; que vaut-elle sur un canon
 plus court ? Chaque prédicteur reçoit le point de référence (le canon le plus long de la série)
@@ -100,6 +101,62 @@ CHARGE.update({('7 Rem. Mag.', '160 A-Frame'): 66.0, ('7 Rem. Mag.', '165 GK'): 
                ('7 Rem. Mag.', '175 GK'): 60.0, ('338 Lapua Mag.', '250 SMK'): 89.0,
                ('338 Lapua Mag.', '300 SMK'): 93.3})
 
+# JEU INDÉPENDANT, ajouté le 2026-10-11 : trois sources autres que Marr, tableaux lus en image le
+# 2026-10-11 ; pour chaque série, les écarts et le total publiés recoupent les vitesses recopiées.
+#   Hodgdon Powder Company, « Barrel Length Versus Velocity », 12 mars 2026 (laboratoire
+#   balistique) : un canon de 6,5 Creedmoor et deux de .223 Wylde (chambre hybride ; étui de .223
+#   Rem., d'où la clé « 223 Rem. »), coupés au tour de 24 à 16 po un pouce à la fois, 5 coups par
+#   longueur, canon nettoyé à chaque coupe, pression relevée à chaque longueur. 6,5 Creedmoor :
+#   balle non publiée (Le Duc sans objet) ; le tableau porte « 2,93 » au 5e coup à 23 po, que la
+#   moyenne publiée (2593) corrige. Premier canon de .223 (« H-A ») : balles et charges publiées.
+#   Second (« H-B », « 540 total rounds ») : balles publiées, charges non ; boîtier de culasse
+#   reconstruit avant les tirs à 18 po (« * Rebuilt receiver »), où trois séries remontent de 0 à
+#   21 fps.
+#   Eagleman Long Range, forum Long Range Hunting, 6 octobre 2023 : canons Benchmark de 26 po
+#   coupés à 18 po par pas de 2 po, 6,5 PRC, 7 mm PRC et 300 PRC, chronographe LabRadar ; masse
+#   des balles publiée, charges et nombre de coups non.
+# Considérés et non retenus, le 2026-10-11 : 6 mm BR de J. Schmidt (AccurateShooter, 33 -> 28 po,
+# 15 coups) faute de volume d'étui vérifié dans calibers.json ; Gun Mart, .308 de 24 à 14,5 po
+# (vitesses de départ et moyennes par pouce seulement) ; comparatif Tikka d'all4shooters (trois
+# carabines, pas un canon raccourci).
+L24 = list(range(24, 15, -1))
+IND = {
+ '6.5 Creedmoor': {
+   'Hodgdon': list(zip(L24, [2608, 2593, 2576, 2560, 2525, 2506, 2478, 2450, 2411]))},
+ '223 Rem.': {
+   'H-A 40 BK X-Term': list(zip(L24, [3791, 3784, 3741, 3729, 3683, 3642, 3593, 3549, 3498])),
+   'H-A 40 BK 2520':   list(zip(L24, [3727, 3719, 3679, 3654, 3618, 3593, 3531, 3478, 3419])),
+   'H-A 60 TMK X-Term': list(zip(L24, [3147, 3112, 3106, 3095, 3066, 3040, 3026, 2979, 2941])),
+   'H-A 60 TMK 2520':  list(zip(L24, [3191, 3173, 3150, 3140, 3096, 3081, 3035, 2983, 2970])),
+   'H-A 77 X-Term':    list(zip(L24, [2671, 2658, 2637, 2626, 2600, 2582, 2555, 2526, 2491])),
+   'H-A 77 2520':      list(zip(L24, [2821, 2792, 2781, 2750, 2713, 2710, 2655, 2630, 2592])),
+   'H-B 40 BK X-Term': list(zip(L24, [3841, 3828, 3783, 3746, 3705, 3673, 3657, 3592, 3562])),
+   'H-B 40 BK 2520':   list(zip(L24, [3819, 3809, 3767, 3721, 3689, 3610, 3611, 3559, 3496])),
+   'H-B 62 FMJ X-Term': list(zip(L24, [3092, 3077, 3051, 3020, 2989, 2949, 2949, 2915, 2863])),
+   'H-B 62 FMJ 2520':  list(zip(L24, [3117, 3109, 3075, 3040, 3038, 2965, 2955, 2916, 2891])),
+   'H-B 77 X-Term':    list(zip(L24, [2724, 2731, 2705, 2674, 2636, 2599, 2620, 2586, 2556])),
+   'H-B 77 2520':      list(zip(L24, [2821, 2816, 2790, 2753, 2738, 2698, 2709, 2680, 2633]))},
+ '300 PRC': {'Eagleman 212': [(26, 2887), (24, 2855), (22, 2788), (20, 2729), (18, 2655)]},
+ '6.5 PRC': {'Eagleman 147': [(26, 2863), (24, 2807), (22, 2763), (20, 2672), (18, 2604)]},
+ '7mm PRC': {'Eagleman 175': [(26, 2870), (24, 2820), (22, 2792), (20, 2715), (18, 2664)]}}
+MASS.update({('6.5 Creedmoor', 'Hodgdon'): None,
+             ('300 PRC', 'Eagleman 212'): 212, ('6.5 PRC', 'Eagleman 147'): 147,
+             ('7mm PRC', 'Eagleman 175'): 175})
+for _l in IND['223 Rem.']:
+    MASS[('223 Rem.', _l)] = int(_l.split()[1])
+CHARGE.update({('223 Rem.', 'H-A 40 BK X-Term'): 29.0, ('223 Rem.', 'H-A 40 BK 2520'): 31.0,
+               ('223 Rem.', 'H-A 60 TMK X-Term'): 24.9, ('223 Rem.', 'H-A 60 TMK 2520'): 27.3,
+               ('223 Rem.', 'H-A 77 X-Term'): 22.5, ('223 Rem.', 'H-A 77 2520'): 25.2})
+
+
+def groupe(cart, load):
+    """Unité de la comparaison appariée : la cartouche pour Marr, Clark et Hatcher (une arme par
+    cartouche) ; le canon pour le jeu indépendant (Hodgdon a deux canons de .223)."""
+    for pref in ('H-A', 'H-B', 'Hodgdon', 'Eagleman'):
+        if load.startswith(pref):
+            return f"{cart} · {pref}"
+    return cart
+
 
 def rs_medians():
     """Par cartouche (carabines Reload Swiss) : charge médiane (gr) et Qex médian (kJ/kg) ;
@@ -168,7 +225,10 @@ def phi_of(cart, load):
 
 
 def le_duc(cart, load, Lref, vref_fps, pfrac=1.0):
-    """Constantes (a, b) de Le Duc ancrées sur v(Lref) et P_max ; renvoie v(L) en fps."""
+    """Constantes (a, b) de Le Duc ancrées sur v(Lref) et P_max ; renvoie v(L) en fps (None si la
+    masse de balle n'est pas publiée, ou sans solution)."""
+    if MASS.get((cart, load)) is None:
+        return None
     A = geom(cart)[0]
     C_gr = charge_qex(cart, load)[0]
     mc = (MASS[(cart, load)] + C_gr / 2) * GR       # Carlucci et Jacobson, éq. 3.54
@@ -184,8 +244,11 @@ def le_duc(cart, load, Lref, vref_fps, pfrac=1.0):
     return lambda L: a * travel(cart, L) / (b + travel(cart, L)) / 0.3048
 
 
-def series(ext=False):
-    src = EXT.items() if ext else ((c, loads) for c, (_, loads) in fit.D.items())
+def series(jeu='ref'):
+    """'ref' : les 19 séries de référence (Marr) ; 'val' : le jeu de validation (Marr, Clark,
+    Hatcher) ; 'ind' : le jeu des expérimentateurs indépendants (Hodgdon, Eagleman)."""
+    src = {'ref': lambda: ((c, loads) for c, (_, loads) in fit.D.items()),
+           'val': lambda: EXT.items(), 'ind': lambda: IND.items()}[jeu]()
     for cart, loads in src:
         for load, pts in loads.items():
             pts = sorted(p for p in pts if p[0] >= 16)
@@ -264,49 +327,102 @@ def evaluate(S, k_of, titre):
         print(f"  {c:15s} {l:15s} charge {C_gr:5.1f} gr ({o:7s})  Qex {q:5.0f}  φ {phi_of(c, l):.3f}")
 
 
+def tableau():
+    """Par cartouche, sur les 27 séries : longueurs couvertes, exposant k mesuré, perte moyenne par
+    pouce entre le canon le plus long et le plus court, rapport de détente à 24 pouces. C'est le
+    tableau de la page wiki technique:longueur_canon_vitesse."""
+    fr = lambda x, n=0: f"{x:,.{n}f}".replace(",", " ").replace(".", ",")
+    po = lambda x: f"{x:g}".replace(".", ",")          # 16,25 et non 16,2 : demi-pouces et quarts exacts
+    NOM = {'223 Rem.': '.223 Remington', '300 PRC': '300 PRC', '6.5 PRC': '6,5 PRC', '7mm PRC': '7 mm PRC', '224 Valkyrie': '.224 Valkyrie', '7.62 x 39': '7,62 × 39',
+           '6 mm Creedmoor': '6 mm Creedmoor', '6.5 Creedmoor': '6,5 Creedmoor', '243 Win.': '.243 Winchester',
+           '308 Win.': '.308 Winchester', '300 Win. Mag.': '.300 Winchester Magnum',
+           '7 Rem. Mag.': '7 mm Remington Magnum', '338 Lapua Mag.': '.338 Lapua Magnum',
+           '7.62 x 54 R': '7,62 × 54 R', '30-06 Spring.': '.30-06 Springfield'}
+    rows = {}
+    for jeu in ('ref', 'val', 'ind'):
+        for cart, load, pts in series(jeu):
+            pts = sorted(pts)
+            (Ls, vs), (Ll, vl) = pts[0], pts[-1]
+            rows.setdefault(cart, []).append((Ls, Ll, fit.slope(pts), (vl - vs) / (Ll - Ls)))
+    print("| Cartouche | Séries | Canons (pouces) | k mesuré | Perte par pouce (pieds/s) | Perte par pouce (m/s) "
+          "| Rapport de détente à 24 pouces |")
+    rdet = lambda c: 1 + geom(c)[0] * travel(c, 24) / geom(c)[1]
+    for cart, R in sorted(rows.items(), key=lambda kv: -rdet(kv[0])):    # du plus grand rapport au plus petit
+        A, U, _ = geom(cart)
+        ks, pi = [r[2] for r in R], [r[3] for r in R]
+        rng = lambda a, b, n=0: fr(a, n) if fr(a, n) == fr(b, n) else f"{fr(a, n)} à {fr(b, n)}"
+        print(f"| {NOM[cart]} | {len(R)} | {po(min(r[0] for r in R))} à {po(max(r[1] for r in R))} | {rng(min(ks), max(ks), 2)} "
+              f"| {rng(min(pi), max(pi))} | {rng(min(pi) * 0.3048, max(pi) * 0.3048, 1)} "
+              f"| {fr(1 + A * travel(cart, 24) / U, 1)} |")
+    allk = [r[2] for R in rows.values() for r in R]
+    print(f"\n{len(allk)} séries, {len(rows)} cartouches ; k de {fr(min(allk), 2)} à {fr(max(allk), 2)}, médiane {fr(st.median(allk), 2)}")
+
+
 def main():
+    import sys
+    if '--tableau' in sys.argv:
+        return tableau()
     S = list(series())
     kall = {(c, l): fit.slope(p) for c, l, p in S}
     evaluate(S, lambda cart: st.median(v for (c, _), v in kall.items() if c != cart),
              '19 séries de référence ; k constant en validation croisée par cartouche')
     k19 = st.median(kall.values())
-    evaluate(list(series(ext=True)), lambda cart: k19,
+    evaluate(list(series('val')), lambda cart: k19,
              f'Jeu de validation (cartouches nouvelles) ; k constant = {k19:.3f}, médiane des 19')
-    paired(S + list(series(ext=True)))
+    evaluate(list(series('ind')), lambda cart: k19,
+             f'Jeu indépendant (Hodgdon, Eagleman) ; k constant = {k19:.3f}, médiane des 19')
+    d1 = paired(S + list(series('val')))
+    d2 = paired(list(series('ind')), k_fixe=k19, titre='jeu indépendant, par canon')
+    print(f"\n=== Les deux comparaisons réunies : {len(d1['P-K'])} cartouches et {len(d2['P-K'])} canons")
+    for cle in ('P-K', 'MH-K', 'LD-K', 'MH-P'):
+        d = [x for x in d1[cle] + d2[cle] if not math.isnan(x)]
+        w = sum(x < 0 for x in d)
+        p = sum(math.comb(len(d), i) for i in range(w, len(d) + 1)) / 2 ** len(d)
+        a, b = cle.split('-')
+        print(f"  {a:2s} contre {b:2s} : meilleur sur {w}/{len(d)}, test du signe unilatéral p = {p:.4f}")
 
 
-def paired(S, B=10000, seed=2026):
-    """Comparaison appariée PAR CARTOUCHE (les séries d'une même cartouche ne sont pas
-    indépendantes) : moyenne des écarts quadratiques de la cartouche, rééchantillonnage des
-    cartouches (graine fixe), test du signe exact."""
+def paired(S, B=10000, seed=2026, k_fixe=None, titre=None):
+    """Comparaison appariée PAR CARTOUCHE, ou par canon pour le jeu indépendant (les séries d'une
+    même arme ne sont pas indépendantes) : moyenne des écarts quadratiques du groupe,
+    rééchantillonnage des groupes (graine fixe), test du signe exact. Rend, par comparaison, la
+    liste des écarts par groupe. k constant : validation croisée par cartouche, ou `k_fixe`."""
     import random
     kobs = {(c, l): fit.slope(p) for c, l, p in S}
     rows = {}
     for cart, load, pts in S:
         Lref, vref = pts[-1]
-        k = st.median(v for (c, _), v in kobs.items() if c != cart)
+        k = k_fixe if k_fixe is not None else st.median(v for (c, _), v in kobs.items() if c != cart)
         f = {'K': lambda L: vref * (L / Lref) ** k,
              'P': lambda L: vref * powley(cart, L) / powley(cart, Lref),
              'MH': lambda L: vref * mayer_hart(cart, load, L) / mayer_hart(cart, load, Lref),
              'LD': le_duc(cart, load, Lref, vref)}
-        rows.setdefault(cart, []).append(
-            {n: math.sqrt(st.mean((g(L) - v) ** 2 for L, v in pts[:-1])) for n, g in f.items()})
+        rows.setdefault(groupe(cart, load), []).append(
+            {n: (math.sqrt(st.mean((g(L) - v) ** 2 for L, v in pts[:-1])) if g else float('nan'))
+             for n, g in f.items()})
     per = {c: {n: st.mean(r[n] for r in v) for n in v[0]} for c, v in rows.items()}
     carts = sorted(per)
-    print(f"\n=== Comparaison appariée, {len(S)} séries, {len(carts)} cartouches "
-          f"(k constant en validation croisée par cartouche)")
-    print('  écart quadratique moyen par cartouche (fps) :')
+    print(f"\n=== Comparaison appariée, {len(S)} séries, {len(carts)} "
+          + (f"groupes ({titre}, k constant = {k_fixe:.3f})" if titre else
+             "cartouches (k constant en validation croisée par cartouche)"))
+    print('  écart quadratique moyen par groupe (fps) :')
     for c in carts:
-        print(f"    {c:15s} " + '  '.join(f"{n} {per[c][n]:5.0f}" for n in ('K', 'P', 'MH', 'LD')))
+        print(f"    {c:22s} " + '  '.join(f"{n} {per[c][n]:5.0f}" for n in ('K', 'P', 'MH', 'LD')))
     rnd = random.Random(seed)
+    sortie = {}
     for a, b in (('P', 'K'), ('MH', 'K'), ('LD', 'K'), ('MH', 'P')):
-        d0 = [per[c][a] - per[c][b] for c in carts]
-        boot = sorted(st.mean(per[c][a] - per[c][b] for c in (rnd.choice(carts) for _ in carts))
+        d_all = [per[c][a] - per[c][b] for c in carts]
+        sortie[f'{a}-{b}'] = d_all
+        cs = [c for c, x in zip(carts, d_all) if not math.isnan(x)]
+        d0 = [per[c][a] - per[c][b] for c in cs]
+        boot = sorted(st.mean(per[c][a] - per[c][b] for c in (rnd.choice(cs) for _ in cs))
                       for _ in range(B))
         w = sum(x < 0 for x in d0)
-        p = sum(math.comb(len(carts), i) for i in range(w, len(carts) + 1)) / 2 ** len(carts)
-        print(f"  {a:2s} contre {b:2s} : meilleur sur {w}/{len(carts)} cartouches, écart moyen {st.mean(d0):+6.1f} fps, "
+        p = sum(math.comb(len(cs), i) for i in range(w, len(cs) + 1)) / 2 ** len(cs)
+        unite = 'cartouches' if not titre else 'groupes'
+        print(f"  {a:2s} contre {b:2s} : meilleur sur {w}/{len(cs)} {unite}, écart moyen {st.mean(d0):+6.1f} fps, "
               f"IC 95 % [{boot[int(.025 * B)]:+.1f} ; {boot[int(.975 * B)]:+.1f}], test du signe unilatéral p = {p:.3f}")
+    return sortie
 
 
 if __name__ == '__main__':

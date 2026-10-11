@@ -13,7 +13,7 @@ the bullet weight through local laws measured in the manuals (`docs/MODEL.md` §
 - **[`docs/MODEL.md`](docs/MODEL.md)** — formal model, its unknowns, calibration summary.
 - **[`docs/CALIBRATION.md`](docs/CALIBRATION.md)** — detailed extraction & calibration pipeline.
 - **[`docs/DATA_FORMAT.md`](docs/DATA_FORMAT.md)** — schemas of all data files.
-- **[`docs/BARREL_LENGTH.md`](docs/BARREL_LENGTH.md)** — velocity versus barrel length: fixed exponent, Powley, Mayer–Hart and Le Duc tested on 27 cut-down series.
+- **[`docs/BARREL_LENGTH.md`](docs/BARREL_LENGTH.md)** — velocity versus barrel length: fixed exponent, Powley, Mayer–Hart and Le Duc tested on 43 cut-down series, 16 of them from experimenters other than Marr.
 - **[`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)** — add powders/cartridges/data, re-fit.
 
 > ⚠️ **Not a safety authority.** Pressure is indicative only; a load truly above the
