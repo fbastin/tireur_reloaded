@@ -472,7 +472,7 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
   const fill=hasPcd?(C_gr*GR_G/(pw.pcd/1000))/cv*100:null;
   const load={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:bbl,case_mm:cart.case_mm};
   const loadP={m_gr:m_gr,C_gr:C_gr,d_mm:cart.bore_mm,barrel_mm:refBbl(cart),case_mm:cart.case_mm};
-  const sc=(v,La,Lb)=>VelocityModel.scaleByBarrel(v,La,Lb);
+  const sc=(v,La,Lb)=>VelocityModel.scaleByBarrelFor(cart,v,La,Lb,cv);   // Powley (carabine) ou loi de puissance (poing)
   const S=cvScales(cart,pw,C_gr);                        // sensibilité au volume d'étui saisi (1,1 si nominal)
   // Énergie et η_p : ancre fabricant (lois locales comprises) ou modèle à froid. La pression est
   // évaluée au canon de RÉFÉRENCE (ln Re à la course de référence).
@@ -711,7 +711,9 @@ function calc(){
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = (hasPcd ? T(`Remplissage ${fill.toFixed(0)} %`,`Load density ${fill.toFixed(0)}%`) : T('Remplissage inconnu (densité bulk absente)','Load density unknown (no bulk density)')) + (CVOL>0?T(` · volume étui perso ${nf(cv_cm3,2)} cm³`,` · custom case capacity ${nf(cv_cm3,2)} cm³`):'');
   const mode = anchored?T('mesure perso','your measurement') : r.mode==='carabine'?`${T('ancré carabine','rifle-anchored')} (n=${an.rifle.n})` : dataAnchor?`${T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
-  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? T(`  ·  v₀ mise à l'échelle du canon saisi (loi de puissance, k = 0,15), pression au canon réf. ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`,`  ·  v₀ scaled to the entered barrel (power law, k = 0.15), pressure at the ref. barrel ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`) : '';
+  // Loi de canon : celle de VelocityModel.scaleByBarrelFor (Powley pour une carabine, loi de puissance pour une arme de poing).
+  const loiFr = cart.type==='rifle' ? 'règle de Powley' : 'loi de puissance, k = 0,15', loiEn = cart.type==='rifle' ? "Powley's rule" : 'power law, k = 0.15';
+  const pRefTxt = Math.abs(bbl-refBbl_mm)>1 ? T(`  ·  v₀ mise à l'échelle du canon saisi (${loiFr}), pression au canon réf. ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`,`  ·  v₀ scaled to the entered barrel (${loiEn}), pressure at the ref. barrel ${nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)} ${U.bbl.cur}`) : '';
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  ${T('rapport de détente','expansion ratio')} ${nf(Re,1)}  ·  ${mode}  ·  η_p ${nf(eta_p,3)}${pRefTxt}`;
   // Précision de la pression selon sa source (validation du 2026-10-10, docs/MODEL.md § 3.5).
@@ -727,7 +729,7 @@ function calc(){
   if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
   if(tempApplied) w=T('Vitesse et pression ajustées à '+Tc.toFixed(0)+' °C (réf. 21 °C) : vitesse par la sensibilité générique de Litz, ~1,8 fps/°C, qui varie selon la poudre ; pression comme pour la variation de charge équivalente (hypothèse, P ∝ v^'+nf(kTempP(),1)+'). ','Velocity and pressure adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C): velocity by Litz\'s generic sensitivity, ~1.8 fps/°C, which varies with the powder; pressure as for the equivalent change of charge (an assumption, P ∝ v^'+nf(kTempP(),1)+'). ')+w;
   const bRatio=travel/refTravel;
-  if(bRatio<0.6||bRatio>1.7) w=T('⚠ Canon très éloigné de la longueur de référence ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée (loi de puissance), à confirmer au chronographe. ','⚠ Barrel far from the reference length ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+'): v₀ scaling extrapolated (power law), confirm with a chronograph. ')+w;
+  if(bRatio<0.6||bRatio>1.7) w=T('⚠ Canon très éloigné de la longueur de référence ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée ('+loiFr+'), à confirmer au chronographe. ','⚠ Barrel far from the reference length ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+'): v₀ scaling extrapolated ('+loiEn+'), confirm with a chronograph. ')+w;
   document.getElementById('warn').textContent=w;
   renderLadder();
   // courbe Le Duc (couche 3)

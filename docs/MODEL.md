@@ -108,19 +108,28 @@ needs only charge and bullet mass.
 **Barrel-length scaling.** $\eta_b$ is geometry-free, so the equation above yields the
 velocity **at the calibration (reference) barrel** $L_\text{ref}$ — the test-barrel length
 the manufacturer data was measured at. The muzzle velocity at the *user's* barrel
-$L_\text{user}$ is then obtained with an empirical **power law**
-$v_0(L) = v_\text{ref}\,(L/L_\text{ref})^{k}$, $k = 0.15$ on bullet travel (`VelocityModel.scaleByBarrel`):
-the median of 19 published cut-down series (0.10–0.28; `scripts/barrel_exponent_fit.py`).
-The former 0.27, credited to Powley/Litz, matched no measurement found; Powley's own
-rule is $R^{1/4}$ on the expansion ratio, not a power of barrel length.
+$L_\text{user}$ is then obtained, for a **rifle** cartridge, with **Powley's rule** on the
+expansion ratio, $v_0 \propto \sqrt{1 - R^{-1/4}}$, $R = 1 + A x / U$ ($x$ bullet travel, $U$ the
+usable case capacity, the user's if entered; `VelocityModel.scaleByBarrelFor`), in the form of the
+kwk.us calculator after Davis (1981). On 43 published cut-down series it beat a fixed exponent on
+15 of 18 rifles, including the 6 barrels of two sources independent of the first experimenter
+(sign test p = 0.004; [`BARREL_LENGTH.md`](BARREL_LENGTH.md)); the gain is small near the .308's
+expansion ratio and large on magnums. Switched on 2026-10-11: the estimator's own validations
+barely move, because manufacturer test barrels are close to the reference barrel (Lyman rifle
+RMS 10.6 → 10.5 %, anchored leave-one-out 3.7 % unchanged); at a 16-inch user barrel the
+displayed velocity drops by 1.3 % in the median, by up to 4.5 % on the largest magnums.
+**Handgun** cartridges keep the empirical **power law** $v_0(L) = v_\text{ref}\,(L/L_\text{ref})^{k}$,
+$k = 0.15$ on bullet travel (`VelocityModel.scaleByBarrel`), the median of 19 rifle series
+(0.10–0.28; `scripts/barrel_exponent_fit.py`): no handgun cut-down series has been tested.
+The former 0.27, credited to Powley/Litz, matched no measurement found; Powley's own rule is
+$R^{-1/4}$ on the expansion ratio, not a power of barrel length.
 Conversely, a velocity the user *supplies* (chronograph `vmeas`, or a rifle anchor fitted
 from a chrono ladder) is already at $L_\text{user}$, so it is scaled **back** to
 $L_\text{ref}$ before feeding the pressure equation (§3.2). At $L_\text{user}=L_\text{ref}$
 the scaling is unity, so calibration and validation are unchanged. This makes velocity
 **rise with barrel length** (with diminishing returns) while peak pressure stays
-barrel-independent — the physically correct pairing. The exponent $k$ is generic; far from
-$L_\text{ref}$ (ratio outside ~0.6–1.7) the extrapolation is flagged and best confirmed at
-the chronograph.
+barrel-independent — the physically correct pairing. Far from $L_\text{ref}$ (ratio outside
+~0.6–1.7) the extrapolation is flagged and best confirmed at the chronograph.
 
 ### 3.2 Peak pressure — piezometric efficiency $\eta_p$
 

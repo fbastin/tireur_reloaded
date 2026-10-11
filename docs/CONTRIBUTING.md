@@ -129,7 +129,7 @@ velocities for some cartridges (e.g. 7.5×55 Swiss). Two specifics set them apar
 
 1. **Their test barrel often differs from the cartridge's reference** (`test_barrel_mm`). Sierra's
    7.5×55 data is from a 30.7″ (780 mm) M1911, not the 650 mm K31 reference. `build_anchors.js`
-   therefore **scales each velocity to `test_barrel_mm`** (via `velocity_model.js` `scaleByBarrel`)
+   therefore **scales each velocity to `test_barrel_mm`** (via `velocity_model.js` `scaleByBarrelFor`: Powley's rule for a rifle, power law for a handgun)
    **before** computing `eeff` — because the live tool predicts at the reference and rescales from
    there. Skipping this would bake the long-barrel velocity into `eeff` and over-predict.
 2. **Velocity-only** (`np = null`, like Vihtavuori): no pressure → live tool uses the global η_p.

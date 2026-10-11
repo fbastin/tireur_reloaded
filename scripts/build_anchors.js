@@ -67,7 +67,8 @@ function add(calKey, pwdKey, eeff, np, mhr, x) {
   const ca = CAL[calKey];
   if (x && x.bbl > 0 && ca) {
     const Lr = x.bbl - ca.case_mm, Lf = (ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm;
-    if (Lr > 0 && Lf > 0) { kE = Math.pow(VMb.scaleByBarrel(1, Lr, Lf), 2); kN = kE * Lr / Lf; }
+    // Loi de canon de la cartouche (Powley pour une carabine depuis le 2026-10-11) ; courses en m.
+    if (Lr > 0 && Lf > 0) { kE = Math.pow(VMb.scaleByBarrelFor(ca, 1, Lr / 1000, Lf / 1000), 2); kN = kE * Lr / Lf; }
   }
   const k = calKey + '|' + pwdKey;
   (groups[k] = groups[k] || []).push({ ...x, eeff: eeff * kE, np: np != null ? np * kN : null, mhr, kE, kN });
@@ -274,7 +275,7 @@ try {
       if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm && refBbl > ca.case_mm)) continue;
       const m = r.bullet_gr * G, C = r.charge_gr * G, me = m + C / 3;
       const Lsrc = (r.barrel_mm - ca.case_mm) / 1000, Lref = (refBbl - ca.case_mm) / 1000;
-      const vRef = VM.scaleByBarrel(r.v0_fps * 0.3048, Lsrc, Lref);   // canon Sierra → canon de réf
+      const vRef = VM.scaleByBarrelFor(ca, r.v0_fps * 0.3048, Lsrc, Lref);   // canon Sierra → canon de réf
       add(ck, pk, me * vRef * vRef / (2 * C), null, null, { src: 'Sierra', bid: f + '|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr, m: r.bullet_gr, C: r.charge_gr });
     }
   }

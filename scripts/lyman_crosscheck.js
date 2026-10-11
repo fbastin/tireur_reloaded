@@ -90,7 +90,7 @@ const toRef = (ck, v, barrel_mm) => {
   const ca = CAL[ck];
   if (!(barrel_mm > ca.case_mm && ca.test_barrel_mm > ca.case_mm)) return v;
   const Lsrc = (barrel_mm - ca.case_mm) / 1000, Lref = (ca.test_barrel_mm - ca.case_mm) / 1000;
-  return VM.scaleByBarrel(v, Lsrc, Lref);
+  return VM.scaleByBarrelFor(ca, v, Lsrc, Lref);
 };
 
 const err = { rifle: [], handgun: [] };
