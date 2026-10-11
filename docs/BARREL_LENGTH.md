@@ -58,9 +58,10 @@ The score is the root-mean-square error over those points.
   - Charge: the published value where Marr gives it; otherwise the Reload Swiss median for the cartridge; otherwise the median loading density.
 - **MH, φ = 0.** The same without the burning term. With $\gamma = 1.25$ it **is** Powley's formula: an isentropic expansion of a charge burnt at once.
 - **LD — Le Duc.**
-  - $v = a x/(b+x)$, anchored on the reference point and on the peak pressure $P_\max = 4 m_e a^2/(27 A b)$, as in [`MODEL.md` § 3.4](MODEL.md).
+  - $v = a x/(b+x)$, anchored on the reference point and on the peak chamber pressure $P_\max = 4 m_c a^2/(27 A b)$, $m_c = m + C/2$, as in [`MODEL.md` § 3.4](MODEL.md).
   - $P_\max$ is the C.I.P. value. This is an upper bound for factory ammunition; the 85 % variant is printed only as a sensitivity check, not as a predictor.
-  - Le Duc's pressure is the *effective* pressure on the projectile base. Alger (1911) puts the chamber pressure, where gauges read it, 15–20 % above it, and Patterson (1912) 12 %. Anchoring on a chamber $P_\max$ therefore overstates the peak, which may be why the 85 % variant fits better; the effective mass $m_e = m + C/3$ already absorbs part of the gap, and the correct factor for small arms has not been established here.
+  - Written with the projectile mass alone, as Alger gives them, Le Duc's formulas yield the *effective* pressure on the projectile base. Alger (1911) puts the chamber pressure, where gauges read it, 15–20 % above it, and Patterson (1912) 12 %. The Lagrange gradient gives $p_\text{breech} = p_\text{base}(1 + C/2m)$ (Carlucci & Jacobson, *Ballistics*, 2008, eq. 3.54, p. 71), 10 to 25 % on these series. With $m + C/2$ the curve is a chamber-pressure curve, of the same kind as the C.I.P. anchor.
+  - Until 2026-10-11 the effective mass $m + C/3$ was used. It belongs to the space-mean pressure (eq. 3.59), so a chamber $P_\max$ was anchored 3–7 % too high. The change lowered the median error from 41.1 to 34.7 fps (reference) and from 37.0 to 31.4 fps (validation); with $m + C/3$, Le Duc was no better than the fixed exponent (−0.8 fps, [−14.3 ; +13.8]).
 
 ## Results
 
@@ -72,7 +73,7 @@ The score is the root-mean-square error over those points.
 | P, Powley | 30.1 | 27.4 |
 | MH, Mayer–Hart | 25.2 | 19.8 |
 | MH, φ = 0 | 38.9 | 50.4 |
-| LD, Le Duc (C.I.P. pressure) | 41.1 | 37.0 |
+| LD, Le Duc (C.I.P. pressure) | 34.7 | 31.4 |
 
 ### Paired comparison by cartridge
 
@@ -82,7 +83,7 @@ Series of one cartridge share a rifle, so they are not independent. The 27 serie
 |---|---|---|---|---|
 | Powley vs. fixed $k$ | 9/12 | −10.4 fps | [−19.6 ; −1.9] | p = 0.073 |
 | Mayer–Hart vs. fixed $k$ | 8/12 | −13.1 fps | [−25.9 ; −3.3] | p = 0.194 |
-| Le Duc vs. fixed $k$ | 8/12 | −0.8 fps | [−14.3 ; +13.8] | p = 0.194 |
+| Le Duc vs. fixed $k$ | 8/12 | −4.1 fps | [−16.5 ; +9.1] | p = 0.194 |
 | Mayer–Hart vs. Powley | 7/12 | −2.7 fps | [−8.8 ; +3.0] | p = 0.387 |
 
 ### Implied exponent on the reference set
@@ -93,7 +94,7 @@ The log-log slope of each predictor's own predictions is compared with the measu
 |---|---|---|---|
 | Powley | 0.172 | 0.167 | r = 0.70 |
 | Mayer–Hart | 0.188 | 0.167 | r = 0.73 |
-| Le Duc | 0.161 | 0.167 | r = 0.56 |
+| Le Duc | 0.168 | 0.167 | r = 0.58 |
 
 ## Findings
 
@@ -104,10 +105,10 @@ The log-log slope of each predictor's own predictions is compared with the measu
 2. **Mayer–Hart is not distinguishably better than Powley** (−2.7 fps, interval spanning zero). It also needs a charge, a powder energy and a pressure, and the $\varphi$ values it uses (0.42 to 0.79) all lie at or above its formal validity bound $\varphi \le 1/(2\gamma) \approx 0.42$ (eq. 33′).
    - Its burning term still matters. With $\varphi = 0$ the model loses its advantage (validation: 50.4 fps, worse than the fixed exponent).
    - Powley's formula (γ = 1.25, no burning term) nevertheless does about as well as the full Mayer–Hart model. Why the cruder formula matches is not established here.
-3. **Le Duc anchored on the C.I.P. pressure is not reliably better than a fixed exponent.** Its result depends on the assumed peak pressure, which is not known for factory ammunition.
+3. **Le Duc anchored on the C.I.P. pressure is not reliably better than a fixed exponent** (−4.1 fps, interval spanning zero). Its result depends on the assumed peak pressure, which is not known for factory ammunition.
 4. **Powley and Mayer–Hart miss the flattening of the 6 mm and 6.5 Creedmoor series beyond about 24 inches.**
    - For these two cartridges they do no better than the fixed exponent (6 mm: 70 and 80 fps against 72; 6.5: 55 and 64 against 59).
-   - Le Duc, whose hyperbola flattens by construction, does better there (52 and 34 fps).
+   - Le Duc, whose hyperbola flattens by construction, does better there (62 and 39 fps).
    - Marr's longest barrels (27–31″) gain less than the expansion ratio predicts. Friction and heat loss, which these lumped models ignore, are a plausible cause; this is not tested here.
 
 **Practical consequence.** For a cartridge whose expansion ratio is far from that of the .308 (magnums, the .243, intermediate cartridges), a velocity transferred from one barrel to another is better estimated with Powley's ratio than with a fixed exponent. A second chronograph point on the actual rifle remains better than either.

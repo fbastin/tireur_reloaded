@@ -158,18 +158,24 @@ table (`data/calibers.json`); $Q_\mathrm{ex}$, $B_a$, $\rho_b$ per powder from
 ### 3.4 Pressure–travel curve (Le Duc layer)
 
 For display, a two-parameter Le Duc profile $v(x) = \dfrac{a\,x}{b+x}$ is **anchored**
-on the predicted pair $(v_0, P_\max)$. With $P(x) = \dfrac{m_e\,a^2 b\,x}{A\,(b+x)^3}$
-and peak at $x = b/2$, the constants $(a,b)$ are obtained in closed form from
+on the predicted pair $(v_0, P_\max)$. With $P(x) = \dfrac{m_c\,a^2 b\,x}{A\,(b+x)^3}$,
+$m_c = m + C/2$, and peak at $x = b/2$, the constants $(a,b)$ are obtained in closed form from
 $v(L)=v_0$ and $P_\max$. This layer adds **no new degrees of freedom**.
 
 These are the formulas given by Alger [4] (*a* the velocity in a bore of infinite length, *b*
-twice the travel to peak pressure, $P_\max = 4\,p\,a^2/(27\,g\,\omega\,b)$). **The pressure they
-give is the *effective* pressure on the projectile base.** Alger adds that the gas pressure at
-the base is somewhat higher still, and that the chamber pressure where gauges read it is
-15–20 % above the base pressure; Patterson [8] adds 12 %. Anchoring $b$ on a chamber $P_\max$
-(C.I.P.) therefore takes the curve's peak as too high, by roughly that margin, partly offset
-here by the effective mass $m_e = m + C/3$; the size of the remaining bias for small arms has
-not been measured. The layer is used for display only.
+twice the travel to peak pressure, $P_\max = 4\,p\,a^2/(27\,g\,\omega\,b)$). **With the
+projectile mass alone, the pressure they give is the *effective* pressure on the projectile
+base.** Alger adds that the gas pressure at the base is somewhat higher still, and that the
+chamber pressure where gauges read it is 15–20 % above the base pressure; Patterson [8] adds
+12 %. The Lagrange gradient puts the breech pressure at $p_\text{base}(1 + C/2m)$ (Carlucci &
+Jacobson [3], eq. 3.54, p. 71), 10–25 % above the base pressure for the rifle loads of the barrel-length test; with $m_c = m + C/2$
+the curve is therefore a **chamber-pressure** curve, of the same kind as the C.I.P. or
+manufacturer $P_\max$ it is anchored on. The effective mass $m_e = m + C/3$ of the energy model
+belongs to the space-mean pressure (eq. 3.59) and was used here until 2026-10-11, which anchored
+a chamber $P_\max$ 3–7 % too high; on 27 cut-down barrel series ([`BARREL_LENGTH.md`](BARREL_LENGTH.md))
+the change lowered the median velocity error from 41.1 to 34.7 fps (reference) and from 37.0 to
+31.4 fps (validation). After the peak the two-parameter curve falls below measured pressure: on a
+single instrumented 5.56 × 45 shot, about 520 bar at the muzzle against 900 measured [9]. The layer is used for display only.
 
 ### 3.5 Local laws around an anchor: charge and bullet mass (2026-10-10)
 
@@ -909,7 +915,7 @@ anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it 
 2. J. Corner, *Theory of the Interior Ballistics of Guns*, John Wiley & Sons, New York;
    Chapman & Hall, London, 1950 (viii + 442 pp.). Contains the lumped-parameter theory
    and the Mayer–Hart-type closed-form solution.
-3. Carlucci & Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*.
+3. D. E. Carlucci & S. S. Jacobson, *Ballistics: Theory and Design of Guns and Ammunition*, CRC Press, Boca Raton, 2008. Lagrange gradient: eqs. 3.54 (breech/base) and 3.59 (space-mean/base), p. 71.
 4. P. R. Alger, « The Le Duc Velocity Formula », *Proceedings of the U.S. Naval Institute* 37 (2), whole no. 138, 1911, p. 535–540. [Scan](https://www.tireur.org/articles/Alger1911_Le_Duc_velocity_formula.pdf). Formula attributed to Captain Le Duc (spelt *Leduc* in the French source), from J. Challéat, « Théorie des affûts à déformation, à lien élastique et bêche de crosse », *Revue d'artillerie* 65, Dec. 1904, p. 184–185 ([Gallica](https://gallica.bnf.fr/ark:/12148/bpt6k64398706/f190.item)): $V_0 = a\,u_0/(b+u_0)$, $b = \beta\,(s/p)^{3/8}(1-\tfrac34\Delta)$, taken « sous la forme qui leur a été donnée dans les cours de l'École d'application de Fontainebleau ». Leduc built them from measured velocity–travel curves (p. 194, note).
 5. zen/grt_databases (CC0 1.0) — community GRT component data.
 6. F. Ongaro, C. Robbe, A. Papy, B. Stirbu, A. Chabotier — *Modelling of internal
@@ -921,3 +927,4 @@ anchors** — notably onto **SAAMI-brand** (Accurate/Ramshot) anchors, where it 
    the Franklin Institute, vol. 240, no. 5, Nov. 1945, pp. 401–411. Primary source for
    the closed-form $P_\max$ / muzzle-energy expressions and the constants $P_q,\varphi,r$.
 8. G. W. Patterson, « The Le Duc Ballistic Formulæ », *Proceedings of the U.S. Naval Institute* 38 (3), whole no. 143, 1912, p. 885–892. [Scan](https://www.tireur.org/articles/Patterson1912_Le_Duc_ballistic_formulae.pdf). Constants refitted on cut-off 5-inch guns; chamber pressure taken as 12 % above the effective pressure on the shell.
+9. H. D. Yoon, S. H. Choi, S. K. Lee, « An Experimental Study for the Projectile Velocity versus Travel Distance in the Gun Barrel », *한국군사학논집* 66 (2), 2010, p. 55–69, [doi:10.31066/kjmas.2010.66.2.003](https://doi.org/10.31066/kjmas.2010.66.2.003). Le Duc anchored on muzzle velocity and case-mouth $P_\max$ on a 5.56 × 45 test barrel, one M193 shot, compared with measured pressure.

@@ -18,8 +18,9 @@ PRÉDICTEURS
       densité de chargement médiane des carabines RS ; P_max = Pmax C.I.P. ; le cas φ = 0 sépare
       l'effet de γ de celui de la combustion ;
   LD  Le Duc, v = a·x/(b + x), ancré comme dans MODEL.md § 3.4 sur le point de référence et la
-      pression maximale : P_max = 4 m_e a² / (27 A b), m_e = m + C/3 ; P_max = Pmax C.I.P. de la
-      cartouche (munitions du commerce : borne haute ; sensibilité à 85 % imprimée).
+      pression maximale : P_max = 4 m_c a² / (27 A b), m_c = m + C/2 (pression de chambre par le
+      gradient de Lagrange ; m + C/3 jusqu'au 2026-10-11, pression moyenne) ; P_max = Pmax C.I.P.
+      de la cartouche (munitions du commerce : borne haute ; sensibilité à 85 % imprimée).
 
 POWLEY EST UN CAS PARTICULIER DE MAYER-HART : γ = 1,25 et φ = 0 (détente isentropique d'une charge
 brûlée d'un coup) donnent exactement 1 − R^(−1/4).
@@ -170,11 +171,11 @@ def le_duc(cart, load, Lref, vref_fps, pfrac=1.0):
     """Constantes (a, b) de Le Duc ancrées sur v(Lref) et P_max ; renvoie v(L) en fps."""
     A = geom(cart)[0]
     C_gr = charge_qex(cart, load)[0]
-    me = (MASS[(cart, load)] + C_gr / 3) * GR
+    mc = (MASS[(cart, load)] + C_gr / 2) * GR       # Carlucci et Jacobson, éq. 3.54
     P = CAL[cart]['pmax_cip_bar'] * 1e5 * pfrac
     xr, vr = travel(cart, Lref), vref_fps * 0.3048
-    # P = 4 me vr² (b + xr)² / (27 A b xr²)  →  b² + (2xr − K) b + xr² = 0,  K = 27 A P xr² / (4 me vr²)
-    K = 27 * A * P * xr ** 2 / (4 * me * vr ** 2)
+    # P = 4 mc vr² (b + xr)² / (27 A b xr²)  →  b² + (2xr − K) b + xr² = 0,  K = 27 A P xr² / (4 mc vr²)
+    K = 27 * A * P * xr ** 2 / (4 * mc * vr ** 2)
     disc = (2 * xr - K) ** 2 - 4 * xr ** 2
     if disc < 0:
         return None

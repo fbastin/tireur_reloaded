@@ -32,14 +32,23 @@ const VelocityModel = {
    * Modèle de Le Duc : v(x) = a·x/(b+x), ancré sur (v0 à la bouche, Pmax).
    * Résout (a,b) puis fournit les courbes v(x) et P(x).
    *  m_kg masse balle, C_kg masse charge, d_m calibre, xMuzzle_m course en bouche.
+   *
+   * P(x) est la pression au fond de la chambre, celle que mesurent les capteurs de la C.I.P.
+   * et des fabricants, et donc celle du Pmax d'ancrage. Le gradient de Lagrange la relie à la
+   * pression sur le culot, qui seule accélère la balle : p_chambre = p_culot·(1 + C/2m)
+   * (Carlucci et Jacobson, éq. 3.54). D'où m_c = m + C/2 dans m_c·dv/dt = A·p_chambre.
+   * Jusqu'au 2026-10-11, la masse était m + C/3, celle de la pression MOYENNE (éq. 3.59) :
+   * ancrer un Pmax de chambre comme une pression moyenne revenait à le prendre 3 à 7 % trop
+   * haut, d'où un b trop court. Sur les canons raccourcis (scripts/barrel_predictors.py), l'écart médian
+   * passe de 41,1 à 34,7 fps sur les 19 séries de référence, de 37,0 à 31,4 sur les 8 de validation.
    */
   leDuc(v0_ms, Pmax_bar, m_kg, C_kg, d_m, xMuzzle_m) {
     const A = Math.PI * d_m * d_m / 4;        // section d'âme (m²)
-    const m_e = m_kg + C_kg / 3;              // masse effective (Lagrange)
+    const m_c = m_kg + C_kg / 2;              // masse « de chambre » (gradient de Lagrange)
     const Pmax = Pmax_bar * 1e5;              // Pa
     const x = xMuzzle_m;
-    // 27·A·Pmax·b·x² = 4·m_e·v0²·(b+x)²  →  quadratique en b
-    const K = 4 * m_e * v0_ms * v0_ms / (27 * A * Pmax * x * x);
+    // 27·A·Pmax·b·x² = 4·m_c·v0²·(b+x)²  →  quadratique en b
+    const K = 4 * m_c * v0_ms * v0_ms / (27 * A * Pmax * x * x);
     // K·b² + (2K·x − 1)·b + K·x² = 0
     const qa = K, qb = 2 * K * x - 1, qc = K * x * x;
     const disc = qb * qb - 4 * qa * qc;
@@ -50,9 +59,9 @@ const VelocityModel = {
     return {
       a, b, xPeak_m: xPeak,
       v: (xx) => a * xx / (b + xx),
-      P_bar: (xx) => (m_e * a * a * b * xx) / (A * Math.pow(b + xx, 3)) / 1e5,
+      P_bar: (xx) => (m_c * a * a * b * xx) / (A * Math.pow(b + xx, 3)) / 1e5,
       vMuzzle: a * x / (b + x),
-      PmaxCheck_bar: (4 * m_e * a * a) / (27 * A * b) / 1e5,
+      PmaxCheck_bar: (4 * m_c * a * a) / (27 * A * b) / 1e5,
     };
   },
 };

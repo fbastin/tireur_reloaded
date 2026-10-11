@@ -168,6 +168,7 @@ against the manufacturer's official load data.
       <button type="button" id="plotZoom" class="vm-noprint" title="Agrandir le graphe (ou cliquez sur la courbe)" data-en-title="Enlarge the chart (or click on the curve)" onclick="openPlotModal()" style="position:absolute;top:4px;right:6px;border:1px solid var(--color-border);background:rgba(255,255,255,0.85);border-radius:4px;cursor:pointer;font-size:1rem;line-height:1;padding:.15rem .35rem;">&#9974;</button>
     </div>
     <p class="vm-note" id="warn"></p>
+    <p class="vm-note"><span class="lang-fr">La courbe est celle de <a href="/wiki/doku.php?id=technique:formule_le_duc">Le Duc</a>, ajustée sur la vitesse et la pression estimées&nbsp;; la pression tracée est celle de la chambre (gradient de Lagrange). Après le pic, elle passe sous la pression réelle&nbsp;: n'en tirez pas la pression à la bouche (<a href="/wiki/doku.php?id=technique:formule_le_duc#domaine_de_validite">domaine de validité</a>).</span><span class="lang-en">The curve is the <a href="/wiki/doku.php?id=technique:formule_le_duc">Le Duc</a> curve, fitted on the estimated velocity and pressure; the pressure plotted is the chamber pressure (Lagrange gradient). After the peak, it falls below the real pressure: do not read the muzzle pressure off it (<a href="/wiki/doku.php?id=technique:formule_le_duc#domaine_de_validite">range of validity</a>, in French).</span></p>
     <div class="vm-noprint" style="margin-top:0.5rem">
       <button type="button" id="toExt" class="vm-print" onclick="toExterior()" disabled style="opacity:.5">&#127919;&nbsp;<span class="lang-fr">Vers la balistique extérieure</span><span class="lang-en">To external ballistics</span></button>
       <small class="vm-note" style="display:inline;margin-left:.4rem"><span class="lang-fr">envoie V₀, masse et calibre au calculateur de trajectoire (renseignez-y le CB et la longueur de balle)</span><span class="lang-en">sends V₀, bullet weight and calibre to the trajectory calculator (enter the BC and bullet length there)</span></small>
@@ -802,7 +803,7 @@ function calc(){
   }
   const plotData=[
     ...ladTraces,                                            // courbes du ladder (clair) sous les courbes principales
-    {x:xs,y:ps,name:T('Pression','Pressure')+' ('+U.p.cur+')'+(ladTraces.length?T(' · charge courante',' · current charge'):''),yaxis:'y',line:{color:'#c0392b',width:2.5}},
+    {x:xs,y:ps,name:T('Pression de chambre','Chamber pressure')+' ('+U.p.cur+')'+(ladTraces.length?T(' · charge courante',' · current charge'):''),yaxis:'y',line:{color:'#c0392b',width:2.5}},
     {x:xs,y:vs,name:T('Vitesse','Velocity')+' ('+U.v.cur+')'+(ladTraces.length?T(' · charge courante',' · current charge'):''),yaxis:'y2',line:{color:'#2980b9',width:2.5}}
   ];
   LASTPLOT={data:plotData,layout:lay};                       // mémorisé pour la vue agrandie
