@@ -28,9 +28,9 @@ const VelocityModel = {
   },
 
   /** Loi de canon d'une cartouche : vitesse v à la course xFrom (m) ramenée à la course xTo.
-   *  Carabines : règle de Powley. Sur 43 séries de canons raccourcis, elle prédit mieux que
-   *  l'exposant fixe sur 15 armes sur 18, dont les 6 canons de deux sources indépendantes de
-   *  Marr (scripts/barrel_predictors.py, docs/BARREL_LENGTH.md, 2026-10-11) ; l'écart est
+   *  Carabines : règle de Powley. Sur 45 séries de canons raccourcis, elle prédit mieux que
+   *  l'exposant fixe sur 17 armes sur 20, dont les 7 canons de trois sources indépendantes de
+   *  Marr (scripts/barrel_predictors.py, docs/BARREL_LENGTH.md, 2026-10-12) ; l'écart est
    *  faible près du rapport de détente de la .308, fort sur les magnums. Armes de poing, et
    *  cartouche sans volume d'étui ou sans calibre : loi de puissance (k = 0,15), faute de mesures.
    *  U_cm3 : volume utile saisi par l'utilisateur, sinon le nominal de la cartouche.

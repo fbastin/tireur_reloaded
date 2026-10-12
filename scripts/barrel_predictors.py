@@ -2,6 +2,7 @@
 
     python3 scripts/barrel_predictors.py
     python3 scripts/barrel_predictors.py --tableau   # tableau par cartouche de la page wiki
+    python3 scripts/barrel_predictors.py --sensibilite   # volume de la .50 BMG
 
 QUESTION. Une vitesse est mesurée sur un canon de longueur L_ref ; que vaut-elle sur un canon
 plus court ? Chaque prédicteur reçoit le point de référence (le canon le plus long de la série)
@@ -45,6 +46,16 @@ fit = importlib.util.module_from_spec(spec)
 with contextlib.redirect_stdout(io.StringIO()):
     spec.loader.exec_module(fit)
 CAL = json.load(open(os.path.join(DATA, 'calibers.json')))['calibers']
+# .50 BMG, hors de l'estimateur (aucune charge de .50 dans nos guides). Cotes de la fiche C.I.P.
+# « 50 Browning » (TDCC tab. I, rév. 2010-05-26) : L3 = 99,31 mm, G1 = 12,98 mm, Pmax = 3 700 bar.
+# Volume : 290 gr d'eau (« The average .50 BMG case holds 290 grains of water », P. Meitin,
+# « Loading the Big .50 », Handloader 57, déc.-janv. 2022) × 0,87, le facteur de volume utile
+# que calibers.json applique aux capacités publiées (voir son _doc) ; valeur ronde d'une seule
+# source, sensibilité imprimée par --sensibilite. Les 18,97 cm³ de la base des calibres du site
+# sont les 292,8 gr de Wikipédia, que l'article ne source pas.
+CAP_50_GR, UTILE = 290, 0.87
+CAL = dict(CAL, **{'50 BMG': {'type': 'rifle', 'bore_mm': 12.98, 'case_mm': 99.31,
+                              'case_vol_cm3': CAP_50_GR / 15.4324 * UTILE, 'pmax_cip_bar': 3700}})
 
 GR, IN = 6.479891e-5, 0.0254           # kg par grain, m par pouce
 RHO_P, GAMMA = 1600.0, 1.20            # densité de la poudre solide (kg/m³) ; γ (MH)
@@ -75,8 +86,9 @@ CHARGE = {('7.62 x 39', 'Brown Bear'): 25.4, ('7.62 x 39', 'TCW'): 25.0}
 #   .30-06 : Hatcher's Notebook (2e éd., 1957), p. 399, item 14 « Velocity vs. Barrel Length »,
 #   lu en image le 2026-10-03 : essais de Springfield Armory, mitrailleuse Browning, 24 / 28 / 30 /
 #   32 po ; munition et nombre de coups non précisés ; balle de 172 gr SUPPOSÉE (M1, table de la
-#   p. 400 ; ne sert qu'à Le Duc). La colonne .50 de la même table n'est pas reprise : pas de volume
-#   de chambre vérifié pour la .50 BMG dans calibers.json.
+#   p. 400 ; ne sert qu'à Le Duc). La colonne .50 de la même table (lue en image le même jour :
+#   2 444,9 / 2 567 / 2 673,9 / 2 702 f.s.) est reprise depuis le 2026-10-12, avec le volume
+#   d'étui défini plus bas ; balle de 750 gr SUPPOSÉE (balle et AP M1, même table de la p. 400).
 L7 = list(range(28, 19, -1))
 L338 = list(range(30, 16, -1))
 EXT = {
@@ -92,11 +104,14 @@ EXT = {
    'Clark 147 (BG)': list(zip([28.75, 26.75, 24.75, 22.75, 20.75, 18.75, 16.75],
                               [2827, 2778, 2751, 2698, 2632, 2578, 2521]))},
  '30-06 Spring.': {
-   'Hatcher, Browning MG': [(24, 2709), (28, 2776), (30, 2833), (32, 2848)]}}
+   'Hatcher, Browning MG': [(24, 2709), (28, 2776), (30, 2833), (32, 2848)]},
+ '50 BMG': {
+   'Hatcher, Browning MG': [(24, 2444.9), (28, 2567), (30, 2673.9), (32, 2702)]}}
 MASS.update({('7 Rem. Mag.', 'Fed 150 GK'): 150, ('7 Rem. Mag.', '160 A-Frame'): 160,
              ('7 Rem. Mag.', '165 GK'): 165, ('7 Rem. Mag.', '175 GK'): 175,
              ('338 Lapua Mag.', '250 SMK'): 250, ('338 Lapua Mag.', '300 SMK'): 300,
-             ('7.62 x 54 R', 'Clark 147 (BG)'): 147, ('30-06 Spring.', 'Hatcher, Browning MG'): 172})
+             ('7.62 x 54 R', 'Clark 147 (BG)'): 147, ('30-06 Spring.', 'Hatcher, Browning MG'): 172,
+             ('50 BMG', 'Hatcher, Browning MG'): 750})
 CHARGE.update({('7 Rem. Mag.', '160 A-Frame'): 66.0, ('7 Rem. Mag.', '165 GK'): 66.5,
                ('7 Rem. Mag.', '175 GK'): 60.0, ('338 Lapua Mag.', '250 SMK'): 89.0,
                ('338 Lapua Mag.', '300 SMK'): 93.3})
@@ -115,8 +130,14 @@ CHARGE.update({('7 Rem. Mag.', '160 A-Frame'): 66.0, ('7 Rem. Mag.', '165 GK'): 
 #   Eagleman Long Range, forum Long Range Hunting, 6 octobre 2023 : canons Benchmark de 26 po
 #   coupés à 18 po par pas de 2 po, 6,5 PRC, 7 mm PRC et 300 PRC, chronographe LabRadar ; masse
 #   des balles publiée, charges et nombre de coups non.
-# Considérés et non retenus, le 2026-10-11 : 6 mm BR de J. Schmidt (AccurateShooter, 33 -> 28 po,
-# 15 coups) faute de volume d'étui vérifié dans calibers.json ; Gun Mart, .308 de 24 à 14,5 po
+#   AccurateShooter.com, « Barrel Length and Velocity — Barrel Cut-Down Tests », Daily Bulletin,
+#   20 décembre 2011 (tableau en texte, lu le 2026-10-12 ; les écarts publiés à 28 po recoupent
+#   les moyennes) : essais de J. Schmidt, 6 mm BR, canon Krieger de 33 po raccourci d'un pouce à la fois
+#   jusqu'à 28 po, Sierra 107 gr MatchKing, Vihtavuori N140 (charge non publiée), amorces Federal
+#   205M, séries de 15 coups, Oehler 35. Écarté le 2026-10-11 « faute de volume d'étui » : à tort,
+#   la cartouche est dans calibers.json sous « 6 Norma BR » (2,172 cm³, médiane Reload Swiss),
+#   soit 0,85 à 0,88 des 38 à 39,5 gr d'eau de l'étui Lapua formé (FAQ de 6mmBR.com).
+# Considérés et non retenus, le 2026-10-11 : Gun Mart, .308 de 24 à 14,5 po
 # (vitesses de départ et moyennes par pouce seulement) ; comparatif Tikka d'all4shooters (trois
 # carabines, pas un canon raccourci).
 L24 = list(range(24, 15, -1))
@@ -138,10 +159,11 @@ IND = {
    'H-B 77 2520':      list(zip(L24, [2821, 2816, 2790, 2753, 2738, 2698, 2709, 2680, 2633]))},
  '300 PRC': {'Eagleman 212': [(26, 2887), (24, 2855), (22, 2788), (20, 2729), (18, 2655)]},
  '6.5 PRC': {'Eagleman 147': [(26, 2863), (24, 2807), (22, 2763), (20, 2672), (18, 2604)]},
- '7mm PRC': {'Eagleman 175': [(26, 2870), (24, 2820), (22, 2792), (20, 2715), (18, 2664)]}}
+ '7mm PRC': {'Eagleman 175': [(26, 2870), (24, 2820), (22, 2792), (20, 2715), (18, 2664)]},
+ '6 Norma BR': {'Schmidt 107 SMK': list(zip(range(28, 34), [2952, 2948, 2968, 2973, 2982, 2992]))}}
 MASS.update({('6.5 Creedmoor', 'Hodgdon'): None,
              ('300 PRC', 'Eagleman 212'): 212, ('6.5 PRC', 'Eagleman 147'): 147,
-             ('7mm PRC', 'Eagleman 175'): 175})
+             ('7mm PRC', 'Eagleman 175'): 175, ('6 Norma BR', 'Schmidt 107 SMK'): 107})
 for _l in IND['223 Rem.']:
     MASS[('223 Rem.', _l)] = int(_l.split()[1])
 CHARGE.update({('223 Rem.', 'H-A 40 BK X-Term'): 29.0, ('223 Rem.', 'H-A 40 BK 2520'): 31.0,
@@ -152,7 +174,7 @@ CHARGE.update({('223 Rem.', 'H-A 40 BK X-Term'): 29.0, ('223 Rem.', 'H-A 40 BK 2
 def groupe(cart, load):
     """Unité de la comparaison appariée : la cartouche pour Marr, Clark et Hatcher (une arme par
     cartouche) ; le canon pour le jeu indépendant (Hodgdon a deux canons de .223)."""
-    for pref in ('H-A', 'H-B', 'Hodgdon', 'Eagleman'):
+    for pref in ('H-A', 'H-B', 'Hodgdon', 'Eagleman', 'Schmidt'):
         if load.startswith(pref):
             return f"{cart} · {pref}"
     return cart
@@ -246,7 +268,7 @@ def le_duc(cart, load, Lref, vref_fps, pfrac=1.0):
 
 def series(jeu='ref'):
     """'ref' : les 19 séries de référence (Marr) ; 'val' : le jeu de validation (Marr, Clark,
-    Hatcher) ; 'ind' : le jeu des expérimentateurs indépendants (Hodgdon, Eagleman)."""
+    Hatcher) ; 'ind' : le jeu des expérimentateurs indépendants (Hodgdon, Eagleman, Schmidt)."""
     src = {'ref': lambda: ((c, loads) for c, (_, loads) in fit.D.items()),
            'val': lambda: EXT.items(), 'ind': lambda: IND.items()}[jeu]()
     for cart, loads in src:
@@ -328,7 +350,7 @@ def evaluate(S, k_of, titre):
 
 
 def tableau():
-    """Par cartouche, sur les 27 séries : longueurs couvertes, exposant k mesuré, perte moyenne par
+    """Par cartouche, sur toutes les séries : longueurs couvertes, exposant k mesuré, perte moyenne par
     pouce entre le canon le plus long et le plus court, rapport de détente à 24 pouces. C'est le
     tableau de la page wiki technique:longueur_canon_vitesse."""
     fr = lambda x, n=0: f"{x:,.{n}f}".replace(",", " ").replace(".", ",")
@@ -337,7 +359,8 @@ def tableau():
            '6 mm Creedmoor': '6 mm Creedmoor', '6.5 Creedmoor': '6,5 Creedmoor', '243 Win.': '.243 Winchester',
            '308 Win.': '.308 Winchester', '300 Win. Mag.': '.300 Winchester Magnum',
            '7 Rem. Mag.': '7 mm Remington Magnum', '338 Lapua Mag.': '.338 Lapua Magnum',
-           '7.62 x 54 R': '7,62 × 54 R', '30-06 Spring.': '.30-06 Springfield'}
+           '7.62 x 54 R': '7,62 × 54 R', '30-06 Spring.': '.30-06 Springfield',
+           '50 BMG': '.50 BMG', '6 Norma BR': '6 mm BR Norma'}
     rows = {}
     for jeu in ('ref', 'val', 'ind'):
         for cart, load, pts in series(jeu):
@@ -358,10 +381,33 @@ def tableau():
     print(f"\n{len(allk)} séries, {len(rows)} cartouches ; k de {fr(min(allk), 2)} à {fr(max(allk), 2)}, médiane {fr(st.median(allk), 2)}")
 
 
+def sensibilite():
+    """Le volume de la .50 BMG repose sur une valeur ronde d'une seule source : écart quadratique
+    de chaque prédicteur sur la série de Hatcher quand le facteur de volume utile ou la capacité
+    changent (la charge de MH et de Le Duc suit le volume, par la densité de chargement médiane)."""
+    cart, load = '50 BMG', 'Hatcher, Browning MG'
+    pts = sorted(EXT[cart][load])
+    Lref, vref = pts[-1]
+    print(f"Série .50 BMG de Hatcher, écart quadratique sur 24, 28 et 30 po (fps) :")
+    for cap, ut in ((CAP_50_GR, 0.80), (CAP_50_GR, UTILE), (CAP_50_GR, 0.95), (292.8, UTILE)):
+        CAL[cart]['case_vol_cm3'] = cap / 15.4324 * ut
+        ld = le_duc(cart, load, Lref, vref)
+        f = {'P': lambda L: vref * powley(cart, L) / powley(cart, Lref),
+             'MH': lambda L: vref * mayer_hart(cart, load, L) / mayer_hart(cart, load, Lref),
+             'LD': ld}
+        e = {n: math.sqrt(st.mean((g(L) - v) ** 2 for L, v in pts[:-1])) if g else float('nan')
+             for n, g in f.items()}
+        print(f"  {cap:5.1f} gr d'eau × {ut:.2f} = {CAL[cart]['case_vol_cm3']:5.2f} cm³ : "
+              + '  '.join(f"{n} {x:4.0f}" for n, x in e.items()))
+    CAL[cart]['case_vol_cm3'] = CAP_50_GR / 15.4324 * UTILE
+
+
 def main():
     import sys
     if '--tableau' in sys.argv:
         return tableau()
+    if '--sensibilite' in sys.argv:
+        return sensibilite()
     S = list(series())
     kall = {(c, l): fit.slope(p) for c, l, p in S}
     evaluate(S, lambda cart: st.median(v for (c, _), v in kall.items() if c != cart),
@@ -370,7 +416,7 @@ def main():
     evaluate(list(series('val')), lambda cart: k19,
              f'Jeu de validation (cartouches nouvelles) ; k constant = {k19:.3f}, médiane des 19')
     evaluate(list(series('ind')), lambda cart: k19,
-             f'Jeu indépendant (Hodgdon, Eagleman) ; k constant = {k19:.3f}, médiane des 19')
+             f'Jeu indépendant (Hodgdon, Eagleman, Schmidt) ; k constant = {k19:.3f}, médiane des 19')
     d1 = paired(S + list(series('val')))
     d2 = paired(list(series('ind')), k_fixe=k19, titre='jeu indépendant, par canon')
     print(f"\n=== Les deux comparaisons réunies : {len(d1['P-K'])} cartouches et {len(d2['P-K'])} canons")

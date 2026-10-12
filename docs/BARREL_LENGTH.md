@@ -1,6 +1,6 @@
-# Muzzle velocity versus barrel length: four predictors tested on 43 cut-down series
+# Muzzle velocity versus barrel length: four predictors tested on 45 cut-down series
 
-*Working note, 2026-10-03; independent set added 2026-10-11. Every number below is printed by
+*Working note, 2026-10-03; independent set added 2026-10-11; .50 BMG and 6 mm BR added 2026-10-12. Every number below is printed by
 [`scripts/barrel_predictors.py`](../scripts/barrel_predictors.py) and
 [`scripts/barrel_exponent_fit.py`](../scripts/barrel_exponent_fit.py); rerun them rather
 than copying from here.*
@@ -21,18 +21,19 @@ Only points of 16 inches or longer are used.
 | Set | Cartridges | Series | Use |
 |---|---|---|---|
 | Reference | .223 Rem., .224 Valkyrie, 7.62×39, 6 mm Creedmoor, 6.5 Creedmoor, .243 Win., .308 Win., .300 Win. Mag. | 19 | Fixed the default $k$ (median 0.167 on barrel length) |
-| Validation | 7 mm Rem. Mag., .338 Lapua Mag. (Marr); 7.62×54R (Clark 2011); .30-06 (Hatcher) | 8 | Added afterwards; nothing was tuned on it |
-| Independent (2026-10-11) | 6.5 Creedmoor and two .223 Wylde barrels (Hodgdon 2026); 6.5 PRC, 7 mm PRC, 300 PRC (Eagleman Long Range 2023) | 16 | Other experimenters, added after this note was written; nothing was tuned on it |
+| Validation | 7 mm Rem. Mag., .338 Lapua Mag. (Marr); 7.62×54R (Clark 2011); .30-06 and .50 BMG (Hatcher) | 9 | Added afterwards; nothing was tuned on it |
+| Independent (2026-10-11 and 12) | 6.5 Creedmoor and two .223 Wylde barrels (Hodgdon 2026); 6.5 PRC, 7 mm PRC, 300 PRC (Eagleman Long Range 2023); 6 mm BR (Schmidt, AccurateShooter 2011) | 17 | Other experimenters, added after this note was written; nothing was tuned on it |
 
 **A second experimenter.** B. L. Clark's honors thesis (University of South Florida, 2011) cut a Mosin-Nagant from 28.75 to 16.75 inches in 2-inch steps, with 10 shots of Bulgarian 147 gr surplus per length, measured about 10 feet from the muzzle. The table 1 means were recomputed from the shot-by-shot tables 2 to 8.
 
-**A third source.** *Hatcher's Notebook* (2nd ed., 1957), p. 399, item 14, gives Springfield Armory tests with Browning machine-gun barrels of 24, 28, 30 and 32 inches. Ammunition and shot count are not stated; a 172 gr M1 bullet is assumed (table on p. 400), which only Le Duc uses. The .50-calibre column of the same table is left out: there is no verified case capacity for the .50 BMG. The C.I.P. sheet gives dimensions and Pmax but no volume, none of the available loading guides publishes one, and the 18.97 cm³ in the calibers base was typed in without a source (searched 2026-10-04).
+**A third source.** *Hatcher's Notebook* (2nd ed., 1957), p. 399, item 14, gives Springfield Armory tests with Browning machine-gun barrels of 24, 28, 30 and 32 inches. Ammunition and shot count are not stated; a 172 gr M1 bullet is assumed for the .30-06 and a 750 gr M1 bullet for the .50 (table on p. 400), which only Le Duc uses. The .50-calibre column (2444.9, 2567, 2673.9 and 2702 f.s.) was left out until 2026-10-12 for want of a case volume. The .50 BMG is not in `data/calibers.json`; the script takes its geometry from the C.I.P. sheet "50 Browning" (L3 = 99.31 mm, G1 = 12.98 mm, Pmax = 3700 bar; the sheet gives no volume) and its volume from a single published water capacity, "The average .50 BMG case holds 290 grains of water" (P. Meitin, "Loading the Big .50", *Handloader* 57, December/January 2022), times 0.87, the usable fraction that `data/calibers.json` applies to published capacities: $U$ = 16.3 cm³. Hatcher's own figures for the .30-06 M2 give 0.93 (0.251 in³ of powder space under the bullet, p. 286, against 4.40 cm³ to the case mouth, p. 394). Over $U$ = 15.0 to 17.9 cm³ (usable fraction 0.80 to 0.95), each predictor's error on this series moves by 10 fps at most and their order does not change (`--sensibilite`). The 18.97 cm³ in the site's calibers base is Wikipedia's 292.8 gr, unsourced in the article.
 
 **Independent experimenters (added 2026-10-11).** Tables read as images on 2026-10-11; for every series the published per-step losses and totals match the velocities copied.
 - *Hodgdon Powder Company*, "Barrel Length Versus Velocity" (hodgdonpowderco.com, 12 March 2026). Their ballistics laboratory cut one 6.5 Creedmoor and two .223 Wylde barrels on a lathe from 24 to 16 inches, one inch at a time, with five-shot strings and the barrel cleaned at each cut; pressure was recorded at each length. The 6.5 Creedmoor bullet is not given (Le Duc left out for that series). The first .223 barrel lists bullets and charges (40, 60 and 77 gr Sierra, Ramshot X-Terminator and Accurate 2520); the second ("540 total rounds") lists bullets but not charges, and its receiver was rebuilt before the 18-inch strings, where three series rise by 0 to 21 fps. The Wylde chamber takes the .223 Rem. case, whose volume is used.
 - *Eagleman Long Range*, post on the Long Range Hunting forum (6 October 2023): Benchmark barrels cut from 26 to 18 inches in 2-inch steps, 6.5 PRC (147 gr), 7 mm PRC (175 gr) and 300 PRC (212 gr), LabRadar. Shot count and charges are not given.
+- *AccurateShooter.com*, "Barrel Length and Velocity — Barrel Cut-Down Tests" (Daily Bulletin, 20 December 2011; added 2026-10-12, table published as text, the published differences from 28 inches match the means): Jackie Schmidt cut a 33-inch Krieger 6 mm BR barrel back one inch at a time to 28 inches; Sierra 107 gr MatchKing, Vihtavuori N140 (charge not given), Federal 205M primers, 15-shot strings, Oehler 35. The cartridge is "6 Norma BR" in `data/calibers.json` (2.172 cm³, Reload Swiss median): 0.85 to 0.88 of the 38 to 39.5 gr of water that the 6mmBR.com FAQ gives for fire-formed Lapua brass.
 
-**Considered and not used (2026-10-11).** J. Schmidt's 6 mm BR (AccurateShooter, 33 to 28 inches, 15 shots per length): no verified case capacity in the calibers base. Gun Mart's .308 cut from 24 to 14.5 inches (2017): only starting velocities and mean losses per inch are published. All4shooters' Tikka T3x comparison: three rifles, not one cut-down barrel. Lucky Gunner's 7.62×39: barrels shorter than 16 inches.
+**Considered and not used (2026-10-11).** Gun Mart's .308 cut from 24 to 14.5 inches (2017): only starting velocities and mean losses per inch are published. All4shooters' Tikka T3x comparison: three rifles, not one cut-down barrel. Lucky Gunner's 7.62×39: barrels shorter than 16 inches.
 
 **Considered and not used.** Ballistics By The Inch (archived 2020) cut a .223 test barrel from 18 to 3 inches, 3 shots per length. Only the 18- and 16-inch points fall in the range studied here. The exponent from that single 2-inch step is 0.115, 0.249 and 0.280 for its three loads: the full spread seen elsewhere, so the step measures mostly noise. The short barrels (3–14 in.) would be a separate test, where the powder is not fully burnt and the expansion-ratio formulas are not expected to hold.
 
@@ -74,39 +75,40 @@ The score is the root-mean-square error over those points.
 
 ### Median RMS error over the predicted points (fps)
 
-| Predictor | Reference (19 series, 8 cartridges) | Validation (8 series, 4 new cartridges) | Independent (16 series, 6 barrels) |
+| Predictor | Reference (19 series, 8 cartridges) | Validation (9 series, 5 new cartridges) | Independent (17 series, 7 barrels) |
 |---|---|---|---|
-| K, fixed exponent | 40.8 | 41.8 | 19.8 |
-| P, Powley | 29.9 | 27.4 | 14.3 |
-| MH, Mayer–Hart | 25.2 | 19.8 | 19.6 |
-| MH, φ = 0 | 38.9 | 50.4 | 34.5 |
-| LD, Le Duc (C.I.P. pressure) | 34.7 | 31.4 | 20.8 (15 series) |
+| K, fixed exponent | 40.8 | 43.4 | 20.1 |
+| P, Powley | 29.9 | 30.7 | 14.8 |
+| MH, Mayer–Hart | 25.2 | 22.3 | 19.3 |
+| MH, φ = 0 | 38.9 | 56.8 | 34.1 |
+| LD, Le Duc (C.I.P. pressure) | 34.7 | 32.9 | 20.6 (16 series) |
 
-On the independent set, $k$ is the median of the 19 reference series (0.167). Its errors are smaller than elsewhere: barrels of 16 to 26 inches only, and mostly .223 and 6.5 Creedmoor, whose expansion ratios are close to the median.
+On the independent set, $k$ is the median of the 19 reference series (0.167). Its errors are smaller than elsewhere: barrels of 16 to 26 inches only (28 to 33 for the 6 mm BR), and mostly .223 and 6.5 Creedmoor, whose expansion ratios are close to the median.
 
 ### Paired comparison by cartridge
 
-Series of one cartridge share a rifle, so they are not independent. The 27 series are therefore averaged per cartridge, giving 12 cartridges. $k$ is fixed leave-one-cartridge-out; 10 000 bootstrap resamples are drawn over cartridges.
+Series of one cartridge share a rifle, so they are not independent. The 28 series are therefore averaged per cartridge, giving 13 cartridges. $k$ is fixed leave-one-cartridge-out; 10 000 bootstrap resamples are drawn over cartridges.
 
 | Comparison | Better on | Mean difference | 95 % interval | Sign test (one-sided) |
 |---|---|---|---|---|
-| Powley vs. fixed $k$ | 9/12 | −10.4 fps | [−19.7 ; −1.9] | p = 0.073 |
-| Mayer–Hart vs. fixed $k$ | 8/12 | −13.1 fps | [−25.9 ; −3.3] | p = 0.194 |
-| Le Duc vs. fixed $k$ | 8/12 | −4.1 fps | [−16.5 ; +9.1] | p = 0.194 |
-| Mayer–Hart vs. Powley | 7/12 | −2.7 fps | [−8.8 ; +2.9] | p = 0.387 |
+| Powley vs. fixed $k$ | 10/13 | −10.8 fps | [−19.2 ; −2.7] | p = 0.046 |
+| Mayer–Hart vs. fixed $k$ | 9/13 | −14.5 fps | [−26.2 ; −5.0] | p = 0.133 |
+| Le Duc vs. fixed $k$ | 9/13 | −6.6 fps | [−19.0 ; +6.6] | p = 0.133 |
+| Mayer–Hart vs. Powley | 8/13 | −3.6 fps | [−9.5 ; +1.9] | p = 0.291 |
 
 ### Paired comparison on the independent set, by barrel
 
-Hodgdon's two .223 barrels are separate guns, so the 16 series give 6 barrels. $k$ = 0.167.
+Hodgdon's two .223 barrels are separate guns, so the 17 series give 7 barrels. $k$ = 0.167.
 
 | Comparison | Better on | Mean difference | 95 % interval | Sign test (one-sided) |
 |---|---|---|---|---|
-| Powley vs. fixed $k$ | 6/6 | −13.1 fps | [−21.7 ; −4.5] | p = 0.016 |
-| Mayer–Hart vs. fixed $k$ | 4/6 | −9.8 fps | [−22.1 ; +0.8] | p = 0.344 |
-| Le Duc vs. fixed $k$ | 3/5 | −10.0 fps | [−21.1 ; +1.1] | p = 0.500 |
-| Mayer–Hart vs. Powley | 1/6 | +3.3 fps | [−2.1 ; +7.5] | p = 0.984 |
+| Powley vs. fixed $k$ | 7/7 | −12.2 fps | [−20.6 ; −4.6] | p = 0.008 |
+| Mayer–Hart vs. fixed $k$ | 5/7 | −9.0 fps | [−20.3 ; −0.3] | p = 0.227 |
+| Le Duc vs. fixed $k$ | 4/6 | −10.3 fps | [−19.5 ; −1.0] | p = 0.344 |
+| Mayer–Hart vs. Powley | 1/7 | +3.2 fps | [−1.5 ; +6.9] | p = 0.992 |
 
-Per barrel, Powley's gain is 3 fps on the .223 barrels and the 6.5 Creedmoor, and 14 to 28 fps on the three PRC magnums. Taken together, the 12 cartridges and the 6 barrels give Powley better than the fixed exponent on 15 of 18 (sign test p = 0.004); Mayer–Hart better than Powley on 8 of 18.
+Per barrel, Powley's gain is 2 to 3 fps on the .223 barrels and the 6.5 Creedmoor, 6 fps on the 6 mm BR, and 14 to 28 fps on the three PRC magnums. Taken together, the 13 cartridges and the 7 barrels give Powley better than the fixed exponent on 17 of 20 (sign test p = 0.001); Mayer–Hart better than Powley on 9 of 20.
+
 ### Implied exponent on the reference set
 
 The log-log slope of each predictor's own predictions is compared with the measured $k$:
@@ -122,26 +124,27 @@ The log-log slope of each predictor's own predictions is compared with the measu
 1. **The expansion ratio explains much of why the exponent changes from one cartridge to another.**
    - Cartridges with a large case for their bore lose more velocity per inch: measured $k$ is 0.26–0.31 for the .243 Win., 0.26 for the .300 Win. Mag., 0.20–0.29 for the 7 mm Rem. Mag. and 0.24–0.26 for the .338 Lapua. It is 0.11–0.16 for the 7.62×39.
    - The fixed exponent cannot follow this. Powley's formula, which uses only geometry, does.
-   - On the four cartridges held out of everything, the median error falls from 41.8 fps (fixed exponent) to 27.4 (Powley) and 19.8 (Mayer–Hart). On the two magnums alone Powley roughly halves it; on Clark's 7.62×54R Powley gains little (33 against 40 fps) and Mayer–Hart does best (17 fps); on Hatcher's .30-06, whose $k$ (0.182) is close to the median, all three are within 10–11 fps.
-2. **Mayer–Hart is not distinguishably better than Powley** (−2.7 fps, interval spanning zero). It also needs a charge, a powder energy and a pressure, and the $\varphi$ values it uses (0.42 to 0.79) all lie at or above its formal validity bound $\varphi \le 1/(2\gamma) \approx 0.42$ (eq. 33′).
-   - Its burning term still matters. With $\varphi = 0$ the model loses its advantage (validation: 50.4 fps, worse than the fixed exponent).
+   - On the five cartridges held out of everything, the median error falls from 43.4 fps (fixed exponent) to 30.7 (Powley) and 22.3 (Mayer–Hart). On the two magnums alone Powley roughly halves it; on Clark's 7.62×54R Powley gains little (33 against 40 fps) and Mayer–Hart does best (17 fps); on Hatcher's .30-06, whose $k$ (0.182) is close to the median, all three are within 10–11 fps.
+   - Hatcher's .50 BMG has the highest measured exponent (0.364) and the smallest expansion ratio (5.1 at 24 inches). Every predictor misses it by more than on the other cartridges: Le Duc 44 fps, Mayer–Hart 50, Powley 65, fixed exponent 87.
+2. **Mayer–Hart is not distinguishably better than Powley** (−3.6 fps, interval spanning zero). It also needs a charge, a powder energy and a pressure, and the $\varphi$ values it uses (0.42 to 0.79) all lie at or above its formal validity bound $\varphi \le 1/(2\gamma) \approx 0.42$ (eq. 33′).
+   - Its burning term still matters. With $\varphi = 0$ the model loses its advantage (validation: 56.8 fps, worse than the fixed exponent).
    - Powley's formula (γ = 1.25, no burning term) nevertheless does about as well as the full Mayer–Hart model. Why the cruder formula matches is not established here.
-3. **Le Duc anchored on the C.I.P. pressure is not reliably better than a fixed exponent** (−4.1 fps, interval spanning zero). Its result depends on the assumed peak pressure, which is not known for factory ammunition.
+3. **Le Duc anchored on the C.I.P. pressure is not reliably better than a fixed exponent** (−6.6 fps, interval spanning zero). Its result depends on the assumed peak pressure, which is not known for factory ammunition.
 4. **Powley and Mayer–Hart miss the flattening of the 6 mm and 6.5 Creedmoor series beyond about 24 inches.**
-   - For these two cartridges they do no better than the fixed exponent (6 mm: 70 and 80 fps against 72; 6.5: 55 and 64 against 59).
+   - For these two cartridges they do no better than the fixed exponent (6 mm: 70 and 80 fps against 75; 6.5: 55 and 64 against 61).
    - Le Duc, whose hyperbola flattens by construction, does better there (62 and 39 fps).
    - Marr's longest barrels (27–31″) gain less than the expansion ratio predicts. Friction and heat loss, which these lumped models ignore, are a plausible cause; this is not tested here.
 
-5. **The independent set confirms the Powley result** (6 barrels out of 6, see above), with three experimenters other than Marr. Mayer–Hart, better than Powley on the reference set, is worse on the independent one (1/6); its $\varphi$ reaches 1.07 on the light .223 loads, far outside its domain.
+5. **The independent set confirms the Powley result** (7 barrels out of 7, see above), from three sources other than Marr (Hodgdon, Eagleman Long Range, Schmidt). Mayer–Hart, better than Powley on the reference set, is worse on the independent one (1/7); its $\varphi$ reaches 1.07 on the light .223 loads, far outside its domain.
 
 **Practical consequence.** For a cartridge whose expansion ratio is far from that of the .308 (magnums, the .243, intermediate cartridges), a velocity transferred from one barrel to another is better estimated with Powley's ratio than with a fixed exponent. A second chronograph point on the actual rifle remains better than either.
 
 ## Limitations
 
-- **Small sample.** There are 15 cartridges and 18 guns, and 3 to 15 shots per point (not stated for Hatcher or Eagleman). On the first 12 cartridges the Powley vs. fixed-$k$ sign test was not significant (p = 0.073); with the independent barrels it is (15/18, p = 0.004).
+- **Small sample.** There are 17 cartridges and 20 guns, and 3 to 15 shots per point (not stated for Hatcher or Eagleman). On the 13 cartridges of Marr, Clark and Hatcher the Powley vs. fixed-$k$ sign test gives p = 0.046 (10/13); with the independent barrels, p = 0.001 (17/20).
 - **Charges partly estimated.** For factory ammunition the charge is unknown; Reload Swiss medians stand in for it. Only the Mayer–Hart and Le Duc predictors use it.
-- **Chamber volumes are aggregates.** $U$ is a per-cartridge median derived from Reload Swiss fill ratios, not a measured volume for each load.
-- **Data sources.** 25 of the 43 series come from one experimenter and one chronograph type (barrel-mounted MagnetoSpeed). The independent set is dominated by .223 (12 of 16 series, two barrels of one laboratory); the three PRC series come from a forum post without shot counts or charges. Ballistics By The Inch does not help in this range (see Data).
+- **Chamber volumes are aggregates.** $U$ is a per-cartridge median derived from Reload Swiss fill ratios; for the .224 Valkyrie, 6 mm Creedmoor and 7 mm PRC, which Reload Swiss does not list, it comes from the densest published loads (95th percentile of powder volume / 1.08); for the .50 BMG, from one published water capacity (see Data). None is a measured volume for each load.
+- **Data sources.** 25 of the 45 series come from one experimenter and one chronograph type (barrel-mounted MagnetoSpeed). The independent set is dominated by .223 (12 of 17 series, two barrels of one laboratory); the three PRC series come from a forum post without shot counts or charges. Ballistics By The Inch does not help in this range (see Data).
 
 ## Prior work
 
