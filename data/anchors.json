@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-10-11",
+ "_date": "2026-10-12",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1075895,
@@ -3113,36 +3113,36 @@
    "np": 0.4393
   },
   "6.5-284 Norma|Accurate 5744": {
-   "eeff": 1362720,
+   "eeff": 1362744,
    "n": 9,
    "C": 32.37,
    "m": 114.1,
    "np": 0.395
   },
   "6.5-284 Norma|Accurate 4350": {
-   "eeff": 1077519,
+   "eeff": 1077537,
    "n": 21,
    "C": 53.21,
    "m": 102.2,
    "np": 0.4597
   },
   "6.5-284 Norma|Accurate Magpro": {
-   "eeff": 1002760,
+   "eeff": 1002778,
    "n": 50,
    "C": 57.17,
    "m": 119.8,
-   "np": 0.4564,
-   "mhr": 7
+   "np": 0.4565,
+   "mhr": 7.9
   },
   "6.5-284 Norma|Ramshot Magnum": {
-   "eeff": 982426,
+   "eeff": 982443,
    "n": 51,
    "C": 58.17,
    "m": 120.1,
    "np": 0.4564
   },
   "6.5-284 Norma|Ramshot LRT": {
-   "eeff": 1009128,
+   "eeff": 1009146,
    "n": 12,
    "C": 62.98,
    "m": 139.7,
@@ -3278,11 +3278,11 @@
    "np": 0.5277
   },
   "270 Weatherby Magnum|Accurate 4350": {
-   "eeff": 1030293,
+   "eeff": 1030638,
    "n": 6,
    "C": 62.9,
    "m": 126,
-   "np": 0.4763
+   "np": 0.4764
   },
   "7 -08 Rem.|Accurate 5744": {
    "eeff": 1476313,
@@ -9325,7 +9325,7 @@
    "n": 6,
    "C": 69.39,
    "m": 120.6,
-   "mhr": 1.8
+   "mhr": 3.6
   },
   "270 Weatherby Magnum|N165": {
    "eeff": 981274,

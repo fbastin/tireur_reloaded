@@ -1,5 +1,5 @@
 {
-  "_doc": "Dimensions et pressions = VALEURS de normes CIP/SAAMI, utilisées comme constantes factuelles AVEC ATTRIBUTION (pmax_src). Les documents/fiches sources (PDF CIP « Reproduction interdite même partielle sans autorisation » ; standards SAAMI © copyrightés) ne sont PAS redistribués — voir uniquement les sources officielles. Pas d extraction en masse (droit sui generis bases de données UE) : quelques valeurs ponctuelles citées. bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression (bar) qui pilote la courbe, absente si incertaine. Référentiel C.I.P. PRIORITAIRE (2026-08-02) : vaut la valeur des tables C.I.P. dès que la cartouche y est homologuée, sinon la valeur SAAMI Z299.4 (transducteur psi→bar) et ALORS SEULEMENT pmax_src=\"SAAMI\". L'invariant se lit donc en une ligne : pmax_src présent ⟺ pmax_cip_bar n'est pas une valeur C.I.P. pmax_saami_bar = la valeur SAAMI quand elle est connue et distincte de la C.I.P. — informative, elle ne pilote rien. Aucune provenance n'est déduite d'un psi rond : la C.I.P. reprend parfois une valeur SAAMI convertie (.375 Ruger, 4275 bar = 62 004 psi). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine 0,90 : médiane du rapport des volumes Reload Swiss aux capacités en eau mesurées par Peterson Cartridge sur 21 cartouches, calibrée le 2026-10-12 par calibers/facteur_utile.py du dépôt du site, au lieu de ~0,87 sans source ; pistolet ~0,66, non calibré) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur). case_mm aligné sur la colonne CARTOUCHE MAXI des fiches TDCC C.I.P. le 2026-08-13 (21 valeurs). Contrôle : CIP/check_case_lengths.py.",
+  "_doc": "Dimensions et pressions = VALEURS de normes CIP/SAAMI, utilisées comme constantes factuelles AVEC ATTRIBUTION (pmax_src). Les documents/fiches sources (PDF CIP « Reproduction interdite même partielle sans autorisation » ; standards SAAMI © copyrightés) ne sont PAS redistribués — voir uniquement les sources officielles. Pas d extraction en masse (droit sui generis bases de données UE) : quelques valeurs ponctuelles citées. bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression (bar) qui pilote la courbe, absente si incertaine. Référentiel C.I.P. PRIORITAIRE (2026-08-02) : vaut la valeur des tables C.I.P. dès que la cartouche y est homologuée, sinon la valeur SAAMI Z299.4 (transducteur psi→bar) et ALORS SEULEMENT pmax_src=\"SAAMI\". L'invariant se lit donc en une ligne : pmax_src présent ⟺ pmax_cip_bar n'est pas une valeur C.I.P. pmax_saami_bar = la valeur SAAMI quand elle est connue et distincte de la C.I.P. — informative, elle ne pilote rien. Aucune provenance n'est déduite d'un psi rond : la C.I.P. reprend parfois une valeur SAAMI convertie (.375 Ruger, 4275 bar = 62 004 psi). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine 0,90 : médiane du rapport des volumes Reload Swiss aux capacités en eau mesurées par Peterson Cartridge sur 21 cartouches, calibrée le 2026-10-12 par calibers/facteur_utile.py du dépôt du site, au lieu de ~0,87 sans source ; pistolet ~0,66, non calibré). 270 Weatherby Magnum et 6.5-284 Norma : capacité Peterson × 0,90 depuis le 2026-10-12, leur P95(volume de poudre)/1,08 dépassant la capacité mesurée de l'étui (rapports 1,016 et 1,075) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur). case_mm aligné sur la colonne CARTOUCHE MAXI des fiches TDCC C.I.P. le 2026-08-13 (21 valeurs). Contrôle : CIP/check_case_lengths.py.",
   "calibers": {
     "308 Win.": {
       "type": "rifle",
@@ -630,7 +630,7 @@
       ],
       "bore_mm": 6.71,
       "case_mm": 55.1,
-      "case_vol_cm3": 4.485,
+      "case_vol_cm3": 3.756,
       "test_barrel_mm": 660,
       "pmax_cip_bar": 4100,
       "pmax_saami_bar": 3999
@@ -900,7 +900,7 @@
       "type": "rifle",
       "bore_mm": 7.04,
       "case_mm": 64.74,
-      "case_vol_cm3": 5.413,
+      "case_vol_cm3": 4.794,
       "test_barrel_mm": 650,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4309
