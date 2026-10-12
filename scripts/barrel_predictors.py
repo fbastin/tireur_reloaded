@@ -3,6 +3,8 @@
     python3 scripts/barrel_predictors.py
     python3 scripts/barrel_predictors.py --tableau   # tableau par cartouche de la page wiki
     python3 scripts/barrel_predictors.py --sensibilite   # volume de la .50 BMG
+    python3 scripts/barrel_predictors.py --pression-mesuree   # Le Duc sur les pressions de Hodgdon
+    python3 scripts/barrel_predictors.py --second-facteur     # rapport charge / balle (Powley)
 
 QUESTION. Une vitesse est mesurée sur un canon de longueur L_ref ; que vaut-elle sur un canon
 plus court ? Chaque prédicteur reçoit le point de référence (le canon le plus long de la série)
@@ -167,6 +169,26 @@ MASS.update({('6.5 Creedmoor', 'Hodgdon'): None,
              ('7mm PRC', 'Eagleman 175'): 175, ('6 Norma BR', 'Schmidt 107 SMK'): 107})
 for _l in IND['223 Rem.']:
     MASS[('223 Rem.', _l)] = int(_l.split()[1])
+
+# PRESSIONS MESURÉES par Hodgdon sur les deux canons de .223, à chaque longueur de 24 à 16 po :
+# colonne « P » des deux tableaux, lue en image le 2026-10-12 sur les fichiers d'origine (4909 px
+# de large). Unité non écrite ; des psi (de 48 980 à 57 270, autour de la limite SAAMI de la .223,
+# 55 000 psi). Les lignes « Group High P », « Group Low P » et « Pressure Diff » recoupent chaque
+# colonne. La 6,5 Creedmoor de Hodgdon n'a pas de pression publiée.
+PSI_HODGDON = {
+ 'H-A 40 BK X-Term':  [50740, 51680, 50860, 51980, 52000, 51860, 51840, 52140, 52360],
+ 'H-A 40 BK 2520':    [50640, 51540, 51120, 51080, 51820, 52840, 52720, 52540, 52320],
+ 'H-A 60 TMK X-Term': [52140, 50020, 51200, 51440, 51960, 52040, 53480, 52340, 52320],
+ 'H-A 60 TMK 2520':   [50660, 50320, 50500, 51040, 50740, 51620, 51160, 50480, 52300],
+ 'H-A 77 X-Term':     [50000, 50240, 50080, 49360, 49560, 49600, 49360, 49460, 48980],
+ 'H-A 77 2520':       [52020, 50760, 51360, 50260, 50780, 51580, 50060, 50420, 49740],
+ 'H-B 40 BK X-Term':  [54280, 54640, 53900, 53960, 54040, 54170, 54520, 53690, 54600],
+ 'H-B 40 BK 2520':    [55490, 56600, 56230, 55850, 56500, 55010, 55780, 56130, 55590],
+ 'H-B 62 FMJ X-Term': [56830, 56860, 56090, 55400, 55400, 54260, 55040, 54920, 53620],
+ 'H-B 62 FMJ 2520':   [52610, 52850, 52140, 51980, 53500, 51140, 51460, 51550, 52380],
+ 'H-B 77 X-Term':     [55740, 57270, 56260, 55300, 54410, 53570, 54420, 54790, 54300],
+ 'H-B 77 2520':       [53950, 54850, 53930, 53350, 54350, 53630, 54040, 54610, 53460]}
+PSI_BAR = 0.0689476
 CHARGE.update({('223 Rem.', 'H-A 40 BK X-Term'): 29.0, ('223 Rem.', 'H-A 40 BK 2520'): 31.0,
                ('223 Rem.', 'H-A 60 TMK X-Term'): 24.9, ('223 Rem.', 'H-A 60 TMK 2520'): 27.3,
                ('223 Rem.', 'H-A 77 X-Term'): 22.5, ('223 Rem.', 'H-A 77 2520'): 25.2})
@@ -226,14 +248,14 @@ def powley(cart, L_in):
     return math.sqrt(1 - (1 + A * travel(cart, L_in) / U) ** -0.25)
 
 
-def mayer_hart(cart, load, L_in, with_phi=True):
+def mayer_hart(cart, load, L_in, with_phi=True, p_bar=None):
     A, U, _ = geom(cart)
     C_gr, Qex, _ = charge_qex(cart, load)
     C = C_gr * GR
     vfree = U - C / RHO_P
     R = (vfree + A * travel(cart, L_in)) / vfree
     lam = Qex * 1000 * (GAMMA - 1)
-    phi = (C * lam / vfree) / (2 * math.e * CAL[cart]['pmax_cip_bar'] * 1e5 * (1 + 0.75 * (GAMMA - 1)))
+    phi = (C * lam / vfree) / (2 * math.e * (p_bar or CAL[cart]['pmax_cip_bar']) * 1e5 * (1 + 0.75 * (GAMMA - 1)))
     f = 1 - (GAMMA - 1) * phi if with_phi else 1.0
     e = 1 - R ** (1 - GAMMA) / f
     return math.sqrt(e) if e > 0 else float('nan')     # hors du domaine de l'éq. 34
@@ -247,7 +269,7 @@ def phi_of(cart, load):
         2 * math.e * CAL[cart]['pmax_cip_bar'] * 1e5 * (1 + 0.75 * (GAMMA - 1)))
 
 
-def le_duc(cart, load, Lref, vref_fps, pfrac=1.0):
+def le_duc(cart, load, Lref, vref_fps, pfrac=1.0, p_bar=None):
     """Constantes (a, b) de Le Duc ancrées sur v(Lref) et P_max ; renvoie v(L) en fps (None si la
     masse de balle n'est pas publiée, ou sans solution)."""
     if MASS.get((cart, load)) is None:
@@ -255,7 +277,7 @@ def le_duc(cart, load, Lref, vref_fps, pfrac=1.0):
     A = geom(cart)[0]
     C_gr = charge_qex(cart, load)[0]
     mc = (MASS[(cart, load)] + C_gr / 2) * GR       # Carlucci et Jacobson, éq. 3.54
-    P = CAL[cart]['pmax_cip_bar'] * 1e5 * pfrac
+    P = (p_bar or CAL[cart]['pmax_cip_bar']) * 1e5 * pfrac
     xr, vr = travel(cart, Lref), vref_fps * 0.3048
     # P = 4 mc vr² (b + xr)² / (27 A b xr²)  →  b² + (2xr − K) b + xr² = 0,  K = 27 A P xr² / (4 mc vr²)
     K = 27 * A * P * xr ** 2 / (4 * mc * vr ** 2)
@@ -403,8 +425,64 @@ def sensibilite():
     CAL[cart]['case_vol_cm3'] = CAP_50_GR / 15.4324 * UTILE
 
 
+def pression_mesuree():
+    """Le Duc (et Mayer-Hart) ancrés sur la pression MESURÉE au canon de référence (24 po) au lieu
+    de la Pmax C.I.P. (4 300 bar), sur les douze séries de .223 de Hodgdon. La pression de pointe
+    ne dépend pas de la longueur dans le modèle de Le Duc (pic en x = b/2, près du culot) : la
+    moyenne des neuf longueurs est imprimée aussi, comme mesure moins bruitée."""
+    cart, cip = '223 Rem.', CAL['223 Rem.']['pmax_cip_bar']
+    print(f"Douze séries de .223 de Hodgdon, écart quadratique sur 23 à 16 po (fps) ; Pmax C.I.P. {cip} bar")
+    print(f"{'série':18s} {'P 24 po':>8s} {'P moy.':>7s} | {'K':>4s} {'P':>4s} | {'LD CIP':>6s} {'LD 24':>6s} {'LD moy':>6s} | {'MH CIP':>6s} {'MH 24':>6s}")
+    acc = {k: [] for k in ('K', 'P', 'LDc', 'LD24', 'LDm', 'MHc', 'MH24')}
+    k19 = st.median(fit.slope(p) for _, _, p in series())
+    for load, psi in PSI_HODGDON.items():
+        pts = sorted(IND[cart][load])
+        Lref, vref = pts[-1]
+        p24, pm = psi[0] * PSI_BAR, st.mean(psi) * PSI_BAR
+        f = {'K': lambda L: vref * (L / Lref) ** k19,
+             'P': lambda L: vref * powley(cart, L) / powley(cart, Lref),
+             'LDc': le_duc(cart, load, Lref, vref), 'LD24': le_duc(cart, load, Lref, vref, p_bar=p24),
+             'LDm': le_duc(cart, load, Lref, vref, p_bar=pm),
+             'MHc': lambda L: vref * mayer_hart(cart, load, L) / mayer_hart(cart, load, Lref),
+             'MH24': lambda L: vref * mayer_hart(cart, load, L, p_bar=p24) / mayer_hart(cart, load, Lref, p_bar=p24)}
+        e = {n: math.sqrt(st.mean((g(L) - v) ** 2 for L, v in pts[:-1])) if g else float('nan')
+             for n, g in f.items()}
+        for n, x in e.items():
+            acc[n].append(x)
+        print(f"{load:18s} {p24:8.0f} {pm:7.0f} | {e['K']:4.0f} {e['P']:4.0f} | {e['LDc']:6.0f} {e['LD24']:6.0f} {e['LDm']:6.0f}"
+              f" | {e['MHc']:6.0f} {e['MH24']:6.0f}")
+    print('médiane' + ' ' * 28 + ' '.join(f"{n} {st.median(v):5.1f}" for n, v in acc.items()))
+    for a, b in (('LD24', 'LDc'), ('LD24', 'P'), ('MH24', 'MHc')):
+        w = sum(x < y for x, y in zip(acc[a], acc[b]))
+        print(f"  {a} meilleur que {b} sur {w}/{len(acc[a])} séries")
+
+
+def second_facteur():
+    """Le second facteur de Powley (rapport charge / masse de balle) dans un même canon : les
+    séries de .223 de Hodgdon (charges publiées pour H-A, balles pour les deux). Dans la forme de
+    Davis, charge et balle s'annulent dans le rapport de deux longueurs : Powley prédit le même k
+    pour toutes."""
+    cart = '223 Rem.'
+    print(f"k Powley de la .223 sur 16-24 po : {fit.slope([(L, powley(cart, L)) for L in range(16, 25)]):.3f}")
+    print(f"{'série':18s} {'C/m':>6s} {'k obs':>6s} {'k MH':>6s}")
+    for load, pts in IND[cart].items():
+        pts = sorted(pts)
+        cm = CHARGE[(cart, load)] / MASS[(cart, load)] if (cart, load) in CHARGE else float('nan')
+        kmh = fit.slope([(L, mayer_hart(cart, load, L)) for L, _ in pts])
+        print(f"{load:18s} {cm:6.3f} {fit.slope(pts):6.3f} {kmh:6.3f}")
+    for canon in ('H-A', 'H-B'):
+        for poudre in ('X-Term', '2520'):
+            k = {l.split()[1]: fit.slope(sorted(p)) for l, p in IND[cart].items()
+                 if l.startswith(canon) and l.endswith(poudre)}
+            print(f"  {canon} {poudre:6s} : k(40 gr) {k['40']:.3f} contre k(77 gr) {k['77']:.3f}")
+
+
 def main():
     import sys
+    if '--pression-mesuree' in sys.argv:
+        return pression_mesuree()
+    if '--second-facteur' in sys.argv:
+        return second_facteur()
     if '--tableau' in sys.argv:
         return tableau()
     if '--sensibilite' in sys.argv:
