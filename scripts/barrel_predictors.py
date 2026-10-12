@@ -51,12 +51,13 @@ CAL = json.load(open(os.path.join(DATA, 'calibers.json')))['calibers']
 # .50 BMG, hors de l'estimateur (aucune charge de .50 dans nos guides). Cotes de la fiche C.I.P.
 # « 50 Browning » (TDCC tab. I, rév. 2010-05-26) : L3 = 99,31 mm, G1 = 12,98 mm, Pmax = 3 700 bar.
 # Volume : 290 gr d'eau (« The average .50 BMG case holds 290 grains of water », P. Meitin,
-# « Loading the Big .50 », Handloader 57, déc.-janv. 2022) × 0,87, le facteur de volume utile
-# que calibers.json applique aux capacités publiées (voir son _doc) ; valeur ronde d'une seule
-# source, sensibilité imprimée par --sensibilite. La base des calibres du site porte le même volume
+# « Loading the Big .50 », Handloader 57, déc.-janv. 2022) × 0,90, le facteur de volume utile
+# calibré le 2026-10-12 sur les capacités mesurées par Peterson (calibers/facteur_utile.py :
+# médiane du rapport volume Reload Swiss ÷ capacité, 21 cartouches ; 0,87 sans source jusque-là) ;
+# valeur ronde d'une seule source, sensibilité imprimée par --sensibilite. La base des calibres du site porte le même volume
 # depuis le 2026-10-12 (calibers/case_volume_reference.json) ; elle avait auparavant les 292,8 gr
 # de Wikipédia (18,97 cm³), que l'article ne source pas.
-CAP_50_GR, UTILE = 290, 0.87
+CAP_50_GR, UTILE = 290, 0.90
 CAL = dict(CAL, **{'50 BMG': {'type': 'rifle', 'bore_mm': 12.98, 'case_mm': 99.31,
                               'case_vol_cm3': CAP_50_GR / 15.4324 * UTILE, 'pmax_cip_bar': 3700}})
 
