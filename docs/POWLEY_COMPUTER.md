@@ -41,7 +41,7 @@ barrel length. Conventions of the site's tools
 
 1. **The kwk.us formula reproduces the manual's seven worked velocities** within −1.2 % to +0.2 %,
    nearly always about 1 % low.
-2. **Measured / predicted velocity**: median 1.009 over 390 loads. It follows pressure, as $P^{0.27}$:
+2. **Measured / predicted velocity**: median 1.009 over 390 loads. It follows pressure, as $P^{0.28}$:
 
    | Pressure (psi) | Loads | Median | Quartiles |
    |---|---:|---:|---|
@@ -49,7 +49,7 @@ barrel length. Conventions of the site's tools
    | 35,000–40,000 | 27 | 0.958 | 0.916–0.977 |
    | 40,000–45,000 | 100 | 1.004 | 0.977–1.017 |
    | 45,000–50,000 | 154 | 1.022 | 1.000–1.058 |
-   | 50,000–60,000 | 55 | 1.055 | 1.022–1.079 |
+   | 50,000–60,000 | 55 | 1.055 | 1.028–1.079 |
 
    In the computer's own range, 40,000–50,000 psi: median 1.013 over 254 loads, quartiles 0.989–1.038.
    HiVel No. 2: 1.041 (40 loads), the manual calls it a higher-energy powder. For the 14 cartridges with at
@@ -64,8 +64,8 @@ barrel length. Conventions of the site's tools
    charges at least 5 % apart; 9 of them from one .222 Remington article): velocity × 1.01 (0.53 to
    1.41), pressure × 2.89 (1.60 to 4.96).
 4. **Powder index**: it gives the powder of the manual's five examples. For the 56 bullets fired with
-   at least two powders between 40,000 and 52,000 psi, the fastest powder is in the indicated class 36
-   times, in it or the next class by burning rate 42 times (velocities compared as printed, at
+   at least two powders between 40,000 and 52,000 psi, the fastest powder is in the indicated class 35
+   times, in it or the next class by burning rate 41 times (velocities compared as printed, at
    pressures that differ).
 5. **Muzzle pressure.** The formula implies $P \propto R^{-5/4}$ whatever the bullet: 5,215 psi at
    $R = 10$, where the manual gives 5,600 to 9,800 psi, and 9,876 psi at $R = 6$, where the manual gives
