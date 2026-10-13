@@ -87,6 +87,16 @@ def norm(s):
     return re.sub(r'[^a-z0-9]', '', s.replace('springfield', 'spring'))
 
 
+def canon_mm(texte):
+    """« 24" Lilja », « 18-1/2" Ruger », « 4.0" S&W », « 24 Wiseman », « 26' Pac-Nor » (apostrophe fautive)
+    -> millimètres ; None si illisible."""
+    m = re.match(r'^\s*(\d+(?:\.\d+)?)(?:-(\d+)/(\d+))?\s*["\'”’]?', texte or '')
+    if not m:
+        return None
+    pouces = float(m[1]) + (int(m[2]) / int(m[3]) if m[2] else 0)
+    return round(pouces * 25.4, 1) if 1.5 <= pouces <= 40 else None
+
+
 def cle_poudre(nom):
     if nom in POUDRES:
         return POUDRES[nom]
@@ -137,13 +147,19 @@ def lire_fiches(dossier):
     for nom, meta in sorted(fiches.items()):
         t = subprocess.run(['pdftotext', '-layout', os.path.join(dossier, nom), '-'], capture_output=True, text=True).stdout
         eau = re.search(r'CASE HOLDS:\s*([\d.]+)\s*Gr', t)
-        balle = re.search(r'-\s*(\d{2,3})\s*grain', t)
+        # Masse de balle de l'en-tête (« 300 BLK - 110 grain ») ; plusieurs balles par fiche pour 85 fiches
+        # (« 165/168 grain », « 50/52/53 grain ») : milieu de la plage, et la plage gardée à côté.
+        tete = (t.split('\n', 3) + ['', ''])[1]
+        balle = re.search(r'(\d{2,3}(?:/\d{2,3})*)\s*gr(?:ain)?\b', tete)
+        masses = [int(x) for x in balle[1].split('/')] if balle else []
         canon = re.search(r'BARREL Length/Make\s+([^\n]+)', t)
         etui = re.search(r'CASE TYPE:\s*(\S[^\n]*?)\s{2,}', t)
         essai = re.findall(r'\s(\d\.\d{3})"', t)
         e = dict(fiche=nom, cle=meta['cle'], pdf=meta['pdf'], eau_gr=float(eau[1]) if eau else None,
-                 balle_gr=int(balle[1]) if balle else None, oacl_essai=essai[1] if len(essai) > 1 else None,
+                 balle_gr=round((min(masses) + max(masses)) / 2, 1) if masses else None,
+                 balle_plage=[min(masses), max(masses)] if len(masses) > 1 else None, oacl_essai=essai[1] if len(essai) > 1 else None,
                  etui=etui[1].strip() if etui else None, canon=canon[1].strip() if canon else None,
+                 canon_mm=canon_mm(canon[1]) if canon else None,
                  archivee='archived' in nom)
         entetes.append(e)
         poudre = None
@@ -158,7 +174,9 @@ def lire_fiches(dossier):
             if not poudre or not e['eau_gr']:
                 perdues += 1
                 continue
-            lignes.append(dict(fiche=nom, cle=e['cle'], balle_gr=e['balle_gr'], eau_gr=e['eau_gr'], poudre_nosler=poudre,
+            lignes.append(dict(fiche=nom, cle=e['cle'], balle_gr=e['balle_gr'], balle_plage=e['balle_plage'],
+                               eau_gr=e['eau_gr'], canon_mm=e['canon_mm'],
+                               poudre_nosler=poudre,
                                poudre=cle_poudre(poudre), charge_gr=float(m['chg']), fps=int(m['vel']), max=bool(m['max']),
                                comprimee=bool(m['comp']), ld_pct=int(m['ld'])))
     return entetes, lignes, perdues
@@ -227,7 +245,8 @@ def main():
             ref['calibres'][page] = {
                 'cle_estimateur': k, 'fiches': len(v), 'mediane_gr': round(st.median(g), 2), 'min_gr': min(g),
                 'max_gr': max(g), 'mediane_cm3': round(st.median(g) / EAU, 3),
-                'detail': [{'pdf': e['pdf'], 'balle_gr': e['balle_gr'], 'case_holds_gr': e['eau_gr'],
+                'detail': [{'pdf': e['pdf'], 'balle_gr': e['balle_gr'],
+                            **({'balle_plage': e['balle_plage']} if e['balle_plage'] else {}), 'case_holds_gr': e['eau_gr'],
                             'oacl_essai': e['oacl_essai'], 'etui': e['etui'], 'canon': e['canon']} for e in sorted(v, key=lambda e: e['balle_gr'] or 0)]}
         with open(sortie, 'w', encoding='utf-8') as f:
             json.dump(ref, f, ensure_ascii=False, indent=2)

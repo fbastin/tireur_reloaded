@@ -1,5 +1,5 @@
 {
- "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
+ "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
  "_date": "2026-10-13",
  "anchors": {
   "22 Hornet|RS30": {
@@ -4595,11 +4595,25 @@
    "C": 13,
    "m": 42.1
   },
+  "22 Hornet|Winchester 296": {
+   "eeff": 1294920,
+   "n": 7,
+   "C": 10.7,
+   "m": 36,
+   "nosler": true
+  },
   "22 Hornet|Hodgdon H110": {
    "eeff": 1335311,
    "n": 6,
    "C": 10.97,
    "m": 40.3
+  },
+  "22 Hornet|IMR 4227": {
+   "eeff": 1083887,
+   "n": 5,
+   "C": 10.86,
+   "m": 38.7,
+   "nosler": true
   },
   "22 Hornet|Hodgdon H4227": {
    "eeff": 1246307,
@@ -4827,6 +4841,14 @@
    "m": 49.5,
    "np": 0.3515
   },
+  "223 Rem.|Accurate 5744": {
+   "eeff": 1154382,
+   "n": 4,
+   "C": 20.51,
+   "m": 35.8,
+   "np": 0.3142,
+   "nosler": true
+  },
   "223 Rem.|Accurate 2520": {
    "eeff": 1234438,
    "n": 9,
@@ -4855,6 +4877,14 @@
    "m": 66.3,
    "np": 0.3637,
    "mhr": 5.6
+  },
+  "223 Rem.|Winchester 748": {
+   "eeff": 1128059,
+   "n": 17,
+   "C": 24.34,
+   "m": 62.7,
+   "np": 0.3552,
+   "nosler": true
   },
   "223 Rem.|IMR 4064": {
    "eeff": 1218936,
@@ -4990,6 +5020,14 @@
    "C": 38.25,
    "m": 61.8,
    "np": 0.4873
+  },
+  "22-250 Rem.|IMR 4350": {
+   "eeff": 1044836,
+   "n": 20,
+   "C": 35.87,
+   "m": 67.9,
+   "np": 0.456,
+   "nosler": true
   },
   "220 Swift|Winchester 760": {
    "eeff": 1033064,
@@ -5719,6 +5757,20 @@
    "C": 39.08,
    "m": 90.8
   },
+  "257 Roberts|IMR 3031": {
+   "eeff": 1176436,
+   "n": 4,
+   "C": 33.47,
+   "m": 105,
+   "nosler": true
+  },
+  "257 Roberts|IMR 7828": {
+   "eeff": 1010882,
+   "n": 4,
+   "C": 45.85,
+   "m": 120,
+   "nosler": true
+  },
   "25-06 Remington|Hodgdon H1000": {
    "eeff": 929132,
    "n": 8,
@@ -5919,6 +5971,14 @@
    "m": 119.8,
    "np": 0.4239,
    "mhr": -0.3
+  },
+  "6.5 Creedmoor|Hodgdon CFE-223": {
+   "eeff": 1173568,
+   "n": 5,
+   "C": 44.15,
+   "m": 94.2,
+   "np": 0.441,
+   "nosler": true
   },
   "6.5 Creedmoor|Hodgdon BL-C(2)": {
    "eeff": 1265854,
@@ -6547,6 +6607,22 @@
    "m": 132,
    "np": 0.4887
   },
+  "7 Rem. Mag.|IMR 4064": {
+   "eeff": 1231333,
+   "n": 11,
+   "C": 52.8,
+   "m": 144.9,
+   "np": 0.4408,
+   "nosler": true
+  },
+  "7 Rem. Mag.|IMR 4895": {
+   "eeff": 1253603,
+   "n": 7,
+   "C": 53.64,
+   "m": 128.2,
+   "np": 0.4624,
+   "nosler": true
+  },
   "7 Rem. Mag.|Winchester StaBall HD": {
    "eeff": 1069812,
    "n": 9,
@@ -6575,6 +6651,14 @@
    "C": 78.99,
    "m": 166.5,
    "np": 0.5643
+  },
+  "7 Rem. Mag.|IMR 7828SC": {
+   "eeff": 1083975,
+   "n": 4,
+   "C": 60.18,
+   "m": 180.1,
+   "np": 0.5494,
+   "nosler": true
   },
   "7mm PRC|Ramshot LRT": {
    "eeff": 1096556,
@@ -6674,6 +6758,13 @@
    "n": 5,
    "C": 63.65,
    "m": 160.3
+  },
+  "7mm Weatherby Magnum|Hodgdon US869": {
+   "eeff": 1095278,
+   "n": 5,
+   "C": 80.95,
+   "m": 182,
+   "nosler": true
   },
   "30 Carbine|Winchester 296": {
    "eeff": 1476361,
@@ -6857,6 +6948,13 @@
    "C": 30.96,
    "m": 159.8
   },
+  "30-30 Win.|Winchester 748": {
+   "eeff": 1031907,
+   "n": 7,
+   "C": 32.35,
+   "m": 159.7,
+   "nosler": true
+  },
   "308 Win.|Hodgdon H335": {
    "eeff": 1375340,
    "n": 15,
@@ -6914,6 +7012,14 @@
    "m": 121.4,
    "np": 0.3608
   },
+  "308 Win.|IMR 4198": {
+   "eeff": 1469733,
+   "n": 4,
+   "C": 40.37,
+   "m": 110,
+   "np": 0.3711,
+   "nosler": true
+  },
   "308 Win.|Hodgdon BL-C(2)": {
    "eeff": 1350281,
    "n": 13,
@@ -6949,6 +7055,14 @@
    "m": 170.3,
    "np": 0.3679,
    "mhr": 1.3
+  },
+  "308 Win.|Winchester 748": {
+   "eeff": 1343777,
+   "n": 8,
+   "C": 45.42,
+   "m": 155.4,
+   "np": 0.3997,
+   "nosler": true
   },
   "308 Win.|Winchester 760": {
    "eeff": 1229800,
@@ -7168,6 +7282,14 @@
    "m": 168.7,
    "np": 0.4294
   },
+  "300 WSM|IMR 4064": {
+   "eeff": 1306013,
+   "n": 7,
+   "C": 60.52,
+   "m": 139.7,
+   "np": 0.4556,
+   "nosler": true
+  },
   "300 WSM|Hodgdon Varget": {
    "eeff": 1345574,
    "n": 3,
@@ -7209,6 +7331,30 @@
    "C": 69.77,
    "m": 211.5,
    "np": 0.4705
+  },
+  "300 WSM|IMR 7828": {
+   "eeff": 1231345,
+   "n": 10,
+   "C": 65.89,
+   "m": 199.3,
+   "np": 0.4931,
+   "nosler": true
+  },
+  "300 WSM|IMR 7828SC": {
+   "eeff": 1201003,
+   "n": 4,
+   "C": 67.45,
+   "m": 194.8,
+   "np": 0.4627,
+   "nosler": true
+  },
+  "300 Win. Mag.|IMR 7828SC": {
+   "eeff": 1132084,
+   "n": 8,
+   "C": 76.05,
+   "m": 178,
+   "np": 0.5204,
+   "nosler": true
   },
   "300 Win. Mag.|Hodgdon H4831, H4831C": {
    "eeff": 1144441,
@@ -7366,6 +7512,14 @@
    "m": 202.5,
    "np": 0.4948
   },
+  "300 PRC|Hodgdon US869": {
+   "eeff": 1118167,
+   "n": 8,
+   "C": 88.59,
+   "m": 220.9,
+   "np": 0.5243,
+   "nosler": true
+  },
   "300 Norma Magnum|Hodgdon US869": {
    "eeff": 1092287,
    "n": 6,
@@ -7407,6 +7561,13 @@
    "n": 7,
    "C": 86.34,
    "m": 181.9
+  },
+  "300 Weatherby Magnum|IMR 7828SC": {
+   "eeff": 1128062,
+   "n": 8,
+   "C": 82.22,
+   "m": 172.9,
+   "nosler": true
   },
   "300 Weatherby Magnum|Hodgdon H4831, H4831C": {
    "eeff": 1142539,
@@ -7544,6 +7705,14 @@
    "m": 193.4,
    "np": 0.5389
   },
+  "300 Rem. Ultra Mag.|IMR 7828SC": {
+   "eeff": 1155704,
+   "n": 7,
+   "C": 84.4,
+   "m": 196.8,
+   "np": 0.4877,
+   "nosler": true
+  },
   "338 Win. Mag.|Winchester StaBall 6.5": {
    "eeff": 1310910,
    "n": 10,
@@ -7616,6 +7785,27 @@
    "n": 7,
    "C": 68.36,
    "m": 227.8
+  },
+  "338 Win. Mag.|IMR 7828SC": {
+   "eeff": 1198350,
+   "n": 4,
+   "C": 66.48,
+   "m": 290.8,
+   "nosler": true
+  },
+  "338 Win. Mag.|IMR 7828": {
+   "eeff": 1255228,
+   "n": 7,
+   "C": 70.96,
+   "m": 259.8,
+   "nosler": true
+  },
+  "338 Win. Mag.|Hodgdon H1000": {
+   "eeff": 1193514,
+   "n": 4,
+   "C": 68.48,
+   "m": 300,
+   "nosler": true
   },
   "338 Lapua Mag.|IMR 7828": {
    "eeff": 1225638,
@@ -7732,6 +7922,20 @@
    "C": 54.5,
    "m": 285.1
   },
+  "375 H&H Mag.|IMR 4064": {
+   "eeff": 1340149,
+   "n": 5,
+   "C": 70.22,
+   "m": 241.8,
+   "nosler": true
+  },
+  "375 H&H Mag.|Hodgdon H4895": {
+   "eeff": 1406901,
+   "n": 4,
+   "C": 67.79,
+   "m": 271.1,
+   "nosler": true
+  },
   "375 H&H Mag.|Winchester StaBall 6.5": {
    "eeff": 1251954,
    "n": 5,
@@ -7755,6 +7959,13 @@
    "n": 4,
    "C": 77.13,
    "m": 269.4
+  },
+  "375 H&H Mag.|IMR 4831": {
+   "eeff": 1206925,
+   "n": 7,
+   "C": 78.02,
+   "m": 276.4,
+   "nosler": true
   },
   "375 H&H Mag.|Hodgdon Hybrid 100V": {
    "eeff": 1229330,
@@ -9427,6 +9638,13 @@
    "C": 36.91,
    "m": 61.6
   },
+  "22-250 Rem.|N160": {
+   "eeff": 995580,
+   "n": 8,
+   "C": 36.27,
+   "m": 74,
+   "nosler": true
+  },
   "22 Creedmoor|N140": {
    "eeff": 1022645,
    "n": 8,
@@ -9528,6 +9746,20 @@
    "n": 20,
    "C": 28.17,
    "m": 95.9
+  },
+  "6mm PPC|N130": {
+   "eeff": 1212647,
+   "n": 11,
+   "C": 24.22,
+   "m": 67.6,
+   "nosler": true
+  },
+  "6mm PPC|N120": {
+   "eeff": 1248800,
+   "n": 8,
+   "C": 22.33,
+   "m": 63.9,
+   "nosler": true
   },
   "6 Norma BR|N133": {
    "eeff": 1234794,
@@ -10366,6 +10598,13 @@
    "C": 46.64,
    "m": 167.3
   },
+  "7 x 57|N165": {
+   "eeff": 1081679,
+   "n": 5,
+   "C": 48.37,
+   "m": 175,
+   "nosler": true
+  },
   "7 x 57 R|N140": {
    "eeff": 1068045,
    "n": 6,
@@ -10631,6 +10870,13 @@
    "n": 4,
    "C": 67.21,
    "m": 175
+  },
+  "7mm RUM|N165": {
+   "eeff": 971545,
+   "n": 5,
+   "C": 86.27,
+   "m": 137.2,
+   "nosler": true
   },
   "7mm RUM|N560": {
    "eeff": 1009941,
@@ -11297,6 +11543,13 @@
    "n": 4,
    "C": 71.05,
    "m": 209.3
+  },
+  "338 Win. Mag.|N150": {
+   "eeff": 1311033,
+   "n": 5,
+   "C": 64.22,
+   "m": 187.7,
+   "nosler": true
   },
   "338 Win. Mag.|N550": {
    "eeff": 1265850,
@@ -12180,6 +12433,20 @@
    "C": 44.49,
    "m": 122.5
   },
+  "270 Win.|Norma 204": {
+   "eeff": 1177787,
+   "n": 5,
+   "C": 54.38,
+   "m": 117.6,
+   "nosler": true
+  },
+  "7 Rem. Mag.|Norma MRP": {
+   "eeff": 1091231,
+   "n": 8,
+   "C": 63.68,
+   "m": 166.4,
+   "nosler": true
+  },
   "308 Win.|Norma 203B": {
    "eeff": 1366080,
    "n": 6,
@@ -12221,6 +12488,48 @@
    "n": 6,
    "C": 64.97,
    "m": 164.8
+  },
+  "338 Lapua Mag.|Norma MRP": {
+   "eeff": 1219631,
+   "n": 5,
+   "C": 83.94,
+   "m": 258.9,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Alliant Reloder 23": {
+   "eeff": 1172080,
+   "n": 5,
+   "C": 41.27,
+   "m": 108.7,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Alliant Reloder 19": {
+   "eeff": 1160548,
+   "n": 5,
+   "C": 42.18,
+   "m": 103.6,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Alliant Reloder 17": {
+   "eeff": 1241594,
+   "n": 8,
+   "C": 39.84,
+   "m": 96.9,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Alliant Reloder 16": {
+   "eeff": 1180990,
+   "n": 11,
+   "C": 40.11,
+   "m": 86.7,
+   "nosler": true
+  },
+  "6 mm Creedmoor|IMR 7977": {
+   "eeff": 1032388,
+   "n": 5,
+   "C": 44.4,
+   "m": 103.6,
+   "nosler": true
   },
   "38 Special|Alliant Bullseye": {
    "eeff": 1239643,
@@ -12372,6 +12681,13 @@
    "C": 11.6,
    "m": 42.4
   },
+  "22 Hornet|Alliant 2400": {
+   "eeff": 1380083,
+   "n": 8,
+   "C": 9.17,
+   "m": 38.4,
+   "nosler": true
+  },
   "222 Rem.|Alliant Reloder 7": {
    "eeff": 1319727,
    "n": 4,
@@ -12510,17 +12826,59 @@
    "C": 37.76,
    "m": 71.6
   },
+  "243 Win.|Alliant Reloder 17": {
+   "eeff": 1135900,
+   "n": 10,
+   "C": 41.16,
+   "m": 83.6,
+   "nosler": true
+  },
+  "243 Win.|Alliant Reloder 19": {
+   "eeff": 1053865,
+   "n": 4,
+   "C": 42.62,
+   "m": 98.8,
+   "nosler": true
+  },
   "257 Roberts|Alliant Power Pro 2000-MR": {
    "eeff": 1172552,
    "n": 3,
    "C": 43.54,
    "m": 86.7
   },
+  "257 Roberts|Alliant Reloder 15": {
+   "eeff": 1144469,
+   "n": 5,
+   "C": 41.44,
+   "m": 83.3,
+   "nosler": true
+  },
+  "257 Roberts|Alliant Reloder 19": {
+   "eeff": 1015999,
+   "n": 7,
+   "C": 45.36,
+   "m": 104.2,
+   "nosler": true
+  },
+  "257 Wby. Mag.|Alliant Reloder 19": {
+   "eeff": 1018528,
+   "n": 17,
+   "C": 65.8,
+   "m": 103.7,
+   "nosler": true
+  },
   "257 Wby. Mag.|Alliant Reloder 22": {
    "eeff": 993117,
    "n": 3,
    "C": 67.25,
    "m": 101.4
+  },
+  "257 Roberts|Alliant Reloder 22": {
+   "eeff": 1033816,
+   "n": 4,
+   "C": 43.98,
+   "m": 112.4,
+   "nosler": true
   },
   "257 Wby. Mag.|Alliant Reloder 25": {
    "eeff": 993406,
@@ -12533,6 +12891,27 @@
    "n": 3,
    "C": 48.82,
    "m": 86.7
+  },
+  "25-06 Remington|Alliant Reloder 15": {
+   "eeff": 1161811,
+   "n": 4,
+   "C": 46.23,
+   "m": 85.5,
+   "nosler": true
+  },
+  "25-06 Remington|Alliant Reloder 19": {
+   "eeff": 1087936,
+   "n": 16,
+   "C": 51.14,
+   "m": 104,
+   "nosler": true
+  },
+  "270 Win.|Alliant Reloder 15": {
+   "eeff": 1182129,
+   "n": 11,
+   "C": 48.77,
+   "m": 114.1,
+   "nosler": true
   },
   "270 Win.|Alliant Reloder 19": {
    "eeff": 1015136,
@@ -12558,11 +12937,32 @@
    "C": 56.14,
    "m": 139.8
   },
+  "260 Rem.|Alliant Power Pro 2000-MR": {
+   "eeff": 1186757,
+   "n": 5,
+   "C": 44.24,
+   "m": 95.3,
+   "nosler": true
+  },
+  "260 Rem.|Alliant Reloder 15": {
+   "eeff": 1255098,
+   "n": 14,
+   "C": 40.12,
+   "m": 107,
+   "nosler": true
+  },
   "260 Rem.|Alliant Reloder 19": {
    "eeff": 1061141,
    "n": 3,
    "C": 47.8,
    "m": 114.8
+  },
+  "260 Rem.|Alliant Reloder 17": {
+   "eeff": 1189298,
+   "n": 8,
+   "C": 43.73,
+   "m": 113,
+   "nosler": true
   },
   "270 WSM|Alliant Reloder 17": {
    "eeff": 1182632,
@@ -12588,6 +12988,34 @@
    "C": 65.79,
    "m": 124.9
   },
+  "270 Weatherby Magnum|Alliant Reloder 22": {
+   "eeff": 1034108,
+   "n": 20,
+   "C": 68.76,
+   "m": 128.2,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|Alliant Reloder 25": {
+   "eeff": 1036097,
+   "n": 14,
+   "C": 71.24,
+   "m": 139.7,
+   "nosler": true
+  },
+  "284 Winchester|Alliant Reloder 15": {
+   "eeff": 1192023,
+   "n": 16,
+   "C": 44.74,
+   "m": 145.1,
+   "nosler": true
+  },
+  "284 Winchester|Alliant Reloder 19": {
+   "eeff": 1064758,
+   "n": 16,
+   "C": 53.09,
+   "m": 145.1,
+   "nosler": true
+  },
   "280 Remington|Alliant Reloder 19": {
    "eeff": 1137991,
    "n": 6,
@@ -12599,6 +13027,13 @@
    "n": 5,
    "C": 54,
    "m": 142.2
+  },
+  "280 Remington|Alliant Reloder 15": {
+   "eeff": 1260384,
+   "n": 4,
+   "C": 47.73,
+   "m": 122.4,
+   "nosler": true
   },
   "280 Remington|Alliant Reloder 22": {
    "eeff": 1137827,
@@ -12617,6 +13052,27 @@
    "n": 3,
    "C": 45.26,
    "m": 118
+  },
+  "7mm WSM|Alliant Reloder 15": {
+   "eeff": 1235981,
+   "n": 7,
+   "C": 55.48,
+   "m": 126.6,
+   "nosler": true
+  },
+  "7mm WSM|Alliant Reloder 19": {
+   "eeff": 1128612,
+   "n": 11,
+   "C": 66.82,
+   "m": 132.9,
+   "nosler": true
+  },
+  "7mm RUM|Alliant Reloder 19": {
+   "eeff": 1014451,
+   "n": 5,
+   "C": 81.95,
+   "m": 156.9,
+   "nosler": true
   },
   "7mm RUM|Alliant Reloder 22": {
    "eeff": 990918,
@@ -12647,6 +13103,13 @@
    "n": 5,
    "C": 68.71,
    "m": 136
+  },
+  "7 Rem. Mag.|Alliant Reloder 25": {
+   "eeff": 1106433,
+   "n": 8,
+   "C": 68.66,
+   "m": 160.3,
+   "nosler": true
   },
   "7 Rem. Mag.|Alliant Power Pro 4000-MR": {
    "eeff": 1141245,
@@ -12684,11 +13147,53 @@
    "C": 28.29,
    "m": 149.1
   },
+  "30-30 Win.|Alliant Reloder 15": {
+   "eeff": 998346,
+   "n": 5,
+   "C": 31.55,
+   "m": 157.1,
+   "nosler": true
+  },
+  "300 Savage|Alliant Reloder 7": {
+   "eeff": 1317899,
+   "n": 5,
+   "C": 38.37,
+   "m": 116.5,
+   "nosler": true
+  },
   "300 Savage|Alliant Reloder 15": {
    "eeff": 1304868,
    "n": 3,
    "C": 42.99,
    "m": 181.1
+  },
+  "308 Win.|Alliant Reloder 7": {
+   "eeff": 1365028,
+   "n": 7,
+   "C": 40.32,
+   "m": 114.6,
+   "nosler": true
+  },
+  "308 Win.|Alliant Reloder 15": {
+   "eeff": 1377551,
+   "n": 10,
+   "C": 43.4,
+   "m": 158.6,
+   "nosler": true
+  },
+  "30-06 Spring.|Alliant Reloder 15": {
+   "eeff": 1193551,
+   "n": 7,
+   "C": 56.5,
+   "m": 116.2,
+   "nosler": true
+  },
+  "300 WSM|Alliant Reloder 15": {
+   "eeff": 1278760,
+   "n": 11,
+   "C": 61.74,
+   "m": 141.6,
+   "nosler": true
   },
   "300 WSM|Alliant Reloder 19": {
    "eeff": 1187907,
@@ -12701,6 +13206,20 @@
    "n": 3,
    "C": 67.75,
    "m": 164.5
+  },
+  "300 WSM|Alliant Reloder 22": {
+   "eeff": 1268622,
+   "n": 14,
+   "C": 65.43,
+   "m": 196.8,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Reloder 15": {
+   "eeff": 1111016,
+   "n": 5,
+   "C": 68.13,
+   "m": 116.5,
+   "nosler": true
   },
   "300 Weatherby Magnum|Alliant Reloder 19": {
    "eeff": 1073418,
@@ -12762,11 +13281,25 @@
    "C": 68.13,
    "m": 224.1
   },
+  "338 Win. Mag.|Alliant Reloder 22": {
+   "eeff": 1281704,
+   "n": 7,
+   "C": 72.55,
+   "m": 256.3,
+   "nosler": true
+  },
   "375 H&H Mag.|Alliant Reloder 15": {
    "eeff": 1343725,
    "n": 5,
    "C": 72.71,
    "m": 267
+  },
+  "375 H&H Mag.|Alliant Reloder 19": {
+   "eeff": 1133488,
+   "n": 8,
+   "C": 78.46,
+   "m": 278.8,
+   "nosler": true
   },
   "338 Lapua Mag.|Alliant Reloder 33": {
    "eeff": 1148406,
@@ -12774,11 +13307,25 @@
    "C": 101.52,
    "m": 254.9
   },
+  "416 Rigby|Alliant Reloder 19": {
+   "eeff": 1168601,
+   "n": 5,
+   "C": 100.96,
+   "m": 389.5,
+   "nosler": true
+  },
   "35 Remington|Alliant Reloder 7": {
    "eeff": 1156904,
    "n": 3,
    "C": 30.07,
    "m": 184.3
+  },
+  "416 Rigby|Alliant Reloder 22": {
+   "eeff": 1173652,
+   "n": 4,
+   "C": 101.74,
+   "m": 400,
+   "nosler": true
   },
   "458 Winchester Magnum|Alliant Reloder 7": {
    "eeff": 1424691,
@@ -14281,6 +14828,3170 @@
    "n": 19,
    "C": 26.97,
    "m": 133.7
+  },
+  "204 Ruger|Alliant Reloder 10X": {
+   "eeff": 1125223,
+   "n": 3,
+   "C": 22.49,
+   "m": 40,
+   "nosler": true
+  },
+  "204 Ruger|Winchester 748": {
+   "eeff": 1040703,
+   "n": 3,
+   "C": 26.49,
+   "m": 40,
+   "nosler": true
+  },
+  "204 Ruger|Alliant Power Pro Varmit": {
+   "eeff": 1052441,
+   "n": 3,
+   "C": 26.99,
+   "m": 40,
+   "nosler": true
+  },
+  "22-250 Rem.|IMR 4320": {
+   "eeff": 1063193,
+   "n": 9,
+   "C": 35.07,
+   "m": 42.3,
+   "nosler": true
+  },
+  "22-250 Rem.|Winchester 748": {
+   "eeff": 1057965,
+   "n": 6,
+   "C": 36.95,
+   "m": 37.1,
+   "nosler": true
+  },
+  "22-250 Rem.|Alliant Power Pro Varmit": {
+   "eeff": 992472,
+   "n": 3,
+   "C": 36.96,
+   "m": 40,
+   "nosler": true
+  },
+  "22-250 Rem.|Hodgdon H414": {
+   "eeff": 1090618,
+   "n": 12,
+   "C": 34.82,
+   "m": 72.9,
+   "nosler": true
+  },
+  "22-250 Rem.|Ramshot Hunter": {
+   "eeff": 1051814,
+   "n": 3,
+   "C": 38.97,
+   "m": 61,
+   "nosler": true
+  },
+  "22-250 Rem.|IMR 4007 SSC": {
+   "eeff": 1046708,
+   "n": 3,
+   "C": 33.46,
+   "m": 64,
+   "nosler": true
+  },
+  "22-250 Rem.|Accurate 2015": {
+   "eeff": 1215587,
+   "n": 3,
+   "C": 27.95,
+   "m": 69.5,
+   "nosler": true
+  },
+  "22-250 Rem.|Hodgdon H4831SC": {
+   "eeff": 995415,
+   "n": 6,
+   "C": 36.46,
+   "m": 81.7,
+   "nosler": true
+  },
+  "22-250 Rem.|IMR 4831": {
+   "eeff": 1077191,
+   "n": 6,
+   "C": 35.21,
+   "m": 81.7,
+   "nosler": true
+  },
+  "22-250 Rem.|Alliant Reloder 22": {
+   "eeff": 1011216,
+   "n": 6,
+   "C": 35.96,
+   "m": 81.7,
+   "nosler": true
+  },
+  "22-250 Rem.|Alliant Reloder 19": {
+   "eeff": 1025010,
+   "n": 6,
+   "C": 36.46,
+   "m": 81.7,
+   "nosler": true
+  },
+  "22 Hornet|IMR 4198": {
+   "eeff": 911833,
+   "n": 3,
+   "C": 10.47,
+   "m": 40,
+   "nosler": true
+  },
+  "22 Nosler|Alliant Reloder 7": {
+   "eeff": 1177508,
+   "n": 3,
+   "C": 25.49,
+   "m": 40,
+   "nosler": true
+  },
+  "22 Nosler|Alliant Reloder 10X": {
+   "eeff": 1103424,
+   "n": 3,
+   "C": 26.99,
+   "m": 40,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H322": {
+   "eeff": 1072650,
+   "n": 3,
+   "C": 29.49,
+   "m": 40,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H4198": {
+   "eeff": 1181755,
+   "n": 3,
+   "C": 26.49,
+   "m": 40,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon Benchmark": {
+   "eeff": 1128343,
+   "n": 6,
+   "C": 28.95,
+   "m": 46.9,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H335": {
+   "eeff": 1119478,
+   "n": 15,
+   "C": 27.8,
+   "m": 56.9,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H4895": {
+   "eeff": 1069044,
+   "n": 3,
+   "C": 30.99,
+   "m": 40,
+   "nosler": true
+  },
+  "22 Nosler|Norma 202": {
+   "eeff": 1132255,
+   "n": 12,
+   "C": 26.83,
+   "m": 63.8,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon Varget": {
+   "eeff": 1142402,
+   "n": 15,
+   "C": 27.16,
+   "m": 64.9,
+   "nosler": true
+  },
+  "22 Nosler|Winchester 748": {
+   "eeff": 1138979,
+   "n": 15,
+   "C": 27.95,
+   "m": 69.3,
+   "nosler": true
+  },
+  "22 Nosler|Alliant Reloder 15": {
+   "eeff": 1154123,
+   "n": 18,
+   "C": 28.37,
+   "m": 67.9,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon CFE-223": {
+   "eeff": 1135501,
+   "n": 15,
+   "C": 29.05,
+   "m": 69.3,
+   "nosler": true
+  },
+  "22 Nosler|IMR 4166": {
+   "eeff": 1095864,
+   "n": 6,
+   "C": 25.99,
+   "m": 62.5,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon BL-C(2)": {
+   "eeff": 1126212,
+   "n": 12,
+   "C": 28.59,
+   "m": 67.6,
+   "nosler": true
+  },
+  "22 Nosler|Winchester 760": {
+   "eeff": 1098145,
+   "n": 9,
+   "C": 30.14,
+   "m": 76.9,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H380": {
+   "eeff": 1111890,
+   "n": 9,
+   "C": 29.82,
+   "m": 76.9,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H414": {
+   "eeff": 1143205,
+   "n": 3,
+   "C": 28.49,
+   "m": 85,
+   "nosler": true
+  },
+  "22 Nosler|Hodgdon H4350": {
+   "eeff": 1167391,
+   "n": 3,
+   "C": 29.49,
+   "m": 85,
+   "nosler": true
+  },
+  "22 Nosler|Alliant Reloder 16": {
+   "eeff": 1174068,
+   "n": 3,
+   "C": 29.49,
+   "m": 85,
+   "nosler": true
+  },
+  "22 Nosler|Alliant Reloder 17": {
+   "eeff": 1181880,
+   "n": 3,
+   "C": 29.99,
+   "m": 85,
+   "nosler": true
+  },
+  "220 Swift|Accurate 2520": {
+   "eeff": 1036328,
+   "n": 6,
+   "C": 36.69,
+   "m": 43.6,
+   "nosler": true
+  },
+  "220 Swift|N150": {
+   "eeff": 979923,
+   "n": 9,
+   "C": 37.28,
+   "m": 42.3,
+   "nosler": true
+  },
+  "220 Swift|Hodgdon H414": {
+   "eeff": 951078,
+   "n": 12,
+   "C": 40.53,
+   "m": 46.4,
+   "nosler": true
+  },
+  "220 Swift|N140": {
+   "eeff": 874155,
+   "n": 3,
+   "C": 36.46,
+   "m": 40,
+   "nosler": true
+  },
+  "220 Swift|IMR 4320": {
+   "eeff": 1131147,
+   "n": 6,
+   "C": 34.46,
+   "m": 57.9,
+   "nosler": true
+  },
+  "220 Swift|IMR 4831": {
+   "eeff": 1022007,
+   "n": 6,
+   "C": 41.46,
+   "m": 57.9,
+   "nosler": true
+  },
+  "220 Swift|IMR 4350": {
+   "eeff": 1072523,
+   "n": 3,
+   "C": 37.46,
+   "m": 61,
+   "nosler": true
+  },
+  "220 Swift|Alliant Reloder 22": {
+   "eeff": 1000240,
+   "n": 3,
+   "C": 40.97,
+   "m": 61,
+   "nosler": true
+  },
+  "221 Remington Fireball|Winchester 296": {
+   "eeff": 1137362,
+   "n": 9,
+   "C": 13.13,
+   "m": 42.3,
+   "nosler": true
+  },
+  "221 Remington Fireball|IMR 4227": {
+   "eeff": 1062513,
+   "n": 9,
+   "C": 14.45,
+   "m": 42.3,
+   "nosler": true
+  },
+  "221 Remington Fireball|Alliant 2400": {
+   "eeff": 1282018,
+   "n": 3,
+   "C": 13.48,
+   "m": 34.5,
+   "nosler": true
+  },
+  "221 Remington Fireball|N110": {
+   "eeff": 1240151,
+   "n": 3,
+   "C": 14.48,
+   "m": 34.5,
+   "nosler": true
+  },
+  "221 Remington Fireball|IMR 4198": {
+   "eeff": 1027794,
+   "n": 9,
+   "C": 16.96,
+   "m": 42.3,
+   "nosler": true
+  },
+  "221 Remington Fireball|Hodgdon Lil Gun": {
+   "eeff": 1318673,
+   "n": 3,
+   "C": 14.48,
+   "m": 34.5,
+   "nosler": true
+  },
+  "221 Remington Fireball|Hodgdon H110": {
+   "eeff": 1105271,
+   "n": 6,
+   "C": 12.72,
+   "m": 46.9,
+   "nosler": true
+  },
+  "221 Remington Fireball|Ramshot Enforcer": {
+   "eeff": 1137353,
+   "n": 3,
+   "C": 12.97,
+   "m": 40,
+   "nosler": true
+  },
+  "221 Remington Fireball|Accurate 2015": {
+   "eeff": 932518,
+   "n": 6,
+   "C": 18.98,
+   "m": 46.9,
+   "nosler": true
+  },
+  "221 Remington Fireball|Ramshot X-Terminator": {
+   "eeff": 898219,
+   "n": 3,
+   "C": 19.48,
+   "m": 55,
+   "nosler": true
+  },
+  "222 Rem.|Accurate 1680": {
+   "eeff": 1270942,
+   "n": 3,
+   "C": 20.48,
+   "m": 34.5,
+   "nosler": true
+  },
+  "222 Rem.|Alliant Power Pro Varmit": {
+   "eeff": 1116966,
+   "n": 6,
+   "C": 24.22,
+   "m": 46.9,
+   "nosler": true
+  },
+  "222 Rem.|Winchester 748": {
+   "eeff": 1143369,
+   "n": 3,
+   "C": 22.99,
+   "m": 55,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Hodgdon Benchmark": {
+   "eeff": 987823,
+   "n": 9,
+   "C": 25.3,
+   "m": 42.3,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Hodgdon H322": {
+   "eeff": 968200,
+   "n": 3,
+   "C": 25.49,
+   "m": 34.5,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Winchester 748": {
+   "eeff": 959868,
+   "n": 6,
+   "C": 28.49,
+   "m": 37.1,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Ramshot X-Terminator": {
+   "eeff": 1024633,
+   "n": 9,
+   "C": 24.94,
+   "m": 42.3,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Norma 201": {
+   "eeff": 988453,
+   "n": 9,
+   "C": 26.62,
+   "m": 42.3,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Alliant Reloder 7": {
+   "eeff": 1138423,
+   "n": 6,
+   "C": 23.73,
+   "m": 37.1,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Hodgdon H335": {
+   "eeff": 1063348,
+   "n": 9,
+   "C": 27.47,
+   "m": 42.3,
+   "nosler": true
+  },
+  "222 Rem. Mag.|IMR 4198": {
+   "eeff": 1221804,
+   "n": 9,
+   "C": 21.46,
+   "m": 42.3,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Hodgdon Varget": {
+   "eeff": 1002911,
+   "n": 3,
+   "C": 28.99,
+   "m": 40,
+   "nosler": true
+  },
+  "222 Rem. Mag.|N133": {
+   "eeff": 1176597,
+   "n": 3,
+   "C": 26.49,
+   "m": 40,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Alliant Reloder 10X": {
+   "eeff": 1101465,
+   "n": 3,
+   "C": 20.48,
+   "m": 55,
+   "nosler": true
+  },
+  "222 Rem. Mag.|IMR 4320": {
+   "eeff": 1108590,
+   "n": 3,
+   "C": 24.99,
+   "m": 55,
+   "nosler": true
+  },
+  "222 Rem. Mag.|Hodgdon BL-C(2)": {
+   "eeff": 1206476,
+   "n": 5,
+   "C": 24.38,
+   "m": 55,
+   "nosler": true
+  },
+  "222 Rem. Mag.|IMR 4895": {
+   "eeff": 1250422,
+   "n": 3,
+   "C": 24.99,
+   "m": 55,
+   "nosler": true
+  },
+  "223 Rem.|Alliant Power Pro Varmit": {
+   "eeff": 1034577,
+   "n": 6,
+   "C": 26.44,
+   "m": 46.9,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Hodgdon H380": {
+   "eeff": 951412,
+   "n": 6,
+   "C": 49.97,
+   "m": 62,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Hodgdon H414": {
+   "eeff": 977618,
+   "n": 9,
+   "C": 51.12,
+   "m": 67.5,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|IMR 4350": {
+   "eeff": 961027,
+   "n": 9,
+   "C": 52.1,
+   "m": 67.5,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|IMR 4064": {
+   "eeff": 1003685,
+   "n": 3,
+   "C": 47.97,
+   "m": 55,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Accurate 2495": {
+   "eeff": 1064843,
+   "n": 3,
+   "C": 47.47,
+   "m": 55,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|N540": {
+   "eeff": 1002389,
+   "n": 3,
+   "C": 50.47,
+   "m": 55,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Alliant Reloder 15": {
+   "eeff": 1028960,
+   "n": 3,
+   "C": 49.47,
+   "m": 55,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Ramshot Big Game": {
+   "eeff": 1010787,
+   "n": 3,
+   "C": 51.97,
+   "m": 55,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Hodgdon Varget": {
+   "eeff": 1030473,
+   "n": 3,
+   "C": 49.47,
+   "m": 55,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Hodgdon H4831SC": {
+   "eeff": 930020,
+   "n": 6,
+   "C": 53.98,
+   "m": 74.8,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Alliant Reloder 19": {
+   "eeff": 917253,
+   "n": 6,
+   "C": 52.47,
+   "m": 74.8,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|IMR 4831": {
+   "eeff": 978277,
+   "n": 6,
+   "C": 52.47,
+   "m": 74.8,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Winchester 760": {
+   "eeff": 1062022,
+   "n": 6,
+   "C": 49.96,
+   "m": 74.8,
+   "nosler": true
+  },
+  "240 Weatherby Magnum|Ramshot Hunter": {
+   "eeff": 1026949,
+   "n": 6,
+   "C": 53.45,
+   "m": 74.8,
+   "nosler": true
+  },
+  "243 Win.|IMR 4451": {
+   "eeff": 1045981,
+   "n": 12,
+   "C": 42.18,
+   "m": 75.6,
+   "nosler": true
+  },
+  "243 Win.|IMR 7977": {
+   "eeff": 1025502,
+   "n": 3,
+   "C": 42.97,
+   "m": 106,
+   "nosler": true
+  },
+  "243 Win.|Norma 204": {
+   "eeff": 1119979,
+   "n": 3,
+   "C": 38.97,
+   "m": 106,
+   "nosler": true
+  },
+  "243 Win.|Alliant Reloder 25": {
+   "eeff": 1022590,
+   "n": 3,
+   "C": 43.97,
+   "m": 106,
+   "nosler": true
+  },
+  "243 Win.|Norma MRP": {
+   "eeff": 1092727,
+   "n": 3,
+   "C": 41.97,
+   "m": 106,
+   "nosler": true
+  },
+  "243 Win.|Hodgdon H414": {
+   "eeff": 1019615,
+   "n": 6,
+   "C": 44.4,
+   "m": 66.3,
+   "nosler": true
+  },
+  "243 Win.|IMR 4320": {
+   "eeff": 1097965,
+   "n": 6,
+   "C": 41.16,
+   "m": 62,
+   "nosler": true
+  },
+  "243 Win.|IMR 4166": {
+   "eeff": 1122470,
+   "n": 3,
+   "C": 37.96,
+   "m": 70,
+   "nosler": true
+  },
+  "243 Win.|Hodgdon H4831SC": {
+   "eeff": 984441,
+   "n": 3,
+   "C": 44.97,
+   "m": 80,
+   "nosler": true
+  },
+  "25-06 Remington|IMR 4320": {
+   "eeff": 1194235,
+   "n": 6,
+   "C": 39.46,
+   "m": 109.5,
+   "nosler": true
+  },
+  "25-06 Remington|IMR 7828": {
+   "eeff": 993350,
+   "n": 9,
+   "C": 52.8,
+   "m": 111.3,
+   "nosler": true
+  },
+  "25-06 Remington|Hodgdon H4831SC": {
+   "eeff": 1042588,
+   "n": 6,
+   "C": 51.17,
+   "m": 96.7,
+   "nosler": true
+  },
+  "25-06 Remington|Ramshot Big Game": {
+   "eeff": 1142122,
+   "n": 3,
+   "C": 49.47,
+   "m": 85,
+   "nosler": true
+  },
+  "250 Savage|IMR 4350": {
+   "eeff": 994604,
+   "n": 12,
+   "C": 34.83,
+   "m": 111,
+   "nosler": true
+  },
+  "250 Savage|N150": {
+   "eeff": 1138906,
+   "n": 6,
+   "C": 33.45,
+   "m": 92.2,
+   "nosler": true
+  },
+  "250 Savage|IMR 4320": {
+   "eeff": 1159763,
+   "n": 9,
+   "C": 31.61,
+   "m": 111.3,
+   "nosler": true
+  },
+  "250 Savage|Alliant Reloder 19": {
+   "eeff": 983130,
+   "n": 12,
+   "C": 37.2,
+   "m": 111,
+   "nosler": true
+  },
+  "250 Savage|Hodgdon H380": {
+   "eeff": 1020348,
+   "n": 6,
+   "C": 37.69,
+   "m": 92.2,
+   "nosler": true
+  },
+  "250 Savage|Hodgdon Varget": {
+   "eeff": 1183394,
+   "n": 12,
+   "C": 31.28,
+   "m": 102.9,
+   "nosler": true
+  },
+  "250 Savage|Winchester 760": {
+   "eeff": 1045013,
+   "n": 9,
+   "C": 35.95,
+   "m": 99.2,
+   "nosler": true
+  },
+  "250 Savage|Ramshot Hunter": {
+   "eeff": 1047648,
+   "n": 12,
+   "C": 38.92,
+   "m": 111,
+   "nosler": true
+  },
+  "250 Savage|Hodgdon H4895": {
+   "eeff": 1297215,
+   "n": 3,
+   "C": 32.96,
+   "m": 100,
+   "nosler": true
+  },
+  "250 Savage|IMR 3031": {
+   "eeff": 1169574,
+   "n": 9,
+   "C": 27.95,
+   "m": 114.9,
+   "nosler": true
+  },
+  "250 Savage|IMR 4064": {
+   "eeff": 1143724,
+   "n": 6,
+   "C": 29.96,
+   "m": 112.5,
+   "nosler": true
+  },
+  "250 Savage|IMR 4895": {
+   "eeff": 1155391,
+   "n": 12,
+   "C": 30.41,
+   "m": 106.6,
+   "nosler": true
+  },
+  "250 Savage|Hodgdon H414": {
+   "eeff": 1065304,
+   "n": 12,
+   "C": 35.66,
+   "m": 106.6,
+   "nosler": true
+  },
+  "250 Savage|Ramshot Big Game": {
+   "eeff": 1088623,
+   "n": 6,
+   "C": 36.69,
+   "m": 96.7,
+   "nosler": true
+  },
+  "250 Savage|Hodgdon H4831, H4831C": {
+   "eeff": 1148177,
+   "n": 3,
+   "C": 39.47,
+   "m": 120,
+   "nosler": true
+  },
+  "250 Savage|Winchester 748": {
+   "eeff": 1061537,
+   "n": 3,
+   "C": 33.96,
+   "m": 85,
+   "nosler": true
+  },
+  "250 Savage|Alliant Reloder 15": {
+   "eeff": 1105896,
+   "n": 3,
+   "C": 33.96,
+   "m": 85,
+   "nosler": true
+  },
+  "257 Roberts|IMR 4320": {
+   "eeff": 1165499,
+   "n": 9,
+   "C": 33.27,
+   "m": 111.3,
+   "nosler": true
+  },
+  "257 Roberts|Hodgdon H4831SC": {
+   "eeff": 1003544,
+   "n": 6,
+   "C": 44.96,
+   "m": 104.9,
+   "nosler": true
+  },
+  "257 Roberts|N160": {
+   "eeff": 1049659,
+   "n": 6,
+   "C": 45.1,
+   "m": 96.7,
+   "nosler": true
+  },
+  "257 Wby. Mag.|Ramshot Hunter": {
+   "eeff": 1016921,
+   "n": 15,
+   "C": 61.93,
+   "m": 105.2,
+   "nosler": true
+  },
+  "257 Wby. Mag.|N160": {
+   "eeff": 1002415,
+   "n": 6,
+   "C": 65.43,
+   "m": 92.2,
+   "nosler": true
+  },
+  "257 Wby. Mag.|IMR 4350": {
+   "eeff": 1026610,
+   "n": 15,
+   "C": 60.96,
+   "m": 105.2,
+   "nosler": true
+  },
+  "257 Wby. Mag.|IMR 4831": {
+   "eeff": 1021700,
+   "n": 12,
+   "C": 63.21,
+   "m": 111,
+   "nosler": true
+  },
+  "257 Wby. Mag.|N165": {
+   "eeff": 970954,
+   "n": 9,
+   "C": 65.13,
+   "m": 114.9,
+   "nosler": true
+  },
+  "257 Wby. Mag.|Hodgdon H4831SC": {
+   "eeff": 1008056,
+   "n": 3,
+   "C": 66.48,
+   "m": 110,
+   "nosler": true
+  },
+  "257 Wby. Mag.|IMR 7828": {
+   "eeff": 1008272,
+   "n": 12,
+   "C": 68.58,
+   "m": 106.6,
+   "nosler": true
+  },
+  "260 Rem.|Accurate 2460": {
+   "eeff": 1271868,
+   "n": 3,
+   "C": 36.96,
+   "m": 100,
+   "nosler": true
+  },
+  "260 Rem.|IMR 4064": {
+   "eeff": 1287838,
+   "n": 15,
+   "C": 38.18,
+   "m": 113.6,
+   "nosler": true
+  },
+  "260 Rem.|Hodgdon H414": {
+   "eeff": 1207987,
+   "n": 6,
+   "C": 44.93,
+   "m": 109.5,
+   "nosler": true
+  },
+  "260 Rem.|Hodgdon H4831SC": {
+   "eeff": 1180249,
+   "n": 3,
+   "C": 43.97,
+   "m": 141,
+   "nosler": true
+  },
+  "260 Rem.|IMR 7828": {
+   "eeff": 1189411,
+   "n": 3,
+   "C": 44.47,
+   "m": 141,
+   "nosler": true
+  },
+  "260 Rem.|Norma 203B": {
+   "eeff": 1148271,
+   "n": 3,
+   "C": 43.47,
+   "m": 90,
+   "nosler": true
+  },
+  "270 WSM|Hodgdon H1000": {
+   "eeff": 1108671,
+   "n": 15,
+   "C": 63.78,
+   "m": 138.9,
+   "nosler": true
+  },
+  "270 WSM|Hodgdon H4831SC": {
+   "eeff": 1126717,
+   "n": 18,
+   "C": 61,
+   "m": 137.4,
+   "nosler": true
+  },
+  "270 WSM|Hodgdon H4350": {
+   "eeff": 1206191,
+   "n": 3,
+   "C": 59.98,
+   "m": 110,
+   "nosler": true
+  },
+  "270 WSM|Winchester 760": {
+   "eeff": 1240285,
+   "n": 3,
+   "C": 56.98,
+   "m": 130,
+   "nosler": true
+  },
+  "270 WSM|IMR 4350": {
+   "eeff": 1172482,
+   "n": 15,
+   "C": 57.74,
+   "m": 143.6,
+   "nosler": true
+  },
+  "270 WSM|IMR 4831": {
+   "eeff": 1225412,
+   "n": 3,
+   "C": 58.98,
+   "m": 130,
+   "nosler": true
+  },
+  "270 WSM|IMR 7828": {
+   "eeff": 1204761,
+   "n": 15,
+   "C": 60.46,
+   "m": 143.6,
+   "nosler": true
+  },
+  "270 WSM|N170": {
+   "eeff": 1149063,
+   "n": 12,
+   "C": 65.23,
+   "m": 147.3,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|IMR 7828SC": {
+   "eeff": 940534,
+   "n": 3,
+   "C": 73.98,
+   "m": 100,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|Accurate Magpro": {
+   "eeff": 981524,
+   "n": 12,
+   "C": 73.01,
+   "m": 128.5,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|Hodgdon H4831SC": {
+   "eeff": 987737,
+   "n": 6,
+   "C": 73.22,
+   "m": 104.9,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|IMR 4350": {
+   "eeff": 1097556,
+   "n": 15,
+   "C": 64.43,
+   "m": 136.9,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|IMR 4831": {
+   "eeff": 1049413,
+   "n": 12,
+   "C": 65.34,
+   "m": 144.6,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|Hodgdon H4831, H4831C": {
+   "eeff": 1007347,
+   "n": 12,
+   "C": 67.83,
+   "m": 144.6,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|IMR 7828": {
+   "eeff": 1115508,
+   "n": 12,
+   "C": 69.46,
+   "m": 144.6,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|Ramshot Magnum": {
+   "eeff": 986177,
+   "n": 6,
+   "C": 74.48,
+   "m": 149.7,
+   "nosler": true
+  },
+  "270 Weatherby Magnum|Hodgdon Retumbo": {
+   "eeff": 1027488,
+   "n": 6,
+   "C": 72.48,
+   "m": 154.9,
+   "nosler": true
+  },
+  "270 Win.|IMR 4320": {
+   "eeff": 1266589,
+   "n": 9,
+   "C": 45.41,
+   "m": 129,
+   "nosler": true
+  },
+  "270 Win.|Hodgdon H414": {
+   "eeff": 1094120,
+   "n": 6,
+   "C": 50.95,
+   "m": 134.9,
+   "nosler": true
+  },
+  "270 Win.|Hodgdon H4831SC": {
+   "eeff": 1108724,
+   "n": 9,
+   "C": 55.11,
+   "m": 142.8,
+   "nosler": true
+  },
+  "280 Remington|IMR 4831": {
+   "eeff": 1127377,
+   "n": 18,
+   "C": 52.01,
+   "m": 151,
+   "nosler": true
+  },
+  "280 Remington|IMR 4064": {
+   "eeff": 1156984,
+   "n": 3,
+   "C": 45.97,
+   "m": 120,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon H4895": {
+   "eeff": 1279974,
+   "n": 3,
+   "C": 45.47,
+   "m": 120,
+   "nosler": true
+  },
+  "280 Remington|IMR 4350": {
+   "eeff": 1148195,
+   "n": 15,
+   "C": 49.72,
+   "m": 147.8,
+   "nosler": true
+  },
+  "280 Remington|Winchester 760": {
+   "eeff": 1211778,
+   "n": 6,
+   "C": 51.21,
+   "m": 129.6,
+   "nosler": true
+  },
+  "280 Remington|IMR 4895": {
+   "eeff": 1204046,
+   "n": 3,
+   "C": 41.97,
+   "m": 140,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon Varget": {
+   "eeff": 1204257,
+   "n": 6,
+   "C": 41.44,
+   "m": 153.4,
+   "nosler": true
+  },
+  "280 Remington|Ramshot Big Game": {
+   "eeff": 1180429,
+   "n": 3,
+   "C": 48.47,
+   "m": 140,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon H4831SC": {
+   "eeff": 1101241,
+   "n": 9,
+   "C": 53.63,
+   "m": 149.8,
+   "nosler": true
+  },
+  "280 Remington|IMR 7828SC": {
+   "eeff": 1085994,
+   "n": 3,
+   "C": 54.98,
+   "m": 150,
+   "nosler": true
+  },
+  "280 Remington|Norma MRP": {
+   "eeff": 1165617,
+   "n": 3,
+   "C": 53.98,
+   "m": 150,
+   "nosler": true
+  },
+  "280 Remington|IMR 7828": {
+   "eeff": 1076148,
+   "n": 6,
+   "C": 51.72,
+   "m": 167.3,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon H414": {
+   "eeff": 1226082,
+   "n": 3,
+   "C": 45.47,
+   "m": 160,
+   "nosler": true
+  },
+  "280 Remington|Accurate Magpro": {
+   "eeff": 1108722,
+   "n": 6,
+   "C": 57.96,
+   "m": 167.3,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon H4831, H4831C": {
+   "eeff": 998959,
+   "n": 3,
+   "C": 51.97,
+   "m": 168,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon Hybrid 100V": {
+   "eeff": 1140479,
+   "n": 3,
+   "C": 47.97,
+   "m": 168,
+   "nosler": true
+  },
+  "280 Remington|Hodgdon H1000": {
+   "eeff": 1115416,
+   "n": 3,
+   "C": 54.48,
+   "m": 175,
+   "nosler": true
+  },
+  "284 Winchester|Winchester 760": {
+   "eeff": 1088955,
+   "n": 9,
+   "C": 49.12,
+   "m": 136.1,
+   "nosler": true
+  },
+  "284 Winchester|IMR 4350": {
+   "eeff": 1112735,
+   "n": 12,
+   "C": 48.01,
+   "m": 149.8,
+   "nosler": true
+  },
+  "284 Winchester|Hodgdon H4831, H4831C": {
+   "eeff": 993211,
+   "n": 6,
+   "C": 55.46,
+   "m": 134.2,
+   "nosler": true
+  },
+  "284 Winchester|Hodgdon H4350": {
+   "eeff": 1096255,
+   "n": 9,
+   "C": 51.76,
+   "m": 139,
+   "nosler": true
+  },
+  "284 Winchester|Ramshot Hunter": {
+   "eeff": 1152793,
+   "n": 12,
+   "C": 53.96,
+   "m": 147.3,
+   "nosler": true
+  },
+  "284 Winchester|IMR 4064": {
+   "eeff": 1202140,
+   "n": 9,
+   "C": 42.26,
+   "m": 157.7,
+   "nosler": true
+  },
+  "284 Winchester|Hodgdon H4831SC": {
+   "eeff": 1100343,
+   "n": 6,
+   "C": 54.96,
+   "m": 149.7,
+   "nosler": true
+  },
+  "284 Winchester|Ramshot Big Game": {
+   "eeff": 1208406,
+   "n": 3,
+   "C": 48.97,
+   "m": 150,
+   "nosler": true
+  },
+  "284 Winchester|IMR 4831": {
+   "eeff": 1157259,
+   "n": 3,
+   "C": 46.97,
+   "m": 175,
+   "nosler": true
+  },
+  "30-06 Spring.|Hodgdon H414": {
+   "eeff": 1129371,
+   "n": 6,
+   "C": 54.36,
+   "m": 158.1,
+   "nosler": true
+  },
+  "30-06 Spring.|IMR 4320": {
+   "eeff": 1235119,
+   "n": 9,
+   "C": 47.91,
+   "m": 171.9,
+   "nosler": true
+  },
+  "30-06 Spring.|Alliant Reloder 19": {
+   "eeff": 1165161,
+   "n": 15,
+   "C": 55.72,
+   "m": 186.6,
+   "nosler": true
+  },
+  "30-06 Spring.|Alliant Reloder 17": {
+   "eeff": 1229465,
+   "n": 12,
+   "C": 52.7,
+   "m": 185.3,
+   "nosler": true
+  },
+  "30-06 Spring.|Alliant Reloder 22": {
+   "eeff": 1216693,
+   "n": 18,
+   "C": 57.52,
+   "m": 193.1,
+   "nosler": true
+  },
+  "30-06 Spring.|Alliant Power Pro 4000-MR": {
+   "eeff": 1200675,
+   "n": 9,
+   "C": 53.63,
+   "m": 192,
+   "nosler": true
+  },
+  "30-06 Spring.|IMR 7828SC": {
+   "eeff": 1130586,
+   "n": 3,
+   "C": 57.48,
+   "m": 190,
+   "nosler": true
+  },
+  "30-06 Spring.|Norma MRP": {
+   "eeff": 1228725,
+   "n": 6,
+   "C": 56.73,
+   "m": 199.7,
+   "nosler": true
+  },
+  "30-30 Win.|IMR 4320": {
+   "eeff": 1154594,
+   "n": 6,
+   "C": 31.45,
+   "m": 159.7,
+   "nosler": true
+  },
+  "30-30 Win.|Hodgdon H414": {
+   "eeff": 964213,
+   "n": 3,
+   "C": 34.96,
+   "m": 170,
+   "nosler": true
+  },
+  "30 T/C|Alliant Reloder 10X": {
+   "eeff": 1380184,
+   "n": 5,
+   "C": 41.65,
+   "m": 125,
+   "nosler": true
+  },
+  "30 T/C|Hodgdon Varget": {
+   "eeff": 1294825,
+   "n": 5,
+   "C": 43.57,
+   "m": 152.5,
+   "nosler": true
+  },
+  "30 T/C|IMR 4320": {
+   "eeff": 1364607,
+   "n": 7,
+   "C": 42.54,
+   "m": 171.1,
+   "nosler": true
+  },
+  "300 AAC BLK|Alliant 2400": {
+   "eeff": 1535933,
+   "n": 9,
+   "C": 11.95,
+   "m": 144.6,
+   "nosler": true
+  },
+  "300 AAC BLK|Alliant Power Pro 300-MP": {
+   "eeff": 1468448,
+   "n": 6,
+   "C": 18.98,
+   "m": 117.3,
+   "nosler": true
+  },
+  "300 PRC|IMR 7977": {
+   "eeff": 1168440,
+   "n": 3,
+   "C": 75.98,
+   "m": 210,
+   "nosler": true
+  },
+  "300 PRC|IMR 8133": {
+   "eeff": 1154459,
+   "n": 6,
+   "C": 78.48,
+   "m": 214.9,
+   "nosler": true
+  },
+  "300 PRC|Alliant Reloder 25": {
+   "eeff": 1187791,
+   "n": 3,
+   "C": 75.98,
+   "m": 220,
+   "nosler": true
+  },
+  "300 PRC|Alliant Reloder 26": {
+   "eeff": 1233918,
+   "n": 3,
+   "C": 72.98,
+   "m": 220,
+   "nosler": true
+  },
+  "300 RCM|IMR 4064": {
+   "eeff": 1221855,
+   "n": 3,
+   "C": 55.98,
+   "m": 125,
+   "nosler": true
+  },
+  "300 RCM|Alliant Reloder 15": {
+   "eeff": 1230814,
+   "n": 6,
+   "C": 56.71,
+   "m": 138.1,
+   "nosler": true
+  },
+  "300 RCM|Winchester 760": {
+   "eeff": 1192952,
+   "n": 9,
+   "C": 59.93,
+   "m": 147,
+   "nosler": true
+  },
+  "300 RCM|Hodgdon Varget": {
+   "eeff": 1260307,
+   "n": 3,
+   "C": 57.98,
+   "m": 125,
+   "nosler": true
+  },
+  "300 RCM|Hodgdon Hybrid 100V": {
+   "eeff": 1242209,
+   "n": 12,
+   "C": 56.69,
+   "m": 171.1,
+   "nosler": true
+  },
+  "300 RCM|Alliant Reloder 19": {
+   "eeff": 1192197,
+   "n": 12,
+   "C": 59.45,
+   "m": 187.5,
+   "nosler": true
+  },
+  "300 RCM|IMR 4831": {
+   "eeff": 1206766,
+   "n": 3,
+   "C": 55.98,
+   "m": 190,
+   "nosler": true
+  },
+  "300 RCM|Hodgdon H4831, H4831C": {
+   "eeff": 1156295,
+   "n": 6,
+   "C": 56.94,
+   "m": 209.8,
+   "nosler": true
+  },
+  "300 RCM|IMR 4350": {
+   "eeff": 1240538,
+   "n": 3,
+   "C": 54.48,
+   "m": 200,
+   "nosler": true
+  },
+  "300 RCM|Hodgdon H4350": {
+   "eeff": 1273712,
+   "n": 3,
+   "C": 51.97,
+   "m": 220,
+   "nosler": true
+  },
+  "300 Rem. Ultra Mag.|Alliant Reloder 26": {
+   "eeff": 971370,
+   "n": 6,
+   "C": 95.2,
+   "m": 138.1,
+   "nosler": true
+  },
+  "300 Rem. Ultra Mag.|Hodgdon H4831SC": {
+   "eeff": 1135691,
+   "n": 18,
+   "C": 87.47,
+   "m": 170.8,
+   "nosler": true
+  },
+  "300 Rem. Ultra Mag.|Alliant Reloder 33": {
+   "eeff": 1008335,
+   "n": 9,
+   "C": 97.3,
+   "m": 201.7,
+   "nosler": true
+  },
+  "300 Rem. Ultra Mag.|Norma MRP": {
+   "eeff": 1165027,
+   "n": 3,
+   "C": 84.98,
+   "m": 190,
+   "nosler": true
+  },
+  "300 Rem. Ultra Mag.|Norma 217": {
+   "eeff": 1084665,
+   "n": 3,
+   "C": 90.99,
+   "m": 210,
+   "nosler": true
+  },
+  "300 Savage|Hodgdon BL-C(2)": {
+   "eeff": 1040075,
+   "n": 3,
+   "C": 40.47,
+   "m": 125,
+   "nosler": true
+  },
+  "300 Savage|Hodgdon H4198": {
+   "eeff": 1318999,
+   "n": 3,
+   "C": 34.96,
+   "m": 125,
+   "nosler": true
+  },
+  "300 Savage|Hodgdon Varget": {
+   "eeff": 1286901,
+   "n": 12,
+   "C": 38.7,
+   "m": 154.1,
+   "nosler": true
+  },
+  "300 Savage|Winchester 748": {
+   "eeff": 1248603,
+   "n": 9,
+   "C": 40.89,
+   "m": 147,
+   "nosler": true
+  },
+  "300 Savage|Accurate 2015": {
+   "eeff": 1334844,
+   "n": 9,
+   "C": 37.18,
+   "m": 150.1,
+   "nosler": true
+  },
+  "300 Savage|IMR 4064": {
+   "eeff": 1274294,
+   "n": 9,
+   "C": 36.95,
+   "m": 165.2,
+   "nosler": true
+  },
+  "300 Savage|IMR 4895": {
+   "eeff": 1194726,
+   "n": 9,
+   "C": 37.13,
+   "m": 165.2,
+   "nosler": true
+  },
+  "300 Savage|IMR 3031": {
+   "eeff": 1296563,
+   "n": 9,
+   "C": 34.95,
+   "m": 165.2,
+   "nosler": true
+  },
+  "300 WSM|Accurate 2520": {
+   "eeff": 1314317,
+   "n": 3,
+   "C": 63.48,
+   "m": 125,
+   "nosler": true
+  },
+  "300 WSM|Hodgdon H414": {
+   "eeff": 1265384,
+   "n": 18,
+   "C": 62.86,
+   "m": 175.6,
+   "nosler": true
+  },
+  "300 WSM|IMR 4320": {
+   "eeff": 1333362,
+   "n": 3,
+   "C": 57.98,
+   "m": 166.5,
+   "nosler": true
+  },
+  "300 WSM|Hodgdon H4831SC": {
+   "eeff": 1220060,
+   "n": 10,
+   "C": 65.8,
+   "m": 197.5,
+   "nosler": true
+  },
+  "300 WSM|Alliant Power Pro 4000-MR": {
+   "eeff": 1309464,
+   "n": 9,
+   "C": 63.96,
+   "m": 192,
+   "nosler": true
+  },
+  "300 WSM|Norma MRP": {
+   "eeff": 1266016,
+   "n": 9,
+   "C": 65.96,
+   "m": 192,
+   "nosler": true
+  },
+  "300 Weatherby Magnum|Norma MRP": {
+   "eeff": 1115474,
+   "n": 9,
+   "C": 79.59,
+   "m": 191.7,
+   "nosler": true
+  },
+  "300 Weatherby Magnum|Accurate Magpro": {
+   "eeff": 1023248,
+   "n": 3,
+   "C": 85.98,
+   "m": 166.5,
+   "nosler": true
+  },
+  "300 Weatherby Magnum|Hodgdon H4831SC": {
+   "eeff": 1197692,
+   "n": 6,
+   "C": 74.98,
+   "m": 214.9,
+   "nosler": true
+  },
+  "300 Weatherby Magnum|Accurate 4350": {
+   "eeff": 1116132,
+   "n": 3,
+   "C": 66.48,
+   "m": 220,
+   "nosler": true
+  },
+  "300 Win. Mag.|Hodgdon H414": {
+   "eeff": 1173934,
+   "n": 9,
+   "C": 69.44,
+   "m": 147,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Reloder 19": {
+   "eeff": 1140274,
+   "n": 18,
+   "C": 71.93,
+   "m": 172.7,
+   "nosler": true
+  },
+  "300 Win. Mag.|Hodgdon H4831SC": {
+   "eeff": 1090080,
+   "n": 9,
+   "C": 75.88,
+   "m": 158.8,
+   "nosler": true
+  },
+  "300 Win. Mag.|IMR 4320": {
+   "eeff": 1337828,
+   "n": 6,
+   "C": 60.97,
+   "m": 159.3,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Reloder 22": {
+   "eeff": 1194393,
+   "n": 18,
+   "C": 71.24,
+   "m": 193.1,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Reloder 23": {
+   "eeff": 1128992,
+   "n": 3,
+   "C": 71.48,
+   "m": 177.5,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Power Pro 4000-MR": {
+   "eeff": 1215332,
+   "n": 9,
+   "C": 69.13,
+   "m": 192,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Reloder 17": {
+   "eeff": 1225972,
+   "n": 6,
+   "C": 67.22,
+   "m": 183.6,
+   "nosler": true
+  },
+  "300 Win. Mag.|Norma MRP": {
+   "eeff": 1155030,
+   "n": 9,
+   "C": 72.11,
+   "m": 199.8,
+   "nosler": true
+  },
+  "300 Win. Mag.|IMR 7977": {
+   "eeff": 1085103,
+   "n": 9,
+   "C": 75.31,
+   "m": 209.8,
+   "nosler": true
+  },
+  "300 Win. Mag.|Alliant Reloder 26": {
+   "eeff": 1145771,
+   "n": 6,
+   "C": 73.23,
+   "m": 214.9,
+   "nosler": true
+  },
+  "308 Marlin Express|IMR 8208 XBR": {
+   "eeff": 1252386,
+   "n": 5,
+   "C": 36.17,
+   "m": 170,
+   "nosler": true
+  },
+  "308 Marlin Express|Alliant Reloder 15": {
+   "eeff": 1233029,
+   "n": 3,
+   "C": 38.47,
+   "m": 170,
+   "nosler": true
+  },
+  "308 Win.|IMR 4320": {
+   "eeff": 1229609,
+   "n": 6,
+   "C": 45.47,
+   "m": 138.1,
+   "nosler": true
+  },
+  "308 Win.|Alliant AR Comp": {
+   "eeff": 1355857,
+   "n": 12,
+   "C": 39.81,
+   "m": 171.1,
+   "nosler": true
+  },
+  "308 Win.|IMR 4350": {
+   "eeff": 1235944,
+   "n": 3,
+   "C": 47.97,
+   "m": 166.5,
+   "nosler": true
+  },
+  "308 Win.|IMR 4166": {
+   "eeff": 1347827,
+   "n": 3,
+   "C": 36.96,
+   "m": 190,
+   "nosler": true
+  },
+  "308 Win.|Alliant Power Pro 2000-MR": {
+   "eeff": 1351832,
+   "n": 3,
+   "C": 44.47,
+   "m": 190,
+   "nosler": true
+  },
+  "338-06|N150": {
+   "eeff": 1372048,
+   "n": 6,
+   "C": 51.62,
+   "m": 212.1,
+   "nosler": true
+  },
+  "338-06|Winchester 748": {
+   "eeff": 1363990,
+   "n": 3,
+   "C": 54.98,
+   "m": 180,
+   "nosler": true
+  },
+  "338-06|Alliant Reloder 15": {
+   "eeff": 1396161,
+   "n": 9,
+   "C": 50.38,
+   "m": 216.3,
+   "nosler": true
+  },
+  "338-06|Hodgdon H4895": {
+   "eeff": 1394171,
+   "n": 3,
+   "C": 53.98,
+   "m": 180,
+   "nosler": true
+  },
+  "338-06|IMR 4064": {
+   "eeff": 1367838,
+   "n": 6,
+   "C": 52.09,
+   "m": 201.2,
+   "nosler": true
+  },
+  "338-06|IMR 4320": {
+   "eeff": 1354745,
+   "n": 6,
+   "C": 46.97,
+   "m": 237.2,
+   "nosler": true
+  },
+  "338-06|IMR 4350": {
+   "eeff": 1239136,
+   "n": 6,
+   "C": 55.22,
+   "m": 237.2,
+   "nosler": true
+  },
+  "338-06|Hodgdon H414": {
+   "eeff": 1237005,
+   "n": 3,
+   "C": 57.98,
+   "m": 225,
+   "nosler": true
+  },
+  "338-06|Hodgdon H380": {
+   "eeff": 1276607,
+   "n": 3,
+   "C": 53.48,
+   "m": 250,
+   "nosler": true
+  },
+  "338-06|Winchester 760": {
+   "eeff": 1325483,
+   "n": 3,
+   "C": 51.47,
+   "m": 250,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Hodgdon H414": {
+   "eeff": 1287943,
+   "n": 3,
+   "C": 82.48,
+   "m": 180,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Hodgdon H4831SC": {
+   "eeff": 1222918,
+   "n": 12,
+   "C": 87.71,
+   "m": 227.6,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Alliant Reloder 19": {
+   "eeff": 1275360,
+   "n": 9,
+   "C": 86.69,
+   "m": 216.3,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Alliant Reloder 22": {
+   "eeff": 1306816,
+   "n": 3,
+   "C": 83.98,
+   "m": 250,
+   "nosler": true
+  },
+  "338 Lapua Mag.|IMR 7977": {
+   "eeff": 1214735,
+   "n": 3,
+   "C": 87.98,
+   "m": 265,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Alliant Reloder 26": {
+   "eeff": 1297191,
+   "n": 3,
+   "C": 87.98,
+   "m": 265,
+   "nosler": true
+  },
+  "338 Lapua Mag.|IMR 7828SC": {
+   "eeff": 1255033,
+   "n": 3,
+   "C": 82.98,
+   "m": 300,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Alliant Reloder 25": {
+   "eeff": 1276964,
+   "n": 3,
+   "C": 85.98,
+   "m": 300,
+   "nosler": true
+  },
+  "338 Lapua Mag.|Norma 217": {
+   "eeff": 1301909,
+   "n": 3,
+   "C": 89.99,
+   "m": 300,
+   "nosler": true
+  },
+  "338 Win. Mag.|Hodgdon H4831SC": {
+   "eeff": 1164601,
+   "n": 6,
+   "C": 74.47,
+   "m": 201.2,
+   "nosler": true
+  },
+  "338 Win. Mag.|Hodgdon H414": {
+   "eeff": 1220164,
+   "n": 6,
+   "C": 68.65,
+   "m": 201.2,
+   "nosler": true
+  },
+  "338 Win. Mag.|Alliant Reloder 15": {
+   "eeff": 1380548,
+   "n": 3,
+   "C": 65.98,
+   "m": 180,
+   "nosler": true
+  },
+  "338 Win. Mag.|IMR 4451": {
+   "eeff": 1232335,
+   "n": 3,
+   "C": 61.48,
+   "m": 225,
+   "nosler": true
+  },
+  "338 Win. Mag.|IMR 7977": {
+   "eeff": 1228991,
+   "n": 3,
+   "C": 73.98,
+   "m": 265,
+   "nosler": true
+  },
+  "338 Win. Mag.|Norma MRP": {
+   "eeff": 1331264,
+   "n": 3,
+   "C": 72.98,
+   "m": 265,
+   "nosler": true
+  },
+  "338 Win. Mag.|Alliant Reloder 25": {
+   "eeff": 1124158,
+   "n": 3,
+   "C": 68.98,
+   "m": 300,
+   "nosler": true
+  },
+  "375 H&H Mag.|N160": {
+   "eeff": 1176192,
+   "n": 6,
+   "C": 77.72,
+   "m": 279.3,
+   "nosler": true
+  },
+  "375 Ruger|Hodgdon H380": {
+   "eeff": 1268114,
+   "n": 3,
+   "C": 78.98,
+   "m": 260,
+   "nosler": true
+  },
+  "375 Ruger|Winchester 760": {
+   "eeff": 1338016,
+   "n": 6,
+   "C": 73.92,
+   "m": 279.3,
+   "nosler": true
+  },
+  "375 Ruger|Alliant Reloder 15": {
+   "eeff": 1373725,
+   "n": 6,
+   "C": 71.95,
+   "m": 279.3,
+   "nosler": true
+  },
+  "375 Ruger|Hodgdon Hybrid 100V": {
+   "eeff": 1307708,
+   "n": 6,
+   "C": 77.47,
+   "m": 279.3,
+   "nosler": true
+  },
+  "375 Ruger|Alliant Reloder 17": {
+   "eeff": 1316448,
+   "n": 6,
+   "C": 77.97,
+   "m": 279.3,
+   "nosler": true
+  },
+  "375 Ruger|Hodgdon Varget": {
+   "eeff": 1379713,
+   "n": 3,
+   "C": 68.98,
+   "m": 300,
+   "nosler": true
+  },
+  "375 Ruger|IMR 4350": {
+   "eeff": 1285444,
+   "n": 3,
+   "C": 80.98,
+   "m": 300,
+   "nosler": true
+  },
+  "416 Rigby|IMR 7828SC": {
+   "eeff": 1164816,
+   "n": 3,
+   "C": 99.99,
+   "m": 400,
+   "nosler": true
+  },
+  "416 Rigby|Hodgdon H4831SC": {
+   "eeff": 1227099,
+   "n": 3,
+   "C": 96.99,
+   "m": 400,
+   "nosler": true
+  },
+  "416 Rigby|Hodgdon Hybrid 100V": {
+   "eeff": 1320574,
+   "n": 3,
+   "C": 89.99,
+   "m": 400,
+   "nosler": true
+  },
+  "45 - 70 Govt.|IMR 4227": {
+   "eeff": 1370139,
+   "n": 3,
+   "C": 45.47,
+   "m": 300,
+   "nosler": true
+  },
+  "45 - 70 Govt.|Alliant Reloder 7": {
+   "eeff": 1289708,
+   "n": 3,
+   "C": 50.97,
+   "m": 300,
+   "nosler": true
+  },
+  "458 SOCOM|Alliant Power Pro 300-MP": {
+   "eeff": 1344605,
+   "n": 3,
+   "C": 33.99,
+   "m": 300,
+   "nosler": true
+  },
+  "458 SOCOM|Hodgdon H4227": {
+   "eeff": 1338919,
+   "n": 3,
+   "C": 33.99,
+   "m": 300,
+   "nosler": true
+  },
+  "458 SOCOM|N120": {
+   "eeff": 1298555,
+   "n": 3,
+   "C": 38.99,
+   "m": 300,
+   "nosler": true
+  },
+  "458 SOCOM|Alliant Reloder 7": {
+   "eeff": 1211317,
+   "n": 3,
+   "C": 43.99,
+   "m": 300,
+   "nosler": true
+  },
+  "458 Winchester Magnum|Winchester 748": {
+   "eeff": 1382336,
+   "n": 3,
+   "C": 68.98,
+   "m": 500,
+   "nosler": true
+  },
+  "458 Winchester Magnum|Ramshot TAC": {
+   "eeff": 1526129,
+   "n": 3,
+   "C": 65.98,
+   "m": 500,
+   "nosler": true
+  },
+  "458 Winchester Magnum|Hodgdon H335": {
+   "eeff": 1492675,
+   "n": 3,
+   "C": 65.98,
+   "m": 500,
+   "nosler": true
+  },
+  "6.5-284 Norma|Alliant Reloder 15": {
+   "eeff": 1242212,
+   "n": 6,
+   "C": 44.44,
+   "m": 109.5,
+   "nosler": true
+  },
+  "6.5-284 Norma|Hodgdon H4831SC": {
+   "eeff": 1082660,
+   "n": 15,
+   "C": 51,
+   "m": 122.1,
+   "nosler": true
+  },
+  "6.5-284 Norma|Hodgdon Varget": {
+   "eeff": 1238238,
+   "n": 6,
+   "C": 44.96,
+   "m": 109.5,
+   "nosler": true
+  },
+  "6.5-284 Norma|IMR 4350": {
+   "eeff": 1167089,
+   "n": 15,
+   "C": 48.25,
+   "m": 122.1,
+   "nosler": true
+  },
+  "6.5-284 Norma|Winchester 760": {
+   "eeff": 1191986,
+   "n": 15,
+   "C": 47.13,
+   "m": 122.1,
+   "nosler": true
+  },
+  "6.5-284 Norma|Alliant Reloder 19": {
+   "eeff": 1148089,
+   "n": 15,
+   "C": 52.34,
+   "m": 122.1,
+   "nosler": true
+  },
+  "6.5-284 Norma|Hodgdon H4350": {
+   "eeff": 1160222,
+   "n": 3,
+   "C": 52.97,
+   "m": 100,
+   "nosler": true
+  },
+  "6.5-284 Norma|Ramshot Hunter": {
+   "eeff": 1129248,
+   "n": 18,
+   "C": 51.71,
+   "m": 116.1,
+   "nosler": true
+  },
+  "6.5-284 Norma|Hodgdon H414": {
+   "eeff": 1199650,
+   "n": 9,
+   "C": 45.95,
+   "m": 129.9,
+   "nosler": true
+  },
+  "6.5-284 Norma|IMR 4831": {
+   "eeff": 1140365,
+   "n": 12,
+   "C": 50.53,
+   "m": 119.5,
+   "nosler": true
+  },
+  "6.5-284 Norma|Alliant Reloder 22": {
+   "eeff": 1131521,
+   "n": 9,
+   "C": 51.63,
+   "m": 131.3,
+   "nosler": true
+  },
+  "6.5-284 Norma|Hodgdon H380": {
+   "eeff": 1087632,
+   "n": 3,
+   "C": 51.47,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5-284 Norma|Norma URP": {
+   "eeff": 1035869,
+   "n": 3,
+   "C": 53.98,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5-284 Norma|Accurate 2700": {
+   "eeff": 1055423,
+   "n": 3,
+   "C": 53.98,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5-284 Norma|Alliant Power Pro 2000-MR": {
+   "eeff": 1122325,
+   "n": 3,
+   "C": 50.97,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5-284 Norma|Alliant Reloder 16": {
+   "eeff": 1080447,
+   "n": 3,
+   "C": 53.98,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5-284 Norma|Alliant Reloder 17": {
+   "eeff": 1091242,
+   "n": 3,
+   "C": 53.98,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5 Creedmoor|Alliant Reloder 15": {
+   "eeff": 1255829,
+   "n": 15,
+   "C": 38.09,
+   "m": 115.3,
+   "nosler": true
+  },
+  "6.5 Creedmoor|Ramshot TAC": {
+   "eeff": 1284234,
+   "n": 3,
+   "C": 37.96,
+   "m": 100,
+   "nosler": true
+  },
+  "6.5 Creedmoor|Accurate 2520": {
+   "eeff": 1205556,
+   "n": 6,
+   "C": 39.72,
+   "m": 94.9,
+   "nosler": true
+  },
+  "6.5 Creedmoor|Alliant Reloder 17": {
+   "eeff": 1242842,
+   "n": 9,
+   "C": 42.13,
+   "m": 124.4,
+   "nosler": true
+  },
+  "6.5 Creedmoor|Hodgdon H414": {
+   "eeff": 1212912,
+   "n": 3,
+   "C": 38.47,
+   "m": 141,
+   "nosler": true
+  },
+  "6.5 Creedmoor|IMR 4451": {
+   "eeff": 1253241,
+   "n": 3,
+   "C": 39.97,
+   "m": 150,
+   "nosler": true
+  },
+  "6.5 Creedmoor|IMR 4320": {
+   "eeff": 1108400,
+   "n": 3,
+   "C": 40.47,
+   "m": 90,
+   "nosler": true
+  },
+  "6.5 Grendel|Winchester 748": {
+   "eeff": 1027945,
+   "n": 6,
+   "C": 27.98,
+   "m": 113.8,
+   "nosler": true
+  },
+  "6.5 Grendel|Alliant Reloder 10X": {
+   "eeff": 1263490,
+   "n": 6,
+   "C": 25.44,
+   "m": 94.9,
+   "nosler": true
+  },
+  "6.5 Grendel|Alliant Reloder 15": {
+   "eeff": 1146489,
+   "n": 9,
+   "C": 27.98,
+   "m": 124.4,
+   "nosler": true
+  },
+  "6.5 Grendel|IMR 4895": {
+   "eeff": 1191098,
+   "n": 3,
+   "C": 26.99,
+   "m": 124,
+   "nosler": true
+  },
+  "6.5 Grendel|Hodgdon Varget": {
+   "eeff": 1107153,
+   "n": 3,
+   "C": 25.99,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 Grendel|Hodgdon BL-C(2)": {
+   "eeff": 1059515,
+   "n": 3,
+   "C": 27.49,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 Grendel|IMR 4166": {
+   "eeff": 1249328,
+   "n": 3,
+   "C": 24.99,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 Grendel|Hodgdon H4895": {
+   "eeff": 1281609,
+   "n": 3,
+   "C": 25.49,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 Grendel|Hodgdon CFE-223": {
+   "eeff": 1217194,
+   "n": 3,
+   "C": 29.99,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 PRC|IMR 4955": {
+   "eeff": 1148320,
+   "n": 9,
+   "C": 51.8,
+   "m": 124.4,
+   "nosler": true
+  },
+  "6.5 PRC|IMR 7828": {
+   "eeff": 1149948,
+   "n": 12,
+   "C": 51.96,
+   "m": 133.2,
+   "nosler": true
+  },
+  "6.5 PRC|IMR 4831": {
+   "eeff": 1198042,
+   "n": 12,
+   "C": 51.58,
+   "m": 128.4,
+   "nosler": true
+  },
+  "6.5 PRC|Alliant Reloder 22": {
+   "eeff": 1167569,
+   "n": 15,
+   "C": 53.15,
+   "m": 132.4,
+   "nosler": true
+  },
+  "6.5 PRC|Alliant Power Pro 4000-MR": {
+   "eeff": 1171347,
+   "n": 12,
+   "C": 52.47,
+   "m": 128.4,
+   "nosler": true
+  },
+  "6.5 PRC|Alliant Reloder 26": {
+   "eeff": 1164400,
+   "n": 15,
+   "C": 55.56,
+   "m": 132.4,
+   "nosler": true
+  },
+  "6.5 PRC|Norma MRP": {
+   "eeff": 1187071,
+   "n": 15,
+   "C": 55.74,
+   "m": 132.4,
+   "nosler": true
+  },
+  "6.5 PRC|IMR 7828SC": {
+   "eeff": 1145838,
+   "n": 3,
+   "C": 52.97,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 PRC|IMR 8133": {
+   "eeff": 1050085,
+   "n": 6,
+   "C": 55.68,
+   "m": 145.4,
+   "nosler": true
+  },
+  "6.5 PRC|IMR 7977": {
+   "eeff": 1071127,
+   "n": 6,
+   "C": 56.47,
+   "m": 145.4,
+   "nosler": true
+  },
+  "6.5 PRC|Norma 217": {
+   "eeff": 1160410,
+   "n": 3,
+   "C": 57.98,
+   "m": 150,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Hodgdon Varget": {
+   "eeff": 1225397,
+   "n": 9,
+   "C": 39.44,
+   "m": 114.2,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Hodgdon H4831, H4831C": {
+   "eeff": 1081796,
+   "n": 6,
+   "C": 46.93,
+   "m": 118.7,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Winchester 760": {
+   "eeff": 1111901,
+   "n": 12,
+   "C": 43.45,
+   "m": 117.8,
+   "nosler": true
+  },
+  "6.5 x 55 SE|IMR 4350": {
+   "eeff": 1106814,
+   "n": 15,
+   "C": 43.03,
+   "m": 122.1,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Ramshot Big Game": {
+   "eeff": 1114621,
+   "n": 3,
+   "C": 44.97,
+   "m": 100,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Alliant Reloder 19": {
+   "eeff": 1088639,
+   "n": 12,
+   "C": 46.69,
+   "m": 117.8,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Alliant Reloder 15": {
+   "eeff": 1217616,
+   "n": 3,
+   "C": 41.47,
+   "m": 100,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Accurate 2520": {
+   "eeff": 1234818,
+   "n": 3,
+   "C": 35.96,
+   "m": 120,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Hodgdon H4350": {
+   "eeff": 1169326,
+   "n": 9,
+   "C": 43.28,
+   "m": 124.4,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Hodgdon H4895": {
+   "eeff": 1256720,
+   "n": 3,
+   "C": 34.96,
+   "m": 124,
+   "nosler": true
+  },
+  "6.5 x 55 SE|IMR 4831": {
+   "eeff": 1183694,
+   "n": 6,
+   "C": 43.7,
+   "m": 132.2,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Hodgdon H4831SC": {
+   "eeff": 1000681,
+   "n": 3,
+   "C": 45.97,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Alliant Reloder 17": {
+   "eeff": 1213678,
+   "n": 3,
+   "C": 40.97,
+   "m": 129.5,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Alliant Reloder 22": {
+   "eeff": 1161501,
+   "n": 3,
+   "C": 44.47,
+   "m": 141,
+   "nosler": true
+  },
+  "6.5 x 55 SE|Hodgdon H1000": {
+   "eeff": 1077395,
+   "n": 3,
+   "C": 49.97,
+   "m": 141,
+   "nosler": true
+  },
+  "6 mm Creedmoor|IMR 4451": {
+   "eeff": 1123286,
+   "n": 12,
+   "C": 40.66,
+   "m": 90.9,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Norma MRP": {
+   "eeff": 1158645,
+   "n": 3,
+   "C": 40.97,
+   "m": 106,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Accurate 2520": {
+   "eeff": 1170901,
+   "n": 3,
+   "C": 40.47,
+   "m": 55,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Alliant Reloder 15": {
+   "eeff": 1124247,
+   "n": 3,
+   "C": 41.97,
+   "m": 55,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Winchester 748": {
+   "eeff": 1150340,
+   "n": 3,
+   "C": 42.97,
+   "m": 55,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Norma 204": {
+   "eeff": 1047206,
+   "n": 3,
+   "C": 43.97,
+   "m": 70,
+   "nosler": true
+  },
+  "6 mm Creedmoor|Hodgdon H414": {
+   "eeff": 1156883,
+   "n": 3,
+   "C": 40.97,
+   "m": 70,
+   "nosler": true
+  },
+  "6mm PPC|Winchester 748": {
+   "eeff": 1028299,
+   "n": 6,
+   "C": 28.71,
+   "m": 62,
+   "nosler": true
+  },
+  "6mm PPC|Hodgdon H322": {
+   "eeff": 1184478,
+   "n": 9,
+   "C": 25.27,
+   "m": 67.5,
+   "nosler": true
+  },
+  "6mm PPC|Alliant Reloder 10X": {
+   "eeff": 1209422,
+   "n": 6,
+   "C": 25.47,
+   "m": 62,
+   "nosler": true
+  },
+  "6mm PPC|IMR 4198": {
+   "eeff": 1292357,
+   "n": 6,
+   "C": 22.94,
+   "m": 66.3,
+   "nosler": true
+  },
+  "6mm PPC|Hodgdon H335": {
+   "eeff": 1180700,
+   "n": 6,
+   "C": 26.73,
+   "m": 74.8,
+   "nosler": true
+  },
+  "6mm PPC|Hodgdon Varget": {
+   "eeff": 1017599,
+   "n": 3,
+   "C": 26.99,
+   "m": 80,
+   "nosler": true
+  },
+  "6mm PPC|Hodgdon Benchmark": {
+   "eeff": 1215516,
+   "n": 3,
+   "C": 25.49,
+   "m": 80,
+   "nosler": true
+  },
+  "6 mm Remington|Hodgdon H414": {
+   "eeff": 988841,
+   "n": 9,
+   "C": 46.54,
+   "m": 67.5,
+   "nosler": true
+  },
+  "6 mm Remington|Alliant Reloder 15": {
+   "eeff": 1097788,
+   "n": 6,
+   "C": 42.16,
+   "m": 66.3,
+   "nosler": true
+  },
+  "6 mm Remington|IMR 4320": {
+   "eeff": 1108546,
+   "n": 3,
+   "C": 39.97,
+   "m": 70,
+   "nosler": true
+  },
+  "6 XC|IMR 4955": {
+   "eeff": 1131310,
+   "n": 6,
+   "C": 35.96,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|Winchester 760": {
+   "eeff": 1183895,
+   "n": 6,
+   "C": 35.95,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|IMR 4350": {
+   "eeff": 1206218,
+   "n": 6,
+   "C": 35.19,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|Norma 204": {
+   "eeff": 1183748,
+   "n": 6,
+   "C": 36.95,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|Hodgdon Hybrid 100V": {
+   "eeff": 1249462,
+   "n": 6,
+   "C": 34.95,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|Alliant Reloder 17": {
+   "eeff": 1276648,
+   "n": 6,
+   "C": 35.45,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|IMR 4831": {
+   "eeff": 1211242,
+   "n": 6,
+   "C": 36.19,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|Alliant Reloder 19": {
+   "eeff": 1176884,
+   "n": 6,
+   "C": 39.2,
+   "m": 110.4,
+   "nosler": true
+  },
+  "6 XC|IMR 4451": {
+   "eeff": 1199984,
+   "n": 3,
+   "C": 35.96,
+   "m": 115,
+   "nosler": true
+  },
+  "7.62 x 39|Accurate 2015": {
+   "eeff": 1171067,
+   "n": 3,
+   "C": 26.99,
+   "m": 123,
+   "nosler": true
+  },
+  "7 -08 Rem.|Hodgdon H414": {
+   "eeff": 1178122,
+   "n": 15,
+   "C": 43.68,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7 -08 Rem.|Alliant Reloder 19": {
+   "eeff": 1212282,
+   "n": 12,
+   "C": 45.71,
+   "m": 155.7,
+   "nosler": true
+  },
+  "7 -08 Rem.|Winchester 748": {
+   "eeff": 1291055,
+   "n": 3,
+   "C": 37.96,
+   "m": 168,
+   "nosler": true
+  },
+  "7 -08 Rem.|IMR 4451": {
+   "eeff": 1214123,
+   "n": 3,
+   "C": 42.47,
+   "m": 168,
+   "nosler": true
+  },
+  "7 -08 Rem.|Alliant Reloder 16": {
+   "eeff": 1252883,
+   "n": 3,
+   "C": 41.47,
+   "m": 168,
+   "nosler": true
+  },
+  "7 x 57|IMR 4831": {
+   "eeff": 1075373,
+   "n": 12,
+   "C": 47.68,
+   "m": 147.3,
+   "nosler": true
+  },
+  "7 x 57|Hodgdon H380": {
+   "eeff": 1107519,
+   "n": 3,
+   "C": 45.47,
+   "m": 120,
+   "nosler": true
+  },
+  "7 x 57|Hodgdon BL-C(2)": {
+   "eeff": 1173405,
+   "n": 3,
+   "C": 42.47,
+   "m": 120,
+   "nosler": true
+  },
+  "7 x 57|Hodgdon Varget": {
+   "eeff": 1187286,
+   "n": 3,
+   "C": 42.97,
+   "m": 120,
+   "nosler": true
+  },
+  "7 x 57|IMR 4064": {
+   "eeff": 1233744,
+   "n": 15,
+   "C": 39.46,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7 x 57|Alliant Reloder 15": {
+   "eeff": 1262567,
+   "n": 6,
+   "C": 41.2,
+   "m": 129.6,
+   "nosler": true
+  },
+  "7 x 57|IMR 4320": {
+   "eeff": 1261881,
+   "n": 15,
+   "C": 40.5,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7 x 57|IMR 4895": {
+   "eeff": 1258330,
+   "n": 15,
+   "C": 37.56,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7 x 57|Ramshot Hunter": {
+   "eeff": 1121495,
+   "n": 15,
+   "C": 46.27,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7 x 57|Hodgdon H414": {
+   "eeff": 1147266,
+   "n": 12,
+   "C": 44.54,
+   "m": 155.7,
+   "nosler": true
+  },
+  "7 x 57|IMR 4350": {
+   "eeff": 1176801,
+   "n": 12,
+   "C": 44.94,
+   "m": 155.7,
+   "nosler": true
+  },
+  "7 x 57|Alliant Reloder 19": {
+   "eeff": 1180731,
+   "n": 9,
+   "C": 47.94,
+   "m": 149.8,
+   "nosler": true
+  },
+  "7 x 57|Hodgdon H4831SC": {
+   "eeff": 1039566,
+   "n": 3,
+   "C": 46.97,
+   "m": 150,
+   "nosler": true
+  },
+  "7 x 57|Winchester 760": {
+   "eeff": 1161267,
+   "n": 9,
+   "C": 41.6,
+   "m": 161.3,
+   "nosler": true
+  },
+  "7 x 57|Alliant Reloder 22": {
+   "eeff": 1185743,
+   "n": 3,
+   "C": 45.47,
+   "m": 175,
+   "nosler": true
+  },
+  "7mm PRC|IMR 7977": {
+   "eeff": 1109950,
+   "n": 3,
+   "C": 65.48,
+   "m": 185,
+   "nosler": true
+  },
+  "7mm PRC|Alliant Reloder 26": {
+   "eeff": 1181679,
+   "n": 6,
+   "C": 61.72,
+   "m": 179.9,
+   "nosler": true
+  },
+  "7mm RUM|Hodgdon H4831, H4831C": {
+   "eeff": 984703,
+   "n": 15,
+   "C": 83.81,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm RUM|Hodgdon H1000": {
+   "eeff": 979567,
+   "n": 21,
+   "C": 88.08,
+   "m": 155.4,
+   "nosler": true
+  },
+  "7mm RUM|IMR 7828": {
+   "eeff": 1018972,
+   "n": 15,
+   "C": 85.22,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm RUM|Hodgdon Retumbo": {
+   "eeff": 981001,
+   "n": 21,
+   "C": 91.32,
+   "m": 155.4,
+   "nosler": true
+  },
+  "7mm RUM|Ramshot Magnum": {
+   "eeff": 989342,
+   "n": 15,
+   "C": 87.34,
+   "m": 164.9,
+   "nosler": true
+  },
+  "7mm RUM|Hodgdon US869": {
+   "eeff": 893094,
+   "n": 18,
+   "C": 100.08,
+   "m": 162.3,
+   "nosler": true
+  },
+  "7mm RUM|Hodgdon Hybrid 100V": {
+   "eeff": 1098705,
+   "n": 3,
+   "C": 73.98,
+   "m": 150,
+   "nosler": true
+  },
+  "7mm RUM|IMR 7828SC": {
+   "eeff": 1094179,
+   "n": 3,
+   "C": 81.98,
+   "m": 168,
+   "nosler": true
+  },
+  "7mm RUM|Hodgdon H50BMG": {
+   "eeff": 870168,
+   "n": 6,
+   "C": 94.73,
+   "m": 179.9,
+   "nosler": true
+  },
+  "7mm RUM|IMR 7977": {
+   "eeff": 1020328,
+   "n": 3,
+   "C": 78.98,
+   "m": 185,
+   "nosler": true
+  },
+  "7mm RUM|Accurate Magpro": {
+   "eeff": 1062367,
+   "n": 3,
+   "C": 78.48,
+   "m": 185,
+   "nosler": true
+  },
+  "7mm RUM|Alliant Reloder 26": {
+   "eeff": 1080336,
+   "n": 3,
+   "C": 77.48,
+   "m": 185,
+   "nosler": true
+  },
+  "7mm RUM|Ramshot LRT": {
+   "eeff": 970364,
+   "n": 3,
+   "C": 92.49,
+   "m": 185,
+   "nosler": true
+  },
+  "7 Rem. Mag.|Hodgdon H414": {
+   "eeff": 1105889,
+   "n": 3,
+   "C": 59.98,
+   "m": 120,
+   "nosler": true
+  },
+  "7 Rem. Mag.|IMR 4320": {
+   "eeff": 1245660,
+   "n": 9,
+   "C": 52.25,
+   "m": 154.3,
+   "nosler": true
+  },
+  "7 Rem. Mag.|Hodgdon H4831SC": {
+   "eeff": 1145452,
+   "n": 6,
+   "C": 62.98,
+   "m": 158.7,
+   "nosler": true
+  },
+  "7mm WSM|Hodgdon Varget": {
+   "eeff": 1236665,
+   "n": 15,
+   "C": 50.11,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm WSM|Hodgdon H4831SC": {
+   "eeff": 1109772,
+   "n": 15,
+   "C": 62.85,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm WSM|Hodgdon H414": {
+   "eeff": 1172915,
+   "n": 15,
+   "C": 57.74,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm WSM|IMR 4350": {
+   "eeff": 1164562,
+   "n": 15,
+   "C": 58.95,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm WSM|IMR 4831": {
+   "eeff": 1167297,
+   "n": 15,
+   "C": 60.3,
+   "m": 147.8,
+   "nosler": true
+  },
+  "7mm WSM|IMR 7828": {
+   "eeff": 1049504,
+   "n": 6,
+   "C": 64.73,
+   "m": 167.3,
+   "nosler": true
+  },
+  "7mm WSM|Hodgdon Hybrid 100V": {
+   "eeff": 1230443,
+   "n": 3,
+   "C": 57.98,
+   "m": 168,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|Ramshot Magnum": {
+   "eeff": 1073137,
+   "n": 18,
+   "C": 78.23,
+   "m": 153.4,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|Accurate Magpro": {
+   "eeff": 1123124,
+   "n": 12,
+   "C": 76.04,
+   "m": 151.2,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|Hodgdon H4831SC": {
+   "eeff": 1162117,
+   "n": 12,
+   "C": 70.24,
+   "m": 145.8,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|Alliant Reloder 25": {
+   "eeff": 1146154,
+   "n": 21,
+   "C": 73.95,
+   "m": 155.4,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|Hodgdon Retumbo": {
+   "eeff": 1148466,
+   "n": 12,
+   "C": 76.08,
+   "m": 167,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|IMR 7977": {
+   "eeff": 1215893,
+   "n": 3,
+   "C": 68.48,
+   "m": 185,
+   "nosler": true
+  },
+  "7mm Weatherby Magnum|Norma 217": {
+   "eeff": 1198616,
+   "n": 3,
+   "C": 72.98,
+   "m": 185,
+   "nosler": true
+  },
+  "7mm PRC|IMR 7828": {
+   "eeff": 1084078,
+   "n": 3,
+   "C": 62.48,
+   "m": 175,
+   "nosler": true
+  },
+  "7mm PRC|Norma MRP": {
+   "eeff": 1178864,
+   "n": 3,
+   "C": 59.48,
+   "m": 175,
+   "nosler": true
+  },
+  "7mm PRC|Alliant Reloder 23": {
+   "eeff": 1222182,
+   "n": 3,
+   "C": 59.98,
+   "m": 175,
+   "nosler": true
+  },
+  "7mm PRC|Accurate Magpro": {
+   "eeff": 1152509,
+   "n": 3,
+   "C": 66.98,
+   "m": 175,
+   "nosler": true
+  },
+  "7mm PRC|Norma 217": {
+   "eeff": 1171460,
+   "n": 3,
+   "C": 65.98,
+   "m": 175,
+   "nosler": true
+  },
+  "8 x 57 IS|IMR 4350": {
+   "eeff": 1235295,
+   "n": 6,
+   "C": 49.97,
+   "m": 189.7,
+   "nosler": true
+  },
+  "8 x 57 IS|IMR 4064": {
+   "eeff": 1378953,
+   "n": 6,
+   "C": 44.47,
+   "m": 189.7,
+   "nosler": true
+  },
+  "8 x 57 IS|Hodgdon Varget": {
+   "eeff": 1297760,
+   "n": 6,
+   "C": 46.22,
+   "m": 189.7,
+   "nosler": true
+  },
+  "8 x 57 IS|Alliant Reloder 15": {
+   "eeff": 1294808,
+   "n": 3,
+   "C": 46.47,
+   "m": 180,
+   "nosler": true
+  },
+  "8 x 57 IS|Hodgdon H380": {
+   "eeff": 1256300,
+   "n": 3,
+   "C": 49.47,
+   "m": 200,
+   "nosler": true
+  },
+  "9.3 x 64 Brenneke|N140": {
+   "eeff": 1375924,
+   "n": 3,
+   "C": 62.98,
+   "m": 250,
+   "nosler": true
+  },
+  "9.3 x 64 Brenneke|IMR 4895": {
+   "eeff": 1426968,
+   "n": 6,
+   "C": 61.48,
+   "m": 267.4,
+   "nosler": true
+  },
+  "9.3 x 64 Brenneke|Alliant Reloder 15": {
+   "eeff": 1408766,
+   "n": 6,
+   "C": 64.48,
+   "m": 267.4,
+   "nosler": true
+  },
+  "9.3 x 74 R|Hodgdon Varget": {
+   "eeff": 1296019,
+   "n": 6,
+   "C": 53.95,
+   "m": 267.4,
+   "nosler": true
+  },
+  "9.3 x 74 R|Hodgdon H380": {
+   "eeff": 1227539,
+   "n": 3,
+   "C": 60.48,
+   "m": 250,
+   "nosler": true
+  },
+  "9.3 x 74 R|IMR 4350": {
+   "eeff": 1138259,
+   "n": 3,
+   "C": 65.98,
+   "m": 250,
+   "nosler": true
+  },
+  "9.3 x 74 R|IMR 4064": {
+   "eeff": 1299423,
+   "n": 8,
+   "C": 57.1,
+   "m": 271.9,
+   "nosler": true
+  },
+  "9.3 x 74 R|Alliant Reloder 15": {
+   "eeff": 1264376,
+   "n": 8,
+   "C": 58.44,
+   "m": 271.9,
+   "nosler": true
+  },
+  "9.3 x 62|Accurate 2015": {
+   "eeff": 1370577,
+   "n": 6,
+   "C": 49.22,
+   "m": 267.4,
+   "nosler": true
+  },
+  "9.3 x 62|IMR 4320": {
+   "eeff": 1314701,
+   "n": 6,
+   "C": 56.47,
+   "m": 267.4,
+   "nosler": true
+  },
+  "9.3 x 62|Alliant Reloder 15": {
+   "eeff": 1343835,
+   "n": 3,
+   "C": 56.48,
+   "m": 286,
+   "nosler": true
   }
  }
 }

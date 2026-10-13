@@ -4,7 +4,7 @@
  *
  * Usage : node scripts/build_anchors.js
  * Inputs (local, gitignored): data/rs_dataset.local.json, data/western.local.json,
- *   data/hodgdon.local.json, data/vihtavuori.local.json, data/norma.local.json, …
+ *   data/hodgdon.local.json, data/vihtavuori.local.json, data/norma.local.json, data/nosler.local.json, …
  * Output (PUBLISHED, derived only — no raw load tables): data/anchors.json
  *   { "<caliberKey>|<powderKey>": { eeff: J/kg, np: η_p, n: count } }
  *
@@ -289,6 +289,28 @@ try {
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichiers locaux optionnels
 
+// Nosler (fiches de rechargement en ligne, scripts/nosler_fiches.py) — VITESSE seule (eeff ; np=null : Nosler
+// ne publie pas de pression). Trois charges par poudre et par balle, au canon d'essai de la fiche, ramené
+// au canon de référence par add(). CARABINES seulement : avant leur entrée, les vitesses Nosler
+// s'écartaient des ancres des autres sources de −1,3 % en moyenne (3,4 % RMS, 3 814 lignes) en carabine,
+// de +3,6 % (9,7 % RMS) en arme de poing (scripts/nosler_crosscheck.js, 2026-10-13). Fiches à plusieurs
+// balles (« 165/168 grain ») : milieu de la plage, retenues si la demi-plage ne dépasse pas 2 %.
+// COMPLÉMENT seulement, d'où sa place après toutes les autres sources : Nosler n'entre que dans un
+// couple où elles réunissent moins de trois charges. Mêlé partout, il relevait l'énergie des ancres
+// d'environ 1 % et les éloignait du Lyman (jeu de validation) : biais −4,1 → −5,1 % sur les 267 mêmes
+// couples. En complément, il ancre les couples que le modèle à froid prédisait à 7,7 % RMS près.
+try {
+  for (const r of JSON.parse(fs.readFileSync(d('nosler.local.json'))).rows) {
+    const ca = CAL[r.cle]; if (!ca || ca.type === 'handgun') continue;
+    if (!PWD[r.poudre]) continue;
+    if (!(r.canon_mm > ca.case_mm && r.balle_gr > 0 && r.charge_gr > 0 && r.fps > 0)) continue;
+    if (r.balle_plage && (r.balle_plage[1] - r.balle_plage[0]) / 2 / r.balle_gr > 0.02) continue;
+    if ((groups[r.cle + '|' + r.poudre] || []).filter((x) => x.src !== 'Nosler').length >= 3) continue;
+    const C = r.charge_gr * G, me = r.balle_gr * G + C / 3, v = r.fps * 0.3048;
+    add(r.cle, r.poudre, me * v * v / (2 * C), null, null, { src: 'Nosler', bbl: r.canon_mm, bid: 'NOS|' + r.fiche + '|' + r.poudre, m: r.balle_gr, C: r.charge_gr, max: r.max });
+  }
+} catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
+
 // Référence de chaque CARTOUCHE pour le modèle à froid : masse de balle et remplissage
 // typiques des guides (moyennes géométriques de toutes ses charges). Les lois locales s'y
 // appliquent quand le couple n'a pas d'ancre.
@@ -339,6 +361,7 @@ for (const [k, arr0] of Object.entries(groups)) {
   const ref = refAncre(arr);
   anchors[k] = { eeff: Math.round(ref.eeff), n: arr.length, C: +Math.exp(ref.lc).toFixed(2), m: +Math.exp(ref.lm).toFixed(1) };
   if (ref.np != null) anchors[k].np = +ref.np.toFixed(4);        // VV ne fournit pas de np : sinon η_p global (UI)
+  if (arr.some((x) => x.src === 'Nosler')) anchors[k].nosler = true;   // ancre où Nosler comble (nosler_crosscheck.js l'écarte)
   // résidu MH moyen du groupe (si ≥3 charges avec Qex)
   const mhrs = arr.map((x) => x.mhr).filter((v) => v != null);
   if (mhrs.length >= 3) anchors[k].mhr = +mean(mhrs).toFixed(1);
@@ -367,7 +390,7 @@ if (covered.length > 5) {
   console.log(`garde-fou MH : ${covered.length} ancres couvertes (Qex) | moyenne ${gm.toFixed(1)}% σ ${gsd.toFixed(1)}% | ${flagged} flaguées (|écart|>${thr.toFixed(0)}pts)`);
 }
 
-const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
+const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
 console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}%`);
 console.log('-> data/anchors.json');

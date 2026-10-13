@@ -131,6 +131,8 @@ When the selected combo is present, the tool refines from ~10 % (cold) to ~5 %.
     //   mhflag = true when |mhr − cohort mean| > 2σ — the manufacturer pair is atypical,
     //            so the anchored *pressure* is less trustworthy. The UI then shows
     //            "ancrée fabricant (à vérifier)" and a caution note. Velocity is unaffected.
+    //   nosler = true when Nosler's load-data sheets contributed: velocity only, rifles only,
+    //            and only where the other sources give fewer than three loads (gap filler).
   }
 }
 ```
@@ -205,11 +207,15 @@ x Gr. WATER », the water capacity of Nosler's case **with the bullet seated** a
 (the estimator's usable volume, in grains of water). `rows` holds every load line: `ld_pct` is
 Nosler's « LOAD DENSITY (VOLUME) », `comprimee` its « ** » (all above 100 %), `poudre` the
 `powders.json` key (`POUDRES` table of the script). Implied bulk density = `charge_gr / (ld_pct/100 ×
-eau_gr)` g/cm³. Used for checks and for densities missing elsewhere; never by the fit.
+eau_gr)` g/cm³. `canon_mm` is the test barrel of the sheet; `balle_plage` the bullet weights of a sheet
+that covers several (« 165/168 grain »; `balle_gr` is then the midpoint). Used for checks, for densities
+missing elsewhere, and as a velocity-only anchor source for rifles where the other sources give fewer
+than three loads (`scripts/build_anchors.js`; `scripts/nosler_crosscheck.js` measures the agreement first).
 
 ```jsonc
 { "fiches": [ { "fiche": "300-Blk-110gr-version-9-0.pdf", "cle": "300 AAC BLK", "eau_gr": 19.2,
-               "balle_gr": 110, "oacl_essai": "2.025", "etui": "Nosler", "canon": "16\" Pac-Nor", "archivee": false } ],
+               "balle_gr": 110, "balle_plage": null, "oacl_essai": "2.025", "etui": "Nosler", "canon": "16\" Pac-Nor",
+               "canon_mm": 406.4, "archivee": false } ],
   "rows": [ { "fiche": "300-Blk-110gr-version-9-0.pdf", "cle": "300 AAC BLK", "poudre": "Hodgdon H110",
               "poudre_nosler": "H110", "charge_gr": 19.0, "fps": 2365, "max": true, "comprimee": true, "ld_pct": 101 } ] }
 ```
