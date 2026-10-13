@@ -465,6 +465,9 @@ function anchorsFor(ck,pk){ return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.ee
 // variation de charge équivalente, P ∝ v^(2γ/(δ+1)) par les lois locales (2 sans elles). C'est
 // une HYPOTHÈSE, faute de mesures de pression en température dans nos données.
 const kTempP=()=> COEF.local ? 2*COEF.local.gamma/(COEF.local.delta+1) : 2;
+// Pente charge-pression du tableau (γ des lois locales), lue dans les coefficients : écrite en dur dans la note
+// de l'échelle, elle était restée à 1,95 après le recalage du 2026-10-13 (1,99).
+const penteP=()=> (COEF.local ? COEF.local.gamma : 1).toFixed(1);
 // UNE prédiction pour l'affichage principal ET le tableau du ladder. Jusqu'au 2026-10-10 il y en
 // avait deux copies, et le tableau ignorait la température. opt : {vmeas (m/s, au canon de
 // l'utilisateur), Tc (°C)}.
@@ -555,7 +558,7 @@ function renderLadder(){
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
   const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
-  el.innerHTML='<p class="vm-note">'+w.note+(an.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs. D\'une charge à l\'autre, la pression réelle monte plus vite que celle du tableau (pente médiane des guides 2,7 contre 1,95 ici). Ne dépassez pas le max fabricant.',' for indication only. From one charge to the next, real pressure rises faster than in this table (median slope in the manuals 2.7, against 1.95 here). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
+  el.innerHTML='<p class="vm-note">'+w.note+(an.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs. D\'une charge à l\'autre, la pression réelle monte plus vite que celle du tableau (pente médiane des guides 2,7 contre '+penteP().replace('.',',')+' ici). Ne dépassez pas le max fabricant.',' for indication only. From one charge to the next, real pressure rises faster than in this table (median slope in the manuals 2.7, against '+penteP()+' here). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
 }
 // Une ligne de mesures de l'échelle de charge -> [charge, vitesse] (nombres), ou null.
 // Accepte « 41.0, 845 » (point décimal, virgule séparatrice : le format de l'exemple),

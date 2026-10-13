@@ -236,9 +236,9 @@ measured *within* a bullet separates the two effects; it is estimated first. App
 charge law without the mass law is worse than nothing (pressure RMS 15.0 → 22.5 %, light bullets
 +27 %).
 
-**Why $\gamma = 1.95$ and not 2.7.** The median per-bullet slope, 2.7, is the real slope of a
+**Why $\gamma \approx 2$ and not 2.7.** The median per-bullet slope, 2.7, is the real slope of a
 charge ladder (2.6–2.9 for the 85 % of bullets whose start–max spread is under 22 %; about a
-hundred wide-spread Reload Swiss bullets pull the pooled estimate down to 1.95). But between two
+hundred wide-spread Reload Swiss bullets pull the pooled estimate down to 1.99). But between two
 bullets of the same weight the maximum charge also varies with construction (bearing surface,
 monolithic bullets), which the model cannot see; a large $\gamma$ amplifies that scatter, and a
 "hard" bullet at its own maximum then reads well below the limit — a false margin. Scan, $\alpha$
@@ -246,17 +246,17 @@ re-estimated for each $\gamma$, pressure, bullet held out:
 
 | $\gamma$ | $\alpha$ | all: bias / RMS | RS max: bias / RMS | other max loads | under by >15 % |
 |---|---|---|---|---|---|
-| 1.00 | 0.49 | +0.2 / 10.7 % | −10.6 / 14.1 % | 0.0 / 9.0 % | 4.1 % |
-| 1.50 | 0.72 | +0.4 / 12.0 % | −6.7 / 14.1 % | +0.2 / 11.1 % | 5.9 % |
-| **1.95** | **0.92** | **+0.6 / 14.5 %** | **−2.8 / 16.4 %** | **+0.5 / 13.9 %** | **7.9 %** |
-| 2.45 | 1.15 | +1.2 / 18.7 % | +1.8 / 21.6 % | +1.0 / 18.3 % | 10.4 % |
-| 2.70 | 1.26 | +1.5 / 21.4 % | +4.3 / 24.9 % | +1.3 / 21.1 % | 11.5 % |
+| 1.00 | 0.48 | +0.2 / 10.4 % | −10.6 / 14.2 % | −0.1 / 8.0 % | 4.4 % |
+| 1.50 | 0.69 | +0.3 / 11.6 % | −6.7 / 14.1 % | +0.1 / 10.2 % | 5.9 % |
+| **1.99** | **0.90** | **+0.7 / 14.6 %** | **−2.5 / 16.8 %** | **+0.5 / 13.7 %** | **7.8 %** |
+| 2.45 | 1.09 | +1.1 / 18.8 % | +1.8 / 21.6 % | +1.0 / 18.3 % | 9.8 % |
+| 2.70 | 1.20 | +1.5 / 21.8 % | +4.3 / 25.0 % | +1.3 / 21.5 % | 10.8 % |
 
-(`node scripts/fit_local_laws.js --scan`.) A small $\gamma$ fits held-out bullets at their own
+(`node scripts/fit_local_laws.js --scan`, data of 2026-10-13.) A small $\gamma$ fits held-out bullets at their own
 maximum best, but leaves every ladder about 10 % low near its top; a large one gets ladders right
-and multiplies the large under-predictions. The ordinary estimator (pooled least squares, 1.95)
+and multiplies the large under-predictions. The ordinary estimator (pooled least squares, 1.99)
 is kept, without hand tuning: against the anchor it replaces, it is better on every line of the
-table below. **A ladder's slope stays below the real one** (1.95 against 2.7):
+table below. **A ladder's slope stays below the real one** (2.0 against 2.7):
 beyond the published maximum, real pressure climbs faster than the displayed one, and the UI's
 ladder table says so.
 
