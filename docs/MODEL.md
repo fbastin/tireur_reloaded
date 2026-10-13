@@ -286,10 +286,14 @@ loads of 174. Anchored velocity unchanged (6.3 % RMS).
 after a day of data corrections: Vihtavuori rows filed under the wrong cartridge or lost (titles
 with a decimal comma), lead bullets removed from the anchors (LoadData, Hodgdon, Western), Vectan's
 starting velocities dropped — they are computed, $v \propto \sqrt{C}$ to 0.3 %, not measured —
-and Nosler added to the rifle anchors where the other sources have fewer than three loads.
-$\delta$ 0.824 → 0.855, $\beta$ 0.581 → 0.557, $\alpha$ 0.921 → 0.884, $\gamma$ unchanged (1.948).
-Bullet held out: velocity 3.4 % RMS, pressure +0.6 / 14.1 %, under-predicted by more than 15 %
-for 7.2 % of loads, 1st percentile −36 %; cold model 7.7 % and 25.0 %, 20.3 %, −41 %. The tool's
+and Nosler added to the rifle anchors where the other sources have fewer than three loads; and
+Hodgdon's reprints of Western's Accurate/Ramshot data dropped (1 870 rows identical to a Western row,
+filed under Hodgdon's barrel header: .357 Magnum 10 in. instead of Western's 6). Those copies had also
+**leaked into the validation**: a bullet held out kept its Western twin in the training set, which made
+the pressure look better (14.1 % RMS with them, 14.6 % without).
+$\delta$ 0.824 → 0.856, $\gamma$ 1.948 → 1.992, $\beta$ 0.581 → 0.553, $\alpha$ 0.921 → 0.897.
+Bullet held out: velocity 3.4 % RMS, pressure +0.7 / 14.6 %, under-predicted by more than 15 %
+for 7.8 % of loads, 1st percentile −37 %; cold model 7.7 % and 25.4 %, 20.5 %, −42 %. The tool's
 banner quotes these figures. Not tried: a charge exponent by pressure class — ladders of
 low-pressure handgun cartridges (under 1 800 bar: .38 Special, .45 Colt) have a median
 $\delta$ near 1.0, against 0.74–0.89 for the other handgun classes.

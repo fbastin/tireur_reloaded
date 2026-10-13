@@ -109,9 +109,22 @@ for (const [i, r] of JSON.parse(fs.readFileSync(d('western.local.json'))).rows.e
 // nommée par la feuille de route : Hodgdon/IMR était à 9 poudres ancrées sur 44.
 // Les lignes en CUP ne contribuent QUE la vitesse — le CUP n'est pas convertible en psi,
 // un η_p calculé dessus serait faux d'un facteur inconnu. Même traitement que Vihtavuori.
+// Hodgdon réimprime les charges Accurate et Ramshot de Western : 2 440 de ses 3 065 lignes de ces poudres
+// sont identiques (cartouche, poudre, balle, charge, vitesse) à une ligne Western, mais sous l'en-tête de
+// canon de la section Hodgdon (.357 Magnum : 10 pouces au lieu des 6 de Western), ce qui les ramenait au
+// canon de référence avec une autre énergie (−17 % contre +20 %) et les comptait deux fois. Seule la ligne
+// Western, celle de l'auteur, est gardée (2026-10-13) ; les lignes Hodgdon sans équivalent Western
+// (cartouches plus récentes que le guide Western 8.0) restent.
+const copieWestern = new Set();
+for (const r of JSON.parse(fs.readFileSync(d('western.local.json'))).rows) {
+  const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
+  if (ck && pk) copieWestern.add([ck, pk, r.bullet_gr, r.charge_gr, r.v0_fps].join('|'));
+}
+let copiesEcartees = 0;
 try {
   for (const r of JSON.parse(fs.readFileSync(d('hodgdon.local.json'))).rows) {
     if (r.cast || isJunkCart(r.cartridge)) continue;     // balle en plomb : coefficients calés sur du chemisé
+    if (copieWestern.has([matchCal(r.cartridge), pwdIdx[norm(r.powder || '')], r.bullet_gr, r.charge_gr, r.v0_fps].join('|'))) { copiesEcartees++; continue; }
     const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
     if (r.bore_mm && Math.abs(r.bore_mm - ca.bore_mm) > 0.3) continue;
     if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm)) continue;
@@ -394,5 +407,5 @@ if (covered.length > 5) {
 
 const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
-console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}%`);
+console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}% | copies Hodgdon de Western écartées : ${copiesEcartees}`);
 console.log('-> data/anchors.json');

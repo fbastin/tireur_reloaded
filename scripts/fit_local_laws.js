@@ -25,16 +25,16 @@
  * masse varient ensemble (C_max ∝ m^-0,44), et seule la pente γ mesurée À BALLE DONNÉE sépare
  * les deux effets. γ est donc estimé d'abord, sur Reload Swiss.
  *
- * POURQUOI γ = 1,95 ET NON 2,7. La médiane des pentes balle par balle vaut 2,7, et c'est la
+ * POURQUOI γ ≈ 2 (1,95 le 2026-10-10, 1,99 depuis le 2026-10-13) ET NON 2,7. La médiane des pentes balle par balle vaut 2,7, et c'est la
  * pente réelle d'une échelle de charge (2,6 à 2,9 pour 85 % des balles). Mais entre deux
  * balles de même masse, la charge maximale varie aussi avec la construction (portée, balle
  * monolithique), que le modèle ne connaît pas : avec γ = 2,7, cet écart est amplifié, l'erreur
  * quadratique passe de 15 à 22 %, et une balle « dure » à sa propre charge max paraît loin de la
  * limite — une fausse marge. Balayage (α ré-estimé à chaque γ), pression, balle laissée de
- * côté : γ = 1 → RMS 11,9 %, max RS −10,6 % ; 1,95 → 15,4 %, −2,8 % ; 2,7 → 21,6 %, +4,3 %.
- * On garde l'estimateur ordinaire (moindres carrés groupés, 1,95), sans réglage à la main :
+ * côté (2026-10-10) : γ = 1 → RMS 11,9 %, max RS −10,6 % ; 1,95 → 15,4 %, −2,8 % ; 2,7 → 21,6 %, +4,3 %.
+ * On garde l'estimateur ordinaire (moindres carrés groupés), sans réglage à la main :
  * il retire les biais à erreur quadratique égale. La pente d'une échelle reste SOUS la réalité
- * (1,95 contre 2,7) : au-delà du max publié, la pression réelle monte plus vite que l'affichée.
+ * (≈ 2 contre 2,7) : au-delà du max publié, la pression réelle monte plus vite que l'affichée.
  *
  * FORME. Sur l'ancre : E(C,m) = Ē (C/C̄)^δ (m/m̄)^β, η_p(C,m) = η̄_p (C/C̄)^ε (m/m̄)^ζ, avec
  * ε = δ + 1 − γ et ζ = β − α (η_p = E·C / (P·A·L)) ; C̄, m̄ : moyennes géométriques du couple.
@@ -182,7 +182,7 @@ if (process.argv.includes('--scan')) {
 if (process.argv.includes('--write')) {
   COEF.local = {
     ...L,
-    _doc: 'Lois locales de l\'ancrage (scripts/fit_local_laws.js) : E_eff ∝ C^delta·m^beta et η_p ∝ C^eps·m^zeta autour du point de référence de l\'ancre (C, m, grains) ; P ∝ C^gamma·m^alpha. Le modèle à froid n\'en reçoit pas. gamma = 1,95 (moindres carrés groupés) sous-estime la pente d\'une échelle de charge (médiane 2,7) : compromis retenu, voir l\'en-tête du script.',
+    _doc: `Lois locales de l\'ancrage (scripts/fit_local_laws.js) : E_eff ∝ C^delta·m^beta et η_p ∝ C^eps·m^zeta autour du point de référence de l\'ancre (C, m, grains) ; P ∝ C^gamma·m^alpha. Le modèle à froid n\'en reçoit pas. gamma = ${String(L.gamma).replace('.', ',')} (moindres carrés groupés) sous-estime la pente d\'une échelle de charge (médiane 2,7) : compromis retenu, voir l\'en-tête du script.`,
     _date: new Date().toISOString().slice(0, 10),
   };
   fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(COEF, null, 2) + '\n');

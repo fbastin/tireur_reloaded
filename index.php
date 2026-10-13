@@ -79,18 +79,18 @@ without the proprietary form function of the former solver.
 Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) and the community (CC0).</p>
 
 <?php /* Chiffres du bandeau : validation du 2026-10-13 (docs/MODEL.md § 3.5, node
-   scripts/fit_local_laws.js ; lois locales recalées sur les données corrigées ce jour), outil tel qu'il
-   calcule, chaque balle prédite sans ses propres données. Pression : avec données fabricant 14,1 %
-   d'écart quadratique, 7,2 % des charges sous-estimées de plus de 15 % ; à froid 25,0 % et 20,3 % ;
-   centile 1 % : −36 % et −41 %. Vitesse : 3,4 % et 7,7 %. À froid, sur trois laboratoires qui n'ont pas
+   scripts/fit_local_laws.js ; lois locales recalées sur les données corrigées ce jour, copies Hodgdon
+   des lignes Western écartées), outil tel qu'il calcule, chaque balle prédite sans ses propres données.
+   Pression : avec données fabricant 14,6 % d'écart quadratique, 7,8 % des charges sous-estimées de plus
+   de 15 % ; à froid 25,4 % et 20,5 % ; centile 1 % : −37 % et −42 %. Vitesse : 3,4 % et 7,7 %. À froid, sur trois laboratoires qui n'ont pas
    servi au calage (scripts/pression_par_source.py, 2026-10-13) : une charge sur quatre sous-estimée de
    plus de 15 % (Lovex et Shooters World : une sur trois), biais −5 % ; au calage, une sur cinq. */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
 ±10&nbsp;% à froid, à ~5&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
 fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
-qu'indicative&nbsp;: ~14&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
-Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur quatorze avec
+qu'indicative&nbsp;: ~15&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
+Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur treize avec
 données fabricant, une sur cinq sans — une sur trois pour des fabricants dont les données n'ont pas servi
 au calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
 réellement au-dessus de la limite C.I.P. peut donc s'afficher «&nbsp;sûre&nbsp;». D'une charge à l'autre,
@@ -105,9 +105,9 @@ les données officielles du fabricant.
 <div class="vm-banner lang-en">
 <strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ±10% uncalibrated,
 to ~5% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
-measured velocity. <strong>Pressure</strong> is for indication only: ~14% root-mean-square error for a
+measured velocity. <strong>Pressure</strong> is for indication only: ~15% root-mean-square error for a
 “●” combination, ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
-load in fourteen with manufacturer data, one in five without — one in three for manufacturers whose data
+load in thirteen with manufacturer data, one in five without — one in three for manufacturers whose data
 were not used in the fit —, and by more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
 charge to the next, real pressure also rises faster than the displayed one: beyond the published
 maximum, the gap widens.
@@ -238,7 +238,7 @@ manière la plus courante de se fabriquer une fausse marge de sécurité.</em></
 <p>Pour un couple cartouche/poudre ancré, vitesse et pression suivent la <strong>charge</strong> et la
 <strong>masse de balle</strong> selon des lois mesurées dans les guides&nbsp;: à charge égale, une balle
 plus lourde donne une pression plus forte. D'une charge à l'autre, la pression affichée monte
-pourtant moins vite qu'en réalité (pente de 1,95 contre 2,7 en médiane dans les guides)&nbsp;:
+pourtant moins vite qu'en réalité (pente de 2,0 contre 2,7 en médiane dans les guides)&nbsp;:
 au-delà du maximum publié, l'écart joue contre vous. La <strong>température</strong> corrige la
 vitesse (sensibilité générique de Litz) et la pression, supposée réagir comme à la variation de
 charge équivalente.</p>
@@ -273,7 +273,7 @@ most common way of building a false safety margin.</em></p>
 <p>For an anchored cartridge/powder combination, velocity and pressure follow the <strong>charge</strong>
 and the <strong>bullet weight</strong> through laws measured in the manuals: at equal charge, a heavier
 bullet gives a higher pressure. From one charge to the next, however, the displayed pressure rises
-more slowly than in reality (slope 1.95 against a median of 2.7 in the manuals): beyond the
+more slowly than in reality (slope 2.0 against a median of 2.7 in the manuals): beyond the
 published maximum, the difference works against you. <strong>Temperature</strong> corrects velocity
 (Litz's generic sensitivity) and pressure, assumed to react as to the equivalent change of charge.</p>
 <p>Catalogue: <strong>~470 powders</strong> (Reload Swiss, Accurate/Ramshot and Vihtavuori calibrated; other brands fall back on an effective energy). Risky situations (<strong>overpressure against the C.I.P. limit, overfilling</strong>) are flagged in colour — for indication only.</p>
@@ -728,7 +728,7 @@ function calc(){
   // Précision de la pression selon sa source (validation du 2026-10-13, docs/MODEL.md § 3.5 ; à froid, laboratoires
   // hors calage : scripts/pression_par_source.py, 2026-10-13).
   let w = (anc && anc.np!=null)
-    ? T('Pression indicative (~14 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur quatorze) — ne jamais valider une charge sur cette base.','Pressure for indication only (~14% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in fourteen) — never validate a load on this basis.')
+    ? T('Pression indicative (~15 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur treize) — ne jamais valider une charge sur cette base.','Pressure for indication only (~15% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirteen) — never validate a load on this basis.')
     : T('Pression indicative (~25 % d\'écart quadratique sans données fabricant de pression pour ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq, jusqu\'à une sur trois selon le fabricant) — ne jamais valider une charge sur cette base.','Pressure for indication only (~25% RMS error without manufacturer pressure data for this combination; underestimated by more than 15% for one load in five, up to one in three depending on the manufacturer) — never validate a load on this basis.');
   // 16 des 1 700 charges Reload Swiss qui calent le modèle dépassent 110 % (rs_dataset, 2026-10-13).
   if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % : presque aucune des charges qui calent le modèle ne va si loin, estimation peu fiable.','⚠ Load density > 110%: almost none of the loads the model is fitted on go that far, unreliable estimate.');
