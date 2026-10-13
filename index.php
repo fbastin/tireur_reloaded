@@ -84,10 +84,11 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    Pression : avec données fabricant 14,6 % d'écart quadratique, 7,8 % des charges sous-estimées de plus
    de 15 % ; à froid 25,4 % et 20,5 % ; centile 1 % : −37 % et −42 %. Vitesse : 3,4 % et 7,7 %. À froid, sur trois laboratoires qui n'ont pas
    servi au calage (scripts/pression_par_source.py, 2026-10-13) : une charge sur quatre sous-estimée de
-   plus de 15 % (Lovex et Shooters World : une sur trois), biais −5 % ; au calage, une sur cinq. */ ?>
+   plus de 15 % (Lovex et Shooters World : une sur trois), biais −5 % ; au calage, une sur cinq.
+   Vitesse recalculée le 2026-10-13 après la relecture Sierra : 3,3 % (29 795 charges) et 7,7 % (32 252). */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
-±10&nbsp;% à froid, à ~5&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
+~8&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
 fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
 qu'indicative&nbsp;: ~15&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
 Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur treize avec
@@ -103,8 +104,8 @@ les données officielles du fabricant.
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
 <div class="vm-banner lang-en">
-<strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ±10% uncalibrated,
-to ~5% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
+<strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ~8% root-mean-square error uncalibrated,
+~3% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
 measured velocity. <strong>Pressure</strong> is for indication only: ~15% root-mean-square error for a
 “●” combination, ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
 load in thirteen with manufacturer data, one in five without — one in three for manufacturers whose data
@@ -135,7 +136,7 @@ against the manufacturer's official load data.
         <option value="burn-fast" data-en="sort: fast → slow burning">tri : combustion rapide → lente</option>
         <option value="burn-slow" data-en="sort: slow → fast burning">tri : combustion lente → rapide</option>
       </select></label><select id="pwd" onchange="applyStartLoad();calc()"></select>
-      <small class="vm-note" style="display:block;margin-top:.15rem;"><span class="lang-fr">« <strong>●</strong> » = données fabricant pour ce calibre (ancrage ~5 % + fenêtre ladder). Sans « ● » : estimation à froid, ladder non borné.</span><span class="lang-en">“<strong>●</strong>” = manufacturer data for this cartridge (~5% anchoring + ladder window). Without “●”: uncalibrated estimate, unbounded ladder.</span></small></div>
+      <small class="vm-note" style="display:block;margin-top:.15rem;"><span class="lang-fr">« <strong>●</strong> » = données fabricant pour ce calibre (ancrage, vitesse à ~3 % + fenêtre ladder). Sans « ● » : estimation à froid, ladder non borné.</span><span class="lang-en">“<strong>●</strong>” = manufacturer data for this cartridge (anchoring, velocity to ~3%, + ladder window). Without “●”: uncalibrated estimate, unbounded ladder.</span></small></div>
     <div class="vm-field"><label><span class="lang-fr">Masse de balle</span><span class="lang-en">Bullet weight</span> <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
     <div class="vm-field"><label><span class="lang-fr">Charge</span><span class="lang-en">Charge</span> <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span> — <em class="lang-fr">charge de départ (min) pré-remplie ; augmentez prudemment</em><em class="lang-en">starting (minimum) charge pre-filled; work up carefully</em></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
     <div class="vm-field"><label><span class="lang-fr">Longueur de canon</span><span class="lang-en">Barrel length</span> <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
@@ -163,7 +164,7 @@ against the manufacturer's official load data.
     <div id="cartdiag" style="text-align:center;margin-bottom:0.6rem;"></div>
     <div id="danger" class="vm-alert" style="display:none;"></div>
     <div class="vm-kpi">
-      <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small><span class="lang-fr">vitesse</span><span class="lang-en">velocity</span> <span id="o_vtag" class="vm-tag">à froid ±10%</span></small></div>
+      <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small><span class="lang-fr">vitesse</span><span class="lang-en">velocity</span> <span id="o_vtag" class="vm-tag">à froid ~8 %</span></small></div>
       <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small><span class="lang-fr">pression</span><span class="lang-en">pressure</span> <span class="vm-tag"><span class="lang-fr">indicative</span><span class="lang-en">indicative</span></span> <span id="o_pcip"></span></small>
         <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
     </div>
@@ -223,8 +224,8 @@ against the manufacturer's official load data.
 </ul>
 <p>La précision se resserre selon ce que vous lui fournissez&nbsp;:</p>
 <ul>
-<li><strong>à froid</strong> (cartouche + poudre + charge)&nbsp;: vitesse à <strong>±10&nbsp;%</strong>&nbsp;;</li>
-<li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: vitesse à <strong>~5&nbsp;%</strong>&nbsp;;</li>
+<li><strong>à froid</strong> (cartouche + poudre + charge)&nbsp;: vitesse à <strong>~8&nbsp;%</strong> d'écart quadratique&nbsp;;</li>
+<li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: vitesse à <strong>~3&nbsp;%</strong>&nbsp;;</li>
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: vitesse <strong>quasi-exacte</strong>.</li>
 </ul>
 <p><strong>&#9888; Ces trois échelons ne valent que pour la vitesse.</strong> La pression reste
@@ -258,8 +259,8 @@ charge équivalente.</p>
 </ul>
 <p>Accuracy tightens with what you give it:</p>
 <ul>
-<li><strong>uncalibrated</strong> (cartridge + powder + charge): velocity to <strong>±10%</strong>;</li>
-<li><strong>anchored</strong> on the manufacturer's data for your cartridge/powder combination: velocity to <strong>~5%</strong>;</li>
+<li><strong>uncalibrated</strong> (cartridge + powder + charge): velocity to <strong>~8%</strong> root-mean-square error;</li>
+<li><strong>anchored</strong> on the manufacturer's data for your cartridge/powder combination: velocity to <strong>~3%</strong>;</li>
 <li><strong>with your measured velocity</strong> from a chronograph (field above): <strong>near-exact</strong> velocity.</li>
 </ul>
 <p><strong>&#9888; These three levels apply to velocity only.</strong> Pressure stays
@@ -445,18 +446,24 @@ function refBbl(cart){ return cart.test_barrel_mm || (cart.type==='handgun'?122:
 const limSrc=(c)=> !c || !c.pmax_src ? 'C.I.P.' : (c.pmax_src==='SAAMI' ? 'SAAMI' : T('estimée','estimated'));
 // volume utile d'étui effectif (cm³) : saisie utilisateur si fournie, sinon nominal cartouche.
 function effCV(cart){ return (CVOL>0 ? CVOL : cart.case_vol_cm3); }
-// Sensibilité au volume d'étui pour les prédictions ANCRÉES (eeff/np figés au volume
-// nominal du fabricant) : on applique le GRADIENT du modèle global (η_b·Qex / E_eff pour
-// l'énergie, η_p(fill,Re) pour la pression) entre le fill utilisateur et le fill nominal.
-// Au volume nominal -> {e:1, np:1}. C'est la philosophie « ancre = niveau, modèle = pente ».
+// Volume d'étui saisi par l'utilisateur : facteurs sur l'énergie effective et sur η_p, par rapport
+// au volume nominal (au nominal -> {e:1, np:1}).
+//
+// HYPOTHÈSE DE DENSITÉ DE CHARGEMENT (2026-10-13). À charge égale, un étui de volume utile V se
+// comporte comme l'étui nominal V_n chargé de C·V_n/V : les efficacités suivent la charge
+// équivalente par les lois locales, la masse de poudre reste la vraie. Avec r = V_n/V :
+//     E_eff × r^δ   (v ∝ r^(δ/2))      et      P ∝ r^γ,   d'où   η_p × r^(δ − γ).
+// Jusqu'à cette date, la page appliquait la pente du modèle à FROID (η_b·Qex ou E_eff et
+// η_p(fill, Re)), une régression faite d'une cartouche et d'une poudre à l'autre, qui ne dit rien
+// du volume à l'intérieur d'une cartouche : un étui 10 % plus petit faisait BAISSER la pression
+// affichée de 0,7 % (.308 + Varget) au lieu de la faire monter. Le solveur physique hérité
+// (legacy/grt_solver.js, combustion intégrée, volume de chambre explicite) donne, à charge égale,
+// dlnP/dlnV = −2,1 à −2,3 et dln v/dlnV ≈ −0,4 à −0,5 (.308 + RS 52, 9 mm + RS 12) ; l'hypothèse
+// donne −γ ≈ −2,0 et −δ/2 ≈ −0,43. Elle n'est pas validée sur des mesures : la page le dit.
 function cvScales(cart,pw,C_gr){
-  if(!(CVOL>0 && pw.pcd>0)) return {e:1,np:1};
-  const Cg=C_gr*GR_G, A=Math.PI*(cart.bore_mm/1000)**2/4, refTravel=(refBbl(cart)-cart.case_mm)/1000;
-  const cvN=cart.case_vol_cm3, cvU=CVOL;
-  const ffN=(Cg/(pw.pcd/1000))/cvN, ffU=(Cg/(pw.pcd/1000))/cvU;
-  const eg=(ff)=> (pw.Qex&&pw.Ba) ? lin(COEF.eta_b.coef,[1,ff,pw.Ba])*pw.Qex : lin(COEF.e_eff.coef,[1,ff]);
-  const npg=(ff,cv)=>lin(COEF.eta_p.coef,[1,ff,Math.log(1+(A*refTravel)/(cv*1e-6))]);
-  return { e: eg(ffU)/eg(ffN), np: npg(ffU,cvU)/npg(ffN,cvN) };
+  if(!(CVOL>0 && cart.case_vol_cm3>0 && COEF.local)) return {e:1,np:1};
+  const r=cart.case_vol_cm3/CVOL, L=COEF.local;
+  return { e: Math.pow(r,L.delta), np: Math.pow(r,L.delta-L.gamma) };
 }
 // Ancres du couple : celle du fabricant (énergie et η_p à un point de référence C, m) et, si
 // l'utilisateur l'a demandé, celle de sa carabine (énergie seule, tirée de ses vitesses).
@@ -482,8 +489,11 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
   const sc=(v,La,Lb)=>VelocityModel.scaleByBarrelFor(cart,v,La,Lb,cv);   // Powley (carabine) ou loi de puissance (poing)
   const S=cvScales(cart,pw,C_gr);                        // sensibilité au volume d'étui saisi (1,1 si nominal)
   // Énergie et η_p : ancre fabricant (lois locales comprises) ou modèle à froid. La pression est
-  // évaluée au canon de RÉFÉRENCE (ln Re à la course de référence).
-  const base=EnergyModel.energyAndEtaP(COEF,pw,hasPcd?fill/100:null,Math.log(1+(A*refTravel)/(cv*1e-6)),m_gr,C_gr,an.anc);
+  // évaluée au canon de RÉFÉRENCE (ln Re à la course de référence). Le tout au volume NOMINAL : le
+  // volume saisi n'agit que par cvScales (S), une seule fois. Évalué au volume saisi, le modèle à
+  // froid y ajoutait sa propre pente, que cvScales remplace (2026-10-13).
+  const cvN=cart.case_vol_cm3, fillN=hasPcd?(C_gr*GR_G/(pw.pcd/1000))/cvN:null;
+  const base=EnergyModel.energyAndEtaP(COEF,pw,fillN,Math.log(1+(A*refTravel)/(cvN*1e-6)),m_gr,C_gr,an.anc);
   const eta_p=base.np*S.np;
   let vRef,vUser,mode;
   if(opt.vmeas>0){                                       // vitesse MESURÉE au canon de l'utilisateur
@@ -649,7 +659,12 @@ function onCart(){ // défaut canon selon type (pistolet court)
 }
 // volume utile d'étui : conversion gr H₂O ↔ cm³ (1 gr H₂O ≈ 0,0648 cm³), stockage interne en cm³.
 // facteur capacité PLEINE (étui vide, au ras) -> capacité UTILE (balle sertie), par type d'arme.
-function cvFullFactor(c){ return (c && c.type==='handgun') ? 0.66 : 0.87; }
+// Carabine : 0,90, médiane du rapport volume utile de la base / capacité en eau mesurée par Peterson
+// sur 21 cartouches à volume Reload Swiss (0,85 à 0,95 ; calibers/facteur_utile.py, 2026-10-12) — le
+// facteur même qui a converti les capacités publiées de la base. La page gardait l'ancien 0,87 sans
+// source : une capacité saisie « pleine » donnait un volume utile 3 % trop petit (corrigé le 2026-10-13).
+// Arme de poing : 0,66, SANS SOURCE (aucune capacité pleine d'arme de poing relevée pour le caler).
+function cvFullFactor(c){ return (c && c.type==='handgun') ? 0.66 : 0.90; }
 function onCvol(){ const raw=parseFloat(document.getElementById('cvol').value);
   if(!(raw>0)){ CVOL=null; calc(); return; }
   let cm3 = (CVOLUNIT==='grh2o') ? raw*0.0648 : raw;            // -> cm³
@@ -720,7 +735,7 @@ function calc(){
   else pbar.style.display='none';
   const ancFlag = !!(anc && anc.mhflag);                 // couple fabricant atypique (garde-fou Mayer-Hart)
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(r.mode==='carabine'?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~5%','manufacturer-anchored ~5%')):T('à froid ±10%','uncalibrated ±10%');
+  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(r.mode==='carabine'?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~3 %','manufacturer-anchored ~3%')):T('à froid ~8 %','uncalibrated ~8%');
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = (hasPcd ? T(`Remplissage ${fill.toFixed(0)} %`,`Load density ${fill.toFixed(0)}%`) : T('Remplissage inconnu (densité bulk absente)','Load density unknown (no bulk density)')) + (CVOL>0?T(` · volume étui perso ${nf(cv_cm3,2)} cm³`,` · custom case capacity ${nf(cv_cm3,2)} cm³`):'');
   const mode = anchored?T('mesure perso','your measurement') : r.mode==='carabine'?`${T('ancré carabine','rifle-anchored')} (n=${an.rifle.n})` : dataAnchor?`${T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
@@ -738,9 +753,10 @@ function calc(){
   if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % : presque aucune des charges qui calent le modèle ne va si loin, estimation peu fiable.','⚠ Load density > 110%: almost none of the loads the model is fitted on go that far, unreliable estimate.');
   else if(hasPcd && fill<55) w=T('⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.','⚠ Low load density (< 55%): outside the usual range, unreliable estimate.');
   if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w=T('⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). ','⚠ Case capacity (converted to usable) far from nominal ('+(r*100).toFixed(0)+'%) — check the unit (cm³ / gr H₂O) and the mode (usable, bullet seated / full, empty case). ')+w; }
+  if(CVOL>0 && COEF.local) w=T('Volume d\'étui perso : vitesse et pression ramenées comme pour la charge de même densité de chargement dans l\'étui nominal (hypothèse non validée sur des mesures : à charge égale, P ∝ (V nominal / V)^'+nf(COEF.local.gamma,1)+' et v ∝ (V nominal / V)^'+nf(COEF.local.delta/2,2)+' ; un étui 10 % plus petit donne ainsi '+nf((Math.pow(1/0.9,COEF.local.gamma)-1)*100,0)+' % de pression en plus). ','Custom case capacity: velocity and pressure scaled as for the charge of the same loading density in the nominal case (an assumption, not validated on measurements: at equal charge, P ∝ (nominal V / V)^'+nf(COEF.local.gamma,1)+' and v ∝ (nominal V / V)^'+nf(COEF.local.delta/2,2)+'; a case 10% smaller thus gives '+nf((Math.pow(1/0.9,COEF.local.gamma)-1)*100,0)+'% more pressure). ')+w;
   if(!pcip) w=T('ℹ Cartouche sans limite de pression publiée dans nos données (absente du standard SAAMI carabine ; valeur CIP non renseignée) → pas de bandes de sécurité ni de % limite sur cette cartouche. ','ℹ No published pressure limit for this cartridge in our data (not in the SAAMI rifle standard; no C.I.P. value on record) → no safety bands or % of limit for it. ')+w;
   if(!hasPcd) w=T('Densité bulk inconnue : remplissage et pression approximés (nominal). ','Bulk density unknown: load density and pressure approximated (nominal). ')+w;
-  if(viaEeff) w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (±10 %). ','Powder without known Qex/Ba: velocity from a generic energy (±10%). ')+w;
+  if(viaEeff) w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (~8 % d\'écart quadratique). ','Powder without known Qex/Ba: velocity from a generic energy (~8% root-mean-square error). ')+w;
   if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
   if(tempApplied) w=T('Vitesse et pression ajustées à '+Tc.toFixed(0)+' °C (réf. 21 °C) : vitesse par la sensibilité générique de Litz, ~1,8 fps/°C, qui varie selon la poudre ; pression comme pour la variation de charge équivalente (hypothèse, P ∝ v^'+nf(kTempP(),1)+'). ','Velocity and pressure adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C): velocity by Litz\'s generic sensitivity, ~1.8 fps/°C, which varies with the powder; pressure as for the equivalent change of charge (an assumption, P ∝ v^'+nf(kTempP(),1)+'). ')+w;
   const bRatio=travel/refTravel;

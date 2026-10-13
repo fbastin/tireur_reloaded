@@ -131,6 +131,21 @@ the scaling is unity, so calibration and validation are unchanged. This makes ve
 barrel-independent — the physically correct pairing. Far from $L_\text{ref}$ (ratio outside
 ~0.6–1.7) the extrapolation is flagged and best confirmed at the chronograph.
 
+**User case capacity (loading-density assumption, 2026-10-13).** When the user enters a usable
+case capacity $V$ different from the nominal $V_n$, the prediction is first made at $V_n$ (anchor
+or cold model), then scaled as for the charge of the same loading density in the nominal case:
+with $r = V_n/V$, $E_\mathrm{eff} \times r^{\delta}$ and $\eta_p \times r^{\delta-\gamma}$, i.e. at equal
+charge $v_0 \propto r^{\delta/2}$ and $P_\max \propto r^{\gamma}$ (local-law exponents, §3.5). A case 10 %
+smaller thus gives +23 % pressure and +4.6 % velocity. Before this date the UI applied the
+*cold* model's fill and expansion-ratio terms instead — a regression across cartridges and
+powders, silent about volume within one cartridge: a case 10 % smaller *lowered* the displayed
+pressure by 0.7 % (.308 + Varget). The legacy burn-rate solver (`legacy/grt_solver.js`, explicit
+chamber volume) gives, at equal charge, $d\ln P/d\ln V$ = −2.1 to −2.3 and $d\ln v/d\ln V$ ≈
+−0.4 to −0.5 (.308 + RS 52, 9 mm + RS 12); the assumption gives $-\gamma \approx -2.0$ and
+$-\delta/2 \approx -0.43$. It is not validated on measurements, and the UI says so. Usable capacity
+entered as *full* (empty case to the brim) is converted with 0.90 for a rifle (median of 21
+Peterson-measured cartridges, `calibers/facteur_utile.py`) and 0.66 for a handgun (no source).
+
 ### 3.2 Peak pressure — piezometric efficiency $\eta_p$
 
 The **piezometric efficiency** relates the (work-equivalent) mean pressure to the
