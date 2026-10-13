@@ -87,6 +87,31 @@ const CORRECTIONS = {
       + 'D032 chez Lovex, que le même catalogue classe déjà « Spherical ».',
     src: 'Shooters World, Reloading Guide (PDF de novembre 2022), p. 6 ; relevé le 2026-10-12.',
   },
+  'Winchester 296': {
+    fields: { pcd: 970 },
+    why: 'Le catalogue donne 860 à la W296 et 970 à la H110. Le manuel Hodgdon, qui distribue '
+      + 'les deux, publie pour elles les mêmes charges, vitesses et pressions dans les 80 cas où '
+      + 'il donne les deux poudres pour une même balle : il les traite comme une seule poudre. '
+      + 'Les fiches Nosler leur appliquent aussi une seule densité (0,980). La W296 reprend la '
+      + 'valeur de la H110 ; à 860, ses charges paraissaient remplir l\'étui 13 % de plus.',
+    src: 'Hodgdon, Annual Manual 2024 (lignes W296 et H110 de 17 Hornet, 22 Hornet, 30 Carbine, '
+      + '300 AAC Blackout…) ; fiches Nosler (scripts/nosler_fiches.py). Posée le 2026-10-13.',
+  },
+  'N120': {
+    fields: { pcd: 860 },
+    why: 'Valeur du fabricant (la base avait 870, d\'un fichier GRT ; le catalogue avait 860).',
+    src: 'Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) ». Posée le 2026-10-13.',
+  },
+  'N568': {
+    fields: { pcd: 907 },
+    why: 'Valeur du fabricant (le catalogue avait 965).',
+    src: 'Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) ». Posée le 2026-10-13.',
+  },
+  '20N29': {
+    fields: { pcd: 960 },
+    why: 'Valeur du fabricant (le catalogue avait 990).',
+    src: 'Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) ». Posée le 2026-10-13.',
+  },
 };
 
 /**
@@ -138,6 +163,101 @@ function appliquerConfirmations(pj) {
     }
   }
   console.log(`  densités confirmées par le guide Shooters World : ${n}`);
+  let nv = 0;
+  for (const [k, gl] of Object.entries(DENSITES_VV)) {
+    const e = pj.powders[k];
+    if (!e) { console.warn(`  ⚠ confirmation sans cible : ${k}`); continue; }
+    if (!e.pcd || Math.abs(e.pcd / gl - 1) > 0.01) {
+      console.warn(`  ⚠ ${k} : pcd ${e.pcd} contre ${gl} g/l dans le guide Vihtavuori — non confirmée`);
+      delete e.pcd_src;
+      continue;
+    }
+    e.pcd_src = `${GUIDE_VV} : ${gl}`;
+    nv++;
+  }
+  console.log(`  densités confirmées par le guide Vihtavuori : ${nv}`);
+}
+
+/**
+ * Le fabricant Vihtavuori publie la densité apparente de ses poudres. Trois valeurs de la base
+ * s'en écartaient (N120, N568, 20N29) : elles sont corrigées dans CORRECTIONS.
+ */
+const GUIDE_VV = 'Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) »';
+const DENSITES_VV = {
+  N110: 800, N120: 860, N130: 870, N133: 870, N135: 870, N140: 910, N150: 910, N160: 920, N165: 920,
+  N170: 960, '24N41': 970, '20N29': 960, N310: 560, N320: 550, N330: 620, N340: 620, N350: 660,
+  '3N37': 720, '3N38': 730, N540: 940, N550: 940, N555: 900, N560: 960, N565: 960, N568: 907, N570: 960,
+};
+
+/**
+ * DENSITES_NOSLER — densité apparente IMPLICITE des fiches de rechargement Nosler, pour les
+ * poudres qui n'en ont aucune ailleurs.
+ *
+ * Chaque fiche imprime la capacité en eau de l'étui balle en place (« CASE HOLDS: x Gr. WATER »)
+ * et, pour chaque charge, une densité de chargement (« LOAD DENSITY (VOLUME) », en %). Leur
+ * rapport donne la densité qu'emploie Nosler : charge / (densité de chargement × capacité en
+ * eau). Nosler applique une table fixe, qu'il ne publie pas : les médianes par fiche d'une même
+ * poudre concordent à 1 % près (scripts/nosler_fiches.py, 285 fiches, relevé du 2026-10-13).
+ *
+ * Ce n'est PAS une valeur de fabricant de poudre. Sur les poudres Vihtavuori, dont le fabricant
+ * publie la densité, Nosler est plus bas de 1 à 14 % (médiane 5 %) ; sur les autres marques, la
+ * moitié centrale des écarts au catalogue tient dans ±2 %. Elle ne remplace donc jamais une
+ * densité existante : elle comble un manque, pour que les charges de ces poudres entrent dans les
+ * données (les parseurs écartent une poudre sans densité) et que le remplissage soit calculable.
+ * Une erreur de quelques pour cent ne touche que le remplissage affiché et le modèle à froid :
+ * les ancres tirent l'énergie et η_p des vitesses et pressions publiées.
+ *
+ * Trois clés sont créées, les poudres n'existant pas dans le catalogue :
+ *   - IMR 7828 : distincte de l'IMR 7828SC (« IMR 7828 SSC … allows up to 4 percent more powder
+ *     space », Hodgdon, Annual Manual 2024, p. 64 ; Nosler : 0,940 contre 0,970, soit +3,2 %) ;
+ *   - Hodgdon H4831SC : « Extreme Extruded », « better loading density » que la H4831 (même
+ *     manuel, p. 63) ; un fichier communautaire GRT donne 968, à 1 % de Nosler ;
+ *   - Accurate 2015 : distincte de l'Accurate 2015BR, dont l'identité n'est pas établie
+ *     (data/powder_aliases.json, « _a_confirmer »).
+ */
+const DENSITES_NOSLER = [
+  // [clé, g/cm³, fiches, lignes, champs d'une clé créée]
+  ['Hodgdon Hybrid 100V', 0.971, 21, 63],
+  ['Winchester Autocomp', 0.850, 11, 33],
+  ['Winchester WSF Super-Field', 0.750, 5, 15],
+  ['Winchester WST', 0.525, 4, 12],
+  ['Hodgdon US869', 0.973, 2, 6],
+  ['Hodgdon Hi-Skor 700X', 0.500, 5, 15],
+  ['Hodgdon Hi-Skor 800X', 0.633, 8, 24],
+  ['Alliant Power Pro Varmit', 0.989, 10, 30],
+  ['Alliant Power Pro 2000-MR', 0.990, 3, 9],
+  ['Alliant Power Pro 4000-MR', 0.950, 10, 30],
+  ['Alliant Power Pro 300-MP', 0.945, 3, 9],
+  ['Alliant Green Dot', 0.521, 3, 9],
+  ['Ramshot Competition', 0.510, 1, 3],
+  ['IMR 4007 SSC', 0.930, 1, 3],
+  ['IMR Blue', 0.775, 2, 6],
+  ['IMR Target', 0.613, 1, 3],
+  ['Norma 200', 0.868, 1, 3],
+  ['IMR 7828', 0.940, 47, 141, { mfg: 'IMR', name: '7828' }],
+  ['Hodgdon H4831SC', 0.960, 52, 156, { mfg: 'Hodgdon', name: 'H4831SC', type: 'Extruded' }],
+  ['Accurate 2015', 0.880, 27, 81, { mfg: 'Accurate', name: '2015' }],
+];
+
+function appliquerDensitesNosler(pj) {
+  let n = 0;
+  for (const [k, gcc, fiches, lignes, cree] of DENSITES_NOSLER) {
+    if (!pj.powders[k]) {
+      if (!cree) { console.warn(`  ⚠ densité Nosler sans cible : ${k}`); continue; }
+      pj.powders[k] = { ...cree };
+    }
+    const e = pj.powders[k];
+    if (e.pcd && !String(e.pcd_src || '').startsWith('Nosler')) {
+      console.warn(`  ⚠ ${k} a désormais une densité (${e.pcd}) : la valeur Nosler (${gcc}) n'est plus posée`);
+      continue;
+    }
+    e.pcd = Math.round(gcc * 1000);
+    e.pcd_src = `Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement `
+      + `× capacité en eau)), médiane de ${lignes} lignes sur ${fiches} fiche${fiches > 1 ? 's' : ''}, `
+      + `relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre.`;
+    n++;
+  }
+  console.log(`  densités implicites Nosler posées : ${n}`);
 }
 
 function appliquerCorrections(pj, catalog) {
@@ -201,8 +321,9 @@ for (const c of rows) {
 
 appliquerCorrections(pj, catalog);
 appliquerConfirmations(pj);
+appliquerDensitesNosler(pj);
 
-pj._doc = 'Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : source fabricant qui confirme la densite (bloc CONFIRMATIONS du meme script).';
+pj._doc = 'Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : provenance de la densite, soit une source fabricant qui la confirme (Shooters World, Vihtavuori : bloc CONFIRMATIONS et DENSITES_VV du meme script), soit, quand elle commence par « Nosler », la densite implicite des fiches Nosler, posee faute d autre valeur (bloc DENSITES_NOSLER).';
 pj.powders = Object.fromEntries(Object.keys(pj.powders).sort().map((k) => [k, pj.powders[k]]));
 fs.writeFileSync(d('powders.json'), JSON.stringify(pj, null, 2) + '\n');
 

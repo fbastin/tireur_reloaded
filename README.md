@@ -58,6 +58,7 @@ without them, but a few features need files generated from the (separately held)
 |---|---|---|
 | `rs_dataset.local.json`, `western.local.json`, `vihtavuori.local.json` | the parse/ingest scripts | re-fitting coefficients & anchors |
 | `shooters_world.local.json` | `python3 scripts/parse_shooters_world.py GUIDE.pdf` | checks only, never the fit: case volumes (`sw_remplissage.py`), SAAMI vs C.I.P. (`sw_lovex_comparaison.py`), validation (`sw_crosscheck.js`) |
+| `nosler.local.json` | `python3 scripts/nosler_fiches.py [--telecharger]` | checks only, never the fit: water capacity with the bullet seated against the case volumes, powder densities implied by Nosler's load density (`DENSITES_NOSLER` of `import_catalog.js`) |
 | `start_charges.local.json` | `node scripts/build_start_charges.js` | the **starting-charge pre-fill** (typical bullet + real starting charge) **and the Ladder safe window** (real start→max charge, most cautious bullet of that weight) |
 
 The UI **degrades gracefully** when a `*.local.json` is absent (e.g. no starting-charge

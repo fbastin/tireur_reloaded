@@ -115,6 +115,9 @@ const fixPowder = (s) => s
 // un nom alphabétique (Varget, Lovex…) où l→1 détruirait le mot.
 const digitish = (s) => /^[A-Za-z]{0,3}[\dlIOo\s.\-#]+$/.test(s);
 const powderKey = (raw) => {
+  // XMR-2015 : la règle XMR-nnnn → Accurate nnnn la donnerait à l'« Accurate 2015 » actuelle, mais
+  // la filiation 2015BR → XMR-2015 → 2015 n'est attestée que par des forums (data/powder_aliases.json).
+  if (/^[*†\s.]*X(?:MR|MP)[\s-]*2015/i.test(raw)) return null;
   const cands = [fixPowder(raw)];
   if (digitish(raw)) cands.push(fixPowder(fixDigits(raw)));
   for (const c of cands) { const k = pwdIdx[norm(c)]; if (k) return k; }

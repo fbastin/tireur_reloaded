@@ -1,33 +1,37 @@
 {
-  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : source fabricant qui confirme la densite (bloc CONFIRMATIONS du meme script).",
+  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : provenance de la densite, soit une source fabricant qui la confirme (Shooters World, Vihtavuori : bloc CONFIRMATIONS et DENSITES_VV du meme script), soit, quand elle commence par « Nosler », la densite implicite des fiches Nosler, posee faute d autre valeur (bloc DENSITES_NOSLER).",
   "powders": {
     "20N29": {
       "mfg": "Vihtavuori",
       "name": "20N29",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 990
+      "pcd": 960,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 960"
     },
     "24N41": {
       "mfg": "Vihtavuori",
       "name": "24N41",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 970
+      "pcd": 970,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 970"
     },
     "3N37": {
       "mfg": "Vihtavuori",
       "name": "3N37",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 720
+      "pcd": 720,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 720"
     },
     "3N38": {
       "mfg": "Vihtavuori",
       "name": "3N38",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 730
+      "pcd": 730,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 730"
     },
     "ADI AP100": {
       "mfg": "ADI",
@@ -241,6 +245,12 @@
       "base": "Double",
       "type": "Spherical",
       "energy_Jg": 932
+    },
+    "Accurate 2015": {
+      "mfg": "Accurate",
+      "name": "2015",
+      "pcd": 880,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 81 lignes sur 27 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Accurate 2015BR": {
       "mfg": "Accurate",
@@ -563,7 +573,9 @@
       "mfg": "Alliant",
       "name": "Green Dot",
       "base": "Double",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 521,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 9 lignes sur 3 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Alliant Herco": {
       "mfg": "Alliant",
@@ -595,25 +607,33 @@
       "mfg": "Alliant",
       "name": "Power Pro 2000-MR",
       "base": "Double",
-      "type": "Ball"
+      "type": "Ball",
+      "pcd": 990,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 9 lignes sur 3 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Alliant Power Pro 300-MP": {
       "mfg": "Alliant",
       "name": "Power Pro 300-MP",
       "base": "Double",
-      "type": "Ball"
+      "type": "Ball",
+      "pcd": 945,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 9 lignes sur 3 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Alliant Power Pro 4000-MR": {
       "mfg": "Alliant",
       "name": "Power Pro 4000-MR",
       "base": "Double",
-      "type": "Ball"
+      "type": "Ball",
+      "pcd": 950,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 30 lignes sur 10 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Alliant Power Pro Varmit": {
       "mfg": "Alliant",
       "name": "Power Pro Varmint",
       "base": "Double",
-      "type": "Ball"
+      "type": "Ball",
+      "pcd": 989,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 30 lignes sur 10 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Alliant Pro Reach": {
       "mfg": "Alliant",
@@ -1067,6 +1087,13 @@
       "energy_Jg": 920,
       "pcd": 930
     },
+    "Hodgdon H4831SC": {
+      "mfg": "Hodgdon",
+      "name": "H4831SC",
+      "type": "Extruded",
+      "pcd": 960,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 156 lignes sur 52 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
+    },
     "Hodgdon H4895": {
       "mfg": "Hodgdon",
       "name": "H4895",
@@ -1118,13 +1145,17 @@
       "mfg": "Hodgdon",
       "name": "Hi-Skor 700X",
       "base": "Double",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 500,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 15 lignes sur 5 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Hodgdon Hi-Skor 800X": {
       "mfg": "Hodgdon",
       "name": "Hi-Skor 800X",
       "base": "Double",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 633,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 24 lignes sur 8 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Hodgdon High Gun": {
       "mfg": "Hodgdon",
@@ -1136,7 +1167,9 @@
       "mfg": "Hodgdon",
       "name": "Hybrid 100V",
       "base": "Double",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 971,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 63 lignes sur 21 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Hodgdon IMR 800X": {
       "mfg": "Hodgdon",
@@ -1221,7 +1254,9 @@
       "mfg": "Hodgdon",
       "name": "US869",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 973,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 6 lignes sur 2 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Hodgdon Universal": {
       "mfg": "Hodgdon",
@@ -1250,7 +1285,9 @@
       "mfg": "IMR",
       "name": "4007 SSC",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 930,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 3 lignes sur 1 fiche, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "IMR 4064": {
       "mfg": "IMR",
@@ -1338,6 +1375,12 @@
       "type": "Extruded",
       "pcd": 895
     },
+    "IMR 7828": {
+      "mfg": "IMR",
+      "name": "7828",
+      "pcd": 940,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 141 lignes sur 47 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
+    },
     "IMR 7828SC": {
       "mfg": "IMR",
       "name": "7828SC",
@@ -1382,7 +1425,9 @@
       "mfg": "IMR",
       "name": "Blue",
       "base": "Double",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 775,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 6 lignes sur 2 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "IMR Green": {
       "mfg": "IMR",
@@ -1420,7 +1465,9 @@
       "mfg": "IMR",
       "name": "Target",
       "base": "Double",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 613,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 3 lignes sur 1 fiche, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "IMR Unequal": {
       "mfg": "IMR",
@@ -2170,37 +2217,42 @@
       "name": "N110",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 800
+      "pcd": 800,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 800"
     },
     "N120": {
       "Qex": 3700,
       "Ba": 0.8509,
-      "pcd": 870,
+      "pcd": 860,
       "mfg": "Vihtavuori",
       "name": "N120",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 860"
     },
     "N130": {
       "mfg": "Vihtavuori",
       "name": "N130",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 870
+      "pcd": 870,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 870"
     },
     "N133": {
       "mfg": "Vihtavuori",
       "name": "N133",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 870
+      "pcd": 870,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 870"
     },
     "N135": {
       "mfg": "Vihtavuori",
       "name": "N135",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 870
+      "pcd": 870,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 870"
     },
     "N140": {
       "mfg": "Vihtavuori",
@@ -2208,7 +2260,8 @@
       "base": "Single",
       "type": "Extruded",
       "energy_Jg": 3720,
-      "pcd": 910
+      "pcd": 910,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 910"
     },
     "N150": {
       "mfg": "Vihtavuori",
@@ -2216,7 +2269,8 @@
       "base": "Single",
       "type": "Extruded",
       "energy_Jg": 3780,
-      "pcd": 910
+      "pcd": 910,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 910"
     },
     "N160": {
       "Qex": 3650,
@@ -2225,35 +2279,40 @@
       "mfg": "Vihtavuori",
       "name": "N160",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 920"
     },
     "N165": {
       "mfg": "Vihtavuori",
       "name": "N165",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 920
+      "pcd": 920,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 920"
     },
     "N170": {
       "mfg": "Vihtavuori",
       "name": "N170",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 960
+      "pcd": 960,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 960"
     },
     "N310": {
       "mfg": "Vihtavuori",
       "name": "N310",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 560
+      "pcd": 560,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 560"
     },
     "N320": {
       "mfg": "Vihtavuori",
       "name": "N320",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 550
+      "pcd": 550,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 550"
     },
     "N32C": {
       "mfg": "Vihtavuori",
@@ -2267,21 +2326,24 @@
       "name": "N330",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 620
+      "pcd": 620,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 620"
     },
     "N340": {
       "mfg": "Vihtavuori",
       "name": "N340",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 620
+      "pcd": 620,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 620"
     },
     "N350": {
       "mfg": "Vihtavuori",
       "name": "N350",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 660
+      "pcd": 660,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 660"
     },
     "N3SH": {
       "mfg": "Vihtavuori",
@@ -2303,7 +2365,8 @@
       "base": "Double",
       "type": "Extruded",
       "energy_Jg": 4100,
-      "pcd": 940
+      "pcd": 940,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 940"
     },
     "N550": {
       "mfg": "Vihtavuori",
@@ -2311,14 +2374,16 @@
       "base": "Double",
       "type": "Extruded",
       "energy_Jg": 4050,
-      "pcd": 940
+      "pcd": 940,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 940"
     },
     "N555": {
       "mfg": "Vihtavuori",
       "name": "N555",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 900
+      "pcd": 900,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 900"
     },
     "N560": {
       "mfg": "Vihtavuori",
@@ -2326,28 +2391,32 @@
       "base": "Double",
       "type": "Extruded",
       "energy_Jg": 4020,
-      "pcd": 960
+      "pcd": 960,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 960"
     },
     "N565": {
       "mfg": "Vihtavuori",
       "name": "N565",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 960
+      "pcd": 960,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 960"
     },
     "N568": {
       "mfg": "Vihtavuori",
       "name": "N568",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 965
+      "pcd": 907,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 907"
     },
     "N570": {
       "mfg": "Vihtavuori",
       "name": "N570",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 960
+      "pcd": 960,
+      "pcd_src": "Vihtavuori, Reloading Guide 2026 (PDF anglais), p. 148, « Bulk density (g/l) » : 960"
     },
     "Norma 1010": {
       "mfg": "Norma",
@@ -2359,7 +2428,9 @@
       "mfg": "Norma",
       "name": "200",
       "base": "Double",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 868,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 3 lignes sur 1 fiche, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Norma 201": {
       "mfg": "Norma",
@@ -2596,7 +2667,9 @@
       "mfg": "Ramshot",
       "name": "Competition",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 510,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 3 lignes sur 1 fiche, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Ramshot Enforcer": {
       "Qex": 4005,
@@ -3106,7 +3179,7 @@
       "name": "296",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 860
+      "pcd": 970
     },
     "Winchester 572": {
       "mfg": "Winchester",
@@ -3140,7 +3213,9 @@
       "mfg": "Winchester",
       "name": "Autocomp",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 850,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 33 lignes sur 11 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Winchester StaBall 6.5": {
       "mfg": "Winchester",
@@ -3193,7 +3268,9 @@
       "mfg": "Winchester",
       "name": "WSF Super-Field",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 750,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 15 lignes sur 5 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Winchester WSH Super-Handicap": {
       "mfg": "Winchester",
@@ -3205,7 +3282,9 @@
       "mfg": "Winchester",
       "name": "WST",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 525,
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 12 lignes sur 4 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
     },
     "Winchester WXR": {
       "mfg": "Winchester",

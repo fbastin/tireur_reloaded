@@ -73,7 +73,11 @@ otherwise it falls back to the **`e_eff`** model (same ~10 % cold accuracy).
 pressure term), **not the velocity** — if absent, fill is taken at a nominal 100 %.
 So a powder can be added from bulk density, or even **from its name alone** (velocity
 only, no fill warnings, rougher pressure). `mfg` sets the dropdown label (key =
-product name).
+product name). `pcd_src`, when present, says where the density comes from: a powder
+maker's published value that confirms it (Shooters World, Vihtavuori), or, when it starts
+with « Nosler », the density implied by Nosler's load-data sheets, set only where no other
+value exists (`DENSITES_NOSLER` in `scripts/import_catalog.js`; Nosler's table runs 1 to 14 %
+below Vihtavuori's own values, within ±2 % of the catalogue for half the other powders).
 
 ### `model_coefficients.json`
 
@@ -191,6 +195,23 @@ pressure converted from bar: see `scripts/sw_lovex_comparaison.py`. Used by `sw_
     "balle": "168 gr Nosler BT", "balle_gr": 168, "coal_in": 2.81, "start_gr": 42.0, "start_fps": 2590,
     "max_gr": 45.7, "max_fps": 2798, "max_psi": 60500, "canon_in": null, "comprimee": false, "page_pdf": 39 }
 ]}
+```
+
+### `nosler.local.json` — Nosler load-data sheets (`scripts/nosler_fiches.py`)
+
+One PDF per cartridge and bullet, downloaded from nosler.com into `../guides/nosler/` (with
+`--telecharger`; not redistributed). `fiches` holds each sheet's header: `eau_gr` is « CASE HOLDS:
+x Gr. WATER », the water capacity of Nosler's case **with the bullet seated** at the tested length
+(the estimator's usable volume, in grains of water). `rows` holds every load line: `ld_pct` is
+Nosler's « LOAD DENSITY (VOLUME) », `comprimee` its « ** » (all above 100 %), `poudre` the
+`powders.json` key (`POUDRES` table of the script). Implied bulk density = `charge_gr / (ld_pct/100 ×
+eau_gr)` g/cm³. Used for checks and for densities missing elsewhere; never by the fit.
+
+```jsonc
+{ "fiches": [ { "fiche": "300-Blk-110gr-version-9-0.pdf", "cle": "300 AAC BLK", "eau_gr": 19.2,
+               "balle_gr": 110, "oacl_essai": "2.025", "etui": "Nosler", "canon": "16\" Pac-Nor", "archivee": false } ],
+  "rows": [ { "fiche": "300-Blk-110gr-version-9-0.pdf", "cle": "300 AAC BLK", "poudre": "Hodgdon H110",
+              "poudre_nosler": "H110", "charge_gr": 19.0, "fps": 2365, "max": true, "comprimee": true, "ld_pct": 101 } ] }
 ```
 
 ## Units summary
