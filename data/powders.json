@@ -1169,7 +1169,7 @@
       "base": "Double",
       "type": "Extruded",
       "pcd": 971,
-      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 63 lignes sur 21 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre."
+      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 63 lignes sur 21 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre. Douteuse : Hodgdon marque comprimées 78 de ses 156 charges maximales, au remplissage médian de 0,91 avec cette densité ; l'étalon des marques « comprimée » la place 11,3 % plus bas (scripts/etalon_comprime.py, 2026-10-13). Grains « semispherical/semiextruded » selon Hodgdon ; aucune densité publiée trouvée."
     },
     "Hodgdon IMR 800X": {
       "mfg": "Hodgdon",

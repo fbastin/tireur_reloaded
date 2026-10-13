@@ -90,6 +90,20 @@ def verifier(n, part_rouge, ecarts, trop, absents, impossibles):
     for x in impossibles:
         pb.append(f"charge impossible ({x['src']}) : {x['ck']}, {x['pk']}, balle {x['m']} gr, remplissage {x['ff']:.2f}"
                   f" — ligne d'une autre cartouche ?")
+    # Les fenêtres de départ que l'outil affiche viennent aussi de sources hors de ce diagnostic (Speer, Sierra,
+    # LoadData, Vectan) : leur charge maximale est soumise à la même garde (2026-10-13).
+    f = os.path.join(ICI, 'data', 'start_charges.local.json')
+    if os.path.exists(f):
+        pw = json.load(open(os.path.join(ICI, 'data', 'powders.json'), encoding='utf-8'))['powders']
+        cal = json.load(open(os.path.join(ICI, 'data', 'calibers.json'), encoding='utf-8'))['calibers']
+        for k, w in json.load(open(f, encoding='utf-8'))['charges'].items():
+            ck, pk = k.split('|', 1)
+            if ck in cal and pw.get(pk, {}).get('pcd') and cal[ck].get('case_vol_cm3'):
+                ff = w['cmax'] * GRAIN / (pw[pk]['pcd'] / 1000) / cal[ck]['case_vol_cm3']
+                if ff > IMPOSSIBLE:
+                    pb.append(f"fenêtre de départ impossible affichée par l'outil : {k}, {w['c']}-{w['cmax']} gr, remplissage {ff:.2f}")
+    else:
+        pb.append("data/start_charges.local.json absent : les fenêtres de départ de l'outil ne sont pas contrôlées")
     for e in ecarts:
         if e not in ref['ecarts']:
             pb.append(f"source à l'écart du consensus, non examinée : {e.replace('|', ' — ')}")

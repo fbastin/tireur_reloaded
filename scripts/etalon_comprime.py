@@ -156,7 +156,9 @@ def main():
     if os.path.exists(ref):
         for c in json.load(open(ref, encoding='utf-8'))['calibres'].values():
             nos[c['cle_estimateur']] += [x['case_holds_gr'] / 15.4324 for x in c['detail']]
-    commun = [c for c in cartouches if c in nos and min(comptes['c'][c]) >= 3]
+    # sans les cartouches dont la base a repris le volume Nosler (2026-10-13) : comparées à elles-mêmes
+    commun = [c for c in cartouches if c in nos and min(comptes['c'][c]) >= 3
+              and abs(cal[c]['case_vol_cm3'] / st.median(nos[c]) - 1) > 0.005]
     if commun:
         e = [(np.exp(cartouches[c][0]) * cal[c]['case_vol_cm3'], st.median(nos[c]), cal[c]['case_vol_cm3']) for c in commun]
         r = np.corrcoef([np.log(a / v) for a, n_, v in e], [np.log(n_ / v) for a, n_, v in e])[0, 1]

@@ -216,8 +216,10 @@ const DENSITES_VV = {
  *     (data/powder_aliases.json, « _a_confirmer »).
  */
 const DENSITES_NOSLER = [
-  // [clé, g/cm³, fiches, lignes, champs d'une clé créée]
-  ['Hodgdon Hybrid 100V', 0.971, 21, 63],
+  // [clé, g/cm³, fiches, lignes, champs d'une clé créée (ou null), remarque]
+  ['Hodgdon Hybrid 100V', 0.971, 21, 63, null, 'Douteuse : Hodgdon marque comprimées 78 de ses 156 charges maximales, '
+    + 'au remplissage médian de 0,91 avec cette densité ; l\'étalon des marques « comprimée » la place 11,3 % plus bas '
+    + '(scripts/etalon_comprime.py, 2026-10-13). Grains « semispherical/semiextruded » selon Hodgdon ; aucune densité publiée trouvée.'],
   ['Winchester Autocomp', 0.850, 11, 33],
   ['Winchester WSF Super-Field', 0.750, 5, 15],
   ['Winchester WST', 0.525, 4, 12],
@@ -241,7 +243,7 @@ const DENSITES_NOSLER = [
 
 function appliquerDensitesNosler(pj) {
   let n = 0;
-  for (const [k, gcc, fiches, lignes, cree] of DENSITES_NOSLER) {
+  for (const [k, gcc, fiches, lignes, cree, remarque] of DENSITES_NOSLER) {
     if (!pj.powders[k]) {
       if (!cree) { console.warn(`  ⚠ densité Nosler sans cible : ${k}`); continue; }
       pj.powders[k] = { ...cree };
@@ -254,7 +256,7 @@ function appliquerDensitesNosler(pj) {
     e.pcd = Math.round(gcc * 1000);
     e.pcd_src = `Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement `
       + `× capacité en eau)), médiane de ${lignes} lignes sur ${fiches} fiche${fiches > 1 ? 's' : ''}, `
-      + `relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre.`;
+      + `relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre.` + (remarque ? ' ' + remarque : '');
     n++;
   }
   console.log(`  densités implicites Nosler posées : ${n}`);
