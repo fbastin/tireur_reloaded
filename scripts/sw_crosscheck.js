@@ -4,9 +4,11 @@
  * Usage : node scripts/sw_crosscheck.js        (console seule, n'écrit rien)
  * Entrée : data/shooters_world.local.json (gitignoré, scripts/parse_shooters_world.py)
  *
- * Calqué sur adi_crosscheck.js. Ni Shooters World ni Lovex n'entrent dans le calage de η_p, les
- * ancres ou le repli E_eff (aucune ancre ne porte une poudre Lovex ou Shooters World) : c'est le
- * MODÈLE GLOBAL sur données neuves. Charges maximales seulement (pression publiée pour elles).
+ * Calqué sur adi_crosscheck.js. Teste le MODÈLE À FROID (repli E_eff et η_p(remplissage, Re)), ce
+ * que l'outil applique à une clé « Shooters World » : une seule de ces clés porte une ancre. Les
+ * poudres Lovex jumelles, elles, en portent 115 (build_anchors.js lit lovex.local.json) ; les
+ * substituer ne gagne rien sur ces charges (87 charges, 2026-10-12 : vitesse RMS 5,0 % à froid,
+ * 4,9 % ancrée ; pression 9,3 % et 9,5 %). Charges maximales seulement (pression publiée).
  *
  * Carabines seulement. Le guide ne donne la longueur du canon que pour 23 lignes (« *24-inch
  * Barrel », « (22" barrel) », « *45" Test Barrel ») ; ailleurs elle est SUPPOSÉE de 24 pouces, et le
