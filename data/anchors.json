@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.",
- "_date": "2026-10-12",
+ "_date": "2026-10-13",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1075895,
@@ -907,20 +907,20 @@
    "mhr": 2.1
   },
   "7 -08 Rem.|RS50": {
-   "eeff": 1038703,
+   "eeff": 1039035,
    "n": 6,
    "C": 34.26,
    "m": 172.2,
-   "np": 0.4358,
+   "np": 0.4359,
    "mhr": 8
   },
   "7 -08 Rem.|RS52": {
-   "eeff": 1174793,
+   "eeff": 1175169,
    "n": 6,
    "C": 36.37,
    "m": 172.2,
-   "np": 0.4439,
-   "mhr": 4.6
+   "np": 0.4441,
+   "mhr": 4.5
   },
   "7 Rem. Mag.|RS62": {
    "eeff": 924927,
@@ -3285,63 +3285,63 @@
    "np": 0.4764
   },
   "7 -08 Rem.|Accurate 5744": {
-   "eeff": 1476313,
+   "eeff": 1476332,
    "n": 7,
    "C": 30.01,
    "m": 130.2,
    "np": 0.3749
   },
   "7 -08 Rem.|Accurate 2460": {
-   "eeff": 1309745,
+   "eeff": 1309762,
    "n": 17,
    "C": 40.24,
    "m": 126.5,
    "np": 0.383
   },
   "7 -08 Rem.|Accurate 2495": {
-   "eeff": 1277549,
+   "eeff": 1277565,
    "n": 45,
    "C": 39.89,
    "m": 143.4,
    "np": 0.3704
   },
   "7 -08 Rem.|Accurate 2520": {
-   "eeff": 1295523,
+   "eeff": 1295540,
    "n": 11,
    "C": 41.27,
    "m": 122.3,
    "np": 0.3826
   },
   "7 -08 Rem.|Accurate 4064": {
-   "eeff": 1236957,
+   "eeff": 1236972,
    "n": 37,
    "C": 40.63,
    "m": 142.3,
-   "np": 0.3783
+   "np": 0.3784
   },
   "7 -08 Rem.|Ramshot Big Game": {
-   "eeff": 1198215,
+   "eeff": 1198231,
    "n": 40,
    "C": 43.75,
    "m": 149.9,
    "np": 0.4004
   },
   "7 -08 Rem.|Accurate 2700": {
-   "eeff": 1134162,
+   "eeff": 1134176,
    "n": 23,
    "C": 43.51,
    "m": 140,
    "np": 0.3733
   },
   "7 -08 Rem.|Accurate 4350": {
-   "eeff": 1153746,
+   "eeff": 1153761,
    "n": 11,
    "C": 44.76,
    "m": 154.2,
    "np": 0.3956
   },
   "7 -08 Rem.|Ramshot Hunter": {
-   "eeff": 1203021,
+   "eeff": 1203036,
    "n": 20,
    "C": 45.59,
    "m": 163.5,
@@ -6104,118 +6104,118 @@
    "m": 148.2
   },
   "7 -08 Rem.|Winchester StaBall 6.5": {
-   "eeff": 1336016,
+   "eeff": 1336032,
    "n": 13,
    "C": 48.92,
    "m": 149.9,
    "np": 0.4542
   },
   "7 -08 Rem.|Hodgdon H4350": {
-   "eeff": 1235857,
+   "eeff": 1235873,
    "n": 13,
    "C": 46.22,
    "m": 149.9,
    "np": 0.4152
   },
   "7 -08 Rem.|Hodgdon CFE-223": {
-   "eeff": 1294866,
+   "eeff": 1294882,
    "n": 9,
    "C": 43.47,
    "m": 142.6
   },
   "7 -08 Rem.|Winchester 760": {
-   "eeff": 1259495,
+   "eeff": 1259511,
    "n": 13,
    "C": 46,
    "m": 149.9,
    "np": 0.4241
   },
   "7 -08 Rem.|Hodgdon H380": {
-   "eeff": 1222700,
+   "eeff": 1222715,
    "n": 12,
    "C": 45.13,
    "m": 148.6
   },
   "7 -08 Rem.|Winchester StaBall Match": {
-   "eeff": 1312020,
+   "eeff": 1312037,
    "n": 13,
    "C": 41.89,
    "m": 149.9,
    "np": 0.3774,
-   "mhr": 2.3
+   "mhr": 1.2
   },
   "7 -08 Rem.|Hodgdon BL-C(2)": {
-   "eeff": 1299766,
+   "eeff": 1299783,
    "n": 11,
    "C": 41.71,
    "m": 147.5
   },
   "7 -08 Rem.|Hodgdon Varget": {
-   "eeff": 1352110,
+   "eeff": 1352127,
    "n": 13,
    "C": 40.98,
    "m": 149.9,
    "np": 0.3826
   },
   "7 -08 Rem.|IMR 4895": {
-   "eeff": 1338219,
+   "eeff": 1338236,
    "n": 12,
    "C": 41.44,
    "m": 148.6
   },
   "7 -08 Rem.|IMR 4064": {
-   "eeff": 1357704,
+   "eeff": 1357721,
    "n": 13,
    "C": 40.47,
    "m": 149.9,
    "np": 0.3805
   },
   "7 -08 Rem.|Hodgdon H4895": {
-   "eeff": 1351776,
+   "eeff": 1351793,
    "n": 12,
    "C": 40.05,
    "m": 148.6
   },
   "7 -08 Rem.|IMR 8208 XBR": {
-   "eeff": 1363656,
+   "eeff": 1363673,
    "n": 12,
    "C": 39.23,
    "m": 148.6
   },
   "7 -08 Rem.|Hodgdon H335": {
-   "eeff": 1325213,
+   "eeff": 1325230,
    "n": 11,
    "C": 38.02,
    "m": 149
   },
   "7 -08 Rem.|Hodgdon Benchmark": {
-   "eeff": 1356345,
+   "eeff": 1356363,
    "n": 12,
    "C": 38.68,
    "m": 148.6
   },
   "7 -08 Rem.|IMR 3031": {
-   "eeff": 1373233,
+   "eeff": 1373250,
    "n": 12,
    "C": 38.55,
    "m": 148.6
   },
   "7 -08 Rem.|IMR 4350": {
-   "eeff": 1240309,
+   "eeff": 1240324,
    "n": 12,
    "C": 46.59,
    "m": 152.7,
    "np": 0.4223
   },
   "7 -08 Rem.|Hodgdon H4831, H4831C": {
-   "eeff": 1144279,
+   "eeff": 1144294,
    "n": 6,
    "C": 49.03,
    "m": 164,
    "np": 0.4183
   },
   "7 -08 Rem.|IMR 4831": {
-   "eeff": 1204769,
+   "eeff": 1204784,
    "n": 4,
    "C": 46.12,
    "m": 161.9,
@@ -9374,7 +9374,7 @@
    "n": 12,
    "C": 42.88,
    "m": 161.9,
-   "mhr": 4.7
+   "mhr": 4.5
   },
   "284 Winchester|N140": {
    "eeff": 1191819,
