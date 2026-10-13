@@ -223,16 +223,17 @@ try {
 // Vectan / Nobel Sport (catalogue officiel) — charge DÉPART + MAX, données NORMES CIP.
 // VITESSE seule (eeff ; np=null). Pas de longueur de canon publiée → v0 au canon de référence
 // (comme Norma). Seules les lignes dont la balle est NON AMBIGUË sont extraites (cf. parseur).
+// Point MAXIMAL seulement : la vitesse de départ imprimée par Vectan est CALCULÉE, pas mesurée —
+// sur les 151 lignes, v_max/v_départ = √(C_max/C_départ) à 0,3 % près (écart-type), pour des rapports
+// de charge de 1,05 à 1,63 ; aucune autre source n'en approche (pente médiane 0,90 à 1,04 contre 0,50).
+// Elle faisait passer l'énergie pour constante le long de l'échelle (2026-10-13).
 try {
   for (const [i, r] of JSON.parse(fs.readFileSync(d('vectan.local.json'))).rows.entries()) {
     const ck = matchCal(r.cartridge); if (!ck) continue;
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
-    const m = r.bullet_gr * G;
-    for (const [cgr, v] of [[r.start_gr, r.start_ms], [r.max_gr, r.max_ms]]) {
-      if (!(cgr > 0 && v > 0)) continue;
-      const C = cgr * G, me = m + C / 3;
-      add(ck, pk, me * v * v / (2 * C), null, null, { src: 'Vectan', bid: 'VE' + i, m: r.bullet_gr, C: cgr, max: cgr === r.max_gr });
-    }
+    if (!(r.max_gr > 0 && r.max_ms > 0)) continue;
+    const C = r.max_gr * G, me = r.bullet_gr * G + C / 3, v = r.max_ms;
+    add(ck, pk, me * v * v / (2 * C), null, null, { src: 'Vectan', bid: 'VE' + i, m: r.bullet_gr, C: r.max_gr, max: true });
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
 

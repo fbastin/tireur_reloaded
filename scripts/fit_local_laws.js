@@ -100,7 +100,8 @@ console.log(`→ η_p ∝ C^ε m^ζ : ε = ${L.eps}, ζ = ${L.zeta}`);
 
 const rms = (a) => Math.sqrt(mean(a.map((x) => x * x))) * 100, bias = (a) => mean(a) * 100;
 const f = (a) => a.length ? `${bias(a).toFixed(1).padStart(6)} % / ${rms(a).toFixed(1).padStart(4)} % (${a.length})` : '—';
-const sous = (a) => a.length ? `${(100 * a.filter((x) => x < -0.15).length / a.length).toFixed(1)} %` : '—';
+// Part sous-estimée de plus de 15 %, et centile 1 % de l'écart (les chiffres du bandeau de l'outil).
+const sous = (a) => a.length ? `${(100 * a.filter((x) => x < -0.15).length / a.length).toFixed(1)} %, centile 1 % ${(100 * a.slice().sort((x, y) => x - y)[Math.floor(0.01 * a.length)]).toFixed(0)} %` : '—';
 function rapport(titre, res, dmLabel) {
   const P = res.filter((x) => x.ep != null).map((x) => x), e = (s) => P.filter(s).map((x) => x.ep);
   console.log(`\n${titre} — biais / RMS (n)`);

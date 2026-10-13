@@ -282,6 +282,18 @@ at the reference barrel, `scripts/adi_crosscheck.js`): bias +4.2 → +1.6 %, RMS
 heavy bullets −8.1 → +6.7 %, light +15.2 → −2.4 %; under-predicted by more than 15 %: 3 → 6
 loads of 174. Anchored velocity unchanged (6.3 % RMS).
 
+**Refit, 2026-10-13.** The exponents were estimated again (`node scripts/fit_local_laws.js --write`)
+after a day of data corrections: Vihtavuori rows filed under the wrong cartridge or lost (titles
+with a decimal comma), lead bullets removed from the anchors (LoadData, Hodgdon, Western), Vectan's
+starting velocities dropped — they are computed, $v \propto \sqrt{C}$ to 0.3 %, not measured —
+and Nosler added to the rifle anchors where the other sources have fewer than three loads.
+$\delta$ 0.824 → 0.855, $\beta$ 0.581 → 0.557, $\alpha$ 0.921 → 0.884, $\gamma$ unchanged (1.948).
+Bullet held out: velocity 3.4 % RMS, pressure +0.6 / 14.1 %, under-predicted by more than 15 %
+for 7.2 % of loads, 1st percentile −36 %; cold model 7.7 % and 25.0 %, 20.3 %, −41 %. The tool's
+banner quotes these figures. Not tried: a charge exponent by pressure class — ladders of
+low-pressure handgun cartridges (under 1 800 bar: .38 Special, .45 Colt) have a median
+$\delta$ near 1.0, against 0.74–0.89 for the other handgun classes.
+
 **Not applied to the cold model.** Two attempts, both rejected (pressure, all published
 loads): charge and mass laws around the cartridge's typical fill and bullet mass, RMS
 24.6 → 37.6 % — across powders, fill follows burning rate, not a charge ladder; mass law alone,
