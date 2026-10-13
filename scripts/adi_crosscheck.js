@@ -10,6 +10,12 @@
  * des ancres Hodgdon ajoutées le 2026-08-11.
  *
  * Les lignes en CUP servent la vitesse seule — le CUP n'est pas convertible en psi.
+ *
+ * COPIES. ADI réimprime des données Hodgdon : sur les 341 lignes des couples ancrés, 226 (IMR 8208 XBR,
+ * Benchmark) sont identiques (cartouche, poudre, balle, charge, vitesse) à une ligne Hodgdon ou Western,
+ * qui nourrissent les ancres. Comparées à ces ancres, elles se comparaient à elles-mêmes : les chiffres
+ * « couples ancrés » d'avant le 2026-10-13 en étaient faussés. Elles sont écartées des comparaisons
+ * ancrées (pas du modèle à froid, où Hodgdon n'entre pas).
  */
 const fs = require('fs');
 const path = require('path');
@@ -18,7 +24,8 @@ const d = (f) => path.join(__dirname, '..', 'data', f);
 const CAL = JSON.parse(fs.readFileSync(d('calibers.json'))).calibers;
 const PWD = JSON.parse(fs.readFileSync(d('powders.json'))).powders;
 const COEF = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
-const EM = require('../energy_model.js');   // ancres = point de référence + lois locales (2026-10-10)
+const EM = require('../energy_model.js');
+const VM = require('../velocity_model.js');   // ancres = point de référence + lois locales (2026-10-10)
 const ANC = JSON.parse(fs.readFileSync(d('anchors.json'))).anchors;
 const G = 6.479891e-5, GR2G = 0.06479891;
 
@@ -35,6 +42,16 @@ const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
 const med = (a) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(b.length / 2)]; };
 
 const rows = JSON.parse(fs.readFileSync(d('adi.local.json'))).rows;
+const pwdIdx = {}; for (const k of Object.keys(PWD)) pwdIdx[norm(k)] = k;
+for (const k of Object.keys(PWD)) { const nm = norm(PWD[k].name || ''); if (nm && !pwdIdx[nm]) pwdIdx[nm] = k; }
+const cle = (ck, pk, m, c, v) => [ck, pk, m, Math.round(c * 10) / 10, Math.round(v)].join('|');
+const copies = new Set();
+for (const f of ['hodgdon', 'western']) {
+  try {
+    for (const r of JSON.parse(fs.readFileSync(d(f + '.local.json'))).rows) copies.add(cle(matchCal(r.cartridge), pwdIdx[norm(r.powder || '')], r.bullet_gr, r.charge_gr, r.v0_fps));
+  } catch (e) { if (e.code !== 'ENOENT') throw e; }
+}
+let copiesEcartees = 0;
 const etas = [], errP = [], errVanc = [], errVfall = [], errPanc = [], lmAnc = [];
 let used = 0, ancres = 0, skipped = 0;
 
@@ -53,11 +70,17 @@ for (const r of rows) {
   used++;
 
   // --- vitesse : ancre du couple si elle existe, sinon repli E_eff ---
-  const a = ANC[`${ck}|${r.powder}`];
+  const copie = copies.has(cle(ck, r.powder, r.bullet_gr, r.charge_gr, r.v0_fps));
+  if (copie && ANC[`${ck}|${r.powder}`]) copiesEcartees++;
+  const a = copie ? null : ANC[`${ck}|${r.powder}`];
+  // Vitesse prédite au canon de RÉFÉRENCE puis ramenée au canon d'ADI par la loi de canon de l'outil.
+  // Jusqu'au 2026-10-13 elle était comparée telle quelle à la vitesse ADI : beaucoup de lignes ADI sont
+  // tirées au canon de 15 pouces, contre 24 pour la référence, et l'ancre paraissait trop rapide.
+  const Lref = ((ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm) / 1000;
+  const auCanon = (E) => VM.scaleByBarrelFor(ca, Math.sqrt(2 * E * C / me), Lref, L);
   const eFall = COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill / 100;
-  const vFall = Math.sqrt(2 * eFall * C / me);
-  errVfall.push((vFall / v0 - 1) * 100);
-  if (a && a.eeff) { ancres++; errVanc.push((Math.sqrt(2 * a.eeff * EM.localE(COEF.local, r.charge_gr, r.bullet_gr, a.C, a.m) * C / me) / v0 - 1) * 100); }
+  errVfall.push((auCanon(eFall) / v0 - 1) * 100);
+  if (a && a.eeff) { ancres++; errVanc.push((auCanon(a.eeff * EM.localE(COEF.local, r.charge_gr, r.bullet_gr, a.C, a.m)) / v0 - 1) * 100); }
 
   // --- pression : seulement sur les lignes en PSI ---
   if (!r.Pmax_psi) continue;
@@ -78,6 +101,7 @@ for (const r of rows) {
 }
 
 console.log(`ADI — validation externe : ${used} charges exploitables sur ${rows.length} (${skipped} écartées : cartouche ou poudre inconnue)`);
+console.log(`  copies de lignes Hodgdon ou Western écartées des comparaisons ancrées : ${copiesEcartees}`);
 console.log('');
 console.log(`η_p mesuré        : moyenne ${mean(etas).toFixed(3)}  médiane ${med(etas).toFixed(3)}   (n=${etas.length}, lignes PSI)`);
 console.log(`   pour mémoire   : Reload Swiss 0,447 · Hodgdon 0,418 · Western 0,399 · Lovex 0,384`);

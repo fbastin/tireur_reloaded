@@ -227,8 +227,9 @@ The manufacturer rows of Lyman, Hodgdon, Western and LoadData carry `cast: true`
 `scripts/parse_hodgdon.js`; Western: a description starting with « (L) », « (P) » plated bullets kept;
 LoadData: `PLOMB` in `scripts/parse_loaddata.js`). The coefficients are fitted on jacketed bullets, so
 anchors, starting-charge windows and the fill diagnostic skip these rows (2026-10-13). Removing them
-improved every independent check: Nosler handguns 9.6 → 8.9 % RMS, Lyman handguns 17.5 → 16.2 %,
-ADI anchored pressure 15.5 → 12.2 %.
+improved the independent checks: Nosler handguns 9.6 → 8.9 % RMS, Lyman handguns 17.5 → 16.2 %. (An
+ADI figure quoted here at first, 15.5 → 12.2 %, mostly compared ADI's reprints of Hodgdon rows with
+anchors built from those same rows; see `scripts/adi_crosscheck.js`.)
 
 ## Units summary
 

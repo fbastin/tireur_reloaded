@@ -280,7 +280,13 @@ more than 15 %: 28 → 19; handguns 19.7 → 17.7 %, bias −14.1 → −7.9 %
 (`scripts/lyman_crosscheck.js`). **ADI** (174 maximum loads with PSI on anchored pairs, pressure
 at the reference barrel, `scripts/adi_crosscheck.js`): bias +4.2 → +1.6 %, RMS 16.9 → 16.0 %,
 heavy bullets −8.1 → +6.7 %, light +15.2 → −2.4 %; under-predicted by more than 15 %: 3 → 6
-loads of 174. Anchored velocity unchanged (6.3 % RMS).
+loads of 174. Anchored velocity unchanged (6.3 % RMS). *Correction, 2026-10-13: ADI reprints Hodgdon
+data — 226 of the 341 ADI rows on anchored pairs (IMR 8208 XBR, Benchmark) are identical to a Hodgdon
+or Western row that feeds the anchors, so these "anchored" figures mostly compared data with itself.
+`adi_crosscheck.js` now drops the copies and also brings predicted velocities to ADI's barrel (many
+rows are fired in a 15 in. barrel against a 24 in. reference). Independent ADI rows on anchored pairs:
+velocity +1.1 / 4.4 % RMS (115 rows, cold model on the same rows +1.6 / 6.7 %), pressure −0.8 / 7.8 %
+(49 rows) — too few for the mass-bias figures above.*
 
 **Refit, 2026-10-13.** The exponents were estimated again (`node scripts/fit_local_laws.js --write`)
 after a day of data corrections: Vihtavuori rows filed under the wrong cartridge or lost (titles
