@@ -9,10 +9,12 @@ sens : ce script mesure, sur toutes les données de charge locales, combien de c
 publiées dépassent chaque seuil, et désigne ce qui les fait dépasser :
   * une SOURCE à l'écart du consensus des autres pour une même cartouche : erreur d'extraction
     probable (2026-10-13 : le parseur Alliant prêtait à la .338 Win. Mag. les charges de la .338 RUM) ;
+    Le test désigne, il ne prouve rien : un fabricant qui ne publie que des poudres lentes et denses
+    remplit plus (Western en .243 Win. : Hunter, Magnum, Magpro, données identiques à Hodgdon) ;
   * TOUTES les sources trop hautes : volume de la base trop petit probable (.357 SIG, corrigée le
     2026-10-13). Avant de corriger, le test de la balle enfoncée : (capacité en eau mesurée − volume
     de la base) / section de l'alésage doit être une profondeur plausible pour une balle courante.
-Les marques « charge comprimée » des fabricants (Western, Lyman, Alliant) servent d'étalon : une charge
+Les marques « charge comprimée » des fabricants (Hodgdon, Western, Lyman, Alliant) servent d'étalon : une charge
 non marquée tient dans l'étui sans tassement.
 Données : data/*.local.json (locales, hors git).
 """
@@ -30,9 +32,31 @@ SOURCES = {'hodgdon': 'charge_gr', 'western': 'charge_gr', 'vihtavuori': 'max_gr
 SEUILS = (1.05, 1.10, 1.15, 1.20, 1.25, 1.30)
 
 
+# Appariement identique à celui de build_anchors.js : libellés normalisés (parenthèses ôtées,
+# « (continued) » de Western), poudre par clé puis par nom de produit, cartouche par clé, alias ou
+# variante de pression ramenée à la base, garde sur le calibre. Jusqu'au 2026-10-13, la poudre
+# n'était cherchée que par sa clé exacte : aucune ligne Western (« RAMSHOT TRUE BLUE ») n'entrait.
 def norm(s):
-    s = str(s).lower().replace('winchester', 'win').replace('remington', 'rem').replace('magnum', 'mag')
+    s = re.sub(r'\(.*?\)', '', str(s).lower())
+    s = s.replace('winchester', 'win').replace('remington', 'rem').replace('magnum', 'mag')
     return re.sub(r'[^a-z0-9]', '', s.replace('springfield', 'spring'))
+
+
+def sans_variante(s):
+    return re.sub(r'\bfor ar-?15.*', '', re.sub(r'\s*\+p\+?\b', '', str(s), flags=re.I), flags=re.I)
+
+
+def index(pw, cal):
+    pidx = {norm(k): k for k in pw}
+    for k, v in pw.items():
+        pidx.setdefault(norm(v.get('name', '')), k)
+    pidx.pop('', None)
+    cidx = {norm(a): k for k, v in cal.items() for a in [k] + v.get('aliases', [])}
+    def cartouche(nom):
+        if re.search(r'\bpsi\b|specification|standard saami', str(nom), re.I):
+            return None
+        return cidx.get(norm(nom)) or cidx.get(norm(sans_variante(nom)))
+    return pidx, cartouche
 
 
 def q(a, p):
@@ -44,7 +68,7 @@ def main():
     d = lambda f: os.path.join(ICI, 'data', f)
     pw = json.load(open(d('powders.json'), encoding='utf-8'))['powders']
     cal = json.load(open(d('calibers.json'), encoding='utf-8'))['calibers']
-    idx = {norm(a): k for k, v in cal.items() for a in [k] + v.get('aliases', [])}
+    pidx, cartouche = index(pw, cal)
     L = []
     for s, kc in SOURCES.items():
         if not os.path.exists(d(s + '.local.json')):
@@ -52,9 +76,12 @@ def main():
         for r in json.load(open(d(s + '.local.json'), encoding='utf-8'))['rows']:
             if r.get('cast'):
                 continue                                   # balles coulées : autre domaine
-            ck, p = idx.get(norm(r.get('cartridge'))), pw.get(r.get('powder'), {})
+            ck, pk = cartouche(r.get('cartridge')), pidx.get(norm(r.get('powder') or ''))
+            p = pw.get(pk, {})
             if not ck or not p.get('pcd') or not r.get(kc) or not cal[ck].get('case_vol_cm3'):
                 continue
+            if r.get('bore_mm') and abs(r['bore_mm'] - cal[ck]['bore_mm']) > 0.3:
+                continue                                   # mauvaise cartouche (garde de build_anchors.js)
             L.append(dict(src=s, ck=ck, ff=r[kc] * GRAIN / (p['pcd'] / 1000) / cal[ck]['case_vol_cm3'],
                           forme=p.get('type'), comp=r.get('compressed'), poing=cal[ck].get('type') == 'handgun'))
     print(f"{len(L)} charges maximales publiées ({len({x['ck'] for x in L})} cartouches)")
@@ -71,18 +98,20 @@ def main():
     for etat, sel in (('non comprimées', False), ('comprimées', True)):
         a = [x['ff'] for x in m if bool(x['comp']) is sel and not x['poing']]
         if a:
-            print(f"  marquées {etat:15s} (Western, Lyman, Alliant) n = {len(a):4d}  P50 {q(a, .5):.2f}  P90 {q(a, .9):.2f}")
+            print(f"  marquées {etat:15s} (Hodgdon, Western, Lyman, Alliant) n = {len(a):4d}  P50 {q(a, .5):.2f}  P90 {q(a, .9):.2f}")
     par = defaultdict(lambda: defaultdict(list))
     for x in L:
         par[x['ck']][x['src']].append(x['ff'])
-    print("\nsource à l'écart du consensus (|écart| > 0,12, au moins trois sources de 5 charges) :")
+    # Carabines seulement : pour une arme de poing, le remplissage suit surtout la vivacité des poudres que
+    # chaque fabricant retient (Western et Hodgdon : beaucoup de poudres vives), pas une erreur d'extraction.
+    print("\nsource à l'écart du consensus, carabines (|écart| > 0,12, au moins trois sources de 5 charges) :")
     trop = []
     for ck, ds in sorted(par.items()):
         meds = {s: st.median(v) for s, v in ds.items() if len(v) >= 5}
         if not meds:
             continue
         cons = st.median(meds.values())
-        if len(meds) >= 3:
+        if len(meds) >= 3 and cal[ck].get('type') != 'handgun':
             for s, v in meds.items():
                 if abs(v - cons) > 0.12:
                     print(f"  {ck:22s} {s:10s} {v:.2f} contre {cons:.2f}")

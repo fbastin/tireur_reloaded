@@ -102,12 +102,12 @@ Hodgdon's two .223 barrels are separate guns, so the 17 series give 7 barrels. $
 
 | Comparison | Better on | Mean difference | 95 % interval | Sign test (one-sided) |
 |---|---|---|---|---|
-| Powley vs. fixed $k$ | 7/7 | −12.2 fps | [−20.6 ; −4.6] | p = 0.008 |
-| Mayer–Hart vs. fixed $k$ | 5/7 | −9.0 fps | [−20.3 ; −0.3] | p = 0.227 |
-| Le Duc vs. fixed $k$ | 4/6 | −10.3 fps | [−19.5 ; −1.0] | p = 0.344 |
-| Mayer–Hart vs. Powley | 1/7 | +3.2 fps | [−1.5 ; +6.9] | p = 0.992 |
+| Powley vs. fixed $k$ | 7/7 | −11.6 fps | [−19.5 ; −4.2] | p = 0.008 |
+| Mayer–Hart vs. fixed $k$ | 4/7 | −8.0 fps | [−19.6 ; +1.0] | p = 0.500 |
+| Le Duc vs. fixed $k$ | 4/6 | −10.0 fps | [−19.2 ; −0.6] | p = 0.344 |
+| Mayer–Hart vs. Powley | 1/7 | +3.6 fps | [−1.3 ; +7.6] | p = 0.992 |
 
-Per barrel, Powley's gain is 2 to 3 fps on the .223 barrels and the 6.5 Creedmoor, 6 fps on the 6 mm BR, and 14 to 28 fps on the three PRC magnums. Taken together, the 13 cartridges and the 7 barrels give Powley better than the fixed exponent on 17 of 20 (sign test p = 0.001); Mayer–Hart better than Powley on 9 of 20.
+Per barrel, Powley's gain is 2 to 3 fps on the .223 barrels and the 6.5 Creedmoor, 6 fps on the 6 mm BR, and 10 to 28 fps on the three PRC magnums. Taken together, the 13 cartridges and the 7 barrels give Powley better than the fixed exponent on 17 of 20 (sign test p = 0.001); Mayer–Hart better than Powley on 9 of 20.
 
 ### Implied exponent on the reference set
 
@@ -132,7 +132,7 @@ The log-log slope of each predictor's own predictions is compared with the measu
 3. **Le Duc anchored on the C.I.P. pressure is not reliably better than a fixed exponent** (−6.7 fps, interval spanning zero). Its result depends on the assumed peak pressure, which is not known for factory ammunition.
 4. **Powley and Mayer–Hart miss the flattening of the 6 mm and 6.5 Creedmoor series beyond about 24 inches.**
    - For these two cartridges they do no better than the fixed exponent (6 mm: 70 and 80 fps against 75; 6.5: 55 and 64 against 61).
-   - Le Duc, whose hyperbola flattens by construction, does better there (62 and 39 fps).
+   - Le Duc, whose hyperbola flattens by construction, does better there (61 and 39 fps).
    - Marr's longest barrels (27–31″) gain less than the expansion ratio predicts. Friction and heat loss, which these lumped models ignore, are a plausible cause; this is not tested here.
 
 5. **The independent set confirms the Powley result** (7 barrels out of 7, see above), from three sources other than Marr (Hodgdon, Eagleman Long Range, Schmidt). Mayer–Hart, better than Powley on the reference set, is worse on the independent one (1/7); its $\varphi$ reaches 1.07 on the light .223 loads, far outside its domain.

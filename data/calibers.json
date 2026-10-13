@@ -1,5 +1,5 @@
 {
-  "_doc": "Dimensions et pressions = VALEURS de normes CIP/SAAMI, utilisées comme constantes factuelles AVEC ATTRIBUTION (pmax_src). Les documents/fiches sources (PDF CIP « Reproduction interdite même partielle sans autorisation » ; standards SAAMI © copyrightés) ne sont PAS redistribués — voir uniquement les sources officielles. Pas d extraction en masse (droit sui generis bases de données UE) : quelques valeurs ponctuelles citées. bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression (bar) qui pilote la courbe, absente si incertaine. Référentiel C.I.P. PRIORITAIRE (2026-08-02) : vaut la valeur des tables C.I.P. dès que la cartouche y est homologuée, sinon la valeur SAAMI Z299.4 (transducteur psi→bar) et ALORS SEULEMENT pmax_src=\"SAAMI\". L'invariant se lit donc en une ligne : pmax_src présent ⟺ pmax_cip_bar n'est pas une valeur C.I.P. pmax_saami_bar = la valeur SAAMI quand elle est connue et distincte de la C.I.P. — informative, elle ne pilote rien. Aucune provenance n'est déduite d'un psi rond : la C.I.P. reprend parfois une valeur SAAMI convertie (.375 Ruger, 4275 bar = 62 004 psi). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine 0,90 : médiane du rapport des volumes Reload Swiss aux capacités en eau mesurées par Peterson Cartridge sur 21 cartouches, calibrée le 2026-10-12 par calibers/facteur_utile.py du dépôt du site, au lieu de ~0,87 sans source ; pistolet ~0,66, non calibré). 270 Weatherby Magnum et 6.5-284 Norma : capacité Peterson × 0,90 depuis le 2026-10-12, leur P95(volume de poudre)/1,08 dépassant la capacité mesurée de l'étui (rapports 1,016 et 1,075) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur). 7 -08 Rem. : capacité Peterson × 0,90 depuis le 2026-10-12 (3.123 au lieu de 2.717 cm³) : le volume Reload Swiss laissait 0,75 cm³ sous la capacité mesurée, soit 1,83 cm de balle enfoncée à l'alésage (7,24 mm), et les charges maximales du guide Shooters World y remplissaient l'étui jusqu'à 125 %. 357 SIG : 0,89 cm³ depuis le 2026-10-13, « Useful case capacity 0.89 cc » de R. Lee, Modern Reloading, 2e éd., 2003, p. 547 (texte OCR de la copie archive.org), règle des volumes de pistolet de la base ; l'ancien 0,518, sans source, faisait déborder toutes les charges maximales publiées (remplissage médian 1,40, quatre fabricants). Capacités Nosler « CASE HOLDS » (balle en place, calibers/nosler_capacity_reference.json du site, 2026-10-13), médiane des fiches : 45 - 70 Govt. 3.301 -> 4.186 (64.6 gr, 1 fiche) ; 22 Hornet 0.665 -> 0.836 (12.9 gr, 2 fiches) ; 300 AAC BLK 1.044 -> 1.238 (19.1 gr, 3 fiches) ; 220 Swift 2.59 -> 3.033 (46.8 gr, 5 fiches) ; 25-06 Remington 3.675 -> 4.115 (63.5 gr, 5 fiches) ; 458 SOCOM 3.604 -> 2.735 (42.2 gr, 1 fiche) ; 6.5 Grendel 2.785 -> 1.944 (30 gr, 5 fiches). Retenues parce que le volume s'écartait de plus de 10 % de Nosler ET que le remplissage médian des charges maximales publiées par les autres fabricants devient plausible avec la valeur Nosler ; écartées pour cette raison : .300 Savage, .458 Win. Mag. (remplissage qui passerait à 1,15 et 1,27), 9 mm Luger (déjà dans la fourchette Nosler), .45 Colt et .380 ACP (une seule fiche, rien ne départage). case_mm aligné sur la colonne CARTOUCHE MAXI des fiches TDCC C.I.P. le 2026-08-13 (21 valeurs). Contrôle : CIP/check_case_lengths.py.",
+  "_doc": "Dimensions et pressions = VALEURS de normes CIP/SAAMI, utilisées comme constantes factuelles AVEC ATTRIBUTION (pmax_src). Les documents/fiches sources (PDF CIP « Reproduction interdite même partielle sans autorisation » ; standards SAAMI © copyrightés) ne sont PAS redistribués — voir uniquement les sources officielles. Pas d extraction en masse (droit sui generis bases de données UE) : quelques valeurs ponctuelles citées. bore_mm = diamètre d'alésage (rayures/balle), case_mm = longueur d'étui. Sert au rapport de détente et à η_p. Clés = libellés exacts du Guide Reload Swiss. pmax_cip_bar = limite de pression (bar) qui pilote la courbe, absente si incertaine. Référentiel C.I.P. PRIORITAIRE (2026-08-02) : vaut la valeur des tables C.I.P. dès que la cartouche y est homologuée, sinon la valeur SAAMI Z299.4 (transducteur psi→bar) et ALORS SEULEMENT pmax_src=\"SAAMI\". L'invariant se lit donc en une ligne : pmax_src présent ⟺ pmax_cip_bar n'est pas une valeur C.I.P. pmax_saami_bar = la valeur SAAMI quand elle est connue et distincte de la C.I.P. — informative, elle ne pilote rien. Aucune provenance n'est déduite d'un psi rond : la C.I.P. reprend parfois une valeur SAAMI convertie (.375 Ruger, 4275 bar = 62 004 psi). case_vol_cm3 des cartouches web-sourcées = capacité en eau publiée × facteur de volume utile (carabine 0,90 : médiane du rapport des volumes Reload Swiss aux capacités en eau mesurées par Peterson Cartridge sur 21 cartouches, calibrée le 2026-10-12 par calibers/facteur_utile.py du dépôt du site, au lieu de ~0,87 sans source ; pistolet ~0,66, non calibré). 270 Weatherby Magnum et 6.5-284 Norma : capacité Peterson × 0,90 depuis le 2026-10-12, leur P95(volume de poudre)/1,08 dépassant la capacité mesurée de l'étui (rapports 1,016 et 1,075) ; nominal, sans effet sur les ancres (qui nutilisent que bore et longueur). 270 Weatherby Magnum : capacité Nosler balle en place (5,232) depuis le 2026-10-13. Les étuis Weatherby de Nosler et de Norma contiennent, balle en place, 98 à 100 % de l'étui Peterson vide (.257, .270, 7 mm Weatherby), contre 94 % en médiane sur 34 relevés Peterson de 27 cartouches : les étuis diffèrent. L'étalon des marques « comprimée » des fabricants de poudre la place à 5,118, au-dessus de Peterson × 0,90 (4,794). 7 -08 Rem. : capacité Peterson × 0,90 depuis le 2026-10-12 (3.123 au lieu de 2.717 cm³) : le volume Reload Swiss laissait 0,75 cm³ sous la capacité mesurée, soit 1,83 cm de balle enfoncée à l'alésage (7,24 mm), et les charges maximales du guide Shooters World y remplissaient l'étui jusqu'à 125 %. 357 SIG : 0,89 cm³ depuis le 2026-10-13, « Useful case capacity 0.89 cc » de R. Lee, Modern Reloading, 2e éd., 2003, p. 547 (texte OCR de la copie archive.org), règle des volumes de pistolet de la base ; l'ancien 0,518, sans source, faisait déborder toutes les charges maximales publiées (remplissage médian 1,40, quatre fabricants). Capacités Nosler « CASE HOLDS » (balle en place, calibers/nosler_capacity_reference.json du site, 2026-10-13), médiane des fiches : 45 - 70 Govt. 3.301 -> 4.186 (64.6 gr, 1 fiche) ; 22 Hornet 0.665 -> 0.836 (12.9 gr, 2 fiches) ; 300 AAC BLK 1.044 -> 1.238 (19.1 gr, 3 fiches) ; 220 Swift 2.59 -> 3.033 (46.8 gr, 5 fiches) ; 25-06 Remington 3.675 -> 4.115 (63.5 gr, 5 fiches) ; 458 SOCOM 3.604 -> 2.735 (42.2 gr, 1 fiche) ; 6.5 Grendel 2.785 -> 1.944 (30 gr, 5 fiches). Retenues parce que le volume s'écartait de plus de 10 % de Nosler ET que le remplissage médian des charges maximales publiées par les autres fabricants devient plausible avec la valeur Nosler ; écartées pour cette raison : .458 Win. Mag. (remplissage qui passerait à 1,27), 9 mm Luger (déjà dans la fourchette Nosler), .45 Colt et .380 ACP (une seule fiche, rien ne départage). Second passage le même jour, avec un étalon indépendant : les marques « charge comprimée » des fabricants (scripts/etalon_comprime.py ; corrélation 0,82 avec les écarts Nosler sur 56 cartouches). Remplacées par la médiane Nosler quand l'étalon s'écarte de la base dans le même sens, de plus de deux écarts-types, et reste à 5 % de Nosler : 300 Savage 3,408 -> 2,767 ; 300 RCM 4,575 -> 3,985 ; 257 Roberts 3,623 -> 3,344 ; 300 Weatherby Magnum 5,602 -> 5,897 ; 7mm WSM 4,539 -> 4,789 ; 30-30 Win. 2,168 -> 2,307 ; 338-06 3,707 -> 4,005 ; 257 Wby. Mag. 4,827 -> 5,262 ; 280 Remington 3,717 -> 4,053 ; 270 Weatherby Magnum 4,794 -> 5,232 ; 7mm PRC 4,4 -> 4,857 ; 250 Savage 2,356 -> 2,611 ; 7mm RUM 6,098 -> 6,791 ; 308 Marlin Express 2,563 -> 2,718 ; 416 Rigby 6,463 -> 6,869. La .300 Savage, écartée au premier passage, y entre : ses charges publiées remplissent beaucoup parce que la moitié sont comprimées (26 sur 52). Gardées : .308 Win. (Nosler +6,6 %, l'étalon +0,9 % sur 572 charges), .458 Win. Mag. (les deux sources la disent trop grande, de 20 et 10 %). case_mm aligné sur la colonne CARTOUCHE MAXI des fiches TDCC C.I.P. le 2026-08-13 (21 valeurs). Contrôle : CIP/check_case_lengths.py.",
   "calibers": {
     "308 Win.": {
       "type": "rifle",
@@ -373,7 +373,7 @@
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 51.82,
-      "case_vol_cm3": 2.168,
+      "case_vol_cm3": 2.307,
       "pmax_cip_bar": 3200,
       "test_barrel_mm": 610
     },
@@ -611,7 +611,7 @@
       ],
       "bore_mm": 6.53,
       "case_mm": 64.74,
-      "case_vol_cm3": 4.827,
+      "case_vol_cm3": 5.262,
       "pmax_cip_bar": 4400,
       "test_barrel_mm": 660
     },
@@ -619,7 +619,7 @@
       "type": "rifle",
       "bore_mm": 6.53,
       "case_mm": 56.7,
-      "case_vol_cm3": 3.623,
+      "case_vol_cm3": 3.344,
       "pmax_cip_bar": 3550,
       "test_barrel_mm": 610
     },
@@ -642,7 +642,7 @@
       ],
       "bore_mm": 7.82,
       "case_mm": 53.34,
-      "case_vol_cm3": 4.575,
+      "case_vol_cm3": 3.985,
       "pmax_cip_bar": 4400,
       "test_barrel_mm": 610
     },
@@ -661,7 +661,7 @@
       ],
       "bore_mm": 8.59,
       "case_mm": 63.35,
-      "case_vol_cm3": 3.707,
+      "case_vol_cm3": 4.005,
       "test_barrel_mm": 610,
       "pmax_cip_bar": 4482,
       "pmax_src": "ADI",
@@ -674,7 +674,7 @@
       ],
       "bore_mm": 6.53,
       "case_mm": 48.56,
-      "case_vol_cm3": 2.356,
+      "case_vol_cm3": 2.611,
       "test_barrel_mm": 610,
       "pmax_cip_bar": 3650,
       "pmax_saami_bar": 3103
@@ -692,7 +692,7 @@
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 48.77,
-      "case_vol_cm3": 2.563,
+      "case_vol_cm3": 2.718,
       "pmax_cip_bar": 3300,
       "test_barrel_mm": 610
     },
@@ -761,7 +761,7 @@
       ],
       "bore_mm": 7.21,
       "case_mm": 57.91,
-      "case_vol_cm3": 4.4,
+      "case_vol_cm3": 4.857,
       "test_barrel_mm": 610,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4482
@@ -770,7 +770,7 @@
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 47.5,
-      "case_vol_cm3": 3.408,
+      "case_vol_cm3": 2.767,
       "test_barrel_mm": 660,
       "pmax_cip_bar": 3650,
       "pmax_saami_bar": 3241
@@ -788,7 +788,7 @@
       "type": "rifle",
       "bore_mm": 7.21,
       "case_mm": 64.5,
-      "case_vol_cm3": 3.717,
+      "case_vol_cm3": 4.053,
       "pmax_cip_bar": 4050,
       "pmax_saami_bar": 4137
     },
@@ -873,7 +873,7 @@
       "type": "rifle",
       "bore_mm": 10.57,
       "case_mm": 73.66,
-      "case_vol_cm3": 6.463,
+      "case_vol_cm3": 6.869,
       "test_barrel_mm": 620,
       "pmax_cip_bar": 3250,
       "pmax_saami_bar": 4482
@@ -900,7 +900,7 @@
       "type": "rifle",
       "bore_mm": 7.04,
       "case_mm": 64.74,
-      "case_vol_cm3": 4.794,
+      "case_vol_cm3": 5.232,
       "test_barrel_mm": 650,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4309
@@ -912,7 +912,7 @@
       ],
       "bore_mm": 7.21,
       "case_mm": 72.4,
-      "case_vol_cm3": 6.098,
+      "case_vol_cm3": 6.791,
       "test_barrel_mm": 660,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4482
@@ -969,7 +969,7 @@
       "type": "rifle",
       "bore_mm": 7.82,
       "case_mm": 71.8,
-      "case_vol_cm3": 5.602,
+      "case_vol_cm3": 5.897,
       "test_barrel_mm": 660,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4482
@@ -1000,7 +1000,7 @@
       ],
       "bore_mm": 7.21,
       "case_mm": 53.3,
-      "case_vol_cm3": 4.539,
+      "case_vol_cm3": 4.789,
       "test_barrel_mm": 610,
       "pmax_cip_bar": 4400,
       "pmax_saami_bar": 4482

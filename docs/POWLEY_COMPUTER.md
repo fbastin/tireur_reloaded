@@ -41,21 +41,21 @@ barrel length. Conventions of the site's tools
 
 1. **The kwk.us formula reproduces the manual's seven worked velocities** within −1.2 % to +0.2 %,
    nearly always about 1 % low.
-2. **Measured / predicted velocity**: median 1.009 over 390 loads. It follows pressure, as $P^{0.28}$:
+2. **Measured / predicted velocity**: median 1.009 over 390 loads. It follows pressure, as $P^{0.27}$:
 
    | Pressure (psi) | Loads | Median | Quartiles |
    |---|---:|---:|---|
    | under 35,000 | 54 | 0.928 | 0.850–0.959 |
-   | 35,000–40,000 | 27 | 0.958 | 0.916–0.977 |
-   | 40,000–45,000 | 100 | 1.004 | 0.977–1.017 |
-   | 45,000–50,000 | 154 | 1.022 | 1.000–1.058 |
+   | 35,000–40,000 | 27 | 0.958 | 0.911–0.977 |
+   | 40,000–45,000 | 100 | 1.004 | 0.980–1.017 |
+   | 45,000–50,000 | 154 | 1.022 | 0.996–1.049 |
    | 50,000–60,000 | 55 | 1.055 | 1.028–1.079 |
 
-   In the computer's own range, 40,000–50,000 psi: median 1.013 over 254 loads, quartiles 0.989–1.038.
-   HiVel No. 2: 1.041 (40 loads), the manual calls it a higher-energy powder. For the 14 cartridges with at
-   least five loads in that range: 0.967 (.250 Savage) to 1.057 (.270 Winchester).
+   In the computer's own range, 40,000–50,000 psi: median 1.012 over 254 loads, quartiles 0.988–1.036.
+   HiVel No. 2: 1.039 (40 loads), the manual calls it a higher-energy powder. For the 14 cartridges with at
+   least five loads in that range: 0.977 (8 × 57 IS) to 1.057 (.270 Winchester).
    * Case volume: using 0.90 × Peterson's measured water capacity instead moves the medians of six
-     cartridges by 1.2 % at most.
+     cartridges by 1.0 % at most.
    * Velocities taken at 20 ft are 0.5 to 1 % below muzzle velocity (G1 drag table of the site's solver:
      16 fps for a G1 BC of 0.40 at 3,000 fps, 36 fps for 0.20 at 3,500 fps). Not corrected.
 3. **"If you change the weight by a given percentage, inside the same case, the velocity changes by

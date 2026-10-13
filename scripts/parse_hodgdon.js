@@ -60,14 +60,17 @@ const IN = 25.4;
 const num = (s) => parseFloat(String(s).replace(/,/g, ''));
 
 // Une ligne de charge : poudre, puis départ (grains, vitesse, pression+unité) puis maximum.
-// Le « C » suffixe une charge comprimée. Le départ est FACULTATIF : les sections +P
-// (38 Special +P…) ne publient que le maximum, et exiger un départ les faisait disparaître.
-const LOAD = /^(.+?)\s+(?:([\d.]+)C?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s+)?([\d.]+)C?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s*$/;
+// Le « C » suffixe une charge comprimée, gardée dans `compressed`. « C* » : « Max loads that
+// show an asterisk following the "C" for compressed load will not fit with standard IMR 7828.
+// Reduce by 4% » (bas des pages de données) — la charge vaut pour l'IMR 7828 SSC, pas pour la
+// 7828 : ces lignes-là sont écartées. Le départ est FACULTATIF : les sections +P (38 Special
+// +P…) ne publient que le maximum, et exiger un départ les faisait disparaître.
+const LOAD = /^(.+?)\s+(?:([\d.]+)C?\*?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s+)?([\d.]+)(C)?(\*)?\s+(\d{3,5})\s+([\d,]+)\s*(PSI|CUP)\s*$/;
 
 let cartridge = null, barrel = null, bullet_gr = null, bullet_desc = null, bore = null, coal = null;
 const rows = [];
 const inconnues = {};
-let nCup = 0, nPsi = 0;
+let nCup = 0, nPsi = 0, nComp = 0, nTropPour7828 = 0;
 
 const lignes = txt.split('\n');
 for (let i = 0; i < lignes.length; i++) {
@@ -93,25 +96,28 @@ for (let i = 0; i < lignes.length; i++) {
   const poudre = matchPoudre(label);
   if (!poudre) { inconnues[label] = (inconnues[label] || 0) + 1; continue; }
 
-  const unite = m[9].toUpperCase();
+  if (m[8] && poudre === 'IMR 7828') { nTropPour7828++; continue; }
+  const unite = m[11].toUpperCase();
   if (unite === 'CUP') nCup++; else nPsi++;
   rows.push({
     cartridge, bore_mm: bore, barrel_mm: barrel,
     powder: poudre, powder_label: label,
     bullet_gr, bullet_desc,
-    charge_gr: num(m[6]), v0_fps: num(m[7]),
+    charge_gr: num(m[6]), v0_fps: num(m[9]),
     // CUP non convertible : la pression reste nulle, la ligne sert la vitesse seule.
-    Pmax_psi: unite === 'PSI' ? num(m[8]) : null,
+    Pmax_psi: unite === 'PSI' ? num(m[10]) : null,
     Pmax_unit: unite,
     coal_in: coal,
+    compressed: !!m[7],
   });
+  if (m[7]) nComp++;
 }
 
 const out = {
   _doc: "Hodgdon Annual Manual (AM24) — donnees brutes, LOCAL/gitignore, non redistribue. "
       + "Charge max + v0(fps) + Pmax(psi) quand l'unite est le PSI ; Pmax_psi=null pour les "
-      + "lignes en CUP, non convertible. Lu en pdftotext -raw : la page est sur deux colonnes "
-      + "que -layout recolle, ce qui melange deux cartouches.",
+      + "lignes en CUP, non convertible. compressed = charge max marquee « C ». Lu en pdftotext -raw : "
+      + "la page est sur deux colonnes que -layout recolle, ce qui melange deux cartouches.",
   _source: path.basename(pdf),
   rows,
 };
@@ -122,6 +128,7 @@ const poudres = new Set(rows.map((r) => r.powder));
 console.log(`-> data/hodgdon.local.json`);
 console.log(`   ${rows.length} charges · ${cartouches.size} cartouches · ${poudres.size} poudres`);
 console.log(`   pression exploitable : ${nPsi} en PSI · ${nCup} en CUP (vitesse seule)`);
+console.log(`   charges maximales comprimées (« C ») : ${nComp} · écartées, trop pour l'IMR 7828 standard (« C* ») : ${nTropPour7828}`);
 const inc = Object.entries(inconnues).sort((a, b) => b[1] - a[1]);
 if (inc.length) {
   const perdues = inc.reduce((s, [, n]) => s + n, 0);

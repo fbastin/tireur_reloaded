@@ -43,7 +43,11 @@ PAGES = {'762-39mm': '7.62 x 39', '7-57mm-mauser': '7 x 57', '8-57mm-js-mauser':
          '300-aac-blackout': '300 AAC BLK', '6-5-prc': '6.5 PRC', '65-284-norma': '6.5-284 Norma', '6mm-xc': '6 XC',
          '30-06-springfield': '30-06 Spring.', '250-3000-savage': '250 Savage', '45-colt-single-action-army-replicas': '45 Colt',
          '45-colt-ruger-t-c-contender-encore': None, '6mm-creedmoor': '6 mm Creedmoor', '6mm-remington': '6 mm Remington',
-         '7mm-remington-magnum': '7 Rem. Mag.', '7mm-weatherby-magnum': '7mm Weatherby Magnum', '10mm-auto': '10 mm Auto'}
+         '7mm-remington-magnum': '7 Rem. Mag.', '7mm-weatherby-magnum': '7mm Weatherby Magnum', '10mm-auto': '10 mm Auto',
+         '270-winchester-short-magnum-wsm': '270 WSM', '300-prc-precision-rifle-cartridge': '300 PRC',
+         '300-ruger-compact-magnum-rcm': '300 RCM', '300-remington-ultra-magnum-rum': '300 Rem. Ultra Mag.',
+         '300-winchester-short-magnum-wsm': '300 WSM', '375-holland-holland-magnum': '375 H&H Mag.', '7mm-prc': '7mm PRC',
+         '7mm-remington-ultra-magnum-rum': '7mm RUM', '7mm-winchester-short-magnum-wsm': '7mm WSM'}
 
 # Libellé de poudre Nosler -> clé de data/powders.json. Les Reloder (« RL15 »), les Vihtavuori (« N150 »,
 # « Viht N150 ») et les libellés déjà égaux à une clé (« IMR 4350 », « Norma 204 ») se résolvent par règle.
@@ -71,7 +75,7 @@ POUDRES = {'2400': 'Alliant 2400', 'A-2460': 'Accurate 2460', 'A-2520': 'Accurat
            'US869': 'Hodgdon US869', 'Unique': 'Alliant Unique', 'Universal': 'Hodgdon Universal',
            'Varget': 'Hodgdon Varget', 'W296': 'Winchester 296', 'W748': 'Winchester 748', 'W760': 'Winchester 760',
            'WSF': 'Winchester WSF Super-Field', 'WST': 'Winchester WST', 'X-Terminator': 'Ramshot X-Terminator',
-           'Zip': 'Ramshot Zip'}
+           'Zip': 'Ramshot Zip', 'H50BMG': 'Hodgdon H50BMG', 'LRT': 'Ramshot LRT'}
 
 LIGNE = re.compile(r'^\s*(?P<nom>.*?)\s+(?P<chg>\d{1,3}\.\d)\s+(?P<acc>\*\s*)?(?P<max>MAX\.\s*)?(?P<vel>\d{3,4})\s+'
                    r'(?P<comp>\*\*\s+)?(?P<ld>\d{2,3})%\s*$')
@@ -112,8 +116,12 @@ def telecharger(dossier, cal):
         k = PAGES[slug] if slug in PAGES else idx.get(norm(slug.replace('-', ' ')))
         if not k:
             continue
-        for p in sorted(set(re.findall(r'(/media/load_data_assets/pdfs/[A-Za-z0-9_.%-]+\.pdf)',
-                                       lire('https://www.nosler.com/' + slug).decode('utf-8', 'replace')))):
+        # Fiches sous /media/load_data_assets/pdfs/ en général, sous /media/ ou /media/binaryanvil/… pour les
+        # PRC : tout PDF de /media/ dont le nom porte une masse de balle (« 210gr »).
+        page_c = lire('https://www.nosler.com/' + slug).decode('utf-8', 'replace')
+        for p in sorted({re.sub(r'^https://www\.nosler\.com', '', u) for u in re.findall(
+                r'href="((?:https://www\.nosler\.com)?/media/[A-Za-z0-9_./%-]+\.pdf)"', page_c)
+                if re.search(r'\d+\s*gr', os.path.basename(u), re.I)}):
             f = os.path.join(dossier, os.path.basename(p))
             if not os.path.exists(f):
                 lire('https://www.nosler.com' + p, f)
@@ -183,8 +191,9 @@ def main():
         mf = [st.median(r) for r in fiches.values()]
         tab.append((k, len(v), len(fiches), st.median([r for rr in fiches.values() for r in rr]), min(mf), max(mf),
                     pw.get(k, {}).get('pcd'), k in pw))
-    rap = [t[3] * 1000 / t[6] for t in tab if t[6]]
-    print(f"\ndensité implicite, {len(tab)} poudres ; contre la base ({len(rap)}) : rapport médian {st.median(rap):.3f}, "
+    # sans les densités que la base tient de Nosler lui-même (DENSITES_NOSLER d'import_catalog.js)
+    rap = [t[3] * 1000 / t[6] for t in tab if t[6] and not str(pw[t[0]].get('pcd_src', '')).startswith('Nosler')]
+    print(f"\ndensité implicite, {len(tab)} poudres ; contre la base hors densités Nosler ({len(rap)}) : rapport médian {st.median(rap):.3f}, "
           f"moitié centrale {sorted(rap)[len(rap) // 4]:.3f}–{sorted(rap)[3 * len(rap) // 4]:.3f}")
     print(f"  {'poudre':30s} {'lignes':>6s} {'fiches':>6s} {'Nosler':>6s} {'par fiche':>13s} {'base':>5s}")
     for k, n, nf, m, lo, hi, base, existe in sorted(tab, key=lambda t: (t[6] is not None, -abs(t[3] * 1000 / t[6] - 1) if t[6] else 0)):
