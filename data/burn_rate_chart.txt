@@ -1,26 +1,52 @@
+# Vitesse de combustion, de la plus rapide à la plus lente : une poudre par ligne, rang = ordre des lignes.
+# Les 26 lignes d'origine (Reload Swiss, Accurate, Vihtavuori ; commit f3a0a49) n'ont pas de source inscrite.
+# Ajouts du 2026-10-12 : poudres Shooters World et Lovex placées juste après la poudre dont elles partagent
+# la ligne dans le tableau du guide Shooters World (PDF de novembre 2022, p. 2). Une poudre sans voisine dans
+# ce fichier (Clean Shot, Precision, Long Rifle, Tactical Rifle seule sur sa ligne…) n'est pas placée.
 RS14
 RS12
 RS20
 RS24
 Accurate No. 9
+# Shooters World (tableau p. 2) : sur la ligne de l'Accurate No 9
+Shooters World Heavy Pistol
+Lovex D037.2
 RS30
 Accurate 4100
 Vihtavuori N120
+# Shooters World : sur la ligne de la N120 (avec H4198, IMR 4198)
+Shooters World SOCOM
 RS36
 Accurate 1680
+# Shooters World : sur la ligne de l'Accurate 1680
+Shooters World Blackout
+Lovex D063
 RS40
 Accurate 2015BR
 Accurate 2230
+# Shooters World : sur la ligne de l'Accurate 2230 (et de la N130)
+Shooters World AR Plus
+Lovex D073.4
 RS50
 Accurate 2460
+# Shooters World : D073.05 sur la ligne de l'Accurate 2460 (et de la N133)
+Lovex D073.5
 RS52
 Accurate 2520
+# Shooters World : sur la ligne de l'Accurate 2520 (et de la N140)
+Shooters World Match Rifle
+Lovex D073.6
 RS60
 Accurate 4350
+# Shooters World : sur la ligne de l'Accurate 4350
+Shooters World SW 4350
+Lovex S070
 Vihtavuori N160
 RS62
 RS70
 Accurate 3100
+# Shooters World : S071 sur la ligne de l'Accurate 3100 — et de la Vihtavuori N160, que ce fichier range deux rangs plus tôt (non modifié)
+Lovex S071
 RS76
 Accurate Magpro
 RS80

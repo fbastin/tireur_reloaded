@@ -80,7 +80,65 @@ const CORRECTIONS = {
       + '« Lil\' Gun QL » (Tom24, 2023-05-05, « QL Clone » : valeurs reprises de QuickLOAD) '
       + 'et « Lil\'Gun (sub-sonic) » (2023-05-07), tous deux à 956 kg/m³. Posée le 2026-10-08.',
   },
+  'Shooters World Clean Shot': {
+    fields: { type: 'Spherical' },
+    why: 'Le catalogue la classe « Extruded ». Le guide du fabricant la dit sphérique '
+      + '(« It\'s spherical geometry assures highly consistent powder drops ») et la nomme '
+      + 'D032 chez Lovex, que le même catalogue classe déjà « Spherical ».',
+    src: 'Shooters World, Reloading Guide (PDF de novembre 2022), p. 6 ; relevé le 2026-10-12.',
+  },
 };
+
+/**
+ * CONFIRMATIONS — densités apparentes (pcd) qu'une source FABRICANT confirme.
+ *
+ * Elles ne changent aucune valeur : elles posent `pcd_src` dans powders.json, pour que la
+ * provenance d'une densité se lise à côté d'elle (le catalogue amont et les fichiers GRT
+ * sont des sources secondaires). Le guide arrondit (« approximately 0.9 grams/cc ») : une
+ * valeur de la base à plus de 1 % de la sienne n'est pas confirmée, elle est signalée.
+ * Les poudres Lovex sont confirmées par la même page, qui donne leur nom Lovex.
+ */
+const GUIDE_SW = 'Shooters World, Reloading Guide (PDF de novembre 2022)';
+const CONFIRMATIONS = [
+  // [clé Shooters World, page, densité imprimée (g/cc), nom imprimé, clé Lovex jumelle ou null]
+  ['Shooters World Clean Shot', 6, 0.65, 'Clean Shot', 'Lovex D032'],
+  ['Shooters World Ultimate Pistol', 7, 0.92, 'Ultimate Pistol', null],
+  ['Shooters World Auto Pistol', 8, 0.95, 'Auto Pistol', 'Lovex D036'],
+  ['Shooters World Major Pistol', 9, 0.98, 'Major Pistol', 'Lovex D037.1'],
+  ['Shooters World Heavy Pistol', 10, 0.98, 'Heavy Pistol', 'Lovex D037.2'],
+  ['Shooters World Buffalo Rifle', 11, 0.87, 'Buffalo Rifle', 'Lovex D060'],
+  ['Shooters World SOCOM', 12, 0.99, 'SOCOM', null],
+  ['Shooters World Blackout', 13, 1, 'Blackout', 'Lovex D063'],
+  ['Shooters World Tactical Rifle', 15, 1.0, 'Tactical Rifle', null],
+  ['Shooters World Match Rifle', 16, 1, 'Match Rifle', 'Lovex D073.6'],
+  ['Shooters World Precision', 17, 0.9, 'Precision Rifle', 'Lovex S062'],
+  ['Shooters World Long Rifle', 18, 0.9, 'Long Rifle', 'Lovex S065'],
+  ['Shooters World SW 4350', 19, 0.9, 'SW4350', 'Lovex S070'],
+  ['Shooters World SW50BMG', 20, 1, 'SW 50BMG', 'Lovex D100-1'],
+];
+
+function appliquerConfirmations(pj) {
+  let n = 0;
+  for (const [cle, page, gcc, nom, jumelle] of CONFIRMATIONS) {
+    const cite = nom === 'SW 50BMG'
+      ? `« has a density of approximately ${gcc} gram/cc »`
+      : `« The density of ${nom} is approximately ${gcc} gram${gcc === 1 ? '' : 's'}/cc »`;
+    for (const [k, txt] of [[cle, `${GUIDE_SW}, p. ${page} : ${cite}`],
+      [jumelle, `${GUIDE_SW}, p. ${page} : ${cite} pour ${nom}, vendue sous le nom ${jumelle} (même page)`]]) {
+      if (!k) continue;
+      const e = pj.powders[k];
+      if (!e) { console.warn(`  ⚠ confirmation sans cible : ${k}`); continue; }
+      if (!e.pcd || Math.abs(e.pcd / (gcc * 1000) - 1) > 0.01) {
+        console.warn(`  ⚠ ${k} : pcd ${e.pcd} contre ${gcc} g/cc dans le guide — non confirmée`);
+        delete e.pcd_src;
+        continue;
+      }
+      e.pcd_src = txt;
+      n++;
+    }
+  }
+  console.log(`  densités confirmées par le guide Shooters World : ${n}`);
+}
 
 function appliquerCorrections(pj, catalog) {
   for (const [key, c] of Object.entries(CORRECTIONS)) {
@@ -142,8 +200,9 @@ for (const c of rows) {
 }
 
 appliquerCorrections(pj, catalog);
+appliquerConfirmations(pj);
 
-pj._doc = 'Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance).';
+pj._doc = 'Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : source fabricant qui confirme la densite (bloc CONFIRMATIONS du meme script).';
 pj.powders = Object.fromEntries(Object.keys(pj.powders).sort().map((k) => [k, pj.powders[k]]));
 fs.writeFileSync(d('powders.json'), JSON.stringify(pj, null, 2) + '\n');
 

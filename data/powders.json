@@ -1,5 +1,5 @@
 {
-  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance).",
+  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : source fabricant qui confirme la densite (bloc CONFIRMATIONS du meme script).",
   "powders": {
     "20N29": {
       "mfg": "Vihtavuori",
@@ -1439,42 +1439,48 @@
       "name": "D032",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 650
+      "pcd": 650,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 6 : « The density of Clean Shot is approximately 0.65 grams/cc » pour Clean Shot, vendue sous le nom Lovex D032 (même page)"
     },
     "Lovex D036": {
       "mfg": "Lovex",
       "name": "D036",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 950
+      "pcd": 950,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 8 : « The density of Auto Pistol is approximately 0.95 grams/cc » pour Auto Pistol, vendue sous le nom Lovex D036 (même page)"
     },
     "Lovex D037.1": {
       "mfg": "Lovex",
       "name": "D037.1",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 980
+      "pcd": 980,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 9 : « The density of Major Pistol is approximately 0.98 grams/cc » pour Major Pistol, vendue sous le nom Lovex D037.1 (même page)"
     },
     "Lovex D037.2": {
       "mfg": "Lovex",
       "name": "D037.2",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 980
+      "pcd": 980,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 10 : « The density of Heavy Pistol is approximately 0.98 grams/cc » pour Heavy Pistol, vendue sous le nom Lovex D037.2 (même page)"
     },
     "Lovex D060": {
       "mfg": "Lovex",
       "name": "D060",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 870
+      "pcd": 870,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 11 : « The density of Buffalo Rifle is approximately 0.87 grams/cc » pour Buffalo Rifle, vendue sous le nom Lovex D060 (même page)"
     },
     "Lovex D063": {
       "mfg": "Lovex",
       "name": "D063",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 13 : « The density of Blackout is approximately 1 gram/cc » pour Blackout, vendue sous le nom Lovex D063 (même page)"
     },
     "Lovex D073.4": {
       "mfg": "Lovex",
@@ -1496,14 +1502,16 @@
       "base": "Double",
       "type": "Spherical",
       "energy_Jg": 3700,
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 16 : « The density of Match Rifle is approximately 1 gram/cc » pour Match Rifle, vendue sous le nom Lovex D073.6 (même page)"
     },
     "Lovex D100-1": {
       "mfg": "Lovex",
       "name": "D100-1",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 20 : « has a density of approximately 1 gram/cc » pour SW 50BMG, vendue sous le nom Lovex D100-1 (même page)"
     },
     "Lovex S011": {
       "mfg": "Lovex",
@@ -1565,7 +1573,8 @@
       "base": "Single",
       "type": "Extruded",
       "energy_Jg": 3850,
-      "pcd": 900
+      "pcd": 900,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 17 : « The density of Precision Rifle is approximately 0.9 grams/cc » pour Precision Rifle, vendue sous le nom Lovex S062 (même page)"
     },
     "Lovex S065": {
       "mfg": "Lovex",
@@ -1573,14 +1582,16 @@
       "base": "Single",
       "type": "Extruded",
       "energy_Jg": 3850,
-      "pcd": 900
+      "pcd": 900,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 18 : « The density of Long Rifle is approximately 0.9 grams/cc » pour Long Rifle, vendue sous le nom Lovex S065 (même page)"
     },
     "Lovex S070": {
       "mfg": "Lovex",
       "name": "S070",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 900
+      "pcd": 900,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 19 : « The density of SW4350 is approximately 0.9 grams/cc » pour SW4350, vendue sous le nom Lovex S070 (même page)"
     },
     "Lovex S071": {
       "mfg": "Lovex",
@@ -2727,98 +2738,112 @@
       "name": "Auto Pistol",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 950
+      "pcd": 950,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 8 : « The density of Auto Pistol is approximately 0.95 grams/cc »"
     },
     "Shooters World Blackout": {
       "mfg": "Shooters World",
       "name": "Blackout",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 13 : « The density of Blackout is approximately 1 gram/cc »"
     },
     "Shooters World Buffalo Rifle": {
       "mfg": "Shooters World",
       "name": "Buffalo Rifle",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 870
+      "pcd": 870,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 11 : « The density of Buffalo Rifle is approximately 0.87 grams/cc »"
     },
     "Shooters World Clean Shot": {
       "mfg": "Shooters World",
       "name": "Clean Shot",
       "base": "Double",
-      "type": "Extruded",
-      "pcd": 650
+      "type": "Spherical",
+      "pcd": 650,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 6 : « The density of Clean Shot is approximately 0.65 grams/cc »"
     },
     "Shooters World Heavy Pistol": {
       "mfg": "Shooters World",
       "name": "Heavy Pistol",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 980
+      "pcd": 980,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 10 : « The density of Heavy Pistol is approximately 0.98 grams/cc »"
     },
     "Shooters World Long Rifle": {
       "mfg": "Shooters World",
       "name": "Long Rifle",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 900
+      "pcd": 900,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 18 : « The density of Long Rifle is approximately 0.9 grams/cc »"
     },
     "Shooters World Major Pistol": {
       "mfg": "Shooters World",
       "name": "Major Pistol",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 980
+      "pcd": 980,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 9 : « The density of Major Pistol is approximately 0.98 grams/cc »"
     },
     "Shooters World Match Rifle": {
       "mfg": "Shooters World",
       "name": "Match Rifle",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 16 : « The density of Match Rifle is approximately 1 gram/cc »"
     },
     "Shooters World Precision": {
       "mfg": "Shooters World",
       "name": "Precision",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 895
+      "pcd": 895,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 17 : « The density of Precision Rifle is approximately 0.9 grams/cc »"
     },
     "Shooters World SOCOM": {
       "mfg": "Shooters World",
       "name": "SOCOM",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 990
+      "pcd": 990,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 12 : « The density of SOCOM is approximately 0.99 grams/cc »"
     },
     "Shooters World SW 4350": {
       "mfg": "Shooters World",
       "name": "SW 4350",
       "base": "Single",
       "type": "Extruded",
-      "pcd": 900
+      "pcd": 900,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 19 : « The density of SW4350 is approximately 0.9 grams/cc »"
     },
     "Shooters World SW50BMG": {
       "mfg": "Shooters World",
       "name": "SW50BMG",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 20 : « has a density of approximately 1 gram/cc »"
     },
     "Shooters World Tactical Rifle": {
       "mfg": "Shooters World",
       "name": "Tactical Rifle",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 1000
+      "pcd": 1000,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 15 : « The density of Tactical Rifle is approximately 1 gram/cc »"
     },
     "Shooters World Ultimate Pistol": {
       "mfg": "Shooters World",
       "name": "Ultimate Pistol",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 920
+      "pcd": 920,
+      "pcd_src": "Shooters World, Reloading Guide (PDF de novembre 2022), p. 7 : « The density of Ultimate Pistol is approximately 0.92 grams/cc »"
     },
     "SomChem MP200": {
       "mfg": "SomChem",

@@ -175,6 +175,24 @@ before computing `eeff` (see CONTRIBUTING → *Sierra legacy load data*). `v0_fp
 ]}
 ```
 
+### `shooters_world.local.json` — Shooters World guide rows (`scripts/parse_shooters_world.py`)
+
+Explosia/Lovex powders under their US names, SAAMI data: starting and maximum charge with
+velocities, maximum pressure in **psi**, all in imperial units as printed. `poudre` is the
+`powders.json` key; `cartouche`, `etui`, `balle` are the printed labels (map them with the `CLE`
+table of `scripts/sw_remplissage.py`). `canon_in` is set only where the guide prints a barrel
+length; `comprimee` marks a maximum printed with a « C ». Some rows copy the Lovex (C.I.P.) data,
+pressure converted from bar: see `scripts/sw_lovex_comparaison.py`. Used by `sw_remplissage.py`
+(case-volume check), `sw_lovex_comparaison.py` and `sw_crosscheck.js` (validation); never by the fit.
+
+```jsonc
+{ "rows": [
+  { "poudre": "Shooters World Match Rifle", "cartouche": ".308 Winchester", "etui": "Winchester",
+    "balle": "168 gr Nosler BT", "balle_gr": 168, "coal_in": 2.81, "start_gr": 42.0, "start_fps": 2590,
+    "max_gr": 45.7, "max_fps": 2798, "max_psi": 60500, "canon_in": null, "comprimee": false, "page_pdf": 39 }
+]}
+```
+
 ## Units summary
 
 | Quantity | Unit |
