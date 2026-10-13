@@ -2,6 +2,8 @@
 """Remplissage des charges MAXIMALES publiées par les fabricants, au volume nominal de la base.
 
     python3 scripts/remplissage_publie.py [--cartouches]
+    python3 scripts/remplissage_publie.py --check    # nocturne : sort en 1 sur un signal nouveau
+
 
 L'outil (index.php) affiche le remplissage (charge / densité apparente) / volume utile nominal et
 alerte au-delà d'un seuil. Une alerte de danger qui se déclenche sur les maxima des fabricants perd son
@@ -17,6 +19,13 @@ publiées dépassent chaque seuil, et désigne ce qui les fait dépasser :
 Les marques « charge comprimée » des fabricants (Hodgdon, Western, Lyman, Alliant) servent d'étalon : une charge
 non marquée tient dans l'étui sans tassement.
 Données : data/*.local.json (locales, hors git).
+
+Contrôle nocturne (--check, étape 8quinquies de la maintenance du site, 2026-10-13). Chaque signal admis est
+inscrit, avec sa raison, dans data/remplissage_reference.json ; le contrôle sort en 1 sur un signal qui n'y
+est pas, sur une part de maxima au-delà du seuil rouge supérieure au plafond inscrit, ou sur un nombre de
+charges lues tombé sous 90 % de la référence (un lecteur de guide cassé, un fichier local absent). Il aurait
+signalé le lecteur Alliant (charges de la .338 RUM prêtées à la .338 Win. Mag.) et le lecteur Vihtavuori (les
+tableaux à virgule décimale, 6,5 Grendel rangée sous la .25-06), tous deux trouvés à la main.
 """
 import json
 import os
@@ -30,6 +39,7 @@ GRAIN = 0.06479891
 SOURCES = {'hodgdon': 'charge_gr', 'western': 'charge_gr', 'vihtavuori': 'max_gr', 'lyman': 'max_gr',
            'lovex': 'max_gr', 'alliant': 'charge_gr', 'norma': 'max_gr', 'adi': 'charge_gr'}
 SEUILS = (1.05, 1.10, 1.15, 1.20, 1.25, 1.30)
+ROUGE = 1.25                                               # seuil de l'alerte rouge d'index.php
 
 
 # Appariement identique à celui de build_anchors.js : libellés normalisés (parenthèses ôtées,
@@ -62,6 +72,33 @@ def index(pw, cal):
 def q(a, p):
     a = sorted(a)
     return a[min(len(a) - 1, int(p * len(a)))]
+
+
+def verifier(n, part_rouge, ecarts, trop, absents):
+    ref = json.load(open(os.path.join(ICI, 'data', 'remplissage_reference.json'), encoding='utf-8'))
+    pb = []
+    if absents:
+        pb.append(f"données locales absentes : {', '.join(absents)}")
+    if n < 0.9 * ref['charges']:
+        pb.append(f"{n} charges maximales lues, contre {ref['charges']} à la référence : un lecteur de guide a cassé ?")
+    if part_rouge > ref['part_rouge_max']:
+        pb.append(f"{100 * part_rouge:.1f} % des maxima publiés au-delà du seuil rouge ({100 * ROUGE:.0f} %), plafond "
+                  f"{100 * ref['part_rouge_max']:.1f} % : un volume ou une densité a changé ?")
+    for e in ecarts:
+        if e not in ref['ecarts']:
+            pb.append(f"source à l'écart du consensus, non examinée : {e.replace('|', ' — ')}")
+    for c in trop:
+        if c not in ref['trop_pleins']:
+            pb.append(f"toutes les sources au-dessus de 1,10, non examiné : {c}")
+    print()
+    for e in sorted(set(ref['ecarts']) - set(ecarts)) + sorted(set(ref['trop_pleins']) - set(trop)):
+        print(f"(signal admis disparu, la référence peut être allégée : {e})")
+    if pb:
+        print('\n'.join('/!\\ ' + p for p in pb))
+        return 1
+    print(f"remplissage des charges publiées : OK — {n} maxima, {100 * part_rouge:.1f} % au-delà du seuil rouge, "
+          f"{len(ecarts) + len(trop)} signaux, tous examinés")
+    return 0
 
 
 def main():
@@ -105,7 +142,7 @@ def main():
     # Carabines seulement : pour une arme de poing, le remplissage suit surtout la vivacité des poudres que
     # chaque fabricant retient (Western et Hodgdon : beaucoup de poudres vives), pas une erreur d'extraction.
     print("\nsource à l'écart du consensus, carabines (|écart| > 0,12, au moins trois sources de 5 charges) :")
-    trop = []
+    trop, ecarts = [], []
     for ck, ds in sorted(par.items()):
         meds = {s: st.median(v) for s, v in ds.items() if len(v) >= 5}
         if not meds:
@@ -114,6 +151,7 @@ def main():
         if len(meds) >= 3 and cal[ck].get('type') != 'handgun':
             for s, v in meds.items():
                 if abs(v - cons) > 0.12:
+                    ecarts.append(f"{ck}|{s}")
                     print(f"  {ck:22s} {s:10s} {v:.2f} contre {cons:.2f}")
         if cons > 1.10 and len(meds) >= 2:
             trop.append((cons, ck, meds))
@@ -121,6 +159,9 @@ def main():
     for cons, ck, meds in sorted(trop, reverse=True):
         print(f"  {ck:22s} volume {cal[ck]['case_vol_cm3']:.3f}  consensus {cons:.2f}  "
               + '  '.join(f'{s} {v:.2f}' for s, v in sorted(meds.items())))
+    if '--check' in sys.argv:
+        return verifier(len(L), sum(x['ff'] > ROUGE for x in L) / len(L), ecarts, [ck for _, ck, _ in trop],
+                        [s for s in SOURCES if not os.path.exists(d(s + '.local.json'))])
     if '--cartouches' in sys.argv:
         print("\npar cartouche, part des charges maximales au-delà de 1,25 :")
         for ck in sorted(par, key=lambda k: -sum(f > 1.25 for v in par[k].values() for f in v)):
@@ -131,4 +172,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

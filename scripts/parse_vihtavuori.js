@@ -22,8 +22,11 @@ const cartFilter = process.argv.includes('--cart') ? process.argv[process.argv.i
 const sheets = fs.readFileSync(file, 'utf8').split(/<page /).slice(1);
 const isPowder = (t) => /^(N\d{2,3}[A-Z]?|\d{1,2}N\d{2})$/.test(t);
 const num = (t) => { const c = t.replace(/[CFA]+$/i, '').replace(',', '.'); return /^\d+(\.\d+)?$/.test(c) ? +c : null; };
-// cartridge name = leading token run before "Test barrel" / "cont." / "Primers"
-const CART_RE = /^\s*\.?([0-9][\w.&'’ x/()-]*?)\s+(?:cont\.?|Test barrel|Primers|Cases:)/;
+// cartridge name = leading token run before "Test barrel" / "cont." / "Primers". La virgule décimale
+// (« 6,5 mm Grendel ») manquait jusqu'au 2026-10-13 : le titre n'était pas lu, et les lignes allaient à la
+// cartouche précédente de la demi-page (.25-06 <- 6,5 Grendel, .300 Savage <- 7,62 x 53R, 300 RUM <- 7,62 x 39,
+// 338 Lapua <- 9,3 x 62, 7 mm GJW <- 7,62 x 25), ou étaient perdues (1 088 lignes, dont 338 de 6,5 Creedmoor).
+const CART_RE = /^\s*\.?([0-9][\w.,&'’ x/()-]*?)\s+(?:cont\.?|Test barrel|Primers|Cases:)/;
 
 // --- build per-half "lines" (array of {y, toks:[{x,t}]}) for every guide-page-half ---
 function halves() {
@@ -49,12 +52,35 @@ const ALL = halves();
 // carried until the next bullet block or cartridge change.
 const norm = (s) => s.trim().replace(/\s+cont\.?$/i, '').replace(/\s+/g, ' ');
 const records = [];
+// Dernier canon vu par cartouche : une demi-page de suite (« cont. ») le reprend. Avec le PREMIER canon de
+// la cartouche (repli ci-dessous, seul jusqu'au 2026-10-13), les tableaux à plusieurs sections de canon
+// (6,5 x 55 SE / SKAN : 670, 700 puis 740 mm) donnaient à la fin d'une section le canon de la première.
+const dernierCanon = {};
 for (const lines of ALL) {
   let cart = null, barrel = null, bulletGrs = null;
-  for (const ln of lines) {
-    const s = ln.toks.map((w) => w.t).join(' ');
-    const cm = s.match(CART_RE); if (cm) { const nc = norm(cm[1]); if (nc !== cart) { cart = nc; bulletGrs = null; } }
-    const bm = s.match(/Test barrel:\s*(\d+)\s*mm/); if (bm) barrel = +bm[1];
+  for (const [li, ln] of lines.entries()) {
+    // mots de gauche à droite : un titre et « Test barrel » sur la même ligne se lisaient dans l'ordre
+    // vertical, « Test barrel » en tête, et le titre n'était plus reconnu (6,5 x 55 SE /, 2026-10-13)
+    const s = ln.toks.slice().sort((a, b) => a.x - b.x).map((w) => w.t).join(' ');
+    const cm = s.match(CART_RE);
+    if (cm) {
+      let nc = norm(cm[1]);
+      // Titre coupé (« .300 Remington » + « Ultra Magnum », « 6,5 x 55 SE / » + « 6,5 x 55 SKAN ») : sa fin
+      // vient sous la ligne « Primers », avant « Cases: ». Toute ligne sans deux-points entre les deux est
+      // recollée (cinq titres du guide 2026 : 300 RUM, .30-378 Weatherby, 6,5 x 55 SE / SKAN, .375
+      // CheyTac, 9 mm Browning court / .380 Auto).
+      if (/Test barrel/.test(s)) {
+        for (let j = li + 1; j < Math.min(lines.length, li + 5); j++) {
+          const sj = lines[j].toks.slice().sort((a, b) => a.x - b.x).map((w) => w.t).join(' ');
+          if (/Cases:/.test(sj)) break;
+          if (!sj.includes(':')) nc = norm(nc + ' ' + sj);
+        }
+      }
+      if (nc !== cart) { cart = nc; bulletGrs = null; if (barrel == null && /\bcont\b/i.test(s)) barrel = dernierCanon[cart] ?? null; }
+    }
+    // « Test barrel: Sauer STR 200 » puis « Barrel length: 670 mm » (6,5 x 55 SE / SKAN, par section) : les
+    // deux formes donnent le canon.
+    const bm = s.match(/Test barrel:\s*(\d+)\s*mm/) || s.match(/Barrel length:\s*(\d+)\s*mm/); if (bm) barrel = +bm[1];
     const toks = ln.toks.slice().sort((a, b) => a.x - b.x);
     const pIdx = toks.findIndex((w) => isPowder(w.t));
     if (pIdx < 0 || !cart) continue;
@@ -67,6 +93,7 @@ for (const lines of ALL) {
     const ok = bulletGrs >= 20 && bulletGrs <= 600 && mgr >= 2 && mgr <= 160 && sgr >= 1 && sgr <= mgr + 0.5
       && mms >= 200 && mms <= 1400 && sms >= 150 && sms <= mms + 5;
     if (!ok) continue;
+    if (barrel != null) dernierCanon[cart] = barrel;
     records.push({ cartridge: cart, barrel_mm: barrel, bullet_gr: bulletGrs,
       powder: toks[pIdx].t, start_gr: sgr, start_ms: sms, max_gr: mgr, max_ms: mms });
   }

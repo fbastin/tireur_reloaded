@@ -154,7 +154,8 @@
       "type": "rifle",
       "aliases": [
         "6.5 x 55mm Swedish Mauser",
-        "6.5x55 Swedish"
+        "6.5x55 Swedish",
+        "6,5 x 55 SE / 6,5 x 55 SKAN"
       ],
       "bore_mm": 6.71,
       "case_mm": 55,
@@ -361,7 +362,8 @@
       "aliases": [
         "380 Auto",
         "380 ACP",
-        "9mm Kurz"
+        "9mm Kurz",
+        "9 mm Browning court / .380 Auto"
       ],
       "bore_mm": 9.02,
       "case_mm": 17.27,
@@ -564,7 +566,8 @@
     "6.5 Grendel": {
       "type": "rifle",
       "aliases": [
-        "6.5 Grendel AR-15"
+        "6.5 Grendel AR-15",
+        "6,5 mm Grendel"
       ],
       "bore_mm": 6.71,
       "case_mm": 38.61,
