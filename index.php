@@ -691,8 +691,12 @@ function calc(){
     if(pct>100){al.push(T(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite ${limSrc(cart)} (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`,`Estimated overpressure: <strong>${pct.toFixed(0)}%</strong> of the ${limSrc(cart)} limit (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`));lvl='danger';}
     else if(pct>=85){al.push(T(`Pression proche de la limite ${limSrc(cart)} (${pct.toFixed(0)} %)`,`Pressure close to the ${limSrc(cart)} limit (${pct.toFixed(0)}%)`));lvl='warn';}
   }
+  // Seuils de remplissage (2026-10-13, scripts/remplissage_publie.py) : au volume nominal de la base,
+  // les charges MAXIMALES publiées par les fabricants remplissent l'étui à 0,98 en médiane et à 1,23-1,28
+  // au 99e centile (poudres extrudées ou sphériques) ; le rouge à 110 % touchait une charge maximale
+  // publiée sur dix. Rouge au-delà de 125 % (1,4 % des maxima publiés au-dessus), orange au-delà de 105 %.
   if(hasPcd){
-    if(fill>110){al.push(T(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`,`Overfilled case: load density <strong>${fill.toFixed(0)}%</strong>`));lvl='danger';}
+    if(fill>125){al.push(T(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`,`Overfilled case: load density <strong>${fill.toFixed(0)}%</strong>`));lvl='danger';}
     else if(fill>105){al.push(T(`Charge comprimée (${fill.toFixed(0)} %)`,`Compressed charge (${fill.toFixed(0)}%)`));if(lvl!=='danger')lvl='warn';}
     else if(fill<55){al.push(T(`Charge très faible (${fill.toFixed(0)} %)`,`Very low load density (${fill.toFixed(0)}%)`));if(lvl!=='danger')lvl='warn';}
   }
@@ -720,7 +724,8 @@ function calc(){
   let w = (anc && anc.np!=null)
     ? T('Pression indicative (~15 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur treize) — ne jamais valider une charge sur cette base.','Pressure for indication only (~15% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirteen) — never validate a load on this basis.')
     : T('Pression indicative (~25 % d\'écart quadratique sans données fabricant de pression pour ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq) — ne jamais valider une charge sur cette base.','Pressure for indication only (~25% RMS error without manufacturer pressure data for this combination; underestimated by more than 15% for one load in five) — never validate a load on this basis.');
-  if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % (charge comprimée hors domaine usuel) : estimation peu fiable.','⚠ Load density > 110% (compressed charge outside the usual range): unreliable estimate.');
+  // 16 des 1 700 charges Reload Swiss qui calent le modèle dépassent 110 % (rs_dataset, 2026-10-13).
+  if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % : presque aucune des charges qui calent le modèle ne va si loin, estimation peu fiable.','⚠ Load density > 110%: almost none of the loads the model is fitted on go that far, unreliable estimate.');
   else if(hasPcd && fill<55) w=T('⚠ Remplissage faible (< 55 %) : hors domaine usuel, estimation peu fiable.','⚠ Low load density (< 55%): outside the usual range, unreliable estimate.');
   if(CVOL>0 && cart.case_vol_cm3>0){ const r=CVOL/cart.case_vol_cm3; if(r<0.6||r>1.6) w=T('⚠ Volume d\'étui (ramené en utile) très éloigné du nominal ('+(r*100).toFixed(0)+' %) — vérifiez l\'unité (cm³ / gr H₂O) et le mode (utile balle sertie / pleine étui vide). ','⚠ Case capacity (converted to usable) far from nominal ('+(r*100).toFixed(0)+'%) — check the unit (cm³ / gr H₂O) and the mode (usable, bullet seated / full, empty case). ')+w; }
   if(!pcip) w=T('ℹ Cartouche sans limite de pression publiée dans nos données (absente du standard SAAMI carabine ; valeur CIP non renseignée) → pas de bandes de sécurité ni de % limite sur cette cartouche. ','ℹ No published pressure limit for this cartridge in our data (not in the SAAMI rifle standard; no C.I.P. value on record) → no safety bands or % of limit for it. ')+w;

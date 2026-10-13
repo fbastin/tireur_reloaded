@@ -115,7 +115,12 @@ for (const line of txt.split('\n')) {
   for (const p of parts) {
     if (isBullet(p.t) || isVel(p.t) || isOAL(p.t) || isChg(p.t)) continue;
     if (p.t.length < 3 || p.t.length > 44) continue;
-    const looksHeader = /^[\d.]/.test(p.t) && /[A-Za-z]/.test(p.t) && parts.length <= 2;
+    // Compter les champs de la MÊME colonne : « 338 Remington Ultra Magnum » partage sa ligne avec
+    // des données de la colonne de droite ; compté sur toute la ligne, il n'était pas vu comme un
+    // en-tête, et ses charges (95 gr de Reloder 19 sous 200 gr) passaient à la .338 Win. Mag. qui
+    // le précède (relevé le 2026-10-13 par le contrôle des remplissages).
+    const memeCol = parts.filter((q) => (q.x < CUT) === (p.x < CUT)).length;
+    const looksHeader = /^[\d.]/.test(p.t) && /[A-Za-z]/.test(p.t) && memeCol <= 2;
     const hit = matchCal(p.t);
     if (hit) cart[p.x < CUT ? 0 : 1] = hit;
     else if (looksHeader) {
