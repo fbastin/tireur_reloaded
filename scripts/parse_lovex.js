@@ -3,6 +3,11 @@
  *
  *   node scripts/parse_lovex.js <file.pdf>
  *
+ * Édition en usage depuis le 2026-10-13 : LOVEX Reloading Guide by Explosia, 2019 (56 p.). Elle
+ * reprend 563 des 566 lignes de l'édition 2013, en corrige trois (balle Hornady n° 2640 de 6,5 x 55 :
+ * 160 grs et non 139 ; .308 Win., S065 sous 147 grs : 779 m/s et non 879) et ajoute la .300 AAC
+ * Blackout, la 6.5 Creedmoor, la 7.5 x 55, la 10 mm Auto et la .45 Colt.
+ *
  * Source fabricant (Explosia / Lovex, distribué par Shooters World), PDF à couche texte,
  * données « tested to CIP standards ».
  *
@@ -42,6 +47,7 @@ const num = (s) => parseFloat(String(s).replace(/\s/g, '').replace(',', '.'));
 const BRAND = [
   [/\bremington\b/g, 'rem'], [/\bwinchester\b/g, 'win'], [/\bmagnum\b/g, 'mag'], [/\bmag\b/g, 'mag'],
   [/\bspringfield\b/g, 'spring'], [/\bweatherby\b/g, 'wby'], [/\bmauser\b/g, ''], [/\bmm\b/g, ''],
+  [/\bsuisse\b/g, 'swiss'],                    // « 7.5 x 55 Suisse » (édition 2019)
 ];
 const canonCal = (s) => {
   let t = String(s).toLowerCase().replace(/[.,]/g, ' ');
@@ -119,7 +125,9 @@ for (let i = 0; i < lines.length; i++) {
   // « 7.50 g » et « 115 grs » ouvrent la ligne mais celle-ci se poursuit par des libellés de
   // colonne (« … Cartridge », « … Length ») : on n'ancre donc PAS la fin de ligne.
   const mg = /^\s*(\d+(?:[.,]\d+)?)\s*g\b(?!r)/.exec(l);       // « 7.50 g »  (pas « 115 grs »)
-  const mgr = /^\s*(\d{2,3})\s*grs\b/.exec(l);                 // « 115 grs »
+  // « 115 grs » ; l'édition 2019 écrit aussi « 140 gr » (6.5 Creedmoor, 7.5 x 55) : sans le « s »,
+  // ces blocs perdaient leur masse et toutes leurs lignes (rejetées, faute de balle).
+  const mgr = /^\s*(\d{2,3})\s*grs?\b/.exec(l);
   if (mg) { bullet = { ...(bullet || {}), g: num(mg[1]), type: pendingType }; continue; }
   if (mgr) { bullet = { ...(bullet || {}), gr: parseInt(mgr[1], 10), type: pendingType }; continue; }
 
