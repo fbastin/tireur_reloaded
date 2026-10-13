@@ -3,7 +3,7 @@
  * l'estimateur n'a pas vues.
  *
  * Usage :
- *   node scripts/banc_grt.js --preparer            tire le jeu (graine fixe), fige les valeurs publiées et les
+ *   node scripts/banc_grt.js --preparer [--force]  tire le jeu (graine fixe), fige les valeurs publiées et les
  *                                                   prédictions de l'estimateur (data/banc_grt.local.json),
  *                                                   écrit la feuille de saisie (data/banc_grt_feuille.local.csv)
  *   node scripts/banc_grt.js --comparer [feuille]   lit la feuille remplie et compare GRT et l'estimateur
@@ -216,6 +216,14 @@ const fr = (x, n) => (x == null || !isFinite(x)) ? '' : x.toFixed(n).replace('.'
 const csv = (v) => { const s = String(v ?? ''); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 
 function preparer() {
+  // La clé FIGE les prédictions : la réécrire après un changement de données ou de modèle changerait le tirage
+  // et les prédictions pendant que la feuille est en cours de remplissage. --force pour un nouveau banc.
+  if (fs.existsSync(CLE) && !process.argv.includes('--force')) {
+    const k = JSON.parse(fs.readFileSync(CLE));
+    console.error(`Banc déjà préparé le ${k.prepare_le.slice(0, 10)} (estimateur ${k.version_estimateur}) : clé figée, rien n'est réécrit.`);
+    console.error('Nouveau banc : --preparer --force (la feuille en cours de remplissage ne correspondrait plus).');
+    process.exit(1);
+  }
   const alea = rng(GRAINE);
   const adi = candidatsADI(), nos = candidatsNosler();
   const st = (l, p, s) => l.filter((c) => c.strate === s).length;

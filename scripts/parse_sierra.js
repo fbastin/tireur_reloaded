@@ -61,14 +61,24 @@ function fixName(n) {
     // encore l'ancienne graphie, et aucune entree « Accurate 2015 » ne lui fait
     // concurrence — l'equivalence est une identification, pas une approximation.
     .replace(/^Accurate 2015$/, 'Accurate 2015BR')
-    // Le catalogue GROUPE lui-meme H4831 et sa version Short Cut sous une entree
-    // unique « H4831, H4831C » : l'equivalence est la sienne, pas la notre.
-    .replace(/^H4831\s*sc$/i, 'H4831, H4831C')
+    // La version Short Cut a sa propre cle depuis le 2026-10-13 (« Hodgdon H4831SC », densite tiree de
+    // Nosler) ; avant, le catalogue la groupait avec la H4831 sous « H4831, H4831C », et c'est la que
+    // ce parseur la rangeait encore (34 points, 6,5 x 47 et .338 Norma).
+    .replace(/^H4831\s*sc$/i, 'H4831SC')
+    // La H4831 seule : meme entree, alias deja etabli dans data/powder_aliases.json. Le fichier 7,5 x 55 servi
+    // jusqu'au 2026-10-13 la portait sous cette cle ; relu par ce parseur, il la perdait (10 points).
+    .replace(/^H4831$/i, 'H4831, H4831C')
     // ⚠️ DEDUCTION, pas un groupement du catalogue comme ci-dessus : celui-ci ne porte
     // qu'une seule entree 7828, nommee « 7828SC », et IMR ne commercialise plus que la
     // version Super Short Cut. Les deux designent donc le meme produit. A revoir si une
     // entree « IMR 7828 » simple apparaissait un jour au catalogue.
-    .replace(/^IMR\s*7828\s*s?sc$/i, 'IMR 7828SC');
+    .replace(/^IMR\s*7828\s*s?sc$/i, 'IMR 7828SC')
+    // ⚠️ DEDUCTION aussi : la page 6mm BR Norma (manuel Sierra, 6e ed., p. 300) imprime « Exterminator ».
+    // Aucune poudre de ce nom au catalogue complet ; le meme manuel ecrit « X Terminator » en .223 (AR-15) ;
+    // a vitesse egale, le rapport a la H335 se deplace de +3,6 % entre .223 et 6 mm BR, au bord des autres
+    // poudres (-3,7 a +2,4 %) et pres de l'autre poudre spherique Ramshot, la TAC (+2,4 %). Ramshot ne publie
+    // pas la X-Terminator en 6 mm BR Norma (guide Western 8.0, p. 55-56) : aucun recoupement fabricant.
+    .replace(/^Exterminator$/i, 'X-Terminator');
 }
 
 const rows = [];
