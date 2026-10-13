@@ -148,6 +148,7 @@ try {
 // le η_p global pour la pression). 2 points vitesse par ligne (start + max).
 try {
   for (const [i, r] of JSON.parse(fs.readFileSync(d('vihtavuori.local.json'))).rows.entries()) {
+    if (r.cast) continue;                                 // balle en plomb (parse_vihtavuori.js)
     const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
     const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
     const m = r.bullet_gr * G;

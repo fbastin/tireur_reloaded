@@ -26,7 +26,8 @@ const num = (t) => { const c = t.replace(/[CFA]+$/i, '').replace(',', '.'); retu
 // (« 6,5 mm Grendel ») manquait jusqu'au 2026-10-13 : le titre n'était pas lu, et les lignes allaient à la
 // cartouche précédente de la demi-page (.25-06 <- 6,5 Grendel, .300 Savage <- 7,62 x 53R, 300 RUM <- 7,62 x 39,
 // 338 Lapua <- 9,3 x 62, 7 mm GJW <- 7,62 x 25), ou étaient perdues (1 088 lignes, dont 338 de 6,5 Creedmoor).
-const CART_RE = /^\s*\.?([0-9][\w.,&'’ x/()-]*?)\s+(?:cont\.?|Test barrel|Primers|Cases:)/;
+// « ; » : le texte extrait écrit « S&amp;W » ; sans lui, .460 et .500 S&W Magnum n'étaient pas lus (2026-10-13).
+const CART_RE = /^\s*\.?([0-9][\w.,&;'’ x/()-]*?)\s+(?:cont\.?|Test barrel|Primers|Cases:)/;
 
 // --- build per-half "lines" (array of {y, toks:[{x,t}]}) for every guide-page-half ---
 function halves() {
@@ -56,15 +57,34 @@ const records = [];
 // la cartouche (repli ci-dessous, seul jusqu'au 2026-10-13), les tableaux à plusieurs sections de canon
 // (6,5 x 55 SE / SKAN : 670, 700 puis 740 mm) donnaient à la fin d'une section le canon de la première.
 const dernierCanon = {};
+// Titre seul sur sa ligne, « Primers: » quelques points plus bas (« 8 x 68 S », « .357 Magnum », « .44
+// Remington Magnum » : au-delà des 4 points qui regroupent une ligne) : il n'était pas lu, et les lignes du
+// tableau restaient à la cartouche précédente (8 x 68 S sous la 8 x 57 IRS, 2026-10-13).
+// Balle en plomb nu (« S N S Cast RNFP », « LSWC/HP », « LRN », « Sako LWC ») : marquée `cast`, écartée des
+// ancres et des fenêtres de départ comme celles des autres guides (2026-10-13). Gardées : cuivrées (« Copper
+// Plated », CamPro FCP, Berry's, X-Treme), chemisées (« TMJ-SWC »), H&N sans mention.
+const PLOMB = /\bCast\b|\bL(SWC|RN|FN|FP|WC|TC)\b|^SWC\/HP$/i;
+const CUIVRE = /plat|TMJ|\bCP\b|copper/i;
+const NOM_SEUL = /^\s*\.?([0-9][\w.,&;'’ x/()-]*?)\s*$/;
+// Un en-tête « X cont. » ne peut continuer que le tableau en cours à la fin de la demi-page précédente. S'il
+// en nomme un autre, c'est l'en-tête qui se trompe : un seul cas dans le guide 2026, page 72, « .45 Auto /
+// .45 ACP cont. » au-dessus de lignes de .460 S&W Magnum (longueur hors-tout 2,146 à 2,272 pouces ; le
+// titre .460 est au bas de la demi-page précédente). Le tableau en cours l'emporte.
+let derniere = null;
 for (const lines of ALL) {
-  let cart = null, barrel = null, bulletGrs = null;
+  let cart = null, barrel = null, bulletGrs = null, bulletDesc = '', premierEnTete = true;
+  const texte = (j) => lines[j].toks.slice().sort((a, b) => a.x - b.x).map((w) => w.t).join(' ');
   for (const [li, ln] of lines.entries()) {
     // mots de gauche à droite : un titre et « Test barrel » sur la même ligne se lisaient dans l'ordre
     // vertical, « Test barrel » en tête, et le titre n'était plus reconnu (6,5 x 55 SE /, 2026-10-13)
     const s = ln.toks.slice().sort((a, b) => a.x - b.x).map((w) => w.t).join(' ');
-    const cm = s.match(CART_RE);
+    let cm = s.match(CART_RE);
+    if (!cm && s.length < 45 && !ln.toks.some((w) => isPowder(w.t)) && NOM_SEUL.test(s)
+        && [li + 1, li + 2].some((j) => j < lines.length && /^Primers:/.test(texte(j)))) cm = s.match(NOM_SEUL);
     if (cm) {
-      let nc = norm(cm[1]);
+      let nc = norm(cm[1].replace(/&amp;/g, '&'));
+      if (premierEnTete && derniere && /\bcont\b/i.test(s) && nc !== derniere) nc = derniere;
+      premierEnTete = false;
       // Titre coupé (« .300 Remington » + « Ultra Magnum », « 6,5 x 55 SE / » + « 6,5 x 55 SKAN ») : sa fin
       // vient sous la ligne « Primers », avant « Cases: ». Toute ligne sans deux-points entre les deux est
       // recollée (cinq titres du guide 2026 : 300 RUM, .30-378 Weatherby, 6,5 x 55 SE / SKAN, .375
@@ -87,7 +107,12 @@ for (const lines of ALL) {
     const after = toks.slice(pIdx + 1).map((w) => num(w.t)).filter((v) => v != null);
     if (after.length < 8) continue;
     const before = toks.slice(0, pIdx).map((w) => num(w.t)).filter((v) => v != null);
-    if (before.length >= 2 && before[1] > 20 && before[1] < 600) bulletGrs = before[1];
+    if (before.length >= 2 && before[1] > 20 && before[1] < 600) {
+      bulletGrs = before[1];
+      // fabricant et type de balle : les mots entre la masse en grains et la longueur hors-tout
+      const iG = toks.findIndex((w) => num(w.t) === before[1]);
+      bulletDesc = toks.slice(iG + 1, pIdx).filter((w) => num(w.t) == null).map((w) => w.t).join(' ').replace(/&amp;/g, '&');
+    }
     const [, sgr, sms, , , mgr, mms] = after;
     // plausibilité (rejette lignes mal alignées : notes, n° de page, COL lus comme charge…)
     const ok = bulletGrs >= 20 && bulletGrs <= 600 && mgr >= 2 && mgr <= 160 && sgr >= 1 && sgr <= mgr + 0.5
@@ -95,8 +120,10 @@ for (const lines of ALL) {
     if (!ok) continue;
     if (barrel != null) dernierCanon[cart] = barrel;
     records.push({ cartridge: cart, barrel_mm: barrel, bullet_gr: bulletGrs,
-      powder: toks[pIdx].t, start_gr: sgr, start_ms: sms, max_gr: mgr, max_ms: mms });
+      powder: toks[pIdx].t, start_gr: sgr, start_ms: sms, max_gr: mgr, max_ms: mms, bullet_desc: bulletDesc,
+      cast: PLOMB.test(bulletDesc) && !CUIVRE.test(bulletDesc) });
   }
+  if (cart) derniere = cart;
 }
 
 // fallback : combler barrel null par le 1er canon vu pour cette cartouche (cont. pages)

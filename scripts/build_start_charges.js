@@ -77,6 +77,7 @@ JSON.parse(fs.readFileSync(d('western.local.json'))).rows.forEach((r, i) => {
 // Vihtavuori — start + max charge
 try {
   JSON.parse(fs.readFileSync(d('vihtavuori.local.json'))).rows.forEach((r, i) => {
+    if (r.cast) return;                                   // balle en plomb : pas la fenêtre d'une balle chemisée
     const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
     add(ck, pk, r.bullet_gr, 'VV' + i, r.start_gr); add(ck, pk, r.bullet_gr, 'VV' + i, r.max_gr);
   });

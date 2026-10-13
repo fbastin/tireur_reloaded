@@ -696,9 +696,10 @@ function calc(){
     else if(pct>=85){al.push(T(`Pression proche de la limite ${limSrc(cart)} (${pct.toFixed(0)} %)`,`Pressure close to the ${limSrc(cart)} limit (${pct.toFixed(0)}%)`));lvl='warn';}
   }
   // Seuils de remplissage (2026-10-13, scripts/remplissage_publie.py) : au volume nominal de la base,
-  // les 22 248 charges MAXIMALES publiées par les fabricants remplissent l'étui de carabine à 0,97 en
-  // médiane et à 1,16-1,20 au 99e centile (poudres sphériques ou extrudées), à 1,30 en arme de poing ; le
-  // rouge à 110 % touchait une charge maximale publiée sur dix. Rouge au-delà de 125 % (0,6 % des maxima
+  // les 20 390 charges MAXIMALES publiées par les fabricants (sans balles en plomb ni copies d'un guide à
+  // l'autre) remplissent l'étui de carabine à 0,97 en médiane et à 1,16-1,17 au 99e centile (poudres
+  // sphériques ou extrudées), à 1,30 en arme de poing ; le
+  // rouge à 110 % touchait une charge maximale publiée sur dix. Rouge au-delà de 125 % (0,4 % des maxima
   // publiés au-dessus), orange au-delà de 105 % (les maxima marqués « comprimés » : 1,05 en médiane).
   if(hasPcd){
     if(fill>125){al.push(T(`Surremplissage : taux <strong>${fill.toFixed(0)} %</strong>`,`Overfilled case: load density <strong>${fill.toFixed(0)}%</strong>`));lvl='danger';}

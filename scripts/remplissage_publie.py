@@ -22,7 +22,8 @@ Données : data/*.local.json (locales, hors git).
 
 Contrôle nocturne (--check, étape 8quinquies de la maintenance du site, 2026-10-13). Chaque signal admis est
 inscrit, avec sa raison, dans data/remplissage_reference.json ; le contrôle sort en 1 sur un signal qui n'y
-est pas, sur une part de maxima au-delà du seuil rouge supérieure au plafond inscrit, ou sur un nombre de
+est pas, sur une charge maximale qui remplirait plus de 1,6 fois l'étui (impossible, donc la ligne d'une autre
+cartouche), sur une part de maxima au-delà du seuil rouge supérieure au plafond inscrit, ou sur un nombre de
 charges lues tombé sous 90 % de la référence (un lecteur de guide cassé, un fichier local absent). Il aurait
 signalé le lecteur Alliant (charges de la .338 RUM prêtées à la .338 Win. Mag.) et le lecteur Vihtavuori (les
 tableaux à virgule décimale, 6,5 Grendel rangée sous la .25-06), tous deux trouvés à la main.
@@ -40,6 +41,8 @@ SOURCES = {'hodgdon': 'charge_gr', 'western': 'charge_gr', 'vihtavuori': 'max_gr
            'lovex': 'max_gr', 'alliant': 'charge_gr', 'norma': 'max_gr', 'adi': 'charge_gr'}
 SEUILS = (1.05, 1.10, 1.15, 1.20, 1.25, 1.30)
 ROUGE = 1.25                                               # seuil de l'alerte rouge d'index.php
+IMPOSSIBLE = 1.6   # au-delà, la charge ne tient pas dans l'étui même tassée : ligne d'une autre cartouche
+                   # (Vihtavuori : .460 S&W sous la .45 ACP, remplissage 2 à 3, 2026-10-13)
 
 
 # Appariement identique à celui de build_anchors.js : libellés normalisés (parenthèses ôtées,
@@ -74,7 +77,7 @@ def q(a, p):
     return a[min(len(a) - 1, int(p * len(a)))]
 
 
-def verifier(n, part_rouge, ecarts, trop, absents):
+def verifier(n, part_rouge, ecarts, trop, absents, impossibles):
     ref = json.load(open(os.path.join(ICI, 'data', 'remplissage_reference.json'), encoding='utf-8'))
     pb = []
     if absents:
@@ -84,6 +87,9 @@ def verifier(n, part_rouge, ecarts, trop, absents):
     if part_rouge > ref['part_rouge_max']:
         pb.append(f"{100 * part_rouge:.1f} % des maxima publiés au-delà du seuil rouge ({100 * ROUGE:.0f} %), plafond "
                   f"{100 * ref['part_rouge_max']:.1f} % : un volume ou une densité a changé ?")
+    for x in impossibles:
+        pb.append(f"charge impossible ({x['src']}) : {x['ck']}, {x['pk']}, balle {x['m']} gr, remplissage {x['ff']:.2f}"
+                  f" — ligne d'une autre cartouche ?")
     for e in ecarts:
         if e not in ref['ecarts']:
             pb.append(f"source à l'écart du consensus, non examinée : {e.replace('|', ' — ')}")
@@ -107,19 +113,28 @@ def main():
     cal = json.load(open(d('calibers.json'), encoding='utf-8'))['calibers']
     pidx, cartouche = index(pw, cal)
     L = []
+    # Hodgdon réimprime les lignes Accurate/Ramshot de Western : la copie compterait deux fois (et ferait
+    # paraître les deux sources d'accord) ; seule la ligne Western est gardée (2026-10-13).
+    western = set()
+    if os.path.exists(d('western.local.json')):
+        for r in json.load(open(d('western.local.json'), encoding='utf-8'))['rows']:
+            western.add((cartouche(r.get('cartridge')), pidx.get(norm(r.get('powder') or '')), r.get('bullet_gr'), r.get('charge_gr'), r.get('v0_fps')))
     for s, kc in SOURCES.items():
         if not os.path.exists(d(s + '.local.json')):
             continue
         for r in json.load(open(d(s + '.local.json'), encoding='utf-8'))['rows']:
             if r.get('cast'):
                 continue                                   # balles coulées : autre domaine
+            if s == 'hodgdon' and (cartouche(r.get('cartridge')), pidx.get(norm(r.get('powder') or '')), r.get('bullet_gr'),
+                                   r.get('charge_gr'), r.get('v0_fps')) in western:
+                continue
             ck, pk = cartouche(r.get('cartridge')), pidx.get(norm(r.get('powder') or ''))
             p = pw.get(pk, {})
             if not ck or not p.get('pcd') or not r.get(kc) or not cal[ck].get('case_vol_cm3'):
                 continue
             if r.get('bore_mm') and abs(r['bore_mm'] - cal[ck]['bore_mm']) > 0.3:
                 continue                                   # mauvaise cartouche (garde de build_anchors.js)
-            L.append(dict(src=s, ck=ck, ff=r[kc] * GRAIN / (p['pcd'] / 1000) / cal[ck]['case_vol_cm3'],
+            L.append(dict(src=s, ck=ck, ff=r[kc] * GRAIN / (p['pcd'] / 1000) / cal[ck]['case_vol_cm3'], pk=pk, m=r.get('bullet_gr'),
                           forme=p.get('type'), comp=r.get('compressed'), poing=cal[ck].get('type') == 'handgun'))
     print(f"{len(L)} charges maximales publiées ({len({x['ck'] for x in L})} cartouches)")
     for t in SEUILS:
@@ -161,7 +176,8 @@ def main():
               + '  '.join(f'{s} {v:.2f}' for s, v in sorted(meds.items())))
     if '--check' in sys.argv:
         return verifier(len(L), sum(x['ff'] > ROUGE for x in L) / len(L), ecarts, [ck for _, ck, _ in trop],
-                        [s for s in SOURCES if not os.path.exists(d(s + '.local.json'))])
+                        [s for s in SOURCES if not os.path.exists(d(s + '.local.json'))],
+                        [x for x in L if x['ff'] > IMPOSSIBLE])
     if '--cartouches' in sys.argv:
         print("\npar cartouche, part des charges maximales au-delà de 1,25 :")
         for ck in sorted(par, key=lambda k: -sum(f > 1.25 for v in par[k].values() for f in v)):
