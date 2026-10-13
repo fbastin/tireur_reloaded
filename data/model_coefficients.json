@@ -30,7 +30,7 @@
       -0.1764
     ],
     "lopo_P_rms_pct": 20.3,
-    "note": "Re = 1 + A*travel/V0; pression INDICATIVE. Calé 3 sources ÉQUIPONDÉRÉES (Reload Swiss + Accurate/Ramshot + Vihtavuori-au-CIP) : inclut la charge max au plafond CIP, ce qui réduit la sous-estimation en zone haute (dangereuse) et rend le biais plus cohérent entre sources (max |biais| ~10%). Penche conservateur (sur-prédit légèrement RS / bas remplissage) — direction SÛRE."
+    "note": "Re = 1 + A*travel/V0; pression INDICATIVE. Calé 3 sources ÉQUIPONDÉRÉES (Reload Swiss + Accurate/Ramshot + Vihtavuori-au-CIP) : inclut la charge max au plafond CIP, ce qui réduit la sous-estimation en zone haute (dangereuse) et rend le biais plus cohérent entre sources (max |biais| ~10%). Sur-prédit Reload Swiss (carabine +7 %, à vitesse publiée) mais SOUS-prédit les autres laboratoires (Western −5 %, Hodgdon −3 %, Lovex −9 %, ADI −5 %, Shooters World −9 % en carabine ; à froid, une charge sur quatre à une sur trois sous-estimée de plus de 15 % hors calage) : pas une direction sûre. L’écart tient au laboratoire, qu’un recalage commun n’absorbe pas (scripts/pression_par_source.py, 2026-10-13)."
   },
   "e_eff": {
     "features": [

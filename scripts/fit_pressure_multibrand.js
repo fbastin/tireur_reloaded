@@ -115,7 +115,7 @@ decompose('APRÈS', neuE);
 // write back
 const coef = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
 coef.eta_p.coef = neu.map((x) => +x.toFixed(5));
-coef.eta_p.note = 'Re = 1 + A*travel/V0; pression INDICATIVE. Calé 3 sources ÉQUIPONDÉRÉES (Reload Swiss + Accurate/Ramshot + Vihtavuori-au-CIP) : inclut la charge max au plafond CIP, ce qui réduit la sous-estimation en zone haute (dangereuse) et rend le biais plus cohérent entre sources (max |biais| ~10%). Penche conservateur (sur-prédit légèrement RS / bas remplissage) — direction SÛRE.';
+coef.eta_p.note = 'Re = 1 + A*travel/V0; pression INDICATIVE. Calé 3 sources ÉQUIPONDÉRÉES (Reload Swiss + Accurate/Ramshot + Vihtavuori-au-CIP) : inclut la charge max au plafond CIP, ce qui réduit la sous-estimation en zone haute (dangereuse) et rend le biais plus cohérent entre sources (max |biais| ~10%). Sur-prédit Reload Swiss (carabine +7 %, à vitesse publiée) mais SOUS-prédit les autres laboratoires (Western −5 %, Hodgdon −3 %, Lovex −9 %, ADI −5 %, Shooters World −9 % en carabine ; à froid, une charge sur quatre à une sur trois sous-estimée de plus de 15 % hors calage) : pas une direction sûre. L’écart tient au laboratoire, qu’un recalage commun n’absorbe pas (scripts/pression_par_source.py, 2026-10-13).';
 coef.eta_p.lopo_P_rms_pct = +rms(pErr(recP, neu)).toFixed(1);
 coef.e_eff.coef = neuE;
 coef.e_eff.note = 'FALLBACK quand Qex/Ba inconnus: v0=sqrt(2*E_eff*C/m_e); densité bulk optionnelle (fill nominal sinon). Calé sur la CLIENTÈLE du repli (poudres SANS Qex/Ba : Accurate/Ramshot) — pente conservée, niveau recentré pour annuler le biais vitesse et réduire la sous-estimation de pression (∝ v0²). RS/VV passent par η_b.';

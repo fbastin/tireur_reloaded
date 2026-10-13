@@ -397,6 +397,18 @@ $|\text{bias}|$ drops 13 → 10 %. Crucially the **dangerous high-fill zone** ($
 improves $-8\!\to\!-6\%$; the cost is conservative over-prediction at low fill (the *safe*
 direction). RMS is ~flat (21.4 → 21.1 %). Pressure stays **indicative**.
 
+**Out of sample, the safe direction does not hold** (`scripts/pression_par_source.py`, 2026-10-13).
+Pressure from the *published* velocity and the model's $\eta_p$, rifles: Reload Swiss +7 %, but
+Hodgdon −3 %, Western −5 %, ADI −5 %, Lovex −9 %, Shooters World −9 % (positive = model above the
+published pressure). The tool's full cold prediction (energy and $\eta_p$ from the model) is
+under by more than 15 % for one load in five on the calibration sources, one in four on Lovex, ADI
+and Shooters World together, one in three on Lovex and on Shooters World. The spread is a
+**laboratory** effect: Reload Swiss and Lovex, both C.I.P., sit at the two ends; a common refit on
+four laboratories (Reload Swiss, Western, Hodgdon, Lovex) leaves ADI at −4.6 % and Shooters World at
+−7.5 %, and a spherical-powder term comes out at zero once fill and expansion ratio are refitted.
+Nothing was refitted; the tool's banner now says one load in three for manufacturers whose data
+were not used in the fit.
+
 Adding further features (e.g. $Q_\mathrm{ex}$, charge/bullet ratio, expansion ratio
 in $\eta_b$) improves the in-sample fit but **degrades generalization** and is
 therefore omitted.
