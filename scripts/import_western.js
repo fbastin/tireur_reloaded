@@ -77,6 +77,9 @@ for (const line of lines) {
     if (bullet > 10 && bullet < 800) rows.push({
       cartridge: cart, bore_mm: bore, barrel_mm: barrel, powder,
       bullet_gr: bullet, bullet_desc: desc,
+      // « (L) » en tête de la description = balle en plomb (« (P) » = cuivrée, gardée) : marquée `cast`,
+      // écartée des ancres et des charges de départ, calées sur du chemisé (2026-10-13).
+      cast: /^\(L\)/.test(desc),
       // La charge de DÉPART (colonne « START LOAD ») était capturée puis jetée : la fenêtre du
       // ladder prenait alors la charge maximale pour charge de départ (2026-10-10).
       start_gr: num(f.depart), start_v0_fps: num(f.vDepart),

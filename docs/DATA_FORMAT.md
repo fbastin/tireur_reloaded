@@ -220,6 +220,16 @@ than three loads (`scripts/build_anchors.js`; `scripts/nosler_crosscheck.js` mea
               "poudre_nosler": "H110", "charge_gr": 19.0, "fps": 2365, "max": true, "comprimee": true, "ld_pct": 101 } ] }
 ```
 
+### Lead bullets (`cast`)
+
+The manufacturer rows of Lyman, Hodgdon, Western and LoadData carry `cast: true` when the bullet is lead
+(Lyman: « Cast », « Lead » or a mould number; Hodgdon: cast makers and lead shapes, `PLOMB` in
+`scripts/parse_hodgdon.js`; Western: a description starting with « (L) », « (P) » plated bullets kept;
+LoadData: `PLOMB` in `scripts/parse_loaddata.js`). The coefficients are fitted on jacketed bullets, so
+anchors, starting-charge windows and the fill diagnostic skip these rows (2026-10-13). Removing them
+improved every independent check: Nosler handguns 9.6 → 8.9 % RMS, Lyman handguns 17.5 → 16.2 %,
+ADI anchored pressure 15.5 → 12.2 %.
+
 ## Units summary
 
 | Quantity | Unit |

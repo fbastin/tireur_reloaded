@@ -55,6 +55,10 @@ function matchPoudre(label) {
   return null;
 }
 
+// Balle en plomb : coulée (CAST, LC, CPB, MEI, BTB, MBW, MTB, MCB), à gas-check (GC), ou de forme « L… »
+// (LSWC, LRN, LFP, LFN, LWLN, LTC, L PT…), wadcutter HBWC. Exclus à dessein : Barnes LRX, Lehigh, Berger LRHT,
+// Lapua, Nosler LF (sans plomb), Berry's (cuivrées). Marquée `cast`, écartée des ancres (2026-10-13).
+const PLOMB = /CAST|LEAD|\bLC\b|\bCPB?\b|\bMEI\b|\bBTB\b|\bMBW\b|\bMTB\b|\bMCB\b|GCK?\b|HBWC|\bL ?(RN|SWC|FP|FN|WLN|WFN|GC|LFN|CN|TC|PT|WC)/i;
 const txt = execSync(`pdftotext -q -raw "${pdf}" - 2>/dev/null`, { maxBuffer: 1 << 28 }).toString();
 const IN = 25.4;
 const num = (s) => parseFloat(String(s).replace(/,/g, ''));
@@ -102,7 +106,7 @@ for (let i = 0; i < lignes.length; i++) {
   rows.push({
     cartridge, bore_mm: bore, barrel_mm: barrel,
     powder: poudre, powder_label: label,
-    bullet_gr, bullet_desc,
+    bullet_gr, bullet_desc, cast: PLOMB.test(bullet_desc || ''),
     charge_gr: num(m[6]), v0_fps: num(m[9]),
     // CUP non convertible : la pression reste nulle, la ligne sert la vitesse seule.
     Pmax_psi: unite === 'PSI' ? num(m[10]) : null,

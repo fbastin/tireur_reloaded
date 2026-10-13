@@ -1,7 +1,7 @@
 {
-  "_doc": "Référence du contrôle nocturne de scripts/remplissage_publie.py --check. Chaque signal admis porte la raison de son examen ; un signal absent d'ici fait alerter. charges : maxima publiés lus le jour du figeage (alerte sous 90 %). part_rouge_max : plafond de la part des maxima au-delà du seuil rouge d'index.php (125 %), le double de la valeur du jour.",
+  "_doc": "Référence du contrôle nocturne de scripts/remplissage_publie.py --check. Chaque signal admis porte la raison de son examen ; un signal absent d'ici fait alerter. charges : maxima publiés lus le jour du figeage (alerte sous 90 %). part_rouge_max : plafond de la part des maxima au-delà du seuil rouge d'index.php (125 %), le double de la valeur du jour. Le 2026-10-13 (soir), 23 292 -> 22 198 : les balles en plomb de Hodgdon et Western, désormais marquées `cast`, sont écartées comme celles de Lyman.",
   "fige_le": "2026-10-13",
-  "charges": 23292,
+  "charges": 22198,
   "part_rouge_max": 0.01,
   "ecarts": {
     "22 Hornet|lyman": "Lyman retient surtout des poudres vives d'arme de poing (2400, H110 à charge modérée) : remplissage bas, pas une erreur. Examiné le 2026-10-13.",

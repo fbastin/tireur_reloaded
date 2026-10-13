@@ -89,7 +89,7 @@ RS.forEach((r, i) => {
 }
 // Western (Accurate/Ramshot) — match keys, bore guard
 for (const [i, r] of JSON.parse(fs.readFileSync(d('western.local.json'))).rows.entries()) {
-  if (isJunkCart(r.cartridge)) continue;
+  if (r.cast || isJunkCart(r.cartridge)) continue;       // balle en plomb : coefficients calés sur du chemisé
   const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
   if (r.bore_mm && Math.abs(r.bore_mm - ca.bore_mm) > 0.3) continue;
   if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm)) continue;
@@ -111,7 +111,7 @@ for (const [i, r] of JSON.parse(fs.readFileSync(d('western.local.json'))).rows.e
 // un η_p calculé dessus serait faux d'un facteur inconnu. Même traitement que Vihtavuori.
 try {
   for (const r of JSON.parse(fs.readFileSync(d('hodgdon.local.json'))).rows) {
-    if (isJunkCart(r.cartridge)) continue;
+    if (r.cast || isJunkCart(r.cartridge)) continue;     // balle en plomb : coefficients calés sur du chemisé
     const ck = matchCal(r.cartridge); if (!ck) continue; const ca = CAL[ck];
     if (r.bore_mm && Math.abs(r.bore_mm - ca.bore_mm) > 0.3) continue;
     if (!(r.charge_gr > 0 && r.v0_fps > 0 && r.barrel_mm > ca.case_mm)) continue;
@@ -243,6 +243,7 @@ try {
   const ldFiles = fs.readdirSync(path.join(__dirname, '..', 'data')).filter((f) => /^loaddata_.*\.local\.json$/.test(f));
   for (const f of ldFiles) {
     for (const r of JSON.parse(fs.readFileSync(d(f))).rows) {
+      if (r.cast) continue;                               // balle en plomb (parse_loaddata.js) : coefficients calés sur du chemisé
       const ck = matchCal(r.cartridge); if (!ck) continue;
       const pk = pwdIdx[norm(r.powder || '')]; if (!pk) continue;
       if (!(r.charge_gr > 0 && r.v0_fps > 0)) continue;

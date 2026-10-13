@@ -23,6 +23,10 @@ const barrel_mm = process.argv[4] ? Math.round(parseFloat(process.argv[4]) * 25.
 const html = fs.readFileSync(file, 'utf8');
 const strip = (s) => s.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
 // Vihtavuori "VV-N350"/"VV-3N37" -> "N350"/"3N37" ; sinon "Mfg Product".
+// Balle en plomb (« Speer LSWC, LSWC HP or LRN », « Speer HBWC ») : marquée `cast`, comme au Lyman ; les
+// ancres et les charges de départ, calées sur du chemisé, l'écartent. En .38 Special, ces lignes donnaient
+// des vitesses supérieures d'environ 12 % à celles de Nosler à canon plus long (2026-10-13).
+const PLOMB = /\b(L(SWC|RN|FN|WC|TC)|HBWC|DEWC|SWC|lead|cast)\b/i;
 function powderName(mfg, prod) {
   if (/vihtavuori/i.test(mfg)) return prod.replace(/^VV-?/i, '');
   return (mfg + ' ' + prod).trim();
@@ -34,7 +38,7 @@ for (const tr of html.match(/<tr[^>]*>[\s\S]*?<\/tr>/g) || []) {
   if (c.length !== 6) continue;
   const [wt, bullet, mfg, prod, chg, vel] = c;
   if (!/^\d{2,3}$/.test(wt) || !/^\d{1,2}(\.\d+)?$/.test(chg) || !/^\d{3,4}$/.test(vel)) continue;
-  rows.push({ cartridge, bullet_gr: +wt, bullet, powder: powderName(mfg, prod), charge_gr: +chg, v0_fps: +vel, barrel_mm });
+  rows.push({ cartridge, bullet_gr: +wt, bullet, powder: powderName(mfg, prod), charge_gr: +chg, v0_fps: +vel, barrel_mm, cast: PLOMB.test(bullet) });
 }
 
 const out = { _src: `LoadData.com (aggregator; manufacturer manual) — ${cartridge} (parsed from a single user-opened page; not redistributed)`, rows };

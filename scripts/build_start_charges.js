@@ -69,7 +69,7 @@ const add = (ck, pk, bullet, id, charge) => {
 }
 // Western — départ (colonne START LOAD) + max
 JSON.parse(fs.readFileSync(d('western.local.json'))).rows.forEach((r, i) => {
-  if (isJunk(r.cartridge)) return;
+  if (r.cast || isJunk(r.cartridge)) return;            // balle en plomb : pas la fenêtre d'une balle chemisée
   const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
   if (!(r.start_gr > 0)) throw new Error('western.local.json sans charge de départ : relancer scripts/import_western.js');
   add(ck, pk, r.bullet_gr, 'W' + i, r.start_gr); add(ck, pk, r.bullet_gr, 'W' + i, r.charge_gr);
@@ -88,6 +88,7 @@ const glob = (re) => fs.readdirSync(path.join(__dirname, '..', 'data')).filter((
 // Une ligne start/max = une balle ; Sierra et LoadData publient une échelle de charges par
 // balle (une ligne par charge) : la balle est alors la table entière (fichier + référence).
 const addRange = (src, rows, lo, hi) => rows.forEach((r, i) => {
+  if (r.cast) return;                                     // balle en plomb : pas la fenêtre d'une balle chemisée
   const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
   const id = hi ? src + i : src + '|' + r.cartridge + '|' + r.powder + '|' + (r.bullet || '');
   add(ck, pk, r.bullet_gr, id, r[lo]); if (hi) add(ck, pk, r.bullet_gr, id, r[hi]);
