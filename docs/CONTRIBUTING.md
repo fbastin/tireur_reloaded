@@ -144,6 +144,17 @@ Commit **only** the regenerated `data/anchors.json`; the raw `sierra_*.local.jso
 (golden rule). On the 7.5×55 this anchoring cut the velocity bias from **+9 %** (generic `e_eff`,
 worst at reduced charges) to **~3 %** against Sierra's measured data.
 
+### After fixing a parser: re-read every file of that source
+
+A parser fix only counts once **every** file of the source has been re-read. The Sierra parser fix of
+2026-08-18 (velocity headers offset by 50 — whole pages dropped) was replayed on the PDFs at hand only;
+the 6 mm BR Norma (PDF not on the server) and the 7.5×55 (old file name) kept serving 182 fewer points
+until 2026-10-13. `scripts/check_extractions.py` re-runs every parser on its guide in a temporary copy
+and compares with the served file; it also flags any `sierra_*`, `speer_*`, `loaddata_*` file it has
+no declared source for (`build_anchors.js` would read it like the others). It runs nightly in
+`build.sh --check`. When you add a source, declare its command in `SOURCES` (Sierra PDFs live in
+`/home/bastin/private_docs/`, see the header of `parse_sierra.js`).
+
 ### Starting-charge pre-fill & the Ladder window
 
 `node scripts/build_start_charges.js` regenerates `data/start_charges.local.json` — the
