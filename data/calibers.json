@@ -124,6 +124,7 @@
       "case_mm": 44.7,
       "case_vol_cm3": 1.804,
       "pmax_cip_bar": 4300,
+      "pmax_saami_bar": 3792,
       "test_barrel_mm": 620
     },
     "357 Magnum": {
