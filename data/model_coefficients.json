@@ -54,5 +54,23 @@
     "zeta": -0.344,
     "_doc": "Lois locales de l'ancrage (scripts/fit_local_laws.js) : E_eff ∝ C^delta·m^beta et η_p ∝ C^eps·m^zeta autour du point de référence de l'ancre (C, m, grains) ; P ∝ C^gamma·m^alpha. Le modèle à froid n'en reçoit pas. gamma = 1,992 (moindres carrés groupés) sous-estime la pente d'une échelle de charge (médiane 2,7) : compromis retenu, voir l'en-tête du script.",
     "_date": "2026-10-13"
+  },
+  "monolithique": {
+    "rifle": {
+      "E": 1.004,
+      "np": 0.98,
+      "P": 1.025,
+      "groupes": 362,
+      "froidP": 1
+    },
+    "handgun": {
+      "E": 1.048,
+      "np": 0.836,
+      "P": 1.253,
+      "groupes": 122,
+      "froidP": 1.049
+    },
+    "_doc": "Balle monolithique (cuivre, laiton massif ; scripts/balle_monolithique.js), à charge et masse égales, par type d'arme : E_eff × E, η_p × np, donc pression × P = E/np, sur une prédiction ANCRÉE (les ancres sont ramenées à une balle à noyau). froidP : pression du modèle à froid × froidP (1 quand l'écart à froid n'est pas net). Effets fixes couple × source sur Hodgdon et Western (pression) et Vihtavuori (E_eff), lois locales appliquées (scripts/fit_monolithique.js).",
+    "_date": "2026-10-15"
   }
 }

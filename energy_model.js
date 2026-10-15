@@ -67,28 +67,33 @@ const EnergyModel = {
    *   coef : model_coefficients.json   pw : {Qex, Ba, pcd}   ff : remplissage (fraction), null
    *   si la densité de la poudre est inconnue   lnRe : ln du rapport de détente au canon de réf.
    *   anc : {eeff, np, C, m} ou null.
+   *   mono : type de la cartouche ('rifle', 'handgun') quand la balle est monolithique (cuivre, laiton
+   *   massif), sinon null. Bloc `monolithique` (scripts/fit_monolithique.js, 2026-10-15) : l'ancre est celle
+   *   d'une balle à noyau, son E et son η_p sont multipliés par les facteurs du type ; le η_p à froid est
+   *   divisé par froidP (arme de poing seulement : en carabine, le modèle à froid n'a pas l'écart).
    * Le modèle à froid reste SANS lois locales. Essayé et rejeté le 2026-10-10 (pression, toutes
    * charges publiées) : lois de charge et de masse autour du remplissage et de la masse typiques
    * de la cartouche, RMS 24,6 → 37,6 % — d'une poudre à l'autre, φ suit la vivacité, pas une
    * échelle de charge ; masse seule, balles lourdes −1 → +21 %, légères +9 → −15 %. Le modèle à
    * froid n'avait pas le biais de masse de l'ancrage : ses termes φ et B_a le compensent déjà.
    */
-  energyAndEtaP(coef, pw, ff, lnRe, m_gr, C_gr, anc) {
+  energyAndEtaP(coef, pw, ff, lnRe, m_gr, C_gr, anc, mono) {
     const L = coef.local || null, lin = (c, f) => c.reduce((s, w, i) => s + w * f[i], 0);
     const ffx = ff == null ? 1 : ff;                          // remplissage nominal si densité inconnue
-    const npCold = lin(coef.eta_p.coef, [1, ffx, lnRe]);
+    const M = (mono && coef.monolithique && coef.monolithique[mono]) || null;
+    const npCold = lin(coef.eta_p.coef, [1, ffx, lnRe]) / ((M && M.froidP) || 1);
     if (anc) {
       return {
-        E: anc.eeff * this.localE(L, C_gr, m_gr, anc.C, anc.m),
-        np: anc.np != null ? anc.np * this.localNp(L, C_gr, m_gr, anc.C, anc.m) : npCold,
-        path: 'anchor', npFromAnchor: anc.np != null,
+        E: anc.eeff * this.localE(L, C_gr, m_gr, anc.C, anc.m) * (M ? M.E : 1),
+        np: anc.np != null ? anc.np * this.localNp(L, C_gr, m_gr, anc.C, anc.m) * (M ? M.np : 1) : npCold,
+        path: 'anchor', npFromAnchor: anc.np != null, mono: !!M,
       };
     }
     if (pw.Qex && pw.Ba) {
       const eta_b = lin(coef.eta_b.coef, [1, ffx, pw.Ba]);
-      return { E: eta_b * pw.Qex * 1000, np: npCold, path: 'eta_b', eta_b };
+      return { E: eta_b * pw.Qex * 1000, np: npCold, path: 'eta_b', eta_b, mono: !!M };
     }
-    return { E: lin(coef.e_eff.coef, [1, ffx]), np: npCold, path: 'e_eff' };
+    return { E: lin(coef.e_eff.coef, [1, ffx]), np: npCold, path: 'e_eff', mono: !!M };
   },
 
   /** Prédiction de Pmax à partir de v0 et η_p. */

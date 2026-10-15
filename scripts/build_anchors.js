@@ -52,7 +52,10 @@ function mhResidual(ca, m_gr, C_gr, v0_ms, Pmax_bar, Qex) {
 // Chaque charge garde sa source, sa balle (bid : une ligne de table, ou une table entière pour
 // les sources qui publient une échelle de charges) et ses masses en grains : les lois locales
 // (charge, masse de balle) s'estiment balle par balle (scripts/fit_local_laws.js).
-const groups = {};   // "calKey|pwdKey" -> [{eeff, np, mhr, src, bid, m, C}]
+// mono : balle monolithique (cuivre, laiton), reconnue au libellé des guides qui le donnent (Hodgdon,
+// Western, Vihtavuori) ; l'ancre est ramenée à une balle à noyau (bloc `monolithique` des coefficients).
+const { estMonolithique } = require('./balle_monolithique.js');
+const groups = {};   // "calKey|pwdKey" -> [{eeff, np, mhr, src, bid, m, C, mono}]
 // Chaque charge est ramenée au canon de RÉFÉRENCE de la cartouche (test_barrel_mm), celui où
 // l'outil évalue vitesse et pression : vitesse par la loi de canon (velocity_model.js), énergie
 // en conséquence (kE), et η_p = E·C/(P·A·L) recalculé à la course de référence, la pression de
@@ -98,10 +101,11 @@ for (const [i, r] of JSON.parse(fs.readFileSync(d('western.local.json'))).rows.e
   const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
   const v0 = r.v0_fps * 0.3048, Pmax = r.Pmax_psi * 0.0689476 * 1e5;
   const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
-  add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr, { src: 'West', bbl: r.barrel_mm, bid: 'W' + i, m: r.bullet_gr, C: r.charge_gr, P: Pmax / 1e5, max: true });
+  const mono = estMonolithique(r.bullet_desc);
+  add(ck, pk, me * v0 * v0 / (2 * C), 0.5 * me * v0 * v0 / (Pmax * A * L), mhr, { src: 'West', bbl: r.barrel_mm, bid: 'W' + i, m: r.bullet_gr, C: r.charge_gr, P: Pmax / 1e5, max: true, mono });
   if (r.start_gr > 0 && r.start_v0_fps > 0) {   // charge de départ : vitesse seule
     const Cs = r.start_gr * G, mes = m + Cs / 3, vs = r.start_v0_fps * 0.3048;
-    add(ck, pk, mes * vs * vs / (2 * Cs), null, null, { src: 'West', bbl: r.barrel_mm, bid: 'W' + i, m: r.bullet_gr, C: r.start_gr, max: false });
+    add(ck, pk, mes * vs * vs / (2 * Cs), null, null, { src: 'West', bbl: r.barrel_mm, bid: 'W' + i, m: r.bullet_gr, C: r.start_gr, max: false, mono });
   }
 }
 
@@ -133,12 +137,13 @@ try {
     const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
     const v0 = r.v0_fps * 0.3048;
     const eeff = me * v0 * v0 / (2 * C);
+    const mono = estMonolithique(r.bullet_desc);
     if (r.Pmax_psi > 0) {
       const Pmax = r.Pmax_psi * 0.0689476 * 1e5;
       const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);
-      add(ck, pk, eeff, 0.5 * me * v0 * v0 / (Pmax * A * L), mhr, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.charge_gr, P: Pmax / 1e5, max: true });
+      add(ck, pk, eeff, 0.5 * me * v0 * v0 / (Pmax * A * L), mhr, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.charge_gr, P: Pmax / 1e5, max: true, mono });
     } else {
-      add(ck, pk, eeff, null, null, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.charge_gr, max: true });   // ligne en CUP : vitesse seule
+      add(ck, pk, eeff, null, null, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.charge_gr, max: true, mono });   // ligne en CUP : vitesse seule
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -159,7 +164,7 @@ try {
       const isMax = cgr === r.max_gr;
       const mhr = (isMax && ca.pmax_cip_bar && r.barrel_mm)
         ? mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, cgr, v, ca.pmax_cip_bar, PWD[pk] && PWD[pk].Qex) : null;
-      add(ck, pk, me * v * v / (2 * C), null, mhr, { src: 'VV', bbl: r.barrel_mm, bid: 'VV' + i, m: r.bullet_gr, C: cgr, max: isMax });     // np=null : VV ne contribue qu'à la vitesse
+      add(ck, pk, me * v * v / (2 * C), null, mhr, { src: 'VV', bbl: r.barrel_mm, bid: 'VV' + i, m: r.bullet_gr, C: cgr, max: isMax, mono: estMonolithique(r.bullet_desc) });     // np=null : VV ne contribue qu'à la vitesse
     }
   }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }       // fichier local optionnel
@@ -359,12 +364,20 @@ const looErr = [];
 // Lois locales (scripts/fit_local_laws.js --write) : l'ancre est un POINT DE RÉFÉRENCE (C, m,
 // moyennes géométriques du couple), et chaque charge y est ramenée par les exposants avant la
 // moyenne. Sans le bloc `local`, on retombe sur les moyennes constantes d'avant le 2026-10-10.
-const LOC = JSON.parse(fs.readFileSync(d('model_coefficients.json'))).local || null;
+const COEFS = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
+const LOC = COEFS.local || null;
+// Balles monolithiques (scripts/fit_monolithique.js) : à charge et masse égales, E_eff et η_p d'une
+// monolithique diffèrent d'un facteur propre au type d'arme ; l'ancre est celle d'une balle à NOYAU, et
+// l'outil réapplique le facteur quand l'utilisateur déclare une monolithique (energy_model.js). Sans cela,
+// une monolithique d'arme de poing sortait 16 % trop bas, et l'ancre d'un couple riche en monolithiques
+// surestimait la pression des balles à noyau.
+const monoDe = (k) => (COEFS.monolithique && (CAL[k.split('|')[0]] || {}).type && COEFS.monolithique[CAL[k.split('|')[0]].type]) || null;
+const lnMonoE = (M, x) => M && x.mono ? Math.log(M.E) : 0, lnMonoN = (M, x) => M && x.mono ? Math.log(M.np) : 0;
 const lnm = (a) => mean(a.map(Math.log));
-function refAncre(arr) {
+function refAncre(arr, M) {
   const lc = lnm(arr.map((x) => x.C)), lm = lnm(arr.map((x) => x.m));
-  const dE = (x) => LOC ? LOC.delta * (Math.log(x.C) - lc) + LOC.beta * (Math.log(x.m) - lm) : 0;
-  const dN = (x) => LOC ? LOC.eps * (Math.log(x.C) - lc) + LOC.zeta * (Math.log(x.m) - lm) : 0;
+  const dE = (x) => (LOC ? LOC.delta * (Math.log(x.C) - lc) + LOC.beta * (Math.log(x.m) - lm) : 0) + lnMonoE(M, x);
+  const dN = (x) => (LOC ? LOC.eps * (Math.log(x.C) - lc) + LOC.zeta * (Math.log(x.m) - lm) : 0) + lnMonoN(M, x);
   const pr = arr.filter((x) => x.np > 0);
   return {
     lc, lm, eeff: Math.exp(mean(arr.map((x) => Math.log(x.eeff) - dE(x)))),
@@ -374,7 +387,7 @@ function refAncre(arr) {
 for (const [k, arr0] of Object.entries(groups)) {
   const arr = arr0.filter((x) => x.m > 0 && x.C > 0 && x.eeff > 0);
   if (arr.length < 3) continue;                       // need a few loads
-  const ref = refAncre(arr);
+  const M = monoDe(k), ref = refAncre(arr, M);
   anchors[k] = { eeff: Math.round(ref.eeff), n: arr.length, C: +Math.exp(ref.lc).toFixed(2), m: +Math.exp(ref.lm).toFixed(1) };
   if (ref.np != null) anchors[k].np = +ref.np.toFixed(4);        // VV ne fournit pas de np : sinon η_p global (UI)
   if (arr.some((x) => x.src === 'Nosler')) anchors[k].nosler = true;   // ancre où Nosler comble (nosler_crosscheck.js l'écarte)
@@ -384,8 +397,8 @@ for (const [k, arr0] of Object.entries(groups)) {
   kept++;
   // une charge laissée de côté, prédite par les autres au moyen des lois locales -> erreur de vitesse
   for (let i = 0; i < arr.length; i++) {
-    const o = refAncre(arr.filter((_, j) => j !== i)), x = arr[i];
-    const Ep = o.eeff * (LOC ? Math.exp(LOC.delta * (Math.log(x.C) - o.lc) + LOC.beta * (Math.log(x.m) - o.lm)) : 1);
+    const o = refAncre(arr.filter((_, j) => j !== i), M), x = arr[i];
+    const Ep = o.eeff * (LOC ? Math.exp(LOC.delta * (Math.log(x.C) - o.lc) + LOC.beta * (Math.log(x.m) - o.lm)) : 1) * Math.exp(lnMonoE(M, x));
     looErr.push((Math.sqrt(Ep / x.eeff) - 1) * 100);
   }
 }
@@ -406,7 +419,7 @@ if (covered.length > 5) {
   console.log(`garde-fou MH : ${covered.length} ancres couvertes (Qex) | moyenne ${gm.toFixed(1)}% σ ${gsd.toFixed(1)}% | ${flagged} flaguées (|écart|>${thr.toFixed(0)}pts)`);
 }
 
-const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable.', _date: new Date().toISOString().slice(0, 10), anchors };
+const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable. Charges de balles monolithiques ramenées à une balle à noyau (bloc monolithique de model_coefficients.json).', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
 console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}% | copies Hodgdon de Western écartées : ${copiesEcartees}`);
 console.log('-> data/anchors.json');

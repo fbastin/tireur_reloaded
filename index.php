@@ -85,7 +85,8 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    de 15 % ; à froid 25,4 % et 20,5 % ; centile 1 % : −37 % et −42 %. Vitesse : 3,4 % et 7,7 %. À froid, sur trois laboratoires qui n'ont pas
    servi au calage (scripts/pression_par_source.py, 2026-10-13) : une charge sur quatre sous-estimée de
    plus de 15 % (Lovex et Shooters World : une sur trois), biais −5 % ; au calage, une sur cinq.
-   Vitesse recalculée le 2026-10-13 après la relecture Sierra : 3,3 % (29 795 charges) et 7,7 % (32 252). */ ?>
+   Vitesse recalculée le 2026-10-13 après la relecture Sierra : 3,3 % (29 795 charges) et 7,7 % (32 252) ; le
+   2026-10-15, après les 278 lignes Vihtavuori retrouvées : 3,3 % (30 250) et 7,7 % (32 703). */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
 ~8&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
@@ -138,6 +139,10 @@ against the manufacturer's official load data.
       </select></label><select id="pwd" onchange="applyStartLoad();calc()"></select>
       <small class="vm-note" style="display:block;margin-top:.15rem;"><span class="lang-fr">« <strong>●</strong> » = données fabricant pour ce calibre (ancrage, vitesse à ~3 % + fenêtre ladder). Sans « ● » : estimation à froid, ladder non borné.</span><span class="lang-en">“<strong>●</strong>” = manufacturer data for this cartridge (anchoring, velocity to ~3%, + ladder window). Without “●”: uncalibrated estimate, unbounded ladder.</span></small></div>
     <div class="vm-field"><label><span class="lang-fr">Masse de balle</span><span class="lang-en">Bullet weight</span> <span class="vm-unit" id="u_mass" onclick="toggleU('mass')">gr</span></label><input type="number" id="m" value="150" step="1" oninput="calc()"></div>
+    <div class="vm-field"><label><span class="lang-fr">Construction de la balle</span><span class="lang-en">Bullet construction</span></label><select id="mono" onchange="calc()">
+        <option value="0" selected data-en="lead core (jacketed)">à noyau de plomb (chemisée)</option>
+        <option value="1" data-en="monolithic (solid copper or brass)">monolithique (cuivre ou laiton massif)</option>
+      </select></div>
     <div class="vm-field"><label><span class="lang-fr">Charge</span><span class="lang-en">Charge</span> <span class="vm-unit" id="u_charge" onclick="toggleU('charge')">gr</span> — <em class="lang-fr">charge de départ (min) pré-remplie ; augmentez prudemment</em><em class="lang-en">starting (minimum) charge pre-filled; work up carefully</em></label><input type="number" id="c" value="44" step="0.1" oninput="calc()"></div>
     <div class="vm-field"><label><span class="lang-fr">Longueur de canon</span><span class="lang-en">Barrel length</span> <span class="vm-unit" id="u_bbl" onclick="toggleU('bbl')">mm</span></label><input type="number" id="bbl" value="600" step="5" oninput="calc()"></div>
     <hr style="border:none;border-top:1px dashed var(--color-border);margin:0.6rem 0;">
@@ -475,9 +480,12 @@ const kTempP=()=> COEF.local ? 2*COEF.local.gamma/(COEF.local.delta+1) : 2;
 // Pente charge-pression du tableau (γ des lois locales), lue dans les coefficients : écrite en dur dans la note
 // de l'échelle, elle était restée à 1,95 après le recalage du 2026-10-13 (1,99).
 const penteP=()=> (COEF.local ? COEF.local.gamma : 1).toFixed(1);
+// Balle monolithique (cuivre, laiton massif) : facteurs du bloc `monolithique` des coefficients
+// (scripts/fit_monolithique.js), appliqués par EnergyModel.energyAndEtaP.
+const isMono=()=>document.getElementById('mono').value==='1';
 // UNE prédiction pour l'affichage principal ET le tableau du ladder. Jusqu'au 2026-10-10 il y en
 // avait deux copies, et le tableau ignorait la température. opt : {vmeas (m/s, au canon de
-// l'utilisateur), Tc (°C)}.
+// l'utilisateur), Tc (°C), mono (balle monolithique)}.
 function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
   opt=opt||{};
   const d=cart.bore_mm/1000, A=Math.PI*d*d/4;
@@ -493,7 +501,7 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
   // volume saisi n'agit que par cvScales (S), une seule fois. Évalué au volume saisi, le modèle à
   // froid y ajoutait sa propre pente, que cvScales remplace (2026-10-13).
   const cvN=cart.case_vol_cm3, fillN=hasPcd?(C_gr*GR_G/(pw.pcd/1000))/cvN:null;
-  const base=EnergyModel.energyAndEtaP(COEF,pw,fillN,Math.log(1+(A*refTravel)/(cvN*1e-6)),m_gr,C_gr,an.anc);
+  const base=EnergyModel.energyAndEtaP(COEF,pw,fillN,Math.log(1+(A*refTravel)/(cvN*1e-6)),m_gr,C_gr,an.anc,opt.mono?cart.type:null);
   const eta_p=base.np*S.np;
   let vRef,vUser,mode;
   if(opt.vmeas>0){                                       // vitesse MESURÉE au canon de l'utilisateur
@@ -564,7 +572,7 @@ function renderLadder(){
   if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+T(' — plage trop étroite (départ ≥ max ou incrément nul).',' — range too narrow (start ≥ max or zero step).')+'</p>';return;}
   const an=anchorsFor(ck,pk), charges=ladderCharges(w), Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
   let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">'+T('Charge','Charge')+' ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% '+limSrc(cart)+'</th></tr>';
-  for(const Cg of charges){ const r=predict(cart,pw,m_gr,Cg,bbl,an,{Tc});
+  for(const Cg of charges){ const r=predict(cart,pw,m_gr,Cg,bbl,an,{Tc,mono:isMono()});
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
   const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
@@ -696,7 +704,7 @@ function calc(){
   // priorité : mesure utilisateur > ancrage carabine > ancrage fabricant (couple connu) > à froid
   const an=anchorsFor(document.getElementById('cart').value,document.getElementById('pwd').value), anc=an.anc;
   const Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
-  const r=predict(cart,pw,m_gr,C_gr,bbl,an,{vmeas,Tc});
+  const r=predict(cart,pw,m_gr,C_gr,bbl,an,{vmeas,Tc,mono:isMono()});
   const v0=r.v0, Pmax=r.Pmax, eta_p=r.eta_p, fill=r.fill, tempApplied=r.tempApplied;
   const anchored=r.mode==='mesure', dataAnchor=r.mode==='carabine'||r.mode==='anchor';
   const viaEeff=r.mode==='e_eff', eta_b=r.mode==='eta_b'?r.base.eta_b:null;
@@ -758,6 +766,17 @@ function calc(){
   if(!hasPcd) w=T('Densité bulk inconnue : remplissage et pression approximés (nominal). ','Bulk density unknown: load density and pressure approximated (nominal). ')+w;
   if(viaEeff) w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (~8 % d\'écart quadratique). ','Powder without known Qex/Ba: velocity from a generic energy (~8% root-mean-square error). ')+w;
   if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
+  // Balle monolithique (scripts/fit_monolithique.js, 2026-10-15) : sans ce choix, une monolithique d'arme de
+  // poing sortait 16 % trop bas en pression ancrée, et plus d'une charge sur deux de plus de 15 %.
+  const MONO=COEF.monolithique&&COEF.monolithique[cart.type];
+  if(r.base.mono&&MONO){
+    const parAncre=r.base.path==='anchor'&&r.base.npFromAnchor, pA=nf((MONO.P-1)*100,1), pF=nf((MONO.froidP-1)*100,1);
+    w=(parAncre
+      ? T('Balle monolithique : à charge et masse égales, les guides Hodgdon et Western donnent '+pA+' % de pression de plus qu\'avec une balle à noyau ('+(cart.type==='handgun'?'arme de poing':'carabine')+') ; la pression ancrée en tient compte. ','Monolithic bullet: at equal charge and bullet weight, the Hodgdon and Western manuals give '+pA+'% more pressure than with a lead-core bullet ('+(cart.type==='handgun'?'handguns':'rifles')+'); the anchored pressure takes it into account. ')
+      : MONO.froidP>1
+        ? T('Balle monolithique : pression majorée de '+pF+' % (écart mesuré sans ancre sur les guides Hodgdon et Western, arme de poing). ','Monolithic bullet: pressure raised by '+pF+'% (gap measured without an anchor on the Hodgdon and Western manuals, handguns). ')
+        : T('Balle monolithique : pas de correction sans données fabricant de pression pour ce couple (aucun écart net mesuré dans ce cas en carabine). ','Monolithic bullet: no correction without manufacturer pressure data for this combination (no clear gap measured in this case for rifles). '))+w;
+  }
   if(tempApplied) w=T('Vitesse et pression ajustées à '+Tc.toFixed(0)+' °C (réf. 21 °C) : vitesse par la sensibilité générique de Litz, ~1,8 fps/°C, qui varie selon la poudre ; pression comme pour la variation de charge équivalente (hypothèse, P ∝ v^'+nf(kTempP(),1)+'). ','Velocity and pressure adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C): velocity by Litz\'s generic sensitivity, ~1.8 fps/°C, which varies with the powder; pressure as for the equivalent change of charge (an assumption, P ∝ v^'+nf(kTempP(),1)+'). ')+w;
   const bRatio=travel/refTravel;
   if(bRatio<0.6||bRatio>1.7) w=T('⚠ Canon très éloigné de la longueur de référence ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée ('+loiFr+'), à confirmer au chronographe. ','⚠ Barrel far from the reference length ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+'): v₀ scaling extrapolated ('+loiEn+'), confirm with a chronograph. ')+w;
@@ -906,6 +925,7 @@ function exportEstimateur(){
     ['canon',v('bbl'),U.bbl.cur],
     ['vitesse_mesuree',v('vmeas'),U.vmeas.cur],
     ['temperature',v('temp'),U.temp.cur],
+    ['balle_monolithique',isMono()?'oui':'non',''],
   ];
   if(CVOL>0) rows.push(['volume_etui',CVOL.toFixed(3),'cm3']);   // capacité utile, déjà convertie
   if(LAST){
@@ -932,6 +952,8 @@ function importEstimateur(file){
     [['masse','mass'],['charge','charge'],['canon','bbl'],['vitesse_mesuree','vmeas'],['temperature','temp']]
       .forEach(([k,key])=>{ if(map[k]) importField(key,map[k][1],map[k][2]); });
     if(map.volume_etui) importCvol(map.volume_etui[1],map.volume_etui[2]);
+    // Absent des fichiers exportés avant le 2026-10-15 : balle à noyau, comme alors.
+    document.getElementById('mono').value=(map.balle_monolithique && /^(oui|yes|1|true)$/i.test(map.balle_monolithique[1])) ? '1' : '0';
     calc();
   };
   r.readAsText(file);

@@ -255,7 +255,7 @@ charge law without the mass law is worse than nothing (pressure RMS 15.0 → 22.
 charge ladder (2.6–2.9 for the 85 % of bullets whose start–max spread is under 22 %; about a
 hundred wide-spread Reload Swiss bullets pull the pooled estimate down to 1.99). But between two
 bullets of the same weight the maximum charge also varies with construction (bearing surface,
-monolithic bullets), which the model cannot see; a large $\gamma$ amplifies that scatter, and a
+monolithic bullets — the latter now declared by the user, § 3.6), which the model cannot see; a large $\gamma$ amplifies that scatter, and a
 "hard" bullet at its own maximum then reads well below the limit — a false margin. Scan, $\alpha$
 re-estimated for each $\gamma$, pressure, bullet held out:
 
@@ -333,6 +333,68 @@ change of charge: $P \propto v^{2\gamma/(\delta+1)} \approx v^{2.14}$. This is a
 **User data.** A measured velocity gives the pressure through $\eta_p(C,m)$ of the anchor. A
 rifle anchor (ladder) is fitted with the same charge law $\delta$ around its own reference
 charge, so its smoothed curve now follows the measurements instead of rising as $\sqrt C$.
+
+### 3.6 Monolithic bullets (2026-10-15)
+
+A monolithic bullet (solid copper or brass) engraves harder, bears longer and, at equal weight, is
+longer and sits deeper in the case. At equal charge it gives more pressure, so its published maximum
+charge is lower. An anchor mixes both constructions, and the charge law ($\gamma \approx 2$) reads
+that lower charge as a lower pressure: held out and predicted from the pair's other bullets, a
+monolithic bullet came out **16 % low in a handgun** (56 % of its loads under-predicted by more than
+15 %) and 1.7 % low in a rifle. The lead came from ChamberSim Reloaded (GitHub), which gives copper
+bullets a higher start pressure.
+
+**Classification.** `scripts/balle_monolithique.js` reads the bullet name of the sources that print
+one: Hodgdon, Western and Vihtavuori. It retains the Barnes X family, TSX, TTSX, LRX, MRX, TAC-X and Banded
+Solid, Hornady GMX, CX and MonoFlex, Nosler E-Tip, Lapua Naturalis, Lehigh, Cutting Edge, Hammer
+and every "Solid". Reload Swiss, Lovex and Nosler print no bullet name, so their loads are not
+classified.
+
+**Effect at equal charge and bullet weight** (`scripts/fit_monolithique.js`). Fixed effects per pair ×
+source, charge and mass brought back by the local laws:
+
+| | $E_\mathrm{eff}$ | pressure | groups (pressure), positive |
+|---|---|---|---|
+| rifle, Hodgdon | +1.5 % | +3.4 % | 203, 155 |
+| rifle, Western | −0.5 % | +1.9 % | 159, 110 |
+| rifle, Vihtavuori | +0.6 % | — | |
+| **rifle, retained** | **+0.4 %** | **+2.5 %** | 362, 265 |
+| handgun, Hodgdon | +9.7 % | +23.0 % | 67, 62 |
+| handgun, Western | +7.7 % | +27.8 % | 55, 46 |
+| handgun, Vihtavuori | −9.5 % (18 groups) | — | |
+| **handgun, retained** | **+4.8 %** | **+25.3 %** | 122, 108 |
+
+A single factor (+7.5 %) over-corrected rifles and under-corrected handguns. The anchors are now
+built for a **lead-core** bullet (monolithic loads divided by the factor of their weapon type), and
+the tool multiplies $E$ and $\eta_p$ back when the user selects "monolithic". Block `monolithique` of
+`model_coefficients.json`: rifle $E$ × 1.004, $\eta_p$ × 0.980; handgun $E$ × 1.048, $\eta_p$ × 0.836.
+
+**Validation, bullet held out, anchored pressure**, bias / RMS, share under-predicted by more than 15 %:
+
+| | without factor | with factor |
+|---|---|---|
+| rifle, monolithic (774) | −1.7 / 18.8 %, 4.4 % | +0.2 / 19.2 %, 2.7 % |
+| rifle, other bullets of anchors ≥ 25 % monolithic (737) | +0.7 / 7.5 % | −0.1 / 7.4 % |
+| handgun, monolithic (207) | **−16.3** / 23.8 %, **56.0 %** | +2.4 / 20.9 %, 19.8 % |
+| handgun, other bullets of anchors ≥ 25 % monolithic (179) | +7.5 / 19.3 % | −1.1 / 16.5 % |
+| all loads (8 390) | +0.7 / 14.6 %, 7.8 % | +0.6 / 14.2 %, 7.3 % |
+
+Cross-checked between sources. The factor measured on one source and applied to the other's
+monolithic bullets gives, for handguns, Hodgdon −14.2 → +5.9 % and Western −18.7 → −1.4 %; for
+rifles, Hodgdon −1.5 → −0.2 % and Western −1.8 → +0.8 %. The factor is estimated on the same loads,
+but its size barely depends on the source.
+
+**Cold model.** Its pressure moves little with charge, so it does not read a lower maximum charge
+as a lower pressure. Within a pair, its monolithic-minus-other gap is +0.5 % for rifles (z = 0.6).
+ADI rifle loads, outside anchors and calibration and nearly all on the cold path, give +0.3 % over
+74 pairs. No factor is applied. For handguns it is −4.7 %
+(z = −4.6; Hodgdon −5.6 %, Western −3.6 %): the cold $\eta_p$ is divided by `froidP` = 1.049. Applied
+to the cold model, the anchored factor would have over-corrected it, by about 19 % for handguns.
+
+**Not changed.** The local-law exponents were estimated with the monolithic loads included. Refitting
+them with an indicator is deferred, since the GRT bench predictions are frozen (model `6e99a4b`).
+The banner's figures come from `fit_local_laws.js`, without the factor. With the factor, and the
+bullet declared, 7.3 % of loads instead of 7.8 % are under-predicted by more than 15 %.
 
 ## 4. Model unknowns
 
