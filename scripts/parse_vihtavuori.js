@@ -70,7 +70,12 @@ const NOM_SEUL = /^\s*\.?([0-9][\w.,&;'’ x/()-]*?)\s*$/;
 // en nomme un autre, c'est l'en-tête qui se trompe : un seul cas dans le guide 2026, page 72, « .45 Auto /
 // .45 ACP cont. » au-dessus de lignes de .460 S&W Magnum (longueur hors-tout 2,146 à 2,272 pouces ; le
 // titre .460 est au bas de la demi-page précédente). Le tableau en cours l'emporte.
-let derniere = null;
+// Un bloc de balle coupé en bas de demi-page continue sous l'en-tête « X cont. » de la suivante, SANS la masse
+// de balle, qui n'est imprimée que sur la première ligne du bloc. La balle de la fin de la demi-page précédente
+// est donc reprise quand l'en-tête continue la même cartouche. Sans cela, ces lignes n'avaient pas de masse et
+// étaient rejetées : 215 lignes du guide 2026, sur une cinquantaine de cartouches (relevé contre la base en ligne
+// de Vihtavuori, 2026-10-15 ; avec les deux corrections plus bas, 278 lignes retrouvées, aucune perdue).
+let derniere = null, derniereBalle = null;
 for (const lines of ALL) {
   let cart = null, barrel = null, bulletGrs = null, bulletDesc = '', premierEnTete = true;
   const texte = (j) => lines[j].toks.slice().sort((a, b) => a.x - b.x).map((w) => w.t).join(' ');
@@ -84,6 +89,7 @@ for (const lines of ALL) {
     if (cm) {
       let nc = norm(cm[1].replace(/&amp;/g, '&'));
       if (premierEnTete && derniere && /\bcont\b/i.test(s) && nc !== derniere) nc = derniere;
+      const suite = premierEnTete && derniere && /\bcont\b/i.test(s) && nc === derniere;
       premierEnTete = false;
       // Titre coupé (« .300 Remington » + « Ultra Magnum », « 6,5 x 55 SE / » + « 6,5 x 55 SKAN ») : sa fin
       // vient sous la ligne « Primers », avant « Cases: ». Toute ligne sans deux-points entre les deux est
@@ -97,17 +103,24 @@ for (const lines of ALL) {
         }
       }
       if (nc !== cart) { cart = nc; bulletGrs = null; if (barrel == null && /\bcont\b/i.test(s)) barrel = dernierCanon[cart] ?? null; }
+      if (suite && derniereBalle && derniereBalle.cart === cart) ({ bulletGrs, bulletDesc } = derniereBalle);
     }
     // « Test barrel: Sauer STR 200 » puis « Barrel length: 670 mm » (6,5 x 55 SE / SKAN, par section) : les
     // deux formes donnent le canon.
     const bm = s.match(/Test barrel:\s*(\d+)\s*mm/) || s.match(/Barrel length:\s*(\d+)\s*mm/); if (bm) barrel = +bm[1];
     const toks = ln.toks.slice().sort((a, b) => a.x - b.x);
-    const pIdx = toks.findIndex((w) => isPowder(w.t));
+    // La DERNIÈRE poudre de la ligne : le code produit des Lapua Naturalis (« N558 », « N563 ») a la forme d'une
+    // poudre Vihtavuori et se lisait comme telle, la ligne de travers, rejetée (28 lignes, 2026-10-15). Après la
+    // colonne des poudres ne viennent que des nombres.
+    const pIdx = toks.findLastIndex((w) => isPowder(w.t));
     if (pIdx < 0 || !cart) continue;
     const after = toks.slice(pIdx + 1).map((w) => num(w.t)).filter((v) => v != null);
     if (after.length < 8) continue;
     const before = toks.slice(0, pIdx).map((w) => num(w.t)).filter((v) => v != null);
-    if (before.length >= 2 && before[1] > 20 && before[1] < 600) {
+    // Bornes élargies le 2026-10-15 (balle 800 gr, charge max de 1 à 300 gr, vitesse de départ dès 100 m/s) : la
+    // .50 Browning (balles de 647 à 750 gr, charges jusqu'à 256 gr) était rejetée entière, 31 lignes, et les plus
+    // petites charges de .32 S&W Long (1,7 gr) et de .38 Special (125 m/s au départ) aussi.
+    if (before.length >= 2 && before[1] > 20 && before[1] < 800) {
       bulletGrs = before[1];
       // fabricant et type de balle : les mots entre la masse en grains et la longueur hors-tout
       const iG = toks.findIndex((w) => num(w.t) === before[1]);
@@ -115,15 +128,15 @@ for (const lines of ALL) {
     }
     const [, sgr, sms, , , mgr, mms] = after;
     // plausibilité (rejette lignes mal alignées : notes, n° de page, COL lus comme charge…)
-    const ok = bulletGrs >= 20 && bulletGrs <= 600 && mgr >= 2 && mgr <= 160 && sgr >= 1 && sgr <= mgr + 0.5
-      && mms >= 200 && mms <= 1400 && sms >= 150 && sms <= mms + 5;
+    const ok = bulletGrs >= 20 && bulletGrs <= 800 && mgr >= 1 && mgr <= 300 && sgr >= 1 && sgr <= mgr + 0.5
+      && mms >= 200 && mms <= 1400 && sms >= 100 && sms <= mms + 5;
     if (!ok) continue;
     if (barrel != null) dernierCanon[cart] = barrel;
     records.push({ cartridge: cart, barrel_mm: barrel, bullet_gr: bulletGrs,
       powder: toks[pIdx].t, start_gr: sgr, start_ms: sms, max_gr: mgr, max_ms: mms, bullet_desc: bulletDesc,
       cast: PLOMB.test(bulletDesc) && !CUIVRE.test(bulletDesc) });
   }
-  if (cart) derniere = cart;
+  if (cart) { derniere = cart; derniereBalle = bulletGrs != null ? { cart, bulletGrs, bulletDesc } : null; }
 }
 
 // fallback : combler barrel null par le 1er canon vu pour cette cartouche (cont. pages)
