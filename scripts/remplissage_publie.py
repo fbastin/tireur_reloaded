@@ -104,6 +104,8 @@ def verifier(n, part_rouge, ecarts, trop, absents, impossibles):
             ck, pk = k.split('|', 1)
             if w.get('c') is not None and w['c'] > w['cmax']:
                 pb.append(f"fenêtre affichée par l'outil, départ au-dessus du max : {k}{balle}, {w['c']}-{w['cmax']} gr")
+            if w.get('cmoy') is not None and w['cmoy'] < w['cmax'] - 0.005:
+                pb.append(f"fenêtre par masse, maximum moyen sous le plus petit : {k}{balle}, {w['cmoy']} < {w['cmax']} gr")
             if ck in cal and pw.get(pk, {}).get('pcd') and cal[ck].get('case_vol_cm3'):
                 ff = w['cmax'] * GRAIN / (pw[pk]['pcd'] / 1000) / cal[ck]['case_vol_cm3']
                 if ff > IMPOSSIBLE:

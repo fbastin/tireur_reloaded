@@ -34,7 +34,10 @@ const COEF = JSON.parse(fs.readFileSync(d('model_coefficients.json'))), L = COEF
 const ln = Math.log, mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
 const by = (a, f) => a.reduce((o, r) => ((o[f(r)] = o[f(r)] || []).push(r), o), {});
 const rowsP = (a) => a.filter((r) => r.m > 0 && r.C > 0 && r.eeff > 0);
-const TYPES = ['rifle'], PLAFOND_MIN = 2;
+// Types servis et maximum de référence (EnergyModel.pressionDeuxPentes). Arme de poing ajoutée le 2026-10-16 avec la
+// MOYENNE (géométrique) des maxima de la masse : le plus petit maximum y surestimait la pression de 17 %, les balles d'une
+// même masse variant beaucoup ; la carabine garde le plus petit (biais +2,3 %, côté prudent ; choix de Fabian).
+const TYPES = ['rifle', 'handgun'], REF = { rifle: 'min', handgun: 'moy' }, PLAFOND_MIN = 2;
 
 // --- Estimation -------------------------------------------------------------------------------------------
 function pente(grp, x, y) {
@@ -48,9 +51,13 @@ function pente(grp, x, y) {
 }
 const tout = Object.entries(groups).flatMap(([k, a]) => rowsP(a).map((r) => ({ ...r, k })));
 const avecP = tout.filter((r) => r.P > 0 && r.np > 0);
+// γL commun (toutes armes) : celui de la carabine, inchangé depuis sa validation ; l'arme de poing a le sien (ses
+// échelles montent moins vite : médianes balle par balle 2,46 chez Reload Swiss et 1,75 chez Hodgdon, contre 2,76 et 2,35).
+const typeDe = (r) => (CAL[r.k.split('|')[0]] || {}).type;
 const gammaL = +pente(by(avecP, (r) => r.k + '#' + r.bid), (r) => ln(r.C), (r) => ln(r.P)).toFixed(3);
+const gammaPoing = +pente(by(avecP.filter((r) => typeDe(r) === 'handgun'), (r) => r.k + '#' + r.bid), (r) => ln(r.C), (r) => ln(r.P)).toFixed(3);
 const alphaM = +pente(by(avecP.filter((r) => r.max), (r) => r.k + '|' + r.src), (r) => ln(r.m), (r) => ln(r.P)).toFixed(3);
-console.log(`γL = d ln P / d ln C à balle donnée : ${gammaL} ; αM = d ln P_max / d ln m (couple × source) : ${alphaM}`);
+console.log(`γL = d ln P / d ln C à balle donnée : ${gammaL} (arme de poing seule : ${gammaPoing}) ; αM = d ln P_max / d ln m (couple × source) : ${alphaM}`);
 
 // --- Validation, balle laissée de côté ----------------------------------------------------------------------
 let FEN = null;
@@ -82,9 +89,10 @@ function valider(D) {
 const pc = (v) => (100 * v).toFixed(1);
 const st = (e) => { if (!e.length) return '—'; const s = e.slice().sort((p, q) => p - q);
   return `${pc(mean(e)).padStart(5)} / ${pc(Math.sqrt(mean(e.map((v) => v * v)))).padStart(4)} % (${e.length}) | sous-estimées >15 % ${pc(e.filter((v) => v < -0.15).length / e.length).padStart(4)} % | centile 1 % ${pc(s[Math.floor(0.01 * s.length)]).padStart(5)} %`; };
-const D = { gammaL, alphaM, types: TYPES };
+const D = { gammaL, alphaM, types: TYPES, rifle: { ref: REF.rifle }, handgun: { gammaL: gammaPoing, ref: REF.handgun } };
 const SOUS = [['tout', () => true], ['carabine', (x) => x.type === 'rifle'], ['  dont loi à deux pentes', (x) => x.type === 'rifle' && x.deux],
-  ['  dont loi des ancres (sans plafond ou sans fenêtre)', (x) => x.type === 'rifle' && !x.deux], ['arme de poing (loi des ancres)', (x) => x.type === 'handgun'],
+  ['  dont loi des ancres (sans plafond ou sans fenêtre)', (x) => x.type === 'rifle' && !x.deux], ['arme de poing', (x) => x.type === 'handgun'],
+  ['  dont loi à deux pentes', (x) => x.type === 'handgun' && x.deux], ['  dont loi des ancres', (x) => x.type === 'handgun' && !x.deux],
   ['RS départ', (x) => x.src === 'RS' && !x.max], ['RS max', (x) => x.src === 'RS' && x.max], ['max autres', (x) => x.src !== 'RS' && x.max],
   ['balles lourdes', (x) => x.dm > 0.15], ['balles légères', (x) => x.dm < -0.15]];
 let res = null;
@@ -98,6 +106,15 @@ else {
   // 2026-10-16 : +5,2 % de biais, contre +2,1 % sans).
   const MP = COEF.monolithique && COEF.monolithique.rifle && COEF.monolithique.rifle.P, mo = res.filter((x) => x.type === 'rifle' && x.mono);
   if (MP && mo.length) console.log(`  monolithiques de carabine, construction déclarée (ancres × ${MP} ; deux pentes sans facteur)\n    ${st(mo.map((x) => (1 + x.actuel) * MP - 1))}\n  → ${st(mo.map((x) => x.deux ? x.servi : (1 + x.servi) * MP - 1))}`);
+  // Arme de poing : le maximum MOYEN de la masse ne porte qu'en partie la construction d'une monolithique (sans facteur,
+  // −7,9 % ; avec le facteur de la loi des ancres, +15 %, le 2026-10-16) : facteur propre, mesuré ici (moyenne
+  // géométrique de P publiée / P prédite sur ses monolithiques), appliqué quand la balle est déclarée monolithique.
+  const MPh = COEF.monolithique && COEF.monolithique.handgun && COEF.monolithique.handgun.P, moh = res.filter((x) => x.type === 'handgun' && x.mono && x.deux);
+  if (moh.length) {
+    D.handgun.mono = +Math.exp(-mean(moh.map((x) => ln(1 + x.servi)))).toFixed(3);
+    const mohA = res.filter((x) => x.type === 'handgun' && x.mono);
+    console.log(`  monolithiques d'arme de poing, construction déclarée (ancres × ${MPh} ; deux pentes × ${D.handgun.mono}, facteur mesuré sur ${moh.length} charges)\n    ${st(mohA.map((x) => (1 + x.actuel) * MPh - 1))}\n  → ${st(mohA.map((x) => x.deux ? (1 + x.servi) * D.handgun.mono - 1 : (1 + x.servi) * MPh - 1))}`);
+  }
 }
 
 // --- Essai hors ligne du 2026-10-16 : fenêtre de la balle elle-même ou de la masse, plusieurs γL --------------
@@ -129,17 +146,20 @@ if (process.argv.includes('--variantes')) {
 }
 
 if (process.argv.includes('--write')) {
-  const car = res && res.filter((x) => x.type === 'rifle'), rms = (a) => Math.sqrt(mean(a.map((v) => v * v)));
-  const part = (a) => a.filter((v) => v < -0.15).length / a.length;
-  const pire = car && (rms(car.map((x) => x.servi)) > rms(car.map((x) => x.actuel)) || part(car.map((x) => x.servi)) > part(car.map((x) => x.actuel)));
-  if (pire && !process.argv.includes('--force')) {
-    console.log('\n-> NON écrit : la loi à deux pentes dégrade la pression des carabines. --force pour écrire quand même.');
+  const rms = (a) => Math.sqrt(mean(a.map((v) => v * v))), part = (a) => a.filter((v) => v < -0.15).length / a.length;
+  const pire = res && TYPES.filter((t) => { const x = res.filter((y) => y.type === t);
+    return x.length && (rms(x.map((y) => y.servi)) > rms(x.map((y) => y.actuel)) || part(x.map((y) => y.servi)) > part(x.map((y) => y.actuel))); });
+  if (pire && pire.length && !process.argv.includes('--force')) {
+    console.log(`\n-> NON écrit : la loi à deux pentes dégrade la pression (${pire.join(', ')}). --force pour écrire quand même.`);
     process.exitCode = 1;
   } else {
-    COEF.deux_pentes = { gammaL, alphaM, types: TYPES, plafond_min: PLAFOND_MIN,
-      _doc: 'Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cmax)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cmax dans les fenêtres par masse de start_charges.local.json. Types listés seulement ; ailleurs, la loi des ancres.',
+    // facteur monolithique de l'arme de poing : mesuré par la validation ; sans fenêtres (première passe), l'ancien
+    const anc = COEF.deux_pentes && COEF.deux_pentes.handgun;
+    if (D.handgun.mono == null && anc && anc.mono) D.handgun.mono = anc.mono;
+    COEF.deux_pentes = { ...D, plafond_min: PLAFOND_MIN,
+      _doc: 'Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cref)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cref dans les fenêtres par masse de start_charges.local.json : plus petit maximum (ref min, cmax) ou moyenne géométrique des maxima (ref moy, cmoy). Par type : gammaL propre s il est donné (sinon le commun), mono = facteur d une balle monolithique déclarée. Types listés seulement ; ailleurs, la loi des ancres.',
       _date: new Date().toISOString().slice(0, 10) };
     fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(COEF, null, 2) + '\n');
-    console.log(`\n-> bloc \`deux_pentes\` écrit dans data/model_coefficients.json${res ? '' : ' (sans validation : fenêtres par masse absentes)'} ; relancer build_anchors.js puis build_start_charges.js`);
+    console.log(`\n-> bloc \`deux_pentes\` écrit dans data/model_coefficients.json${res ? '' : ' (sans validation : fenêtres par masse absentes)'} ; relancer build_anchors.js puis build_start_charges.js, puis ce script (validation ; --write une seconde fois pour le facteur monolithique de l'arme de poing)`);
   }
 }

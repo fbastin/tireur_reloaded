@@ -488,7 +488,7 @@ handgun, fallback +7.8 / 22.2 %, 12.7 % (130); handgun, powder with constants +2
 `fit_pressure_multibrand.js` rewrites $E_{\text{eff}}$
 and $\eta_p$: after it, `fit_repli_carabine.js --write` must be run again (it says so).
 
-### 3.8 Two-slope pressure law for rifles (2026-10-16)
+### 3.8 Two-slope pressure law (2026-10-16: rifles, then handguns)
 
 For a rifle pair whose anchor carries a pressure ceiling, and a bullet weight with a published window,
 the page computes the pressure as (`EnergyModel.pressionDeuxPentes`, `scripts/fit_deux_pentes.js`)
@@ -520,8 +520,8 @@ under-predicted by more than 15 %, 1st percentile:
 |---|---|---|
 | rifles (6 131) | 0.0 / 8.9 %, 3.2 %, −19 % | +2.3 / 7.9 %, 0.6 %, −12 % |
 | … of which two slopes (6 057) | 0.1 / 8.9 %, 3.1 % | +2.4 / 7.9 %, 0.5 % |
-| handguns (2 188, unchanged) | +2.0 / 20.8 %, 19.6 % | same |
-| all (8 319) | +0.5 / 13.1 %, 7.5 %, −35 % | +2.2 / 12.6 %, 5.6 %, −34 % |
+| handguns (2 188), before their law below | +2.0 / 20.8 %, 19.6 % | same |
+| all (8 319), rifles only | +0.5 / 13.1 %, 7.5 %, −35 % | +2.2 / 12.6 %, 5.6 %, −34 % |
 
 **Hodgdon starting loads (2026-10-16, `scripts/essai_departs_hodgdon.js`, nothing applied).** The Hodgdon
 manual prints the pressure of its starting loads too (extracted since that day). Per-bullet slope from start
@@ -535,9 +535,32 @@ $\gamma_L$ between start and maximum. Putting them into the anchors changes noth
 slightly worse overall (12.8 → 13.3 %; rifles 8.0 → 8.2 %, under-predicted 0.9 → 0.7 %). `ANCRES_DEPARTS_HODGDON=1`
 makes `build_anchors.js` add them, for such trials only.
 
-The page's pressure messages follow: ~8 %, one load in two hundred under-predicted by more than 15 %
-(two slopes); anchor law with pressure, rifle ~9 %, one in thirty, handgun ~21 %, one in five. Until
-2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average set by the rifles.
+**Handguns (same day, `fit_deux_pentes.js`).** Handgun pressure under the anchor law was the weak point
+(+2.0 / 20.8 %, 19.6 % under-predicted): its error came from the charge's distance to the anchor (more than
+15 % below it: −23 %, 72.5 % under-predicted), bullets of one pair spanning wide charges at one ceiling.
+Handgun-specific exponents helped a little (18.0 %), a low slope more (γ = 1: 13.6 %) but at the top of the
+Reload Swiss ladders (−11 %, 37 % under-predicted). The two-slope law with the *smallest* maximum of the
+weight over-predicted by 17 %; with the *mean* (geometric) of the weight's maxima, `ref: "moy"`, `cmoy` in
+the windows, and the handgun ladder slope $\gamma_L$ = 1.773 (pooled least squares on handgun ladders;
+Hodgdon's per-bullet median 1.75), it beats the anchor law everywhere. Ceiling and windows: 248 handgun pairs,
+1 272 windows (served on the user's decision, as for rifles, without bullet names); rifles keep their smallest
+maximum (bias +2.3 %, the cautious side; the mean would give 6.7 %, +0.7 %, 0.7 % under-predicted).
+
+| handguns, bullet held out | anchor law | two slopes, mean maximum |
+|---|---|---|
+| all (2 188; 2 170 under the law) | +2.0 / 20.8 %, 19.6 %, −46 % | +1.3 / 12.5 %, 6.3 %, −34 % |
+| Reload Swiss maxima (165) | +1.7 / 28.8 %, 21.2 % | +1.0 / 14.6 %, 11.5 % |
+| Hodgdon starting loads, never seen | −1.9 / 22.3 %, 27.7 % | 0.0 / 12.8 %, 8.6 % |
+| monolithic bullets, declared | × 1.253: +4.9 / 22.3 %, 18.4 % | × 1.098: +1.2 / 13.6 %, 15.9 % |
+
+The monolithic factor under this law (`deux_pentes.handgun.mono` = 1.098, geometric mean of published /
+predicted over 204 loads) replaces the anchor-law 1.253, which over-corrected (+15 %); no factor gave −7.9 %.
+All pressures with manufacturer data: 13.1 → 9.3 %, under-predicted 7.5 → 2.1 %, 1st percentile −35 → −23 %.
+
+The page's pressure messages follow: two slopes, rifle ~8 %, one load in two hundred under-predicted by
+more than 15 %, handgun ~13 %, one in sixteen; anchor law with pressure, rifle ~9 %, one in thirty, handgun
+~21 %, one in five. Until 2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average
+set by the rifles.
 
 ## 4. Model unknowns
 

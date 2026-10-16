@@ -9,8 +9,9 @@
  * Output (LOCAL, gitignored — real charges, not redistributed): data/start_charges.local.json
  *   charges : { "<calKey>|<pwdKey>": { "m": <typical bullet gr>, "c": <start gr>, "cmax": <max gr>,
  *                                      "nb": <bullets of that weight> } }
- *   fenetres_masse (2026-10-16) : { "<calKey>|<pwdKey>": { "<bullet gr>": { "c": <start gr | null>, "cmax", "nb" } } }
- *     for rifle pairs whose anchor carries a pressure ceiling (anchors.json: pc) — the two-slope pressure law
+ *   fenetres_masse (2026-10-16) : { "<calKey>|<pwdKey>": { "<bullet gr>": { "c": <start gr | null>, "cmax", "nb", "cmoy"? } } }
+ *     for pairs of the types of the two-slope law (rifles; handguns, with cmoy) whose anchor carries a pressure
+ *     ceiling (anchors.json: pc) — the two-slope pressure law
  *     (scripts/fit_deux_pentes.js) and the ladder window of the entered weight. A Hodgdon row without a starting
  *     charge counts for the maximum only: c = null when no bullet of that weight has a start.
  *   Run after build_anchors.js.
@@ -180,6 +181,9 @@ try {
 // dont l'ancre porte un plafond de pression (anchors.json : pc). Pour chaque masse : plus petite charge de départ
 // (null si seule une source « max seul » la publie), plus petite charge maximale, nombre de balles.
 const ANCH = JSON.parse(fs.readFileSync(d('anchors.json'))).anchors;
+// Types et maximum de référence de la loi à deux pentes (bloc deux_pentes) : arme de poing ajoutée le 2026-10-16, avec la
+// moyenne géométrique des maxima de la masse (cmoy), qui ne sert qu'à la pression ; l'échelle de charge garde cmax.
+const DP = JSON.parse(fs.readFileSync(d('model_coefficients.json'))).deux_pentes || {};
 const parMasse = {}; let nMasses = 0;
 
 const median = (a) => { const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
@@ -204,8 +208,9 @@ function balles(byBullet0, avecMaxSeul) {
   return { garde, retirees };
 }
 for (const [k, byBullet0] of Object.entries(groups)) {
-  if (CAL[k.split('|')[0]] && CAL[k.split('|')[0]].type === 'rifle' && ANCH[k] && ANCH[k].pc > 0) {
-    const f = {};
+  const typ = CAL[k.split('|')[0]] && CAL[k.split('|')[0]].type;
+  if (typ && (DP.types || []).includes(typ) && ANCH[k] && ANCH[k].pc > 0) {
+    const f = {}, moy = (DP[typ] || {}).ref === 'moy';
     for (const [g, w] of Object.entries(balles(byBullet0, true).garde)) {
       const bs = Object.values(w), avecDepart = bs.filter((b) => !b.maxSeul);
       const cmax = +Math.min(...bs.map((b) => b.hi)).toFixed(2);
@@ -215,6 +220,7 @@ for (const [k, byBullet0] of Object.entries(groups)) {
       // pas de départ publié : pas de départ (remplissage_publie.py --check le contrôle chaque nuit).
       if (c != null && c > cmax) c = null;
       f[g] = { c, cmax, nb: bs.length };
+      if (moy) f[g].cmoy = +Math.exp(bs.reduce((s2, b) => s2 + Math.log(b.hi), 0) / bs.length).toFixed(2);
       nMasses++;
     }
     parMasse[k] = f;
@@ -244,6 +250,6 @@ if (CHECK) {
 }
 fs.writeFileSync(d('start_charges.local.json'),
   JSON.stringify({ _doc: 'Charge DÉPART et MAX fabricant pour la balle typique (médiane) par cartouche|poudre ; plusieurs balles de cette masse : le plus petit départ et le plus petit max. LOCAL/gitignored : charges réelles, non redistribuées. Pré-remplissage + fenêtre sûre de la ladder dans l UI.', m: 'balle typique (gr)', c: 'charge de départ (gr)', cmax: 'charge max (gr)', nb: 'balles de cette masse', charges: out,
-    fenetres_masse_doc: 'Carabines dont l ancre porte un plafond de pression (loi à deux pentes) : par masse de balle (gr), plus petite charge de départ (null : source à charge maximale seule), plus petite charge maximale, nombre de balles.',
+    fenetres_masse_doc: 'Couples dont l ancre porte un plafond de pression (loi à deux pentes : carabines, armes de poing) : par masse de balle (gr), plus petite charge de départ (null : aucune balle de cette masse n en publie), plus petite charge maximale (cmax, échelle de charge), nombre de balles ; en arme de poing, moyenne géométrique des maxima (cmoy, pression).',
     fenetres_masse: parMasse }, null, 1));
 console.log(`start charges for ${n} combos, ${nMasses} fenêtres par masse (${Object.keys(parMasse).length} couples) -> data/start_charges.local.json (gitignored) ; balles subsoniques de carabine écartées (couples mixtes) : ${nSub}`);

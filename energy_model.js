@@ -114,15 +114,28 @@ const EnergyModel = {
    * Loi de pression à DEUX PENTES (bloc `deux_pentes`, scripts/fit_deux_pentes.js, 2026-10-16), pour les types
    * listés (carabine) : P = P_plafond · (m / m_plafond)^αM · (C / Cmax)^γL, en bar. P_plafond, m_plafond : pression
    * et masse moyennes des charges MAXIMALES publiées du couple (ancre : pc, mpc) ; Cmax : plus petite charge
-   * maximale publiée pour cette masse de balle (fenêtre par masse, start_charges.local.json). Les lois locales n'ont
+   * maximale publiée pour cette masse de balle, ou leur moyenne (fenêtre par masse, start_charges.local.json). Les lois locales n'ont
    * qu'un exposant pour l'échelle d'une balle (pente 2,7) et pour l'écart de charge maximale entre balles, toutes
    * au plafond de pression ; rapportée au maximum publié de la masse, la pression n'a plus besoin du second.
    * null si l'ancre n'a pas de plafond ou la masse pas de fenêtre : la loi des ancres (energyAndEtaP) s'applique.
    */
-  pressionDeuxPentes(coef, anc, win, m_gr, C_gr, type) {
+  //   Par type d'arme (bloc deux_pentes[type], 2026-10-16) : pente γL, maximum de référence `ref` (« min » : le plus
+  //   petit maximum de la masse, win.cmax ; « moy » : la moyenne géométrique des maxima de ses balles, win.cmoy) et
+  //   facteur `mono` d'une balle monolithique déclarée (mono vrai). Carabine : min, sans facteur ; arme de poing : moy
+  //   (le plus petit maximum surestimait la pression de 17 %, les balles d'une même masse y variant beaucoup).
+  pressionDeuxPentes(coef, anc, win, m_gr, C_gr, type, mono) {
     const D = coef.deux_pentes;
-    if (!(D && (D.types || []).includes(type) && anc && anc.pc > 0 && anc.mpc > 0 && win && win.cmax > 0)) return null;
-    return anc.pc * Math.pow(m_gr / anc.mpc, D.alphaM) * Math.pow(C_gr / win.cmax, D.gammaL);
+    if (!(D && (D.types || []).includes(type) && anc && anc.pc > 0 && anc.mpc > 0 && win)) return null;
+    const T = D[type] || {}, cRef = T.ref === 'moy' ? win.cmoy : win.cmax;
+    if (!(cRef > 0)) return null;
+    return anc.pc * Math.pow(m_gr / anc.mpc, D.alphaM) * Math.pow(C_gr / cRef, this.penteDeuxPentes(coef, type))
+      * (mono && T.mono > 0 ? T.mono : 1);
+  },
+
+  /** Pente γL de la loi à deux pentes pour ce type d'arme (celle du bloc commun à défaut). */
+  penteDeuxPentes(coef, type) {
+    const D = coef.deux_pentes || {};
+    return (D[type] && D[type].gammaL) || D.gammaL;
   },
 
   /** Fenêtre de la masse publiée la plus proche, à moins de 0,5 gr ({ masse: {c, cmax, nb} }) ; sinon null. */
