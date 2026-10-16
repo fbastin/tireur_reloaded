@@ -45,9 +45,9 @@ const fillPct = (ck, pk, C_gr) => {
   if (!(pcd > 0 && vol > 0)) return null;
   return (C_gr * 0.06479891 / (pcd / 1000)) / vol * 100;   // g / (g/cm3) / cm3
 };
-const v0cold = (m_gr, C_gr, fill) => {
+const v0cold = (m_gr, C_gr, fill, k = 1) => {         // k : facteur du repli des carabines (EM.repliCarabine)
   const m = m_gr * G, C = C_gr * G;
-  const Eeff = e0 + e1 * (fill / 100);
+  const Eeff = k * (e0 + e1 * (fill / 100));
   return Math.sqrt(2 * Eeff * C / (m + C / 3));
 };
 const eeffOf = (m_gr, C_gr, v) => {
@@ -103,7 +103,7 @@ for (const r of LY) {
     const fill = fillPct(r.cartridge, r.powder, C_gr);
     if (fill === null) { noFill++; continue; }
     const v = r.barrel_mm ? toRef(r.cartridge, v0, r.barrel_mm) : v0;
-    const e = (v0cold(r.bullet_gr, C_gr, fill) - v) / v * 100;
+    const e = (v0cold(r.bullet_gr, C_gr, fill, EM.repliCarabine(COEF, PWD[r.powder], CAL[r.cartridge].type)) - v) / v * 100;
     err[type].push(e);
     if (type === 'rifle') {
       if (!perCart.has(r.cartridge)) perCart.set(r.cartridge, []);

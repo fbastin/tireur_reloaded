@@ -71,17 +71,20 @@ const EnergyModel = {
    *   massif), sinon null. Bloc `monolithique` (scripts/fit_monolithique.js, 2026-10-15) : l'ancre est celle
    *   d'une balle à noyau, son E et son η_p sont multipliés par les facteurs du type ; le η_p à froid est
    *   divisé par froidP (arme de poing seulement : en carabine, le modèle à froid n'a pas l'écart).
+   *   type : type de la cartouche ('rifle', 'handgun'), pour le facteur du repli des carabines ; à défaut,
+   *   celui de `mono`. Bloc `repli_carabine` (scripts/fit_repli_carabine.js, 2026-10-16) : voir repliCarabine.
    * Le modèle à froid reste SANS lois locales. Essayé et rejeté le 2026-10-10 (pression, toutes
    * charges publiées) : lois de charge et de masse autour du remplissage et de la masse typiques
    * de la cartouche, RMS 24,6 → 37,6 % — d'une poudre à l'autre, φ suit la vivacité, pas une
    * échelle de charge ; masse seule, balles lourdes −1 → +21 %, légères +9 → −15 %. Le modèle à
    * froid n'avait pas le biais de masse de l'ancrage : ses termes φ et B_a le compensent déjà.
    */
-  energyAndEtaP(coef, pw, ff, lnRe, m_gr, C_gr, anc, mono) {
+  energyAndEtaP(coef, pw, ff, lnRe, m_gr, C_gr, anc, mono, type) {
     const L = coef.local || null, lin = (c, f) => c.reduce((s, w, i) => s + w * f[i], 0);
     const ffx = ff == null ? 1 : ff;                          // remplissage nominal si densité inconnue
     const M = (mono && coef.monolithique && coef.monolithique[mono]) || null;
-    const npCold = lin(coef.eta_p.coef, [1, ffx, lnRe]) / ((M && M.froidP) || 1);
+    const k = this.repliCarabine(coef, pw, type || mono);
+    const npCold = k * lin(coef.eta_p.coef, [1, ffx, lnRe]) / ((M && M.froidP) || 1);
     if (anc) {
       return {
         E: anc.eeff * this.localE(L, C_gr, m_gr, anc.C, anc.m) * (M ? M.E : 1),
@@ -93,7 +96,18 @@ const EnergyModel = {
       const eta_b = lin(coef.eta_b.coef, [1, ffx, pw.Ba]);
       return { E: eta_b * pw.Qex * 1000, np: npCold, path: 'eta_b', eta_b, mono: !!M };
     }
-    return { E: lin(coef.e_eff.coef, [1, ffx]), np: npCold, path: 'e_eff', mono: !!M };
+    return { E: k * lin(coef.e_eff.coef, [1, ffx]), np: npCold, path: 'e_eff', mono: !!M, repli: k };
+  },
+
+  /**
+   * Facteur du repli E_eff en carabine (bloc `repli_carabine`, scripts/fit_repli_carabine.js) : k pour une
+   * cartouche de carabine et une poudre sans Qex/Ba, 1 sinon. Il multiplie l'énergie générique ET le η_p à
+   * froid : la pression à froid, E·C/(η_p·A·L), n'en change pas ; la vitesse à froid baisse de √k, et la
+   * pression calculée depuis une vitesse connue (mesurée, ou ancre sans η_p) monte de 1/k.
+   */
+  repliCarabine(coef, pw, type) {
+    const R = coef.repli_carabine;
+    return (R && R.k > 0 && type === 'rifle' && !(pw && pw.Qex && pw.Ba)) ? R.k : 1;
   },
 
   /** Prédiction de Pmax à partir de v0 et η_p. */

@@ -58,10 +58,13 @@ def charger():
         ref = ca.get('test_barrel_mm') or (122 if ca.get('type') == 'handgun' else 600)
         lr = (ref - ca['case_mm']) / 1000
         mesure = 0.5 * (m_gr * G + C / 3) * v_ms ** 2 / (p_bar * 1e5 * A * ls)
-        eta_src = lin(co['eta_p']['coef'], [1, fill, math.log(1 + A * ls / V)])
-        eta_ref = lin(co['eta_p']['coef'], [1, fill, math.log(1 + A * lr / V)])
+        # facteur du repli des carabines (bloc repli_carabine, 2026-10-16) : sur E et sur η_p, comme l'outil
+        k = (co.get('repli_carabine', {}).get('k', 1)
+             if ca.get('type') == 'rifle' and not (p.get('Qex') and p.get('Ba')) else 1)
+        eta_src = k * lin(co['eta_p']['coef'], [1, fill, math.log(1 + A * ls / V)])
+        eta_ref = k * lin(co['eta_p']['coef'], [1, fill, math.log(1 + A * lr / V)])
         E = (lin(co['eta_b']['coef'], [1, fill, p['Ba']]) * p['Qex'] * 1000 if p.get('Qex') and p.get('Ba')
-             else lin(co['e_eff']['coef'], [1, fill]))
+             else k * lin(co['e_eff']['coef'], [1, fill]))
         L.append(dict(src=src, poing=ca.get('type') == 'handgun', seul=mesure / eta_src - 1,
                       froid=E * C / (eta_ref * A * lr) / 1e5 / p_bar - 1))
 

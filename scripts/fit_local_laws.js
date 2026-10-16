@@ -4,7 +4,8 @@
  *
  * Usage : node scripts/fit_local_laws.js            # estime et valide, console seule
  *         node scripts/fit_local_laws.js --scan     # + balayage de γ (le choix de 1,95)
- *         node scripts/fit_local_laws.js --write    # écrit le bloc `local` de model_coefficients.json
+ *         node scripts/fit_local_laws.js --write    # écrit le bloc `local` de model_coefficients.json,
+ *                                                   # si la validation ne se dégrade pas (--force sinon)
  * Entrées : les charges de build_anchors.js (fichiers *.local.json, non redistribués).
  * Ensuite : node scripts/build_anchors.js (les ancres portent leur point de référence).
  *
@@ -35,6 +36,19 @@
  * On garde l'estimateur ordinaire (moindres carrés groupés), sans réglage à la main :
  * il retire les biais à erreur quadratique égale. La pente d'une échelle reste SOUS la réalité
  * (≈ 2 contre 2,7) : au-delà du max publié, la pression réelle monte plus vite que l'affichée.
+ *
+ * ÉCRITURE CONDITIONNELLE (2026-10-15). Sans les charges subsoniques retirées ce jour-là, les moindres
+ * carrés donnent γ 2,24, α 0,98, δ 0,882, β 0,567. Validés balle laissée de côté sur les mêmes charges,
+ * ils font moins bien que les lois publiées (γ 1,992) : pression 13,1 → 14,4 %, sous-estimée de plus de
+ * 15 % 7,5 → 8,3 %, centile 1 % −35 → −38 %, vitesse 3,25 → 3,29 %. Seul le maximum des échelles
+ * Reload Swiss y gagne, en biais (−2,9 → −0,7 %) et en part sous-estimée (10,8 → 9,1 %), pas en écart
+ * quadratique (16,2 → 18,3 %). Sur les données en ligne d'ADI, jamais dans les ancres : pression ancrée
+ * 17,8 → 20,0 % (88 charges). La raison est celle de γ ≈ 2 ci-dessus : un seul γ sert à la fois l'échelle
+ * d'une balle (pente 2,7) et l'écart de charge maximale entre balles, toutes au plafond de pression ; la
+ * validation porte surtout sur le second (6 841 charges maximales hors Reload Swiss sur 8 319).
+ * Les lois publiées sont donc gardées, et --write n'écrit plus que des lois
+ * qui ne dégradent ni la pression (écart quadratique, part sous-estimée de plus de 15 %) ni la vitesse ;
+ * --force passe outre.
  *
  * FORME. Sur l'ancre : E(C,m) = Ē (C/C̄)^δ (m/m̄)^β, η_p(C,m) = η̄_p (C/C̄)^ε (m/m̄)^ζ, avec
  * ε = δ + 1 − γ et ζ = β − α (η_p = E·C / (P·A·L)) ; C̄, m̄ : moyennes géométriques du couple.
@@ -145,8 +159,16 @@ function validerAncre(lois) {
   }
   return res;
 }
-rapport('ANCRAGE actuel (moyennes constantes)', validerAncre(null), 'écart à la masse moyenne du couple > 16 %');
-rapport('ANCRAGE avec lois locales', validerAncre(L), 'idem');
+rapport('ANCRAGE sans lois locales (moyennes constantes, avant le 2026-10-10)', validerAncre(null), 'écart à la masse moyenne du couple > 16 %');
+const PUB = COEF.local || null, resPub = PUB ? validerAncre(PUB) : null, resL = validerAncre(L);
+if (resPub) rapport(`ANCRAGE, lois publiées (δ ${PUB.delta}, γ ${PUB.gamma}, β ${PUB.beta}, α ${PUB.alpha})`, resPub, 'idem');
+rapport(`ANCRAGE, lois réestimées (δ ${L.delta}, γ ${L.gamma}, β ${L.beta}, α ${L.alpha})`, resL, 'idem');
+// Critères d'écriture : écart quadratique de la vitesse et de la pression, part de pression sous-estimée de plus de 15 %.
+const bilan = (res) => { const p = res.filter((x) => x.ep != null).map((x) => x.ep);
+  return { vitesse: rms(res.map((x) => x.ev)), pression: rms(p), 'pression sous-estimée de plus de 15 %': 100 * p.filter((x) => x < -0.15).length / p.length }; };
+const bP = resPub && bilan(resPub), bL = bilan(resL);
+const degrade = bP ? Object.keys(bL).filter((c) => +bL[c].toFixed(2) > +bP[c].toFixed(2))
+  .map((c) => `${c} ${bP[c].toFixed(2)} → ${bL[c].toFixed(2)} %`) : [];
 
 // --- 4. Modèle à froid : sans lois locales (essais rejetés, voir energy_model.js) ; rappel de
 //        ses biais pour comparaison avec l'ancrage.
@@ -160,7 +182,7 @@ rapport('ANCRAGE avec lois locales', validerAncre(L), 'idem');
     // Course du canon de la ligne, retrouvée par η_p = E·C/(P·A·L) ; sinon canon de référence.
     const Lc = (r.np > 0 && r.P > 0) ? r.eeff * C / (r.P * 1e5 * r.np * A)
       : ((ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm) / 1000;
-    const p = EM.energyAndEtaP(COEF, pw, ff, ln(1 + A * Lc / (ca.case_vol_cm3 * 1e-6)), r.m, r.C, null);
+    const p = EM.energyAndEtaP(COEF, pw, ff, ln(1 + A * Lc / (ca.case_vol_cm3 * 1e-6)), r.m, r.C, null, null, ca.type);
     const cref = CREF[ck];
     res.push({ src: r.src, max: r.max, dm: cref ? ln(r.m / cref.m) : 0, ev: Math.sqrt(p.E / r.eeff) - 1, ep: (r.np > 0) ? (p.E / r.eeff) * (r.np / p.np) - 1 : null });
   }
@@ -179,7 +201,10 @@ if (process.argv.includes('--scan')) {
   }
 }
 
-if (process.argv.includes('--write')) {
+if (process.argv.includes('--write') && degrade.length && !process.argv.includes('--force')) {
+  console.log(`\n-> NON écrit : les lois réestimées dégradent la validation (${degrade.join(' ; ')}). --force pour écrire quand même.`);
+  process.exitCode = 1;
+} else if (process.argv.includes('--write')) {
   COEF.local = {
     ...L,
     _doc: `Lois locales de l\'ancrage (scripts/fit_local_laws.js) : E_eff ∝ C^delta·m^beta et η_p ∝ C^eps·m^zeta autour du point de référence de l\'ancre (C, m, grains) ; P ∝ C^gamma·m^alpha. Le modèle à froid n\'en reçoit pas. gamma = ${String(L.gamma).replace('.', ',')} (moindres carrés groupés) sous-estime la pente d\'une échelle de charge (médiane 2,7) : compromis retenu, voir l\'en-tête du script.`,

@@ -15,11 +15,12 @@ const path = require('path');
 const d = (f) => path.join(__dirname, '..', 'data', f);
 const CAL = JSON.parse(fs.readFileSync(d('calibers.json'))).calibers;
 const PWD = JSON.parse(fs.readFileSync(d('powders.json'))).powders;
-const Ep = JSON.parse(fs.readFileSync(d('model_coefficients.json'))).eta_p.coef;
+const COEF = JSON.parse(fs.readFileSync(d('model_coefficients.json'))), Ep = COEF.eta_p.coef;
+const EM = require('../energy_model.js');
 const G = 6.479891e-5, GR2G = 0.06479891;
 const norm = (s) => String(s).toLowerCase().replace(/\(.*?\)/g, '').replace(/winchester/g, 'win').replace(/remington/g, 'rem').replace(/magnum/g, 'mag').replace(/springfield/g, 'spring').replace(/[^a-z0-9]/g, '');
 const calIdx = {}; for (const k of Object.keys(CAL)) { calIdx[norm(k)] = k; for (const a of (CAL[k].aliases || [])) calIdx[norm(a)] = k; }
-const pcdIdx = {}; for (const k of Object.keys(PWD)) if (PWD[k].pcd) pcdIdx[norm(k)] = PWD[k].pcd;
+const pcdIdx = {}, pwIdx = {}; for (const k of Object.keys(PWD)) if (PWD[k].pcd) { pcdIdx[norm(k)] = PWD[k].pcd; pwIdx[norm(k)] = PWD[k]; }
 const lin = (c, f) => c.reduce((s, w, i) => s + w * f[i], 0);
 const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
 const bias = (a) => a.reduce((s, x) => s + x, 0) / a.length;
@@ -36,7 +37,7 @@ for (const r of JSON.parse(fs.readFileSync(d('vihtavuori.local.json'))).rows) {
   const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, L = (r.barrel_mm - ca.case_mm) / 1000;
   const fill = (r.max_gr * GR2G / (pcd / 1000)) / ca.case_vol_cm3 * 100;
   const Re = 1 + (A * L) / (ca.case_vol_cm3 * 1e-6);
-  const etap = lin(Ep, [1, fill / 100, Math.log(Re)]);
+  const etap = EM.repliCarabine(COEF, pwIdx[norm(r.powder || '')], ca.type) * lin(Ep, [1, fill / 100, Math.log(Re)]);   // facteur du repli des carabines
   const Pmod = 0.5 * me * v0 * v0 / (etap * A * L) / 1e5;             // bar, model η_p + VV v0
   const e = (Pmod / ca.pmax_cip_bar - 1) * 100;                       // vs CIP (truth at max)
   err.push(e); (byType[ca.type] || (byType.rifle)).push(e);

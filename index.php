@@ -89,10 +89,12 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    2026-10-15, après les 278 lignes Vihtavuori retrouvées : 3,3 % (30 250) et 7,7 % (32 703).
    2026-10-15, charges subsoniques de carabine retirées des couples mixtes (build_anchors.js), lois publiées
    inchangées : pression avec données fabricant 13,1 %, 7,5 % sous-estimées de plus de 15 %, centile 1 % −35 % ;
-   à froid 25,3 % et 20,2 %, centile 1 % −40 % ; vitesse 3,3 % (30 166 charges) et 7,6 % (32 609). */ ?>
+   à froid 25,3 % et 20,2 %, centile 1 % −40 % ; vitesse 3,3 % (30 166 charges) et 7,6 % (32 609).
+   2026-10-16, facteur du repli des carabines (scripts/fit_repli_carabine.js, énergie et η_p × 0,943) : vitesse à
+   froid 7,0 % (32 609) ; pression à froid inchangée, celle tirée d'une vitesse connue +6 %. */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
-~8&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
+~7&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
 fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
 qu'indicative&nbsp;: ~13&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
 Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur treize avec
@@ -108,7 +110,7 @@ les données officielles du fabricant.
 &middot; <a href="/wiki/doku.php?id=technique:donnees_balistiques">produire vos données &rarr;</a>
 </div>
 <div class="vm-banner lang-en">
-<strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ~8% root-mean-square error uncalibrated,
+<strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ~7% root-mean-square error uncalibrated,
 ~3% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
 measured velocity. <strong>Pressure</strong> is for indication only: ~13% root-mean-square error for a
 “●” combination, ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
@@ -232,7 +234,7 @@ against the manufacturer's official load data.
 </ul>
 <p>La précision se resserre selon ce que vous lui fournissez&nbsp;:</p>
 <ul>
-<li><strong>à froid</strong> (cartouche + poudre + charge)&nbsp;: vitesse à <strong>~8&nbsp;%</strong> d'écart quadratique&nbsp;;</li>
+<li><strong>à froid</strong> (cartouche + poudre + charge)&nbsp;: vitesse à <strong>~7&nbsp;%</strong> d'écart quadratique&nbsp;;</li>
 <li><strong>ancré</strong> sur les données fabricant de votre couple cartouche/poudre&nbsp;: vitesse à <strong>~3&nbsp;%</strong>&nbsp;;</li>
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: vitesse <strong>quasi-exacte</strong>.</li>
 </ul>
@@ -267,7 +269,7 @@ charge équivalente.</p>
 </ul>
 <p>Accuracy tightens with what you give it:</p>
 <ul>
-<li><strong>uncalibrated</strong> (cartridge + powder + charge): velocity to <strong>~8%</strong> root-mean-square error;</li>
+<li><strong>uncalibrated</strong> (cartridge + powder + charge): velocity to <strong>~7%</strong> root-mean-square error;</li>
 <li><strong>anchored</strong> on the manufacturer's data for your cartridge/powder combination: velocity to <strong>~3%</strong>;</li>
 <li><strong>with your measured velocity</strong> from a chronograph (field above): <strong>near-exact</strong> velocity.</li>
 </ul>
@@ -504,7 +506,7 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
   // volume saisi n'agit que par cvScales (S), une seule fois. Évalué au volume saisi, le modèle à
   // froid y ajoutait sa propre pente, que cvScales remplace (2026-10-13).
   const cvN=cart.case_vol_cm3, fillN=hasPcd?(C_gr*GR_G/(pw.pcd/1000))/cvN:null;
-  const base=EnergyModel.energyAndEtaP(COEF,pw,fillN,Math.log(1+(A*refTravel)/(cvN*1e-6)),m_gr,C_gr,an.anc,opt.mono?cart.type:null);
+  const base=EnergyModel.energyAndEtaP(COEF,pw,fillN,Math.log(1+(A*refTravel)/(cvN*1e-6)),m_gr,C_gr,an.anc,opt.mono?cart.type:null,cart.type);
   const eta_p=base.np*S.np;
   let vRef,vUser,mode;
   if(opt.vmeas>0){                                       // vitesse MESURÉE au canon de l'utilisateur
@@ -767,7 +769,9 @@ function calc(){
   if(CVOL>0 && COEF.local) w=T('Volume d\'étui perso : vitesse et pression ramenées comme pour la charge de même densité de chargement dans l\'étui nominal (hypothèse non validée sur des mesures : à charge égale, P ∝ (V nominal / V)^'+nf(COEF.local.gamma,1)+' et v ∝ (V nominal / V)^'+nf(COEF.local.delta/2,2)+' ; un étui 10 % plus petit donne ainsi '+nf((Math.pow(1/0.9,COEF.local.gamma)-1)*100,0)+' % de pression en plus). ','Custom case capacity: velocity and pressure scaled as for the charge of the same loading density in the nominal case (an assumption, not validated on measurements: at equal charge, P ∝ (nominal V / V)^'+nf(COEF.local.gamma,1)+' and v ∝ (nominal V / V)^'+nf(COEF.local.delta/2,2)+'; a case 10% smaller thus gives '+nf((Math.pow(1/0.9,COEF.local.gamma)-1)*100,0)+'% more pressure). ')+w;
   if(!pcip) w=T('ℹ Cartouche sans limite de pression publiée dans nos données (absente du standard SAAMI carabine ; valeur CIP non renseignée) → pas de bandes de sécurité ni de % limite sur cette cartouche. ','ℹ No published pressure limit for this cartridge in our data (not in the SAAMI rifle standard; no C.I.P. value on record) → no safety bands or % of limit for it. ')+w;
   if(!hasPcd) w=T('Densité bulk inconnue : remplissage et pression approximés (nominal). ','Bulk density unknown: load density and pressure approximated (nominal). ')+w;
-  if(viaEeff) w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (~8 % d\'écart quadratique). ','Powder without known Qex/Ba: velocity from a generic energy (~8% root-mean-square error). ')+w;
+  // Écart du repli, toutes charges publiées (scripts/fit_repli_carabine.js, 2026-10-16) : carabine 5,8 % avec son
+  // facteur, arme de poing 10,8 %. La page disait « ~8 % » pour les deux.
+  if(viaEeff){ const e=cart.type==='rifle'?6:11; w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (~'+e+' % d\'écart quadratique). ','Powder without known Qex/Ba: velocity from a generic energy (~'+e+'% root-mean-square error). ')+w; }
   if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
   // Balle monolithique (scripts/fit_monolithique.js, 2026-10-15) : sans ce choix, une monolithique d'arme de
   // poing sortait 16 % trop bas en pression ancrée, et plus d'une charge sur deux de plus de 15 %.

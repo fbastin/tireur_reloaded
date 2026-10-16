@@ -330,10 +330,20 @@ loads (94 loads; 128 subsonic loads were in rifle anchors, the others are in pur
 mixed pair (3 windows). With the published exponents, unchanged, bullet held out: pressure +0.5 / **13.1 %**
 (14.6 % before), under-predicted by more than 15 % for 7.5 % of loads (7.8 %), 1st percentile −35 %;
 Reload Swiss maximum loads −2.9 %; velocity 3.3 % (30 166 loads); cold model 7.6 % (32 609) and 25.3 %,
-20.2 %, −40 %. **Not done:** re-estimated without the subsonic loads, the exponents move ($\gamma$ 1.99 →
-2.24, $\alpha$ 0.90 → 0.98, $\delta$ 0.856 → 0.882): part of the gap between the pooled $\gamma$ and the
-median ladder slope came from these loads. The refit is deferred with that of $\delta$, until the GRT
-bench is compared.
+20.2 %, −40 %.
+
+**Refit tested, not applied (2026-10-15).** Re-estimated without the subsonic loads, the exponents move
+($\gamma$ 1.99 → 2.24, $\alpha$ 0.90 → 0.98, $\delta$ 0.856 → 0.882, $\beta$ 0.553 → 0.567): part of the
+gap between the pooled $\gamma$ and the median ladder slope came from these loads. With a bullet held out,
+on the same loads, they do worse than the published exponents: pressure 13.1 → 14.4 % RMS, under-predicted
+by more than 15 % for 8.3 % of loads instead of 7.5 %, 1st percentile −35 → −38 %; velocity 3.25 →
+3.29 %. Only Reload Swiss maximum loads gain, in bias (−2.9 → −0.7 %) and in the share under-predicted
+(10.8 → 9.1 %), not in RMS (16.2 → 18.3 %). ADI's online data, never in the anchors, agree: anchored
+pressure 17.8 → 20.0 % RMS (88 loads, `adi_crosscheck.js adi_web.local.json`). One $\gamma$ serves both
+the ladder of one bullet (slope 2.7) and the spread of maximum charges between bullets, all at the pressure
+ceiling; the validation is mostly the latter (6 841 of its 8 319 pressures are maximum loads outside
+Reload Swiss). The published exponents stay. `fit_local_laws.js --write` now writes only laws that worsen
+none of velocity RMS, pressure RMS and the share under-predicted by more than 15 % (`--force` overrides).
 
 **Not applied to the cold model.** Two attempts, both rejected (pressure, all published
 loads): charge and mass laws around the cartridge's typical fill and bullet mass, RMS
@@ -408,9 +418,48 @@ ADI rifle loads, outside anchors and calibration and nearly all on the cold path
 to the cold model, the anchored factor would have over-corrected it, by about 19 % for handguns.
 
 **Not changed.** The local-law exponents were estimated with the monolithic loads included. Refitting
-them with an indicator is deferred, since the GRT bench predictions are frozen (model `6e99a4b`).
+them with an indicator has not been tried; the plain refit was tested and rejected (§ 3.5, 2026-10-15).
 The banner's figures come from `fit_local_laws.js`, without the factor. With the factor, and the
 bullet declared, 7.0 % of loads instead of 7.5 % are under-predicted by more than 15 %.
+
+### 3.7 Rifle fallback factor (2026-10-16)
+
+Without an anchor and without powder constants ($Q_{ex}$, $B_a$), the velocity comes from the generic
+energy $E_{\text{eff}} = e_0 + e_1\,\phi$, shared by rifles and handguns. Against every published load
+(reference barrel, `scripts/fit_repli_carabine.js`), this fallback over-predicts rifle velocity by
++3.2 % (24 743 loads, RMS 6.7 %), while the cold $\eta_p$ under-predicts their pressure at the published
+velocity by −4.8 %. The two errors cancel in the cold pressure. Handguns are centred (+0.7 %).
+
+The block `repli_carabine` multiplies **both** the generic energy and the cold $\eta_p$ by one factor
+$k = 0.943$ (geometric mean of published / predicted energy over those loads), for a rifle cartridge and
+a powder without constants (`EnergyModel.repliCarabine`). Since $P = E\,C/(\eta_p A L)$, the cold
+pressure is unchanged, load by load. The cold velocity drops by $\sqrt{k}$ (−2.9 %), and a pressure
+computed from a known velocity (the user's chronograph, or an anchor without $\eta_p$) rises by $1/k$
+(+6.0 %).
+
+| | before | after |
+|---|---|---|
+| rifle fallback, cold velocity | +3.2 / 6.7 % | +0.2 / 5.8 % |
+| rifle fallback, pressure at published velocity | −4.8 / 10.2 % | +1.0 / 9.7 % |
+| whole cold model, velocity (32 609 loads) | +2.4 / 7.6 % | +0.2 / 7.0 % |
+| whole cold model, pressure (8 948 loads) | +3.3 / 25.3 %, 20.2 % under by > 15 % | unchanged |
+| anchor without $\eta_p$, simulated (5 046 loads, bullet held out) | −5.0 / 10.4 %, 9.6 % under by > 15 % | +0.8 / 9.8 %, 3.1 % |
+
+Bias / RMS. Each source predicted with $k$ fitted on the others gains in velocity: Vihtavuori 6.2 →
+5.1 %, Western 8.1 → 7.1 %, Hodgdon 5.8 → 5.6 %, Nosler 6.8 → 5.5 %, Sierra 7.1 → 6.0 %, Lovex 5.5 →
+5.4 %. Data outside the fit, rifles: ADI's online data, cold velocity +2.8 / 7.6 → −0.2 / 6.9 %, pressure
+at published velocity −5.2 → +0.6 %; Lyman 48th, cold velocity +6.9 / 10.5 → +3.9 / 8.6 %. Shooters
+World is the exception: already centred in velocity, it moves to −4.2 / 6.3 % (from −1.4 / 5.0 %; 328
+maximum loads, barrel not published, assumed 24 in.), while its pressure at published velocity goes
+−9.1 → −3.6 %. Laboratory effects at published velocity, rifles (`pression_par_source.py`): Reload Swiss
++7.4 % (unchanged, $\eta_b$ path), Western −4.6 → +1.1 %, Hodgdon −2.9 → +3.0 %, ADI −4.9 → +0.9 %,
+Lovex −9.2 → −3.7 %, Shooters World −9.1 → −3.6 %.
+
+The anchors without $\eta_p$ concerned are rifle pairs anchored on velocity-only sources (Vihtavuori,
+Nosler, Sierra, Alliant…) with a powder without constants: 1 168 of 2 597. Not applied to handguns, nor
+to powders with constants (Reload Swiss, Vihtavuori: $\eta_b$ path, own calibration; their rifle
+pressure at published velocity is already +8 %). `fit_pressure_multibrand.js` rewrites $E_{\text{eff}}$
+and $\eta_p$: after it, `fit_repli_carabine.js --write` must be run again (it says so).
 
 ## 4. Model unknowns
 
@@ -567,6 +616,7 @@ set, unsafe elsewhere:
 node scripts/03_fit_and_validate.js      # η_b, η_p, E_eff on Reload Swiss alone — INCOMPLETE
 node scripts/fit_pressure_multibrand.js  # rewrites η_p (3 equiponderated sources) and E_eff
 node scripts/fit_local_laws.js --write   # block `local` (§3.5); the first pass keeps it
+node scripts/fit_repli_carabine.js --write  # block `repli_carabine` (§3.7), measured on E_eff and η_p above
 node scripts/build_anchors.js            # anchors = reference points, read with `local`
 ```
 
@@ -588,6 +638,9 @@ what it does.
   charge against official manufacturer data.
 
 ### 6.0 Why η_p is NOT refitted, even though far more data is now available (tested, rejected)
+
+*The rifle fallback factor of § 3.7 (2026-10-16) does not undo this: it scales $\eta_p$ and the
+generic energy together, so the cold pressure discussed here is unchanged, load by load.*
 
 The model's coefficients are fitted on **Reload Swiss alone** (1700 charges), while Western
 (2995 usable rows) and Lovex (563) also publish velocity **and** pressure. Widening the fit

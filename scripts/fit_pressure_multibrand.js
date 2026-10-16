@@ -124,3 +124,5 @@ coef._date = new Date().toISOString().slice(0, 10);
 delete coef._calage;   // lève le marqueur posé par 03_fit_and_validate.js : le calage est complet
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2) + '\n');
 console.log('-> model_coefficients.json (eta_p et E_eff mis à jour — calage complet)');
+// Le facteur du repli des carabines est mesuré sur ces coefficients : il ne vaut plus pour les nouveaux.
+if (coef.repli_carabine) console.log('   ATTENTION : relancer node scripts/fit_repli_carabine.js --write (bloc `repli_carabine` calé sur les anciens).');

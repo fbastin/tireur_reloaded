@@ -23,6 +23,7 @@ const d = (f) => path.join(__dirname, '..', 'data', f);
 const CAL = JSON.parse(fs.readFileSync(d('calibers.json'))).calibers;
 const PWD = JSON.parse(fs.readFileSync(d('powders.json'))).powders;
 const COEF = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
+const EM = require('../energy_model.js');
 const G = 6.479891e-5, GR2G = 0.06479891, IN = 25.4;
 
 // Libellés du guide -> clés de calibers.json (carabines ; même table que sw_remplissage.py).
@@ -68,11 +69,12 @@ for (const r of rows) {
   const Pmax = r.max_psi * 0.0689476 * 1e5;
   used++;
   // vitesse, repli à froid (aucune ancre pour ces poudres)
-  const eFall = COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill / 100;
+  const kR = EM.repliCarabine(COEF, PWD[r.poudre], ca.type);          // facteur du repli des carabines (2026-10-16)
+  const eFall = kR * (COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill / 100);
   res[cas].errV.push((Math.sqrt(2 * eFall * C / me) / v0 - 1) * 100);
   // pression | v0 réel : isole η_p
   res[cas].etas.push(0.5 * me * v0 * v0 / (Pmax * A * L));
-  const np = COEF.eta_p.coef[0] + COEF.eta_p.coef[1] * fill / 100 + COEF.eta_p.coef[2] * Math.log(Re);
+  const np = kR * (COEF.eta_p.coef[0] + COEF.eta_p.coef[1] * fill / 100 + COEF.eta_p.coef[2] * Math.log(Re));
   res[cas].errP.push(((0.5 * me * v0 * v0 / (np * A * L)) / Pmax - 1) * 100);
 }
 

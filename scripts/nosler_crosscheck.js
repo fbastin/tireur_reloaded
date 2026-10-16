@@ -58,7 +58,7 @@ for (const r of rows) {
   }
   if (pw.pcd) {
     const fill = (r.charge_gr * GR2G / (pw.pcd / 1000)) / ca.case_vol_cm3;
-    const eF = COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill;
+    const eF = EM.repliCarabine(COEF, pw, ca.type) * (COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill);   // facteur du repli des carabines
     froid.push((VM.scaleByBarrelFor(ca, Math.sqrt(2 * eF * C / me), Lref, Lnos) / v - 1) * 100);
   }
 }

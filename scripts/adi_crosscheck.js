@@ -54,7 +54,7 @@ for (const f of ['hodgdon', 'western']) {
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
 }
 let copiesEcartees = 0;
-const etas = [], errP = [], errVanc = [], errVfall = [], errPanc = [], lmAnc = [];
+const etas = [], errP = [], errVanc = [], errVfall = [], errPanc = [], lmAnc = [], errVfallR = [], errPR = [];
 let used = 0, ancres = 0, skipped = 0;
 
 for (const r of rows) {
@@ -80,8 +80,11 @@ for (const r of rows) {
   // tirées au canon de 15 pouces, contre 24 pour la référence, et l'ancre paraissait trop rapide.
   const Lref = ((ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm) / 1000;
   const auCanon = (E) => VM.scaleByBarrelFor(ca, Math.sqrt(2 * E * C / me), Lref, L);
-  const eFall = COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill / 100;
+  // Facteur du repli des carabines (bloc `repli_carabine`, 2026-10-16) : sur l'énergie et sur η_p, comme l'outil.
+  const kR = EM.repliCarabine(COEF, PWD[r.powder], ca.type), carabine = ca.type === 'rifle';
+  const eFall = kR * (COEF.e_eff.coef[0] + COEF.e_eff.coef[1] * fill / 100);
   errVfall.push((auCanon(eFall) / v0 - 1) * 100);
+  if (carabine) errVfallR.push(errVfall[errVfall.length - 1]);
   if (a && a.eeff) { ancres++; errVanc.push((auCanon(a.eeff * EM.localE(COEF.local, r.charge_gr, r.bullet_gr, a.C, a.m)) / v0 - 1) * 100); }
 
   // --- pression : seulement sur les lignes en PSI ---
@@ -98,8 +101,9 @@ for (const r of rows) {
     errPanc.push((E * C / (n * A * Lref) / Pmax - 1) * 100);
     lmAnc.push(Math.log(r.bullet_gr / a.m));
   }
-  const np = COEF.eta_p.coef[0] + COEF.eta_p.coef[1] * fill / 100 + COEF.eta_p.coef[2] * Math.log(Re);
+  const np = kR * (COEF.eta_p.coef[0] + COEF.eta_p.coef[1] * fill / 100 + COEF.eta_p.coef[2] * Math.log(Re));
   errP.push(((0.5 * me * v0 * v0 / (np * A * L)) / Pmax - 1) * 100);   // Pmax | v0 réel → isole η_p
+  if (carabine) errPR.push(errP[errP.length - 1]);
 }
 
 console.log(`ADI (${SOURCE}) — validation externe : ${used} charges exploitables sur ${rows.length} (${skipped} écartées : cartouche ou poudre inconnue)`);
@@ -109,11 +113,13 @@ console.log(`η_p mesuré        : moyenne ${mean(etas).toFixed(3)}  médiane ${
 console.log(`   pour mémoire   : Reload Swiss 0,447 · Hodgdon 0,418 · Western 0,399 · Lovex 0,384`);
 console.log('');
 console.log(`Pression (| v0 réel, isole η_p) : biais ${mean(errP).toFixed(1)}%  RMS ${rms(errP).toFixed(1)}%   n=${errP.length}`);
+console.log(`  dont carabine                 : biais ${mean(errPR).toFixed(1)}%  RMS ${rms(errPR).toFixed(1)}%   n=${errPR.length}`);
 if (errPanc.length) {
   const h = errPanc.filter((_, i) => lmAnc[i] > 0.15), l = errPanc.filter((_, i) => lmAnc[i] < -0.15);
   console.log(`Pression, couples ancrés        : biais ${mean(errPanc).toFixed(1)}%  RMS ${rms(errPanc).toFixed(1)}%   n=${errPanc.length} (balles lourdes ${mean(h).toFixed(1)}%, légères ${mean(l).toFixed(1)}%)`);
 }
 console.log(`Vitesse, repli à froid          : biais ${mean(errVfall).toFixed(1)}%  RMS ${rms(errVfall).toFixed(1)}%   n=${errVfall.length}`);
+console.log(`  dont carabine                 : biais ${mean(errVfallR).toFixed(1)}%  RMS ${rms(errVfallR).toFixed(1)}%   n=${errVfallR.length}`);
 if (errVanc.length) {
   console.log(`Vitesse, couples ancrés         : biais ${mean(errVanc).toFixed(1)}%  RMS ${rms(errVanc).toFixed(1)}%   n=${errVanc.length}`);
 } else {

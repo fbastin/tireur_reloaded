@@ -104,7 +104,7 @@ for (const r of all.filter((x) => x.P > 0 && x.np > 0 && (x.src === 'Hodg' || x.
   const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4, C = r.C * G;
   const ff = (r.C * GR2G / (pw.pcd / 1000)) / ca.case_vol_cm3;
   const Lc = r.eeff * C / (r.P * 1e5 * r.np * A);
-  const p = EM.energyAndEtaP(COEF, pw, ff, ln(1 + A * Lc / (ca.case_vol_cm3 * 1e-6)), r.m, r.C, null);
+  const p = EM.energyAndEtaP(COEF, pw, ff, ln(1 + A * Lc / (ca.case_vol_cm3 * 1e-6)), r.m, r.C, null, null, ca.type);
   froid.push({ ...r, e: ln((p.E / r.eeff) * (r.np / p.np)) });
 }
 
