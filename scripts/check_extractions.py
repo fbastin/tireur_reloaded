@@ -31,6 +31,8 @@ PRIVES = '/home/bastin/private_docs'          # PDF Sierra (voir l'en-tête de p
 SOURCES = {
     'western': ['node', 'scripts/import_western.js', '{G}/WesternPowdersHandloadingGuide8.0_WEB-1.pdf'],
     'adi': ['node', 'scripts/parse_adi.js', '{G}/ADI-Handloaders-guide-2013.pdf'],
+    # pages en ligne d'ADI lues le 2026-10-15 (jeu de test, hors ancres) : un dossier, pas un PDF
+    'adi_web': ['node', 'scripts/parse_adi_web.js', '{G}/adi_web_2026-10-15'],
     'alliant': ['node', 'scripts/parse_alliant.js', '{G}/Alliant_Powder_Reloaders_Guide_2012.pdf'],
     'hodgdon': ['node', 'scripts/parse_hodgdon.js', '{G}/AM24.pdf'],
     'lovex': ['node', 'scripts/parse_lovex.js', '{G}/LOVEX_Reloading-Guide_by_Explosia_2019.pdf'],
@@ -82,8 +84,9 @@ def main():
         for nom, cmd in SOURCES.items():
             sortie = os.path.join(copie, 'data', nom + '.local.json')
             servi = os.path.join(ICI, 'data', nom + '.local.json')
+            # entrées : PDF des guides, ou dossiers de pages (fiches Nosler, pages ADI en ligne)
             entrees = [a for a in sub(cmd) + sub(PREALABLES.get(nom, []))
-                       if a.startswith((GUIDES, PRIVES)) and a.endswith('.pdf') or a.endswith('/nosler')]
+                       if a.startswith((GUIDES, PRIVES)) and (a.endswith('.pdf') or '.' not in os.path.basename(a))]
             manque = [e for e in entrees if not os.path.exists(e)]
             if manque or not os.path.exists(servi):
                 absents.append(f"{nom} : {'source absente ' + manque[0] if manque else 'fichier servi absent'}")

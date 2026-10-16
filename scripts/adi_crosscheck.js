@@ -1,8 +1,9 @@
 /**
  * adi_crosscheck.js — le modèle confronté à un CINQUIÈME laboratoire, jamais utilisé.
  *
- * Usage : node scripts/adi_crosscheck.js        (console seule, n'écrit rien)
- * Entrée : data/adi.local.json (gitignoré)
+ * Usage : node scripts/adi_crosscheck.js [fichier]   (console seule, n'écrit rien)
+ * Entrée : data/adi.local.json (guide imprimé de 2013, défaut) ou data/adi_web.local.json (données en ligne,
+ *          lues le 2026-10-15, scripts/parse_adi_web.js) — gitignorés.
  *
  * ADI (Thales Australia) n'entre ni dans le calage de η_p, ni dans les ancres, ni dans le
  * repli E_eff. Ses poudres portent leurs propres clés (« ADI AR 2208 »), disjointes de celles
@@ -41,7 +42,8 @@ const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
 const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
 const med = (a) => { const b = [...a].sort((x, y) => x - y); return b[Math.floor(b.length / 2)]; };
 
-const rows = JSON.parse(fs.readFileSync(d('adi.local.json'))).rows;
+const SOURCE = process.argv[2] || 'adi.local.json';
+const rows = JSON.parse(fs.readFileSync(d(path.basename(SOURCE)))).rows;
 const pwdIdx = {}; for (const k of Object.keys(PWD)) pwdIdx[norm(k)] = k;
 for (const k of Object.keys(PWD)) { const nm = norm(PWD[k].name || ''); if (nm && !pwdIdx[nm]) pwdIdx[nm] = k; }
 const cle = (ck, pk, m, c, v) => [ck, pk, m, Math.round(c * 10) / 10, Math.round(v)].join('|');
@@ -100,7 +102,7 @@ for (const r of rows) {
   errP.push(((0.5 * me * v0 * v0 / (np * A * L)) / Pmax - 1) * 100);   // Pmax | v0 réel → isole η_p
 }
 
-console.log(`ADI — validation externe : ${used} charges exploitables sur ${rows.length} (${skipped} écartées : cartouche ou poudre inconnue)`);
+console.log(`ADI (${SOURCE}) — validation externe : ${used} charges exploitables sur ${rows.length} (${skipped} écartées : cartouche ou poudre inconnue)`);
 console.log(`  copies de lignes Hodgdon ou Western écartées des comparaisons ancrées : ${copiesEcartees}`);
 console.log('');
 console.log(`η_p mesuré        : moyenne ${mean(etas).toFixed(3)}  médiane ${med(etas).toFixed(3)}   (n=${etas.length}, lignes PSI)`);
