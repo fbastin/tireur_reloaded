@@ -376,7 +376,7 @@ for (const [k, arr] of Object.entries(groups)) {
 if (require.main !== module) { module.exports = { groups, CAL, PWD, cartRefs }; return; }
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
-const anchors = {}; let kept = 0;
+const anchors = {}; let kept = 0, plafonds = 0;
 const looErr = [];
 // Lois locales (scripts/fit_local_laws.js --write) : l'ancre est un POINT DE RÉFÉRENCE (C, m,
 // moyennes géométriques du couple), et chaque charge y est ramenée par les exposants avant la
@@ -408,6 +408,18 @@ for (const [k, arr0] of Object.entries(groups)) {
   anchors[k] = { eeff: Math.round(ref.eeff), n: arr.length, C: +Math.exp(ref.lc).toFixed(2), m: +Math.exp(ref.lm).toFixed(1) };
   if (ref.np != null) anchors[k].np = +ref.np.toFixed(4);        // VV ne fournit pas de np : sinon η_p global (UI)
   if (arr.some((x) => x.src === 'Nosler')) anchors[k].nosler = true;   // ancre où Nosler comble (nosler_crosscheck.js l'écarte)
+  // Plafond de pression (loi à deux pentes, scripts/fit_deux_pentes.js) : pression et masse moyennes
+  // (géométriques) des charges MAXIMALES publiées avec pression, ramenées à la masse moyenne par alphaM.
+  const DP = COEFS.deux_pentes, ca = CAL[k.split('|')[0]];
+  if (DP && ca && (DP.types || []).includes(ca.type)) {
+    const mx = arr.filter((x) => x.max && x.P > 0 && x.np > 0);
+    if (mx.length >= (DP.plafond_min || 2)) {
+      const lmx = lnm(mx.map((x) => x.m));
+      anchors[k].pc = Math.round(Math.exp(mean(mx.map((x) => Math.log(x.P) - DP.alphaM * (Math.log(x.m) - lmx)))));
+      anchors[k].mpc = +Math.exp(lmx).toFixed(1);
+      plafonds++;
+    }
+  }
   // résidu MH moyen du groupe (si ≥3 charges avec Qex)
   const mhrs = arr.map((x) => x.mhr).filter((v) => v != null);
   if (mhrs.length >= 3) anchors[k].mhr = +mean(mhrs).toFixed(1);
@@ -436,7 +448,7 @@ if (covered.length > 5) {
   console.log(`garde-fou MH : ${covered.length} ancres couvertes (Qex) | moyenne ${gm.toFixed(1)}% σ ${gsd.toFixed(1)}% | ${flagged} flaguées (|écart|>${thr.toFixed(0)}pts)`);
 }
 
-const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable. Charges de balles monolithiques ramenées à une balle à noyau (bloc monolithique de model_coefficients.json).', _date: new Date().toISOString().slice(0, 10), anchors };
+const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable. Charges de balles monolithiques ramenées à une balle à noyau (bloc monolithique de model_coefficients.json). pc, mpc (carabines) : pression (bar) et masse (gr) moyennes des charges maximales publiées avec pression, plafond de la loi à deux pentes (bloc deux_pentes).', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
-console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}% | copies Hodgdon de Western écartées : ${copiesEcartees} | charges subsoniques de carabine écartées (couples mixtes) : ${subsoniques}`);
+console.log(`combos ancrés (≥3 charges) : ${kept} (plafond de pression : ${plafonds}) | LOO vitesse RMS ${rms(looErr).toFixed(1)}% | copies Hodgdon de Western écartées : ${copiesEcartees} | charges subsoniques de carabine écartées (couples mixtes) : ${subsoniques}`);
 console.log('-> data/anchors.json');

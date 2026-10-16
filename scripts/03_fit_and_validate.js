@@ -105,11 +105,11 @@ const coef = {
 // Le marqueur rend l'état intermédiaire DÉTECTABLE et pas seulement annoncé : le 2026-08-11,
 // lancer ce script « pour mesurer » a écrasé les coefficients de production sans un mot.
 coef._calage = 'INCOMPLET — Reload Swiss seul. Lancer scripts/fit_pressure_multibrand.js.';
-// Les blocs `local` (scripts/fit_local_laws.js), `monolithique` (fit_monolithique.js) et `repli_carabine`
-// (fit_repli_carabine.js) ne viennent pas de ce calage : ils sont conservés, sinon relancer ce script les
+// Les blocs `local` (scripts/fit_local_laws.js), `monolithique` (fit_monolithique.js), `repli_carabine`
+// (fit_repli_carabine.js) et `deux_pentes` (fit_deux_pentes.js) ne viennent pas de ce calage : ils sont conservés, sinon relancer ce script les
 // effacerait sans un mot (jusqu'au 2026-10-16, seul `local` l'était).
 try { const prev = JSON.parse(fs.readFileSync(d('model_coefficients.json')));
-  for (const b of ['local', 'monolithique', 'repli_carabine']) if (prev[b]) coef[b] = prev[b]; }
+  for (const b of ['local', 'monolithique', 'repli_carabine', 'deux_pentes']) if (prev[b]) coef[b] = prev[b]; }
 catch (e) { if (e.code !== 'ENOENT') throw e; }
 fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(coef, null, 2));
 

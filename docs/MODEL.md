@@ -345,7 +345,7 @@ ceiling; the validation is mostly the latter (6 841 of its 8 319 pressures are m
 Reload Swiss). The published exponents stay. `fit_local_laws.js --write` now writes only laws that worsen
 none of velocity RMS, pressure RMS and the share under-predicted by more than 15 % (`--force` overrides).
 
-**Two-slope pressure law, tested offline (2026-10-16, `scripts/test_deux_pentes.js`, not applied).**
+**Two-slope pressure law, tested offline (2026-10-16, `scripts/fit_deux_pentes.js --variantes`).** Applied to rifles the same day, with a window per bullet weight: § 3.8.
 $P = P_{\text{ceil}}(m)\,(C/C_{\max})^{\gamma_L}$: $C_{\max}$ is the bullet's published maximum charge,
 $P_{\text{ceil}}$ the pressure of the other bullets' maximum loads in the pair, carried to the mass by
 $\alpha_M = 0.060$ (fixed effects pair × source). Same loads and held-out bullet as above.
@@ -436,7 +436,8 @@ ADI rifle loads, outside anchors and calibration and nearly all on the cold path
 (z = −4.6; Hodgdon −5.6 %, Western −3.6 %): the cold $\eta_p$ is divided by `froidP` = 1.049. Applied
 to the cold model, the anchored factor would have over-corrected it, by about 19 % for handguns.
 
-**Not changed.** The local-law exponents were estimated with the monolithic loads included. Refitting
+**Not changed.** The local-law exponents were estimated with the monolithic loads included. Under the
+two-slope law of § 3.8 (rifles), no monolithic factor is applied. Refitting
 them with an indicator has not been tried; the plain refit was tested and rejected (§ 3.5, 2026-10-15).
 The banner's figures come from `fit_local_laws.js`, without the factor. With the factor, and the
 bullet declared, 7.0 % of loads instead of 7.5 % are under-predicted by more than 15 %.
@@ -486,6 +487,45 @@ rifle, fallback +0.8 / 9.8 %, 3.1 % (1 168 anchors); rifle, powder with constant
 handgun, fallback +7.8 / 22.2 %, 12.7 % (130); handgun, powder with constants +20.6 / 37.8 %, 9.4 % (2).
 `fit_pressure_multibrand.js` rewrites $E_{\text{eff}}$
 and $\eta_p$: after it, `fit_repli_carabine.js --write` must be run again (it says so).
+
+### 3.8 Two-slope pressure law for rifles (2026-10-16)
+
+For a rifle pair whose anchor carries a pressure ceiling, and a bullet weight with a published window,
+the page computes the pressure as (`EnergyModel.pressionDeuxPentes`, `scripts/fit_deux_pentes.js`)
+
+$$P = P_c\,(m/m_c)^{\alpha_M}\,(C/C_{\max}(m))^{\gamma_L},$$
+
+- $P_c$, $m_c$: geometric means of the pressure and bullet weight of the pair's published maximum loads
+  with pressure (two at least), carried to $m_c$ by $\alpha_M = 0.060$ (slope of $\ln P$ on $\ln m$ among
+  the maximum loads of one pair and one source); anchor fields `pc`, `mpc` (`build_anchors.js`);
+- $C_{\max}(m)$: smallest published maximum charge for that weight (`build_start_charges.js`,
+  `fenetres_masse` of `start_charges.local.json`, served to the page, gitignored): 5 010 windows for 905
+  pairs. Hodgdon contributes maxima only (its extraction lacks the starting column): 2 382 windows have no
+  starting charge;
+- $\gamma_L = 2.241$: $d\ln P/d\ln C$ for a given bullet (pooled least squares, as $\gamma$ of § 3.5).
+
+Pressure no longer depends on the velocity (predicted or measured) nor on $\eta_p$; the $\eta_p$ shown is
+the one it implies. Case volume and temperature use $\gamma_L$ in place of $\gamma$. No monolithic factor:
+the published maximum of the weight already carries the construction (monolithic rifle bullets, declared:
++5.2 % with the factor, +2.1 % without). Elsewhere (handguns, pairs without a ceiling, weights without a
+window) the anchor law of § 3.5 applies. The ladder window is that of the entered weight when it exists, and
+follows weight changes until the user edits it: it used to be the typical weight's, and 742 heavier weights
+had a lower published maximum than the typical window (.308 Win. + Accurate 2520, 210 gr: 41.5 gr against
+46.6 gr for the 165 gr typical bullet).
+
+Validation, bullet held out (ceiling from the other bullets, window as served), bias / RMS, share
+under-predicted by more than 15 %, 1st percentile:
+
+| | anchor law | served |
+|---|---|---|
+| rifles (6 131) | 0.0 / 8.9 %, 3.2 %, −19 % | +2.3 / 7.9 %, 0.6 %, −12 % |
+| … of which two slopes (6 057) | 0.1 / 8.9 %, 3.1 % | +2.4 / 7.9 %, 0.5 % |
+| handguns (2 188, unchanged) | +2.0 / 20.8 %, 19.6 % | same |
+| all (8 319) | +0.5 / 13.1 %, 7.5 %, −35 % | +2.2 / 12.6 %, 5.6 %, −34 % |
+
+The page's pressure messages follow: ~8 %, one load in two hundred under-predicted by more than 15 %
+(two slopes); anchor law with pressure, rifle ~9 %, one in thirty, handgun ~21 %, one in five. Until
+2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average set by the rifles.
 
 ## 4. Model unknowns
 
@@ -643,7 +683,10 @@ node scripts/03_fit_and_validate.js      # η_b, η_p, E_eff on Reload Swiss alo
 node scripts/fit_pressure_multibrand.js  # rewrites η_p (3 equiponderated sources) and E_eff
 node scripts/fit_local_laws.js --write   # block `local` (§3.5); the first pass keeps it
 node scripts/fit_repli_carabine.js --write  # block `repli_carabine` (§3.7), measured on E_eff and η_p above
-node scripts/build_anchors.js            # anchors = reference points, read with `local`
+node scripts/fit_deux_pentes.js --write  # block `deux_pentes` (§3.8)
+node scripts/build_anchors.js            # anchors = reference points, read with `local` ; ceilings pc, mpc
+node scripts/build_start_charges.js      # windows, typical and per weight (served, gitignored)
+node scripts/fit_deux_pentes.js          # validation of what the page computes
 ```
 
 The first pass writes a `_calage: "INCOMPLET…"` marker and prints a warning; the second

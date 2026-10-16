@@ -78,5 +78,15 @@
     "n": 24743,
     "_doc": "Repli E_eff en carabine (cartouche de carabine, poudre sans Qex/Ba ; scripts/fit_repli_carabine.js) : E_eff et η_p à froid × k. La pression à froid ne change pas ; la vitesse à froid baisse de √k, la pression tirée d'une vitesse connue (mesurée, ancre sans η_p) monte de 1/k.",
     "_date": "2026-10-16"
+  },
+  "deux_pentes": {
+    "gammaL": 2.241,
+    "alphaM": 0.06,
+    "types": [
+      "rifle"
+    ],
+    "plafond_min": 2,
+    "_doc": "Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cmax)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cmax dans les fenêtres par masse de start_charges.local.json. Types listés seulement ; ailleurs, la loi des ancres.",
+    "_date": "2026-10-16"
   }
 }

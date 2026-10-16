@@ -7,8 +7,13 @@
  * Usage : node scripts/build_start_charges.js
  * Inputs (local, gitignored): rs_dataset / western / vihtavuori / … .local.json.
  * Output (LOCAL, gitignored — real charges, not redistributed): data/start_charges.local.json
- *   { "<calKey>|<pwdKey>": { "m": <typical bullet gr>, "c": <start gr>, "cmax": <max gr>,
- *                            "nb": <bullets of that weight> } }
+ *   charges : { "<calKey>|<pwdKey>": { "m": <typical bullet gr>, "c": <start gr>, "cmax": <max gr>,
+ *                                      "nb": <bullets of that weight> } }
+ *   fenetres_masse (2026-10-16) : { "<calKey>|<pwdKey>": { "<bullet gr>": { "c": <start gr | null>, "cmax", "nb" } } }
+ *     for rifle pairs whose anchor carries a pressure ceiling (anchors.json: pc) — the two-slope pressure law
+ *     (scripts/fit_deux_pentes.js) and the ladder window of the entered weight. Hodgdon maxima count here only
+ *     (no starting column in its extraction): c = null when no other source gives a start for that weight.
+ *   Run after build_anchors.js.
  *
  * Each table row is ONE bullet with its own start and max. For the typical weight, the window
  * takes the LOWEST start and the LOWEST max among the bullets of that weight: the most
@@ -56,11 +61,13 @@ const groups = {};
 // fenêtre du fabricant. Même seuil que build_anchors.js ; arme de poing non concernée.
 const subsonique = (ck, vMax) => !!ck && CAL[ck] && CAL[ck].type === 'rifle' && vMax > 0 && vMax < 340;
 let nSub = 0;
-const add = (ck, pk, bullet, id, charge, vMax) => {
+// maxSeul : source qui ne publie (dans notre extraction) que la charge MAXIMALE (Hodgdon) ; la balle compte pour le
+// maximum des fenêtres par masse, jamais pour une charge de départ ni pour la fenêtre typique.
+const add = (ck, pk, bullet, id, charge, vMax, maxSeul) => {
   if (!ck || !pk || !(bullet > 0 && charge > 0)) return;
   const g = (groups[ck + '|' + pk] = groups[ck + '|' + pk] || {});
   const w = (g[bullet] = g[bullet] || {});
-  const b = (w[id] = w[id] || { lo: charge, hi: charge, sub: subsonique(ck, vMax) });
+  const b = (w[id] = w[id] || { lo: charge, hi: charge, sub: subsonique(ck, vMax), maxSeul: !!maxSeul });
   if (charge < b.lo) b.lo = charge; if (charge > b.hi) b.hi = charge;
 };
 
@@ -132,17 +139,60 @@ try {
   });
 } catch (e) { if (e.code !== 'ENOENT') throw e; }
 
+// Hodgdon (manuel 2024) — charge MAXIMALE seule : l'extraction n'a pas la colonne de départ. Mêmes lignes que
+// build_anchors.js (ni balle en plomb, ni copie d'une ligne Western, alésage concordant). Elles ne servent qu'aux
+// fenêtres par masse (maximum), pour les couples Hodgdon qui n'ont pas d'autre source (2026-10-16).
+try {
+  const copieWestern = new Set(JSON.parse(fs.readFileSync(d('western.local.json'))).rows
+    .map((r) => [matchCal(r.cartridge), pwdIdx[norm(r.powder || '')], r.bullet_gr, r.charge_gr, r.v0_fps].join('|')));
+  JSON.parse(fs.readFileSync(d('hodgdon.local.json'))).rows.forEach((r, i) => {
+    if (r.cast || isJunk(r.cartridge)) return;
+    const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
+    if (!ck || copieWestern.has([ck, pk, r.bullet_gr, r.charge_gr, r.v0_fps].join('|'))) return;
+    if (r.bore_mm && Math.abs(r.bore_mm - CAL[ck].bore_mm) > 0.3) return;
+    add(ck, pk, r.bullet_gr, 'H' + i, r.charge_gr, (r.v0_fps || 0) * 0.3048, true);
+  });
+} catch (e) { if (e.code !== 'ENOENT') throw e; }
+
+// Fenêtres PAR MASSE (2026-10-16), pour la loi de pression à deux pentes (scripts/fit_deux_pentes.js) : carabines
+// dont l'ancre porte un plafond de pression (anchors.json : pc). Pour chaque masse : plus petite charge de départ
+// (null si seule une source « max seul » la publie), plus petite charge maximale, nombre de balles.
+const ANCH = JSON.parse(fs.readFileSync(d('anchors.json'))).anchors;
+const parMasse = {}; let nMasses = 0;
+
 const median = (a) => { const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
 const out = {}; let n = 0;
-for (const [k, byBullet0] of Object.entries(groups)) {
-  // couple mixte : les balles subsoniques partent ; couple purement subsonique : tout reste
-  const mixte = Object.values(byBullet0).some((w) => Object.values(w).some((b) => !b.sub));
-  const byBullet = {};
+// Balles d'un couple, subsoniques retirées si le couple est mixte ; avec ou sans les sources « max seul ». Le
+// filtrage se fait sur chaque ensemble : une balle Hodgdon supersonique ne rend pas « mixte » un couple dont la
+// fenêtre typique était purement subsonique.
+function balles(byBullet0, avecMaxSeul) {
+  const tri = {};
   for (const [g, w] of Object.entries(byBullet0)) {
-    const garde = Object.fromEntries(Object.entries(w).filter(([, b]) => !(mixte && b.sub)));
-    nSub += Object.keys(w).length - Object.keys(garde).length;
-    if (Object.keys(garde).length) byBullet[g] = garde;
+    const ww = Object.fromEntries(Object.entries(w).filter(([, b]) => avecMaxSeul || !b.maxSeul));
+    if (Object.keys(ww).length) tri[g] = ww;
   }
+  // couple mixte : les balles subsoniques partent ; couple purement subsonique : tout reste
+  const mixte = Object.values(tri).some((w) => Object.values(w).some((b) => !b.sub));
+  const garde = {}; let retirees = 0;
+  for (const [g, w] of Object.entries(tri)) {
+    const ww = Object.fromEntries(Object.entries(w).filter(([, b]) => !(mixte && b.sub)));
+    retirees += Object.keys(w).length - Object.keys(ww).length;
+    if (Object.keys(ww).length) garde[g] = ww;
+  }
+  return { garde, retirees };
+}
+for (const [k, byBullet0] of Object.entries(groups)) {
+  if (CAL[k.split('|')[0]] && CAL[k.split('|')[0]].type === 'rifle' && ANCH[k] && ANCH[k].pc > 0) {
+    const f = {};
+    for (const [g, w] of Object.entries(balles(byBullet0, true).garde)) {
+      const bs = Object.values(w), avecDepart = bs.filter((b) => !b.maxSeul);
+      f[g] = { c: avecDepart.length ? +Math.min(...avecDepart.map((b) => b.lo)).toFixed(2) : null, cmax: +Math.min(...bs.map((b) => b.hi)).toFixed(2), nb: bs.length };
+      nMasses++;
+    }
+    parMasse[k] = f;
+  }
+  const { garde: byBullet, retirees } = balles(byBullet0, false);   // fenêtre typique : sans les sources « max seul »
+  nSub += retirees;
   const bullets = Object.keys(byBullet).map(Number);
   if (bullets.length < 1) continue;
   const m = median(bullets);                       // typical bullet = median weight
@@ -152,16 +202,20 @@ for (const [k, byBullet0] of Object.entries(groups)) {
   n++;
 }
 if (CHECK) {
-  const served = JSON.parse(fs.readFileSync(d('start_charges.local.json'))).charges;
+  const servi = JSON.parse(fs.readFileSync(d('start_charges.local.json'))), served = servi.charges, sm = servi.fenetres_masse || {};
   const diff = [...new Set([...Object.keys(served), ...Object.keys(out)])]
-    .filter((k) => JSON.stringify(served[k]) !== JSON.stringify(out[k]));
+    .filter((k) => JSON.stringify(served[k]) !== JSON.stringify(out[k]))
+    .concat([...new Set([...Object.keys(sm), ...Object.keys(parMasse)])]
+      .filter((k) => JSON.stringify(sm[k]) !== JSON.stringify(parMasse[k])).map((k) => k + ' (fenêtres par masse)'));
   if (diff.length) {
     console.log(`${SERVED} périmé : ${diff.length} couple(s) diffèrent de ses sources (${diff.slice(0, 3).join(' ; ')}…) — relancer node reloading/tireur_reloaded/scripts/build_start_charges.js`);
     process.exit(1);
   }
-  console.log(`${SERVED} (${n} couples, à jour de ses sources)`);
+  console.log(`${SERVED} (${n} couples, ${nMasses} fenêtres par masse, à jour de ses sources)`);
   process.exit(0);
 }
 fs.writeFileSync(d('start_charges.local.json'),
-  JSON.stringify({ _doc: 'Charge DÉPART et MAX fabricant pour la balle typique (médiane) par cartouche|poudre ; plusieurs balles de cette masse : le plus petit départ et le plus petit max. LOCAL/gitignored : charges réelles, non redistribuées. Pré-remplissage + fenêtre sûre de la ladder dans l UI.', m: 'balle typique (gr)', c: 'charge de départ (gr)', cmax: 'charge max (gr)', nb: 'balles de cette masse', charges: out }, null, 1));
-console.log(`start charges for ${n} combos -> data/start_charges.local.json (gitignored) ; balles subsoniques de carabine écartées (couples mixtes) : ${nSub}`);
+  JSON.stringify({ _doc: 'Charge DÉPART et MAX fabricant pour la balle typique (médiane) par cartouche|poudre ; plusieurs balles de cette masse : le plus petit départ et le plus petit max. LOCAL/gitignored : charges réelles, non redistribuées. Pré-remplissage + fenêtre sûre de la ladder dans l UI.', m: 'balle typique (gr)', c: 'charge de départ (gr)', cmax: 'charge max (gr)', nb: 'balles de cette masse', charges: out,
+    fenetres_masse_doc: 'Carabines dont l ancre porte un plafond de pression (loi à deux pentes) : par masse de balle (gr), plus petite charge de départ (null : source à charge maximale seule), plus petite charge maximale, nombre de balles.',
+    fenetres_masse: parMasse }, null, 1));
+console.log(`start charges for ${n} combos, ${nMasses} fenêtres par masse (${Object.keys(parMasse).length} couples) -> data/start_charges.local.json (gitignored) ; balles subsoniques de carabine écartées (couples mixtes) : ${nSub}`);

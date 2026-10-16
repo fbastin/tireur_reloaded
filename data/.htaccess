@@ -3,7 +3,8 @@
 # jamais redistribués (même règle que reloading/guides/). Constaté le 2026-10-04 : ces
 # fichiers étaient téléchargeables (hodgdon.local.json : 2,4 Mo), sans qu'aucun tiers ne
 # l'ait fait dans les journaux conservés. Exception : start_charges.local.json, que la page
-# de l'estimateur charge pour afficher ses charges de départ (valeurs citées).
+# de l'estimateur charge pour afficher ses charges de départ (valeurs citées) : une fenêtre par couple
+# et, depuis le 2026-10-16, une par masse de balle pour les carabines (loi de pression à deux pentes).
 <FilesMatch "\.local\.json$">
     Require all denied
 </FilesMatch>
