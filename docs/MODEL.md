@@ -345,6 +345,25 @@ ceiling; the validation is mostly the latter (6 841 of its 8 319 pressures are m
 Reload Swiss). The published exponents stay. `fit_local_laws.js --write` now writes only laws that worsen
 none of velocity RMS, pressure RMS and the share under-predicted by more than 15 % (`--force` overrides).
 
+**Two-slope pressure law, tested offline (2026-10-16, `scripts/test_deux_pentes.js`, not applied).**
+$P = P_{\text{ceil}}(m)\,(C/C_{\max})^{\gamma_L}$: $C_{\max}$ is the bullet's published maximum charge,
+$P_{\text{ceil}}$ the pressure of the other bullets' maximum loads in the pair, carried to the mass by
+$\alpha_M = 0.060$ (fixed effects pair × source). Same loads and held-out bullet as above.
+
+| | RMS | under by > 15 % | 1st percentile | RS max | handgun |
+|---|---|---|---|---|---|
+| published laws | 13.1 % | 7.5 % | −35 % | −2.9 / 16.2 % | 20.8 %, 19.6 % under |
+| own maximum, $\gamma_L$ 2.24 | 9.2 % | 1.1 % | −16 % | +0.3 / 8.0 % | 14.3 %, 2.5 % |
+| smallest maximum of same-mass bullets, $\gamma_L$ 2.24 | 20.5 % (bias +6.3 %) | 0.8 % | −13.5 % | +3.1 / 13.0 % | 37.7 %, 1.7 % |
+
+Rifles alone: 8.9 % now, 6.5 % with the own maximum, 7.9 % (bias +2.3 %) with the same-mass one. $\gamma_L$
+barely matters at the maximum; between 2.0 and 2.7 it trades the Reload Swiss starting loads (bias +9.6 →
+−1.4 %) against their tail (1st percentile −43 → −65 %). The gain needs information the page does not
+have: it knows one window per pair (typical mass), not the user's bullet. Applying it means serving a
+window per bullet (or per mass), storing $P_{\text{ceil}}$ in the anchors, and keeping the present law for
+bullets absent from the manuals. With the same-mass window, handgun pressures are over-predicted by 17 %
+on average (bullets of one mass differ widely in maximum charge).
+
 **Not applied to the cold model.** Two attempts, both rejected (pressure, all published
 loads): charge and mass laws around the cartridge's typical fill and bullet mass, RMS
 24.6 → 37.6 % — across powders, fill follows burning rate, not a charge ladder; mass law alone,
@@ -458,7 +477,14 @@ Lovex −9.2 → −3.7 %, Shooters World −9.1 → −3.6 %.
 The anchors without $\eta_p$ concerned are rifle pairs anchored on velocity-only sources (Vihtavuori,
 Nosler, Sierra, Alliant…) with a powder without constants: 1 168 of 2 597. Not applied to handguns, nor
 to powders with constants (Reload Swiss, Vihtavuori: $\eta_b$ path, own calibration; their rifle
-pressure at published velocity is already +8 %). `fit_pressure_multibrand.js` rewrites $E_{\text{eff}}$
+pressure at published velocity is already +8 %).
+
+The same script simulates, by class, the pressure of a pair anchored without $\eta_p$ (anchor energy, cold
+$\eta_p$, bullet held out); the page quotes these figures for such pairs, which until 2026-10-16 received the
+cold model's message (~25 %, one load in five). Bias / RMS, share under-predicted by more than 15 %:
+rifle, fallback +0.8 / 9.8 %, 3.1 % (1 168 anchors); rifle, powder with constants +9.2 / 19.8 %, 4.1 % (56);
+handgun, fallback +7.8 / 22.2 %, 12.7 % (130); handgun, powder with constants +20.6 / 37.8 %, 9.4 % (2).
+`fit_pressure_multibrand.js` rewrites $E_{\text{eff}}$
 and $\eta_p$: after it, `fit_repli_carabine.js --write` must be run again (it says so).
 
 ## 4. Model unknowns

@@ -174,7 +174,7 @@ against the manufacturer's official load data.
     <div id="cartdiag" style="text-align:center;margin-bottom:0.6rem;"></div>
     <div id="danger" class="vm-alert" style="display:none;"></div>
     <div class="vm-kpi">
-      <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small><span class="lang-fr">vitesse</span><span class="lang-en">velocity</span> <span id="o_vtag" class="vm-tag">à froid ~8 %</span></small></div>
+      <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small><span class="lang-fr">vitesse</span><span class="lang-en">velocity</span> <span id="o_vtag" class="vm-tag">à froid ~7 %</span></small></div>
       <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small><span class="lang-fr">pression</span><span class="lang-en">pressure</span> <span class="vm-tag"><span class="lang-fr">indicative</span><span class="lang-en">indicative</span></span> <span id="o_pcip"></span></small>
         <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
     </div>
@@ -748,7 +748,7 @@ function calc(){
   else pbar.style.display='none';
   const ancFlag = !!(anc && anc.mhflag);                 // couple fabricant atypique (garde-fou Mayer-Hart)
   const tag=document.getElementById('o_vtag');
-  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(r.mode==='carabine'?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~3 %','manufacturer-anchored ~3%')):T('à froid ~8 %','uncalibrated ~8%');
+  tag.textContent=anchored?T('ancrée (vos données)','anchored (your data)'):dataAnchor?(r.mode==='carabine'?T('ancrée carabine (ladder)','rifle-anchored (ladder)'):ancFlag?T('ancrée fabricant (à vérifier)','manufacturer-anchored (to check)'):T('ancrée fabricant ~3 %','manufacturer-anchored ~3%')):T('à froid ~7 %','uncalibrated ~7%');
   tag.className='vm-tag'+((anchored||dataAnchor)?' anchored':'');
   const fillTxt = (hasPcd ? T(`Remplissage ${fill.toFixed(0)} %`,`Load density ${fill.toFixed(0)}%`) : T('Remplissage inconnu (densité bulk absente)','Load density unknown (no bulk density)')) + (CVOL>0?T(` · volume étui perso ${nf(cv_cm3,2)} cm³`,` · custom case capacity ${nf(cv_cm3,2)} cm³`):'');
   const mode = anchored?T('mesure perso','your measurement') : r.mode==='carabine'?`${T('ancré carabine','rifle-anchored')} (n=${an.rifle.n})` : dataAnchor?`${T('ancré fabricant','manufacturer-anchored')} (n=${anc.n}${anc.np==null?T(', vitesse seule — pression η_p global',', velocity only — global η_p for pressure'):''})` : (viaEeff?T('énergie générique (Qex/Ba inconnus)','generic energy (Qex/Ba unknown)'):'η_b '+nf(eta_b,3));
@@ -758,8 +758,16 @@ function calc(){
   document.getElementById('derived').textContent=
     `${fillTxt}  ·  ${T('rapport de détente','expansion ratio')} ${nf(Re,1)}  ·  ${mode}  ·  η_p ${nf(eta_p,3)}${pRefTxt}`;
   // Précision de la pression selon sa source (validation du 2026-10-13, docs/MODEL.md § 3.5 ; à froid, laboratoires
-  // hors calage : scripts/pression_par_source.py, 2026-10-13).
-  let w = (anc && anc.np!=null)
+  // hors calage : scripts/pression_par_source.py, 2026-10-13). Couple ancré par des sources qui ne publient pas la
+  // pression (énergie de l'ancre, η_p à froid) : simulation par classe de scripts/fit_repli_carabine.js (2026-10-16),
+  // carabine 9,8 % / 3,1 % au repli, 19,8 % / 4,1 % à constantes ; arme de poing 22,2 % / 12,7 %, 37,8 % / 9,4 %.
+  // Jusqu'au 2026-10-16, ces couples (1 356 sur 2 597, dont 1 168 de carabine au repli) recevaient le message du
+  // modèle à froid, « ~25 %, une sur cinq ».
+  const PSANS={'rifle|r':[10,'trente','thirty'],'rifle|c':[20,'vingt-cinq','twenty-five'],'handgun|r':[22,'huit','eight'],'handgun|c':[38,'dix','ten']};
+  const pSans=(anc && anc.np==null) ? PSANS[cart.type+'|'+((pw.Qex&&pw.Ba)?'c':'r')] : null;
+  let w = pSans
+    ? T(`Pression indicative (~${pSans[0]} % d'écart quadratique : énergie tirée des données fabricant de ce couple, qui ne publient pas la pression, η_p générique ; sous-estimée de plus de 15 % pour une charge sur ${pSans[1]}) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~${pSans[0]}% RMS error: energy from the manufacturer data for this combination, which give no pressure, generic η_p; underestimated by more than 15% for one load in ${pSans[2]}) — never validate a load on this basis.`)
+    : (anc && anc.np!=null)
     ? T('Pression indicative (~13 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur treize) — ne jamais valider une charge sur cette base.','Pressure for indication only (~13% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirteen) — never validate a load on this basis.')
     : T('Pression indicative (~25 % d\'écart quadratique sans données fabricant de pression pour ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq, jusqu\'à une sur trois selon le fabricant) — ne jamais valider une charge sur cette base.','Pressure for indication only (~25% RMS error without manufacturer pressure data for this combination; underestimated by more than 15% for one load in five, up to one in three depending on the manufacturer) — never validate a load on this basis.');
   // 16 des 1 700 charges Reload Swiss qui calent le modèle dépassent 110 % (rs_dataset, 2026-10-13).

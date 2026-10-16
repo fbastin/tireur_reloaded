@@ -72,25 +72,30 @@ for (const [src, g] of Object.entries(by(R, (x) => x.src)).sort((a, b) => b[1].l
     (g.some((x) => x.lN != null) ? ` | pression à vitesse publiée ${f(pv(g, 1))} → ${f(pv(g, kAutres))}` : ''));
 }
 
-// Ancre sans η_p, simulée sur les couples du repli qui publient la pression : chaque balle laissée de côté,
-// énergie de l'ancre des autres balles (lois locales), η_p à froid de l'outil. C'est le calcul de l'outil pour
-// un couple ancré par des sources sans pression.
+// Ancre sans η_p (couple ancré par des sources sans pression), simulée sur les couples qui publient la pression :
+// chaque balle laissée de côté, énergie de l'ancre des autres balles (lois locales), η_p à froid de l'outil. Par
+// classe (type d'arme × poudre du repli ou à constantes) : ce sont les chiffres du message de pression de la page
+// pour ces couples. Le facteur k ne touche que la classe carabine, repli.
 {
-  const L = COEF.local, sim = [];
+  const L = COEF.local, sim = {};
   for (const a0 of Object.values(groups)) {
-    const a = a0.filter((r) => FROID.has(r) && FROID.get(r).repli), balles = by(a, (r) => r.bid);
-    if (Object.keys(balles).length < 2) continue;
+    const a = a0.filter((r) => FROID.has(r)), balles = by(a, (r) => r.bid);
+    if (!a.length || Object.keys(balles).length < 2) continue;
+    const x0 = FROID.get(a[0]), cls = `${x0.type}, ${x0.path === 'e_eff' ? 'repli' : 'poudre à constantes'}`;
     for (const [bid, g] of Object.entries(balles)) {
       const autres = a.filter((r) => r.bid !== bid); if (autres.length < 3) continue;
       const lc = mean(autres.map((r) => ln(r.C))), lm = mean(autres.map((r) => ln(r.m)));
       const E0 = Math.exp(mean(autres.map((r) => ln(r.eeff) - L.delta * (ln(r.C) - lc) - L.beta * (ln(r.m) - lm))));
       for (const r of g) if (FROID.get(r).lN != null)
-        sim.push((E0 * EM.localE(L, r.C, r.m, Math.exp(lc), Math.exp(lm)) / r.eeff) * Math.exp(FROID.get(r).lN));
+        (sim[cls] = sim[cls] || { repli: FROID.get(r).repli, x: [] }).x.push((E0 * EM.localE(L, r.C, r.m, Math.exp(lc), Math.exp(lm)) / r.eeff) * Math.exp(FROID.get(r).lN));
     }
   }
-  const e = (fct) => sim.map((x) => x / fct - 1);
-  console.log(`\nAncre sans η_p simulée (carabine, repli, balle laissée de côté) : pression ${f(e(1))} → ${f(e(k))}` +
-    `, sous-estimée de plus de 15 % ${sous(e(1))} → ${sous(e(k))}`);
+  const c1 = (a) => `${pct(a.slice().sort((x, y) => x - y)[Math.floor(0.01 * a.length)])} %`;
+  console.log('\nAncre sans η_p simulée, balle laissée de côté : pression biais / écart quadratique, sous-estimée de plus de 15 %, centile 1 %');
+  for (const [cls, { repli, x }] of Object.entries(sim).sort()) {
+    const e = (fct) => x.map((v) => v / fct - 1), av = e(1), ap = e(repli ? k : 1);
+    console.log(`  ${cls.padEnd(30)} ${repli ? `${f(av)}, ${sous(av)}, ${c1(av)} → ` : ''}${f(ap)}, ${sous(ap)}, ${c1(ap)}`);
+  }
 }
 
 // Ancres de carabine sans η_p (sources sans pression) sur une poudre du repli : leur pression passe par le
