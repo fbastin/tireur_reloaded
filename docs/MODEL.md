@@ -500,8 +500,8 @@ $$P = P_c\,(m/m_c)^{\alpha_M}\,(C/C_{\max}(m))^{\gamma_L},$$
   the maximum loads of one pair and one source); anchor fields `pc`, `mpc` (`build_anchors.js`);
 - $C_{\max}(m)$: smallest published maximum charge for that weight (`build_start_charges.js`,
   `fenetres_masse` of `start_charges.local.json`, served to the page, gitignored): 5 010 windows for 905
-  pairs. Hodgdon contributes maxima only (its extraction lacks the starting column): 2 382 windows have no
-  starting charge;
+  pairs. 13 windows have no starting charge (a Hodgdon maximum below every published start for that weight:
+  .30 Carbine; or a weight whose only rows give no start);
 - $\gamma_L = 2.241$: $d\ln P/d\ln C$ for a given bullet (pooled least squares, as $\gamma$ of § 3.5).
 
 Pressure no longer depends on the velocity (predicted or measured) nor on $\eta_p$; the $\eta_p$ shown is

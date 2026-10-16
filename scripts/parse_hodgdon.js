@@ -107,6 +107,11 @@ for (let i = 0; i < lignes.length; i++) {
     cartridge, bore_mm: bore, barrel_mm: barrel,
     powder: poudre, powder_label: label,
     bullet_gr, bullet_desc, cast: PLOMB.test(bullet_desc || ''),
+    // Charge de DÉPART (colonnes « Starting Loads »), lue depuis le 2026-10-16 : l'expression la captait, la ligne ne la
+    // rangeait pas, et 660 couples ancrés sur Hodgdon n'avaient pas de fenêtre de charge. null pour les sections qui
+    // ne publient que le maximum (+P, subsoniques, certaines poudres).
+    start_gr: m[2] ? num(m[2]) : null, start_v0_fps: m[3] ? num(m[3]) : null,
+    start_P_psi: m[2] && m[5] && m[5].toUpperCase() === 'PSI' ? num(m[4]) : null,
     charge_gr: num(m[6]), v0_fps: num(m[9]),
     // CUP non convertible : la pression reste nulle, la ligne sert la vitesse seule.
     Pmax_psi: unite === 'PSI' ? num(m[10]) : null,
@@ -119,7 +124,8 @@ for (let i = 0; i < lignes.length; i++) {
 
 const out = {
   _doc: "Hodgdon Annual Manual (AM24) — donnees brutes, LOCAL/gitignore, non redistribue. "
-      + "Charge max + v0(fps) + Pmax(psi) quand l'unite est le PSI ; Pmax_psi=null pour les "
+      + "Charge de depart (start_gr, start_v0_fps, start_P_psi en PSI seulement ; null si le manuel ne la publie pas) et "
+      + "charge max + v0(fps) + Pmax(psi) quand l'unite est le PSI ; Pmax_psi=null pour les "
       + "lignes en CUP, non convertible. compressed = charge max marquee « C ». Lu en pdftotext -raw : "
       + "la page est sur deux colonnes que -layout recolle, ce qui melange deux cartouches.",
   _source: path.basename(pdf),
@@ -130,7 +136,7 @@ fs.writeFileSync(d('hodgdon.local.json'), JSON.stringify(out, null, 1));
 const cartouches = new Set(rows.map((r) => r.cartridge));
 const poudres = new Set(rows.map((r) => r.powder));
 console.log(`-> data/hodgdon.local.json`);
-console.log(`   ${rows.length} charges · ${cartouches.size} cartouches · ${poudres.size} poudres`);
+console.log(`   ${rows.length} charges · ${cartouches.size} cartouches · ${poudres.size} poudres · avec charge de départ : ${rows.filter((r) => r.start_gr > 0).length}`);
 console.log(`   pression exploitable : ${nPsi} en PSI · ${nCup} en CUP (vitesse seule)`);
 console.log(`   charges maximales comprimées (« C ») : ${nComp} · écartées, trop pour l'IMR 7828 standard (« C* ») : ${nTropPour7828}`);
 const inc = Object.entries(inconnues).sort((a, b) => b[1] - a[1]);

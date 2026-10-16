@@ -96,12 +96,18 @@ def verifier(n, part_rouge, ecarts, trop, absents, impossibles):
     if os.path.exists(f):
         pw = json.load(open(os.path.join(ICI, 'data', 'powders.json'), encoding='utf-8'))['powders']
         cal = json.load(open(os.path.join(ICI, 'data', 'calibers.json'), encoding='utf-8'))['calibers']
-        for k, w in json.load(open(f, encoding='utf-8'))['charges'].items():
+        sc = json.load(open(f, encoding='utf-8'))
+        # fenêtres typiques, et fenêtres par masse (2026-10-16 : loi de pression à deux pentes, échelle de charge)
+        fen = [(k, '', w) for k, w in sc['charges'].items()]
+        fen += [(k, f", balle {m} gr", w) for k, f in (sc.get('fenetres_masse') or {}).items() for m, w in f.items()]
+        for k, balle, w in fen:
             ck, pk = k.split('|', 1)
+            if w.get('c') is not None and w['c'] > w['cmax']:
+                pb.append(f"fenêtre affichée par l'outil, départ au-dessus du max : {k}{balle}, {w['c']}-{w['cmax']} gr")
             if ck in cal and pw.get(pk, {}).get('pcd') and cal[ck].get('case_vol_cm3'):
                 ff = w['cmax'] * GRAIN / (pw[pk]['pcd'] / 1000) / cal[ck]['case_vol_cm3']
                 if ff > IMPOSSIBLE:
-                    pb.append(f"fenêtre de départ impossible affichée par l'outil : {k}, {w['c']}-{w['cmax']} gr, remplissage {ff:.2f}")
+                    pb.append(f"fenêtre de départ impossible affichée par l'outil : {k}{balle}, {w['c']}-{w['cmax']} gr, remplissage {ff:.2f}")
     else:
         pb.append("data/start_charges.local.json absent : les fenêtres de départ de l'outil ne sont pas contrôlées")
     for e in ecarts:

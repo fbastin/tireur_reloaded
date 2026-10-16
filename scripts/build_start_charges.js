@@ -11,8 +11,8 @@
  *                                      "nb": <bullets of that weight> } }
  *   fenetres_masse (2026-10-16) : { "<calKey>|<pwdKey>": { "<bullet gr>": { "c": <start gr | null>, "cmax", "nb" } } }
  *     for rifle pairs whose anchor carries a pressure ceiling (anchors.json: pc) — the two-slope pressure law
- *     (scripts/fit_deux_pentes.js) and the ladder window of the entered weight. Hodgdon maxima count here only
- *     (no starting column in its extraction): c = null when no other source gives a start for that weight.
+ *     (scripts/fit_deux_pentes.js) and the ladder window of the entered weight. A Hodgdon row without a starting
+ *     charge counts for the maximum only: c = null when no bullet of that weight has a start.
  *   Run after build_anchors.js.
  *
  * Each table row is ONE bullet with its own start and max. For the typical weight, the window
@@ -61,8 +61,8 @@ const groups = {};
 // fenêtre du fabricant. Même seuil que build_anchors.js ; arme de poing non concernée.
 const subsonique = (ck, vMax) => !!ck && CAL[ck] && CAL[ck].type === 'rifle' && vMax > 0 && vMax < 340;
 let nSub = 0;
-// maxSeul : source qui ne publie (dans notre extraction) que la charge MAXIMALE (Hodgdon) ; la balle compte pour le
-// maximum des fenêtres par masse, jamais pour une charge de départ ni pour la fenêtre typique.
+// maxSeul : balle dont on n'a que la charge MAXIMALE (ligne Hodgdon sans départ) ; elle compte pour le maximum des
+// fenêtres par masse, jamais pour une charge de départ ni pour la fenêtre typique.
 const add = (ck, pk, bullet, id, charge, vMax, maxSeul) => {
   if (!ck || !pk || !(bullet > 0 && charge > 0)) return;
   const g = (groups[ck + '|' + pk] = groups[ck + '|' + pk] || {});
@@ -139,9 +139,11 @@ try {
   });
 } catch (e) { if (e.code !== 'ENOENT') throw e; }
 
-// Hodgdon (manuel 2024) — charge MAXIMALE seule : l'extraction n'a pas la colonne de départ. Mêmes lignes que
-// build_anchors.js (ni balle en plomb, ni copie d'une ligne Western, alésage concordant). Elles ne servent qu'aux
-// fenêtres par masse (maximum), pour les couples Hodgdon qui n'ont pas d'autre source (2026-10-16).
+// Hodgdon (manuel 2024) — départ (« Starting Loads ») et maximum. Mêmes lignes que build_anchors.js (ni balle en
+// plomb, ni copie d'une ligne Western, alésage concordant). Jusqu'au 2026-10-16 la colonne de départ n'était pas
+// extraite, et 660 couples ancrés sur Hodgdon n'avaient aucune fenêtre ; ce jour-là, les maxima seuls servaient aux
+// fenêtres par masse. Ligne sans départ (+P, subsoniques), ou départ qui n'est pas sous le maximum (coquille du
+// manuel : 7mm-08, 145 gr, StaBALL Match, 42,0 gr aux deux colonnes, vérifié sur l'image) : maximum seul.
 try {
   const copieWestern = new Set(JSON.parse(fs.readFileSync(d('western.local.json'))).rows
     .map((r) => [matchCal(r.cartridge), pwdIdx[norm(r.powder || '')], r.bullet_gr, r.charge_gr, r.v0_fps].join('|')));
@@ -150,8 +152,28 @@ try {
     const ck = matchCal(r.cartridge), pk = pwdIdx[norm(r.powder || '')];
     if (!ck || copieWestern.has([ck, pk, r.bullet_gr, r.charge_gr, r.v0_fps].join('|'))) return;
     if (r.bore_mm && Math.abs(r.bore_mm - CAL[ck].bore_mm) > 0.3) return;
-    add(ck, pk, r.bullet_gr, 'H' + i, r.charge_gr, (r.v0_fps || 0) * 0.3048, true);
+    const vM = (r.v0_fps || 0) * 0.3048, depart = r.start_gr > 0 && r.start_gr < r.charge_gr;
+    add(ck, pk, r.bullet_gr, 'H' + i, r.charge_gr, vM, !depart);
+    if (depart) add(ck, pk, r.bullet_gr, 'H' + i, r.start_gr, vM, false);
   });
+} catch (e) { if (e.code !== 'ENOENT') throw e; }
+
+// Nosler (fiches en ligne, scripts/nosler_fiches.py) — carabines, EN COMPLÉMENT comme dans build_anchors.js : seulement
+// pour un couple qu'aucune autre source ne fenêtre (454 couples ancrés par Nosler seul n'avaient pas de fenêtre, le
+// 2026-10-16). Une balle = une fiche et une poudre ; Nosler publie le maximum et deux charges plus faibles, sans
+// nommer de charge de départ : la plus faible tient lieu de départ, comme pour les échelles Sierra.
+try {
+  // couples déjà fenêtrés : au moins une balle avec départ (une ligne Hodgdon à maximum seul ne fait pas de fenêtre)
+  const deja = new Set(Object.keys(groups).filter((k) => Object.values(groups[k]).some((w) => Object.values(w).some((b) => !b.maxSeul))));
+  const lignes = JSON.parse(fs.readFileSync(d('nosler.local.json'))).rows;
+  const vMaxN = {};
+  for (const r of lignes) if (r.max) vMaxN[r.fiche + '|' + r.poudre] = r.fps * 0.3048;
+  for (const r of lignes) {
+    const ca = CAL[r.cle]; if (!ca || ca.type === 'handgun' || !PWD[r.poudre] || deja.has(r.cle + '|' + r.poudre)) continue;
+    if (!(r.balle_gr > 0 && r.charge_gr > 0)) continue;
+    if (r.balle_plage && (r.balle_plage[1] - r.balle_plage[0]) / 2 / r.balle_gr > 0.02) continue;
+    add(r.cle, r.poudre, r.balle_gr, 'NOS|' + r.fiche + '|' + r.poudre, r.charge_gr, vMaxN[r.fiche + '|' + r.poudre] || 0);
+  }
 } catch (e) { if (e.code !== 'ENOENT') throw e; }
 
 // Fenêtres PAR MASSE (2026-10-16), pour la loi de pression à deux pentes (scripts/fit_deux_pentes.js) : carabines
@@ -186,7 +208,13 @@ for (const [k, byBullet0] of Object.entries(groups)) {
     const f = {};
     for (const [g, w] of Object.entries(balles(byBullet0, true).garde)) {
       const bs = Object.values(w), avecDepart = bs.filter((b) => !b.maxSeul);
-      f[g] = { c: avecDepart.length ? +Math.min(...avecDepart.map((b) => b.lo)).toFixed(2) : null, cmax: +Math.min(...bs.map((b) => b.hi)).toFixed(2), nb: bs.length };
+      const cmax = +Math.min(...bs.map((b) => b.hi)).toFixed(2);
+      let c = avecDepart.length ? +Math.min(...avecDepart.map((b) => b.lo)).toFixed(2) : null;
+      // Départ au-dessus du maximum : les deux viennent de balles différentes, le maximum d'une ligne sans départ
+      // (Hodgdon, .30 Carbine : 15,0 gr en 90 gr, contre 15,1 gr de départ ailleurs). La balle la plus prudente n'a
+      // pas de départ publié : pas de départ (remplissage_publie.py --check le contrôle chaque nuit).
+      if (c != null && c > cmax) c = null;
+      f[g] = { c, cmax, nb: bs.length };
       nMasses++;
     }
     parMasse[k] = f;
