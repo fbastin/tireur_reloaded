@@ -86,12 +86,15 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    servi au calage (scripts/pression_par_source.py, 2026-10-13) : une charge sur quatre sous-estimée de
    plus de 15 % (Lovex et Shooters World : une sur trois), biais −5 % ; au calage, une sur cinq.
    Vitesse recalculée le 2026-10-13 après la relecture Sierra : 3,3 % (29 795 charges) et 7,7 % (32 252) ; le
-   2026-10-15, après les 278 lignes Vihtavuori retrouvées : 3,3 % (30 250) et 7,7 % (32 703). */ ?>
+   2026-10-15, après les 278 lignes Vihtavuori retrouvées : 3,3 % (30 250) et 7,7 % (32 703).
+   2026-10-15, charges subsoniques de carabine retirées des couples mixtes (build_anchors.js), lois publiées
+   inchangées : pression avec données fabricant 13,1 %, 7,5 % sous-estimées de plus de 15 %, centile 1 % −35 % ;
+   à froid 25,3 % et 20,2 %, centile 1 % −40 % ; vitesse 3,3 % (30 166 charges) et 7,6 % (32 609). */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
 ~8&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
 fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
-qu'indicative&nbsp;: ~15&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
+qu'indicative&nbsp;: ~13&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;», ~25&nbsp;% à froid.
 Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur treize avec
 données fabricant, une sur cinq sans — une sur trois pour des fabricants dont les données n'ont pas servi
 au calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
@@ -107,7 +110,7 @@ les données officielles du fabricant.
 <div class="vm-banner lang-en">
 <strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ~8% root-mean-square error uncalibrated,
 ~3% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
-measured velocity. <strong>Pressure</strong> is for indication only: ~15% root-mean-square error for a
+measured velocity. <strong>Pressure</strong> is for indication only: ~13% root-mean-square error for a
 “●” combination, ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
 load in thirteen with manufacturer data, one in five without — one in three for manufacturers whose data
 were not used in the fit —, and by more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
@@ -234,7 +237,7 @@ against the manufacturer's official load data.
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: vitesse <strong>quasi-exacte</strong>.</li>
 </ul>
 <p><strong>&#9888; Ces trois échelons ne valent que pour la vitesse.</strong> La pression reste
-indicative quoi qu'on fournisse (~15&nbsp;% d'écart quadratique avec données fabricant, ~25&nbsp;% sans),
+indicative quoi qu'on fournisse (~13&nbsp;% d'écart quadratique avec données fabricant, ~25&nbsp;% sans),
 parce qu'elle sort d'une <em>autre</em> relation (efficacité
 piézométrique) que la vitesse (efficacité balistique)&nbsp;: le chronographe cale la seconde et
 ne dit rien de la première. Nous l'avons vérifié par trois chemins indépendants, dont la
@@ -269,7 +272,7 @@ charge équivalente.</p>
 <li><strong>with your measured velocity</strong> from a chronograph (field above): <strong>near-exact</strong> velocity.</li>
 </ul>
 <p><strong>&#9888; These three levels apply to velocity only.</strong> Pressure stays
-indicative whatever you provide (~15% root-mean-square error with manufacturer data, ~25% without),
+indicative whatever you provide (~13% root-mean-square error with manufacturer data, ~25% without),
 because it comes from a <em>different</em> relation (piezometric
 efficiency) than velocity (ballistic efficiency): the chronograph calibrates the latter and
 says nothing about the former. We checked this along three independent paths, including
@@ -755,7 +758,7 @@ function calc(){
   // Précision de la pression selon sa source (validation du 2026-10-13, docs/MODEL.md § 3.5 ; à froid, laboratoires
   // hors calage : scripts/pression_par_source.py, 2026-10-13).
   let w = (anc && anc.np!=null)
-    ? T('Pression indicative (~15 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur treize) — ne jamais valider une charge sur cette base.','Pressure for indication only (~15% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirteen) — never validate a load on this basis.')
+    ? T('Pression indicative (~13 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur treize) — ne jamais valider une charge sur cette base.','Pressure for indication only (~13% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirteen) — never validate a load on this basis.')
     : T('Pression indicative (~25 % d\'écart quadratique sans données fabricant de pression pour ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq, jusqu\'à une sur trois selon le fabricant) — ne jamais valider une charge sur cette base.','Pressure for indication only (~25% RMS error without manufacturer pressure data for this combination; underestimated by more than 15% for one load in five, up to one in three depending on the manufacturer) — never validate a load on this basis.');
   // 16 des 1 700 charges Reload Swiss qui calent le modèle dépassent 110 % (rs_dataset, 2026-10-13).
   if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % : presque aucune des charges qui calent le modèle ne va si loin, estimation peu fiable.','⚠ Load density > 110%: almost none of the loads the model is fitted on go that far, unreliable estimate.');

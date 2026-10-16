@@ -64,17 +64,27 @@ const groups = {};   // "calKey|pwdKey" -> [{eeff, np, mhr, src, bid, m, C, mono
 // relue sur le canon d'essai de 102 mm, et sa pression gonflée d'un quart. Sources sans
 // longueur de canon publiée (bbl absent) : prises telles quelles, comme avant.
 const VMb = require('../velocity_model.js');
+// Charges SUBSONIQUES de carabine (vitesse publiée < 340 m/s) : autre régime, η_p bien plus bas, que les lois locales
+// ne savent pas relier aux charges normales. Mêlées à l'ancre d'un couple qui a aussi des charges supersoniques, elles
+// faisaient monter la pression affichée des charges normales : .30-30 + Benchmark +118 %, .30-30 + H4895 +65 %, .308 +
+// Accurate 5744 +53 % (128 charges, 39 couples ; vu sur les données en ligne d'ADI, jeu de test, 2026-10-15). Elles
+// sont marquées ici (`sub`) et retirées des couples mixtes avant tout usage (plus bas) ; un couple purement subsonique
+// (300 BLK + RS24) les garde. Arme de poing : rien de marqué, le subsonique y est le régime courant.
+const V_SUBSONIQUE = 340;
+let subsoniques = 0;
 function add(calKey, pwdKey, eeff, np, mhr, x) {
   if (!calKey || !pwdKey) return;
   let kE = 1, kN = 1;
   const ca = CAL[calKey];
+  // vitesse publiée, au canon de la source : E_eff = (m + C/3) v² / 2C
+  const sub = !!(ca && ca.type === 'rifle' && x && x.C > 0 && x.m > 0 && Math.sqrt(2 * eeff * x.C / (x.m + x.C / 3)) < V_SUBSONIQUE);
   if (x && x.bbl > 0 && ca) {
     const Lr = x.bbl - ca.case_mm, Lf = (ca.test_barrel_mm || (ca.type === 'handgun' ? 122 : 600)) - ca.case_mm;
     // Loi de canon de la cartouche (Powley pour une carabine depuis le 2026-10-11) ; courses en m.
     if (Lr > 0 && Lf > 0) { kE = Math.pow(VMb.scaleByBarrelFor(ca, 1, Lr / 1000, Lf / 1000), 2); kN = kE * Lr / Lf; }
   }
   const k = calKey + '|' + pwdKey;
-  (groups[k] = groups[k] || []).push({ ...x, eeff: eeff * kE, np: np != null ? np * kN : null, mhr, kE, kN });
+  (groups[k] = groups[k] || []).push({ ...x, eeff: eeff * kE, np: np != null ? np * kN : null, mhr, kE, kN, sub });
 }
 
 // Reload Swiss (cartridge/powder already match our keys; eta_p known; compute E_eff)
@@ -355,6 +365,13 @@ function cartRefs(groups) {
   return out;
 }
 
+// Charges subsoniques retirées des couples MIXTES (voir add()), avant tout usage : ancres, lois locales, validations.
+for (const [k, arr] of Object.entries(groups)) {
+  if (!arr.some((x) => x.sub) || arr.every((x) => x.sub)) continue;
+  groups[k] = arr.filter((x) => !x.sub);
+  subsoniques += arr.length - groups[k].length;
+}
+
 // Chargé comme module (scripts/fit_local_laws.js) : les charges, sans rien écrire.
 if (require.main !== module) { module.exports = { groups, CAL, PWD, cartRefs }; return; }
 
@@ -421,5 +438,5 @@ if (covered.length > 5) {
 
 const out = { _doc: 'Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable. Charges de balles monolithiques ramenées à une balle à noyau (bloc monolithique de model_coefficients.json).', _date: new Date().toISOString().slice(0, 10), anchors };
 fs.writeFileSync(d('anchors.json'), JSON.stringify(out, null, 1));
-console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}% | copies Hodgdon de Western écartées : ${copiesEcartees}`);
+console.log(`combos ancrés (≥3 charges) : ${kept} | LOO vitesse RMS ${rms(looErr).toFixed(1)}% | copies Hodgdon de Western écartées : ${copiesEcartees} | charges subsoniques de carabine écartées (couples mixtes) : ${subsoniques}`);
 console.log('-> data/anchors.json');
