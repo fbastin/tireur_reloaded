@@ -27,7 +27,9 @@
  * les deux effets. γ est donc estimé d'abord, sur Reload Swiss.
  *
  * POURQUOI γ ≈ 2 (1,95 le 2026-10-10, 1,99 depuis le 2026-10-13) ET NON 2,7. La médiane des pentes balle par balle vaut 2,7, et c'est la
- * pente réelle d'une échelle de charge (2,6 à 2,9 pour 85 % des balles). Mais entre deux
+ * pente réelle d'une échelle de charge (2,6 à 2,9 pour 85 % des balles) chez Reload Swiss. Chez Hodgdon, dont les
+ * départs sont lus depuis le 2026-10-16, elle vaut 2,35 en carabine et 1,75 en arme de poing ; ils n'entrent pas ici
+ * (scripts/essai_departs_hodgdon.js : aucun gain). Mais entre deux
  * balles de même masse, la charge maximale varie aussi avec la construction (portée, balle
  * monolithique), que le modèle ne connaît pas : avec γ = 2,7, cet écart est amplifié, l'erreur
  * quadratique passe de 15 à 22 %, et une balle « dure » à sa propre charge max paraît loin de la

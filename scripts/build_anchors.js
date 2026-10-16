@@ -148,6 +148,13 @@ try {
     const v0 = r.v0_fps * 0.3048;
     const eeff = me * v0 * v0 / (2 * C);
     const mono = estMonolithique(r.bullet_desc);
+    // ESSAI (2026-10-16, scripts/essai_departs_hodgdon.js) : ANCRES_DEPARTS_HODGDON=1 ajoute la charge de DÉPART de la
+    // ligne (colonne « Starting Loads », vitesse, et pression en PSI), même balle. Désactivé par défaut : les ancres
+    // servies n'en contiennent pas.
+    if (process.env.ANCRES_DEPARTS_HODGDON === '1' && r.start_gr > 0 && r.start_gr < r.charge_gr && r.start_v0_fps > 0) {
+      const Cs = r.start_gr * G, mes = m + Cs / 3, vs = r.start_v0_fps * 0.3048, Ps = r.start_P_psi > 0 ? r.start_P_psi * 0.0689476 * 1e5 : null;
+      add(ck, pk, mes * vs * vs / (2 * Cs), Ps ? 0.5 * mes * vs * vs / (Ps * A * L) : null, null, { src: 'Hodg', bbl: r.barrel_mm, bid: 'H|' + r.cartridge + '|' + r.powder + '|' + r.bullet_gr + '|' + r.bullet_desc, m: r.bullet_gr, C: r.start_gr, P: Ps ? Ps / 1e5 : undefined, max: false, mono, depart: true });
+    }
     if (r.Pmax_psi > 0) {
       const Pmax = r.Pmax_psi * 0.0689476 * 1e5;
       const mhr = mhResidual({ ...ca, _bbl: r.barrel_mm }, r.bullet_gr, r.charge_gr, v0, Pmax / 1e5, PWD[pk] && PWD[pk].Qex);

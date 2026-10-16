@@ -523,6 +523,18 @@ under-predicted by more than 15 %, 1st percentile:
 | handguns (2 188, unchanged) | +2.0 / 20.8 %, 19.6 % | same |
 | all (8 319) | +0.5 / 13.1 %, 7.5 %, −35 % | +2.2 / 12.6 %, 5.6 %, −34 % |
 
+**Hodgdon starting loads (2026-10-16, `scripts/essai_departs_hodgdon.js`, nothing applied).** The Hodgdon
+manual prints the pressure of its starting loads too (extracted since that day). Per-bullet slope from start
+to maximum, medians: pressure, rifles 2.76 at Reload Swiss (655 bullets) and 2.35 at Hodgdon (2 212); handguns
+2.46 (172) and 1.75 (705); energy 1.19 and 0.85; start/maximum charge 0.869 and 0.910. The "2.7" the page and
+the wiki gave as the manuals' slope was Reload Swiss alone; both are now quoted. Held out by bullet, the
+served model predicts the Hodgdon starting loads, which it never saw, as well as the maximum loads: rifles
++1.4 / 8.3 %, 2.0 % under-predicted by more than 15 % (handguns 22.3 %, 27.7 %), an independent check of
+$\gamma_L$ between start and maximum. Putting them into the anchors changes nothing for rifles (handguns 21.1 →
+21.5 %); refitting the exponents with them ($\gamma$ = $\gamma_L$ = 2.067, $\delta$ 0.872, $\alpha$ 0.913) does
+slightly worse overall (12.8 → 13.3 %; rifles 8.0 → 8.2 %, under-predicted 0.9 → 0.7 %). `ANCRES_DEPARTS_HODGDON=1`
+makes `build_anchors.js` add them, for such trials only.
+
 The page's pressure messages follow: ~8 %, one load in two hundred under-predicted by more than 15 %
 (two slopes); anchor law with pressure, rifle ~9 %, one in thirty, handgun ~21 %, one in five. Until
 2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average set by the rifles.

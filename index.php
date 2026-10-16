@@ -102,8 +102,9 @@ Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour 
 données fabricant (une sur cinq en arme de poing), une sur cinq sans — une sur trois pour des fabricants
 dont les données n'ont pas servi au calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
 réellement au-dessus de la limite C.I.P. peut donc s'afficher «&nbsp;sûre&nbsp;». D'une charge à l'autre,
-la pression réelle monte aussi plus vite que celle affichée&nbsp;: au-delà du maximum publié, l'écart
-se creuse.
+la pression réelle peut monter plus vite que celle affichée (pente médiane d'une échelle de charge en
+carabine&nbsp;: 2,8 chez Reload Swiss, 2,35 chez Hodgdon, contre 2,2 ici)&nbsp;: au-delà du maximum publié,
+l'écart peut se creuser.
 <strong>Votre vitesse mesurée ne corrige pas la pression&nbsp;:</strong> vitesse et pression sortent de
 <em>deux</em> efficacités distinctes, et le chronographe n'en contraint qu'une. Vérifiez toujours dans
 les données officielles du fabricant.
@@ -118,8 +119,9 @@ measured velocity. <strong>Pressure</strong> is for indication only: ~13% root-m
 handgun), ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
 load in eighteen with manufacturer data (one in five for handguns), one in five without — one in three for
 manufacturers whose data were not used in the fit —, and by more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
-charge to the next, real pressure also rises faster than the displayed one: beyond the published
-maximum, the gap widens.
+charge to the next, real pressure can rise faster than the displayed one (median slope of a rifle charge
+ladder: 2.8 at Reload Swiss, 2.35 at Hodgdon, against 2.2 here): beyond the published maximum, the gap can
+widen.
 <strong>Your measured velocity does not correct the pressure:</strong> velocity and pressure come from
 <em>two</em> distinct efficiencies, and your chronograph constrains only one of them. Always check
 against the manufacturer's official load data.
@@ -619,7 +621,7 @@ function renderLadder(){
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
   const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
-  el.innerHTML='<p class="vm-note">'+w.note+(an.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs. D\'une charge à l\'autre, la pression réelle monte plus vite que celle du tableau (pente médiane des guides 2,7 contre '+penteP(dp).replace('.',',')+' ici). Ne dépassez pas le max fabricant.',' for indication only. From one charge to the next, real pressure rises faster than in this table (median slope in the manuals 2.7, against '+penteP(dp)+' here). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
+  el.innerHTML='<p class="vm-note">'+w.note+(an.rifle?T(' · <strong>ancré carabine</strong>',' · <strong>rifle-anchored</strong>'):'')+overTxt+' — Pmax/%'+limSrc(cart)+T(' indicatifs. D\'une charge à l\'autre, la pression réelle peut monter plus vite que celle du tableau (pente médiane départ → maximum : '+(cart.type==='handgun'?'2,5 chez Reload Swiss, 1,75 chez Hodgdon':'2,8 chez Reload Swiss, 2,35 chez Hodgdon')+', contre '+penteP(dp).replace('.',',')+' ici). Ne dépassez pas le max fabricant.',' for indication only. From one charge to the next, real pressure can rise faster than in this table (median slope from start to maximum: '+(cart.type==='handgun'?'2.5 at Reload Swiss, 1.75 at Hodgdon':'2.8 at Reload Swiss, 2.35 at Hodgdon')+', against '+penteP(dp)+' here). Do not exceed the manufacturer maximum.')+'</p>'+t+'</table>';
 }
 // Une ligne de mesures de l'échelle de charge -> [charge, vitesse] (nombres), ou null.
 // Accepte « 41.0, 845 » (point décimal, virgule séparatrice : le format de l'exemple),
