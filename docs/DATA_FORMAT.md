@@ -236,6 +236,21 @@ improved the independent checks: Nosler handguns 9.6 → 8.9 % RMS, Lyman handgu
 ADI figure quoted here at first, 15.5 → 12.2 %, mostly compared ADI's reprints of Hodgdon rows with
 anchors built from those same rows; see `scripts/adi_crosscheck.js`.)
 
+### Western pressure classes (`section`)
+
+Western's guide prints some cartridges in several pressure classes, each under a title followed by a subtitle:
+« 223 REMINGTON » then « 55,000 PSI -- STANDARD SAAMI COMMERCIAL SPECIFICATIONS », « 223 REMINGTON (CUSTOM LONG
+THROAT) », « 5.56 X 45MM NATO » (62,350 psi), and likewise for the 45-70 (standard, high pressure, 19,000 psi trapdoor),
+the 45 Colt (14,000 and 30,000 psi) and the 6.8 Remington SPC. `scripts/import_western.js` glues the subtitle to the
+title so that a load never falls under the previous cartridge; until 2026-10-17 the glued label was the cartridge name,
+and every consumer drops a name containing « psi » as a page header (`isJunkCart` in `build_anchors.js`, etc.): the
+337 .223 SAAMI loads, 95 standard 45-70 and 33 standard 45 Colt were used nowhere, without a warning. The table
+`SECTIONS` of the parser now names each class: the standard class takes the bare cartridge name, the others a name
+that matches no cartridge of the base (`223 REMINGTON CUSTOM LONG THROAT`, `5.56 X 45MM NATO`, `45-70 GOVERNMENT HIGH
+PRESSURE`, `45-70 GOVERNMENT TRAPDOOR`, `45 COLT HIGH PRESSURE`), so that they never merge into the base cartridge. The
+original label stays in `section`. A new subtitle with « psi » in a future edition falls back to the old behaviour
+(dropped as a header): add it to `SECTIONS`.
+
 ## Units summary
 
 | Quantity | Unit |

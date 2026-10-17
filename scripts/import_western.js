@@ -38,6 +38,29 @@ const SIX = /(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(\d{1,3}\.\d)(\d{1,3}(?:,\d{3})?)(
 // (« 6 0 SIE R R A »), a title is not (« 20 PPC (59,000 PSI) » is a title on its own).
 const SUBHEAD = /PSI|SPECIFICATION|These loads|For chambers|^MAGNUM\b|TRAPDOOR/i;
 const isData = (s) => /^\d( \d)+\b/.test(s.trim()) || /^(ACCURATE|RAMSHOT)/.test(ds(s));
+
+// Sections à classe de pression (2026-10-17). Le titre et son sous-titre formaient jusque-là le nom de la cartouche
+// (« 223 REMINGTON 55,000 PSI -- STANDARD SAAMI COMMERCIAL SPECIFICATIONS ») ; or tous les consommateurs écartent comme
+// en-tête un nom qui contient « psi » (isJunkCart de build_anchors.js, etc.) : les 337 charges .223 SAAMI, 95 de 45-70 et
+// 33 de 45 Colt de pression standard ne servaient nulle part. La classe STANDARD reprend le nom seul ; les autres
+// reçoivent un nom qui ne s'apparie à aucune cartouche de la base (haute pression, trapdoor, gorge longue, 5,56 NATO à
+// 62 350 psi) : elles ne doivent jamais se fondre dans la cartouche de base. Le libellé d'origine reste dans `section`.
+const SECTIONS = [
+  [/^223 REMINGTON 55,000 PSI/, '223 REMINGTON'],
+  [/^223 REMINGTON \(CUSTOM LONG THROAT\)/, '223 REMINGTON CUSTOM LONG THROAT'],
+  [/^5\.56 X 45MM NATO/, '5.56 X 45MM NATO'],
+  [/^45-70 GOVERNMENT STANDARD PRESSURE/, '45-70 GOVERNMENT'],
+  [/^45-70 GOVERNMENT HIGH PRESSURE/, '45-70 GOVERNMENT HIGH PRESSURE'],
+  [/^45-70 GOVERNMENT 19,000 PSI/, '45-70 GOVERNMENT TRAPDOOR'],
+  [/^45 COLT - 14000 PSI - STANDARD/, '45 COLT'],
+  [/^45 COLT - 30,000 PSI/, '45 COLT HIGH PRESSURE'],
+  [/^6\.8 REMINGTON SPC These loads/, '6.8 REMINGTON SPC'],
+  [/^20 PPC \(59,000 PSI/, '20 PPC'],                 // 20 PPC et 20 BR : absentes de la base, classées pour que
+  [/^20 PPC \(63,000 PSI/, '20 PPC HIGH PRESSURE'],   // le contrôle de fin reste muet tant que rien ne se perd
+  [/^20 BR \(59,000 PSI/, '20 BR'],
+  [/^20 BR \(63,000 PSI/, '20 BR HIGH PRESSURE'],
+];
+const section = (c) => { for (const [re, nom] of SECTIONS) if (re.test(c)) return nom; return null; };
 const title = (s) => s.trim().replace(/\s{2,}.*$/, '');
 
 // Deux découpages ambigus de la ligne despacée, que la charge de départ rend visibles
@@ -75,7 +98,7 @@ for (const line of lines) {
     const f = reparer(m[1], m[2], m[3]);
     const desc = (d.slice(bm[1].length, d.length - m[0].length) + f.colle).replace(/[*]/g, '');   // maker+type (despacé)
     if (bullet > 10 && bullet < 800) rows.push({
-      cartridge: cart, bore_mm: bore, barrel_mm: barrel, powder,
+      cartridge: section(cart) || cart, ...(section(cart) ? { section: cart } : {}), bore_mm: bore, barrel_mm: barrel, powder,
       bullet_gr: bullet, bullet_desc: desc,
       // « (L) » en tête de la description = balle en plomb (« (P) » = cuivrée, gardée) : marquée `cast`,
       // écartée des ancres et des charges de départ, calées sur du chemisé (2026-10-13).
@@ -94,3 +117,11 @@ fs.writeFileSync(out, JSON.stringify({ _doc: 'Western Powders Handloading Guide 
 const carts = [...new Set(rows.map((r) => r.cartridge))], pwd = [...new Set(rows.map((r) => r.powder))];
 console.log(`max-load rows: ${rows.length} | cartridges ${carts.length} | powders ${pwd.length}`);
 console.log('sample:', rows.slice(0, 3).map((r) => `${r.cartridge}/${r.powder} ${r.bullet_gr}gr ${r.charge_gr}gr ${r.v0_fps}fps ${r.Pmax_psi}psi`).join(' | '));
+// Un sous-titre de pression absent de SECTIONS laisse « psi » dans le nom : les consommateurs écarteraient ces charges
+// comme un en-tête, sans rien dire (le défaut d'avant le 2026-10-17). On le dit ici.
+const perdus = carts.filter((c) => /psi/i.test(c));
+if (perdus.length) {
+  console.error(`ATTENTION : ${perdus.length} nom(s) de cartouche contiennent « psi » et seront écartés comme en-têtes — ajouter à SECTIONS :`);
+  for (const c of perdus) console.error(`  ${rows.filter((r) => r.cartridge === c).length} charges  « ${c} »`);
+  process.exitCode = 1;
+}

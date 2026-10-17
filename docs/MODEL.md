@@ -694,20 +694,26 @@ at most 10.2 % above the top; a common range alone left up to 22 % above.
 
 | situation | in-house range | served | ADI inside / above |
 |---|---|---|---|
-| rifle, two slopes | 0.871–1.061 | 0.821–1.167 | 80.5 %, 9.7 % |
-| rifle, anchor law | 0.919–1.104 | 0.833–1.170 | 84.7 %, 10.6 % |
-| rifle, ceiling from the limit | 0.894–1.102 | 0.833–1.116 | 92.8 %, 2.0 % |
-| rifle, anchor without pressure, fallback | 0.901–1.106 | 0.820–1.116 | 87.1 %, 2.7 % (both powder kinds) |
-| rifle, estimated maximum charge | 0.811–1.150 | 0.763–1.150 | 86.2 %, 3.7 % |
-| rifle, cold | 0.817–1.277 | same | 52.4 %, 20.6 % (63 loads, too few) |
-| handgun, two slopes | 0.833–1.222 | same | no ADI data |
-| handgun, cold | 0.645–1.351 | 0.599–1.541 | 80.0 %, 10.0 % (calibrated on them) |
+| rifle, two slopes | 0.866–1.060 | 0.821–1.167 | 80.5 %, 9.7 % |
+| rifle, anchor law | 0.917–1.104 | 0.833–1.170 | 84.7 %, 10.6 % |
+| rifle, ceiling from the limit | 0.897–1.101 | 0.833–1.116 | 92.8 %, 2.0 % |
+| rifle, anchor without pressure, fallback | 0.903–1.113 | 0.820–1.116 | 87.1 %, 2.7 % (both powder kinds) |
+| rifle, estimated maximum charge | 0.813–1.150 | 0.763–1.150 | 86.0 %, 3.9 % |
+| rifle, cold | 0.821–1.276 | same | 60.6 %, 14.1 % (99 loads, too few) |
+| handgun, two slopes | 0.832–1.218 | same | no ADI data |
+| handgun, cold | 0.647–1.352 | 0.599–1.541 | 80.0 %, 10.0 % (calibrated on them) |
 
 Colour, percentage of the limit and alerts stay on the central pressure (Fabian's choice); an extra caution appears
 when the top of the range exceeds the limit (the Hodgdon maximum of .308 Win. + Varget, 168 gr, 45 gr: 99 % of the
 limit, top of the range 116 %). The load ladder does the same: colour on the central pressure, « ⚠ » on the rows whose
 top of range exceeds the limit, and the range in its note. Not checked: handgun pairs with data against another
-laboratory, and rifle cold pairs without a powder effect (63 ADI loads, 52 % inside).
+laboratory, and rifle cold pairs without a powder effect (99 ADI loads, 61 % inside).
+
+*Figures of this table as of 2026-10-17, after the Western sections were split (`DATA_FORMAT.md`, « Western pressure
+classes »): 337 .223 Rem. SAAMI loads, 95 standard-pressure 45-70 and 33 standard 45 Colt entered the anchors and the
+cold-maximum fit. The served ranges did not move; the in-house ranges moved by at most 0.007, the ADI shares of the
+estimated maximum charge by 0.2 point. The rifle cold row was already stale before that (63 loads, 52.4 %, from the
+first version of this section): later changes of the same day had brought it to 99 loads, 61.6 %.*
 
 **The same leak elsewhere (same day).** The Hodgdon starting loads of § 3.8 were predicted with the served window,
 which counts their own bullet. With the window of the other bullets of the weight and the served configuration
