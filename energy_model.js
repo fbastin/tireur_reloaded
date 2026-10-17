@@ -185,6 +185,17 @@ const EnergyModel = {
     return c > 0 ? this.pressionPlafondLimite(coef, ca.pmax_cip_bar, { m: m_gr, cmax: c, cmoy: c }, m_gr, C_gr, ca.type, mono) : null;
   },
 
+  /**
+   * Plage de pression (bloc fourchettes, scripts/fit_fourchettes.js, 2026-10-17) : { bas, haut, niveau }, multiplicateurs
+   * de la pression affichée entre lesquels tombe la part `niveau` des pressions publiées dans la même situation
+   * (deux_pentes, ancres, plafond_limite, ancre_sans_pression, froid_max, froid) ; cle = type d'arme, ou type|r / type|c
+   * pour ancre_sans_pression. null si la situation n'a pas de plage.
+   */
+  fourchettePression(coef, situation, cle) {
+    const F = coef.fourchettes, v = F && F.classes && F.classes[situation] && F.classes[situation][cle];
+    return v && v[0] > 0 && v[1] > v[0] ? { bas: v[0], haut: v[1], niveau: F.niveau } : null;
+  },
+
   /** Pente γL de la loi à deux pentes pour ce type d'arme (celle du bloc commun à défaut). */
   penteDeuxPentes(coef, type) {
     const D = coef.deux_pentes || {};

@@ -57,6 +57,29 @@ const pct = (v) => (v * 100).toFixed(1);
 const f = (a) => a.length ? `${pct(mean(a)).padStart(5)} / ${pct(Math.sqrt(mean(a.map((x) => x * x)))).padStart(4)} % (${a.length})` : '—';
 const sous = (a) => `${(100 * a.filter((x) => x < -0.15).length / a.length).toFixed(1)} %`;
 
+// Ancre sans η_p (couple ancré par des sources sans pression), simulée sur les couples qui publient la pression :
+// chaque balle laissée de côté, énergie de l'ancre des autres balles (lois locales), η_p à froid de l'outil. Par
+// classe (type d'arme × poudre du repli ou à constantes) : ce sont les chiffres du message de pression de la page
+// pour ces couples. Le facteur k ne touche que la classe carabine, repli.
+const sim = {};
+{
+  const L = COEF.local;
+  for (const a0 of Object.values(groups)) {
+    const a = a0.filter((r) => FROID.has(r)), balles = by(a, (r) => r.bid);
+    if (!a.length || Object.keys(balles).length < 2) continue;
+    const x0 = FROID.get(a[0]), cls = `${x0.type}, ${x0.path === 'e_eff' ? 'repli' : 'poudre à constantes'}`;
+    for (const [bid, g] of Object.entries(balles)) {
+      const autres = a.filter((r) => r.bid !== bid); if (autres.length < 3) continue;
+      const lc = mean(autres.map((r) => ln(r.C))), lm = mean(autres.map((r) => ln(r.m)));
+      const E0 = Math.exp(mean(autres.map((r) => ln(r.eeff) - L.delta * (ln(r.C) - lc) - L.beta * (ln(r.m) - lm))));
+      for (const r of g) if (FROID.get(r).lN != null)
+        (sim[cls] = sim[cls] || { repli: FROID.get(r).repli, x: [] }).x.push((E0 * EM.localE(L, r.C, r.m, Math.exp(lc), Math.exp(lm)) / r.eeff) * Math.exp(FROID.get(r).lN));
+    }
+  }
+}
+// Lu par fit_fourchettes.js (plages de pression de la page) : simulation, sans rien afficher ni écrire.
+if (require.main !== module) { module.exports = { sim, k }; return; }
+
 console.log(`k = ${k} (moyenne géométrique sur ${R.length} charges de carabine du repli)`);
 console.log('\nbiais / écart quadratique (n), sans facteur → avec');
 console.log('  carabine, repli : vitesse à froid           ', f(vit(R, 1)), '→', f(vit(R, k)));
@@ -72,24 +95,8 @@ for (const [src, g] of Object.entries(by(R, (x) => x.src)).sort((a, b) => b[1].l
     (g.some((x) => x.lN != null) ? ` | pression à vitesse publiée ${f(pv(g, 1))} → ${f(pv(g, kAutres))}` : ''));
 }
 
-// Ancre sans η_p (couple ancré par des sources sans pression), simulée sur les couples qui publient la pression :
-// chaque balle laissée de côté, énergie de l'ancre des autres balles (lois locales), η_p à froid de l'outil. Par
-// classe (type d'arme × poudre du repli ou à constantes) : ce sont les chiffres du message de pression de la page
-// pour ces couples. Le facteur k ne touche que la classe carabine, repli.
+// Ancre sans η_p simulée (calculée plus haut, `sim`) : chiffres du message de pression de la page pour ces couples.
 {
-  const L = COEF.local, sim = {};
-  for (const a0 of Object.values(groups)) {
-    const a = a0.filter((r) => FROID.has(r)), balles = by(a, (r) => r.bid);
-    if (!a.length || Object.keys(balles).length < 2) continue;
-    const x0 = FROID.get(a[0]), cls = `${x0.type}, ${x0.path === 'e_eff' ? 'repli' : 'poudre à constantes'}`;
-    for (const [bid, g] of Object.entries(balles)) {
-      const autres = a.filter((r) => r.bid !== bid); if (autres.length < 3) continue;
-      const lc = mean(autres.map((r) => ln(r.C))), lm = mean(autres.map((r) => ln(r.m)));
-      const E0 = Math.exp(mean(autres.map((r) => ln(r.eeff) - L.delta * (ln(r.C) - lc) - L.beta * (ln(r.m) - lm))));
-      for (const r of g) if (FROID.get(r).lN != null)
-        (sim[cls] = sim[cls] || { repli: FROID.get(r).repli, x: [] }).x.push((E0 * EM.localE(L, r.C, r.m, Math.exp(lc), Math.exp(lm)) / r.eeff) * Math.exp(FROID.get(r).lN));
-    }
-  }
   const c1 = (a) => `${pct(a.slice().sort((x, y) => x - y)[Math.floor(0.01 * a.length)])} %`;
   console.log('\nAncre sans η_p simulée, balle laissée de côté : pression biais / écart quadratique, sous-estimée de plus de 15 %, centile 1 %');
   for (const [cls, { repli, x }] of Object.entries(sim).sort()) {

@@ -40,6 +40,7 @@ foreach (['energy_model.js', 'velocity_model.js', 'cartridge_diagram.js'] as $js
 .vm-bar { height:8px; border-radius:4px; background:var(--color-border); overflow:hidden; margin:0.25rem 0; }
 .vm-bar > span { display:block; height:100%; background:#9aa0a6; }
 .vm-bar.warn > span { background:#e67e22; } .vm-bar.danger > span { background:#c0392b; }
+.vm-range { display:block; color:var(--color-text-light); overflow-wrap:anywhere; }
 .vm-print { background:var(--color-accent); color:#fff; border:none; border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
 .vm-btn2 { background:var(--color-bg); color:var(--color-text); border:1px solid var(--color-border); border-radius:var(--radius); padding:0.35rem 0.8rem; cursor:pointer; font-size:0.85rem; }
 .vm-btn2:hover { border-color:var(--color-accent); color:var(--color-link); }
@@ -101,7 +102,9 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    2026-10-17, validation corrigée (fit_deux_pentes.js, fenêtre des AUTRES balles de la masse : la balle testée fixait sa
    propre référence) et données ADI rapportées aux poudres Hodgdon (adi_modele_servi.js) : avec données de pression,
    carabine 9,9 %, 1,6 % sous-estimées (plancher de la loi des ancres) ; arme de poing 18,8 %, 12,6 % ; ADI, carabine,
-   couples avec données (125 couples, 954 charges) 12,8 %, 4,2 % sous-estimées ; ceux de la loi à deux pentes 15,3 %, 8,4 %. */ ?>
+   couples avec données (125 couples, 954 charges) 12,8 %, 4,2 % sous-estimées ; ceux de la loi à deux pentes 15,3 %, 8,4 %.
+   2026-10-17, plage probable (scripts/fit_fourchettes.js) : 8 pressions publiées sur 10 ; carabine avec données, élargie à
+   l'écart entre laboratoires mesuré sur ADI (validation croisée par couples : 80,5 à 92,8 % dedans selon la situation). */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
 ~7&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
@@ -112,7 +115,10 @@ publient la pression et la masse de balle, ~19&nbsp;% en arme de poing, ~25&nbsp
 Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur soixante en
 carabine avec données fabricant (une sur vingt-cinq face aux données d'un autre laboratoire, une sur huit en
 arme de poing), une sur cinq sans — une sur trois pour des fabricants dont les données n'ont pas servi au
-calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
+calage —, et de plus de 35&nbsp;% pour une charge sur cent. Sous la pression, la <strong>plage probable</strong> est
+celle où tombent 8 pressions publiées sur 10 dans la même situation, écart d'un laboratoire à l'autre compris
+en carabine (données ADI, hors calage) ; en arme de poing avec données fabricant, aucun autre laboratoire ne
+permet de le vérifier. Une charge
 réellement au-dessus de la limite C.I.P. peut donc s'afficher «&nbsp;sûre&nbsp;». D'une charge à l'autre,
 la pression réelle peut monter plus vite que celle affichée (pente médiane d'une échelle de charge en
 carabine&nbsp;: 2,8 chez Reload Swiss, 2,35 chez Hodgdon, contre 2,2 ici)&nbsp;: au-delà du maximum publié,
@@ -131,7 +137,9 @@ with a “●” combination whose manuals publish the pressure and the bullet w
 uncalibrated (~18% for rifles when the powder is published in cases of similar size). It can be <strong>underestimated</strong>: by more than 15% for one
 rifle load in sixty with manufacturer data (one in twenty-five against another laboratory's data, one in eight
 for handguns), one in five without — one in three for manufacturers whose data were not used in the fit —, and by
-more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
+more than 35% for one load in a hundred. Below the pressure, the <strong>likely range</strong> is where 8 published
+pressures in 10 fall in the same situation, including the gap between laboratories for rifles (ADI data, outside
+the fit); for handguns with manufacturer data, no other laboratory allows checking it. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
 charge to the next, real pressure can rise faster than the displayed one (median slope of a rifle charge
 ladder: 2.8 at Reload Swiss, 2.35 at Hodgdon, against 2.2 here): beyond the published maximum, the gap can
 widen.
@@ -193,7 +201,7 @@ against the manufacturer's official load data.
     <div class="vm-kpi">
       <div><div class="vm-out"><span id="o_v">—</span> <small class="vm-unit" id="u_v" onclick="toggleU('v')">m/s</small></div><small><span class="lang-fr">vitesse</span><span class="lang-en">velocity</span> <span id="o_vtag" class="vm-tag">à froid ~7 %</span></small></div>
       <div><div class="vm-out" id="pbox"><span id="o_p">—</span> <small class="vm-unit" id="u_p" onclick="toggleU('p')">bar</small></div><small><span class="lang-fr">pression</span><span class="lang-en">pressure</span> <span class="vm-tag"><span class="lang-fr">indicative</span><span class="lang-en">indicative</span></span> <span id="o_pcip"></span></small>
-        <div class="vm-bar" id="pbar"><span style="width:0"></span></div></div>
+        <div class="vm-bar" id="pbar"><span style="width:0"></span></div><small id="o_prange" class="vm-range"></small></div>
     </div>
     <div style="position:relative;">
       <div id="plot" style="width:100%;height:440px;cursor:zoom-in;"></div>
@@ -502,6 +510,15 @@ function cvScales(cart,pw,C_gr){
 // en carabine (157 couples, scripts/adi_modele_servi.js), clé ADI → clé Hodgdon : pression 24,1 → 17,2 %, sous-estimées de
 // plus de 15 % 7,5 → 2,7 % ; vitesse 7,3 → 5,2 %. Couples où Hodgdon publie : pression 24,8 → 13,1 %, vitesse 7,3 → 3,1 %.
 function cleDonnees(pk){ return EQUIV[pk]||pk; }
+// Situation de la pression, dans l'ordre du message de précision (calc) : clé du bloc fourchettes (plage probable).
+function situationPression(r,anc,pw,cart){
+  if(r.plafondLimite) return ['plafond_limite',cart.type];
+  if(r.deuxPentes) return ['deux_pentes',cart.type];
+  if(anc && anc.np==null) return ['ancre_sans_pression',cart.type+'|'+((pw.Qex&&pw.Ba)?'c':'r')];
+  if(anc) return ['ancres',cart.type];
+  if(r.froidMax) return ['froid_max',cart.type];
+  return ['froid',cart.type];
+}
 function anchorsFor(ck,pk){ pk=cleDonnees(pk); return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.eeff!=null ? RIFLE : null, fen: STARTM[ck+'|'+pk]||null, ck, pk }; }
 // Exposant de la pression sur la vitesse quand la température change : on la traite comme la
 // variation de charge équivalente, P ∝ v^(2γ/(δ+1)) par les lois locales (2 sans elles). C'est
@@ -821,10 +838,19 @@ function calc(){
   const _be=document.getElementById('toExt'); if(_be){_be.disabled=false; _be.style.opacity='';}
   // --- situations dangereuses (surpression / surremplissage), affichage proéminent ---
   const pcip=cart.pmax_cip_bar||null, pct=pcip?Pmax/pcip*100:null;
+  // Plage probable (bloc fourchettes, 2026-10-17) : 8 pressions publiées sur 10, dans la même situation, entre bas × P
+  // et haut × P. Couleur et % restent sur la pression centrale (choix de Fabian) ; si le haut de la plage dépasse la
+  // limite, un avertissement s'ajoute.
+  const sit=situationPression(r,anc,pw,cart), fp=EnergyModel.fourchettePression(COEF,sit[0],sit[1]);
+  const pctHaut=(pcip&&fp)?Pmax*fp.haut/pcip*100:null;
+  document.getElementById('o_prange').textContent = fp
+    ? T(`plage probable ${frBar(Pmax*fp.bas,U.p.cur).toFixed(0)} – ${frBar(Pmax*fp.haut,U.p.cur).toFixed(0)} ${U.p.cur} (${Math.round(fp.niveau*10)} pressions publiées sur 10)`,`likely range ${frBar(Pmax*fp.bas,U.p.cur).toFixed(0)} – ${frBar(Pmax*fp.haut,U.p.cur).toFixed(0)} ${U.p.cur} (${Math.round(fp.niveau*10)} published pressures in 10)`)
+    : '';
   let lvl='ok'; const al=[];
   if(pct!=null){
     if(pct>100){al.push(T(`Surpression estimée : <strong>${pct.toFixed(0)} %</strong> de la limite ${limSrc(cart)} (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`,`Estimated overpressure: <strong>${pct.toFixed(0)}%</strong> of the ${limSrc(cart)} limit (${frBar(pcip,U.p.cur).toFixed(0)} ${U.p.cur})`));lvl='danger';}
     else if(pct>=85){al.push(T(`Pression proche de la limite ${limSrc(cart)} (${pct.toFixed(0)} %)`,`Pressure close to the ${limSrc(cart)} limit (${pct.toFixed(0)}%)`));lvl='warn';}
+    if(pct<=100 && pctHaut>100){al.push(T(`le haut de la plage probable (${pctHaut.toFixed(0)} %) dépasse la limite ${limSrc(cart)}`,`the top of the likely range (${pctHaut.toFixed(0)}%) exceeds the ${limSrc(cart)} limit`));lvl='warn';}
   }
   // Seuils de remplissage (2026-10-13, scripts/remplissage_publie.py) : au volume nominal de la base,
   // les 20 390 charges MAXIMALES publiées par les fabricants (sans balles en plomb ni copies d'un guide à

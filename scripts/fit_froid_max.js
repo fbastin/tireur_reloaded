@@ -69,7 +69,7 @@ function caler(rows) {   // moindres carrés alternés : a[cartouche], b[poudre]
 
 // --- validation croisée par couples ---------------------------------------------------------------------------
 const pli = {}; paires.forEach((k, i) => { pli[k] = (i * 7919) % 10; });
-const res = [], errC = [];
+const res = [], errC = [], froidTout = [];   // froidTout : modèle à froid seul, toutes charges avec pression
 for (let f = 0; f < 10; f++) {
   const C2 = { ...COEF, froid_max: caler(MX.filter((x) => pli[x.k] !== f)) };
   for (const k of paires.filter((k) => pli[k] === f)) {
@@ -77,16 +77,20 @@ for (let f = 0; f < 10; f++) {
     for (const r of groups[k]) {
       if (!(r.m > 0 && r.C > 0)) continue;
       const cEst = EM.chargeMaxEstimee(C2, ck, pk, ca, pw, r.m);
-      if (cEst == null) continue;                                   // cartouche ou poudre jamais vue ailleurs
-      if (r.max) errC.push({ type: ca.type, e: cEst / r.C - 1 });
+      if (cEst != null && r.max) errC.push({ type: ca.type, e: cEst / r.C - 1 });
       if (!(r.np > 0 && r.P > 0 && r.eeff > 0)) continue;
       const ff = (r.C * GR2G / (pw.pcd / 1000)) / ca.case_vol_cm3, Lc = r.eeff * r.C * G / (r.P * 1e5 * r.np * A_);
       const p = EM.energyAndEtaP(COEF, pw, ff, ln(1 + A_ * Lc / (ca.case_vol_cm3 * 1e-6)), r.m, r.C, null, null, ca.type);
-      const PA = (p.E / r.eeff) * (r.np / p.np), PB = EM.pressionFroidMax(C2, ck, pk, ca, pw, r.m, r.C) / r.P;
+      const PA = (p.E / r.eeff) * (r.np / p.np);
+      froidTout.push({ type: ca.type, e: PA - 1 });
+      if (cEst == null) continue;                                   // cartouche ou poudre jamais vue ailleurs, ou hors domaine
+      const PB = EM.pressionFroidMax(C2, ck, pk, ca, pw, r.m, r.C) / r.P;
       res.push({ type: ca.type, max: r.max, src: r.src, actuel: PA - 1, servi: Math.sqrt(PA * PB) - 1, prudent: Math.max(PA, Math.sqrt(PA * PB)) - 1 });
     }
   }
 }
+// Lu par fit_fourchettes.js (plages de pression de la page) : erreurs de validation, sans rien afficher ni écrire.
+if (require.main !== module) { module.exports = { res, froidTout }; return; }
 const pc = (v) => (100 * v).toFixed(1);
 const st = (e) => e.length ? `${pc(mean(e)).padStart(5)} / ${pc(Math.sqrt(mean(e.map((v) => v * v)))).padStart(4)} % (${String(e.length).padStart(4)}) | sous-estimées >15 % ${pc(e.filter((v) => v < -0.15).length / e.length).padStart(4)} % | centile 1 % ${pc(e.slice().sort((x, y) => x - y)[Math.floor(0.01 * e.length)]).padStart(5)} %` : '—';
 console.log('Validation croisée par couples (le couple testé hors du calage)');

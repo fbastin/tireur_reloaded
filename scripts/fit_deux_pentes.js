@@ -68,7 +68,7 @@ const typeDe = (r) => (CAL[r.k.split('|')[0]] || {}).type;
 const gammaL = +pente(by(avecP, (r) => r.k + '#' + r.bid), (r) => ln(r.C), (r) => ln(r.P)).toFixed(3);
 const gammaPoing = +pente(by(avecP.filter((r) => typeDe(r) === 'handgun'), (r) => r.k + '#' + r.bid), (r) => ln(r.C), (r) => ln(r.P)).toFixed(3);
 const alphaM = +pente(by(avecP.filter((r) => r.max), (r) => r.k + '|' + r.src), (r) => ln(r.m), (r) => ln(r.P)).toFixed(3);
-console.log(`γL = d ln P / d ln C à balle donnée : ${gammaL} (arme de poing seule : ${gammaPoing}) ; αM = d ln P_max / d ln m (couple × source) : ${alphaM}`);
+if (require.main === module) console.log(`γL = d ln P / d ln C à balle donnée : ${gammaL} (arme de poing seule : ${gammaPoing}) ; αM = d ln P_max / d ln m (couple × source) : ${alphaM}`);
 // Plafond tiré de la LIMITE de la cartouche (pmax_cip_bar), pour les couples ancrés sur des données sans pression
 // (2026-10-16) : moyenne géométrique de P max publiée / limite, par type d'arme.
 const limite = (r) => (CAL[r.k.split('|')[0]] || {}).pmax_cip_bar || 0, plafondLimite = {};
@@ -76,7 +76,7 @@ for (const t of TYPES) {
   const v = avecP.filter((r) => r.max && typeDe(r) === t && limite(r) > 0).map((r) => ln(r.P / limite(r)));
   if (v.length) plafondLimite[t] = +Math.exp(mean(v)).toFixed(3);
 }
-console.log(`plafond tiré de la limite (P max publiée / limite, moyenne géométrique) : ${JSON.stringify(plafondLimite)}`);
+if (require.main === module) console.log(`plafond tiré de la limite (P max publiée / limite, moyenne géométrique) : ${JSON.stringify(plafondLimite)}`);
 
 // --- Validation, balle laissée de côté ----------------------------------------------------------------------
 let FEN = null;
@@ -145,12 +145,14 @@ function validerSansNp(D) {
         const PB = EM.pressionPlafondLimite({ deux_pentes: D }, ca.pmax_cip_bar, FEN && EM.fenetreMasse(FEN[k], r.m), r.m, r.C, ca.type);
         const wA = fenetreAutres(a, bid, r.m), PBa = EM.pressionPlafondLimite({ deux_pentes: D }, ca.pmax_cip_bar, wA, r.m, r.C, ca.type);
         res.push({ type: ca.type, max: r.max, actuel: PA - 1, servi: PB != null ? Math.sqrt(PA * PB / r.P) - 1 : PA - 1, comb: PB != null,
-          autres: wA != null, servi2: PBa != null ? Math.sqrt(PA * PBa / r.P) - 1 : PA - 1 });
+          autres: wA != null, comb2: PBa != null, servi2: PBa != null ? Math.sqrt(PA * PBa / r.P) - 1 : PA - 1 });
       }
     }
   }
   return res;
 }
+// Lu par fit_fourchettes.js (plages de pression de la page) : validations, sans rien afficher ni écrire.
+if (require.main !== module) { module.exports = { res: FEN ? valider(D) : null, resSansNp: FEN ? validerSansNp(D) : null, D }; return; }
 let res = null, resSansNp = null;
 if (!FEN) console.log('\nValidation impossible : start_charges.local.json sans fenêtres par masse (relancer build_anchors.js puis build_start_charges.js).');
 else {

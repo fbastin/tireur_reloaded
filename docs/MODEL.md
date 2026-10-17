@@ -675,6 +675,39 @@ The page's messages now quote window (2): two slopes, rifle ~10 %, one load in s
 manufacturer pressure data, one rifle load in sixty under-predicted by more than 15 %, one in twenty-five against
 another laboratory's data.
 
+### 3.11 Pressure ranges (2026-10-17)
+
+The accuracy of the pressure goes from ~10 % (rifle, manufacturer pressure data) to ~31 % (handgun, cold); a single
+figure hides it. Below the pressure, the page now shows the range where 8 published pressures in 10 fall in the same
+situation (`scripts/fit_fourchettes.js`, block `fourchettes`, `EnergyModel.fourchettePression`). The situation is the
+one that picks the accuracy message: two slopes, anchor law, ceiling from the limit, anchor without pressure (rifle or
+handgun, fallback or constants powder), estimated maximum charge, cold. Its range is the 10–90 % quantiles of
+published / computed pressure on the validations above, the tested item never in its own reference.
+
+Those validations hold out a bullet, not a laboratory, and the user, with their components, is always another
+laboratory. On ADI's loads the in-house ranges of the rifle pairs with data held only 42 % (two slopes) to 72 % of the
+pressures, with up to 39 % above the top. Too few pairs are published with pressure by two sources (49 pairs, 135
+loads) to measure that gap in-house. Wherever ADI has 100 loads or more, the served range is therefore the widest of the
+in-house range, the ADI range of the situation and, for rifle pairs with data, an ADI range common to them.
+Cross-validated over ADI pairs (`adi_modele_servi.js --plages`), this keeps 80.5–92.8 % of the pressures inside,
+at most 10.2 % above the top; a common range alone left up to 22 % above.
+
+| situation | in-house range | served | ADI inside / above |
+|---|---|---|---|
+| rifle, two slopes | 0.871–1.061 | 0.821–1.167 | 80.5 %, 9.7 % |
+| rifle, anchor law | 0.919–1.104 | 0.833–1.170 | 84.7 %, 10.6 % |
+| rifle, ceiling from the limit | 0.894–1.102 | 0.833–1.116 | 92.8 %, 2.0 % |
+| rifle, anchor without pressure, fallback | 0.901–1.106 | 0.820–1.116 | 87.1 %, 2.7 % (both powder kinds) |
+| rifle, estimated maximum charge | 0.811–1.150 | 0.763–1.150 | 86.2 %, 3.7 % |
+| rifle, cold | 0.817–1.277 | same | 52.4 %, 20.6 % (63 loads, too few) |
+| handgun, two slopes | 0.833–1.222 | same | no ADI data |
+| handgun, cold | 0.645–1.351 | 0.599–1.541 | 80.0 %, 10.0 % (calibrated on them) |
+
+Colour, percentage of the limit and alerts stay on the central pressure (Fabian's choice); an extra caution appears
+when the top of the range exceeds the limit (the Hodgdon maximum of .308 Win. + Varget, 168 gr, 45 gr: 99 % of the
+limit, top of the range 116 %). Not checked: handgun pairs with data against another laboratory, and rifle cold pairs
+without a powder effect (63 ADI loads, 52 % inside).
+
 ## 4. Model unknowns
 
 The model has exactly **two free (calibrated) unknowns**:

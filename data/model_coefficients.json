@@ -1422,5 +1422,135 @@
     },
     "_doc": "Pression à froid par la charge maximale estimée (scripts/fit_froid_max.js ; EnergyModel.chargeMaxEstimee, pressionFroidMax) : ln(remplissage à la charge maximale) = a[cartouche] + b[poudre] + s[type]·(ln m − lm[cartouche]), sur les maxima publiés des ancres. Coefficients dérivés : la charge maximale estimée n est jamais affichée ni donnée comme charge de rechargement.",
     "_date": "2026-10-17"
+  },
+  "fourchettes": {
+    "niveau": 0.8,
+    "classes": {
+      "ancres": {
+        "handgun": [
+          0.802,
+          1.297,
+          2188
+        ],
+        "rifle": [
+          0.833,
+          1.17,
+          6131
+        ]
+      },
+      "deux_pentes": {
+        "handgun": [
+          0.833,
+          1.222,
+          1406
+        ],
+        "rifle": [
+          0.821,
+          1.167,
+          2074
+        ]
+      },
+      "plafond_limite": {
+        "handgun": [
+          0.767,
+          1.197,
+          1364
+        ],
+        "rifle": [
+          0.833,
+          1.116,
+          2119
+        ]
+      },
+      "ancre_sans_pression": {
+        "handgun|c": [
+          0.632,
+          1.159,
+          330
+        ],
+        "handgun|r": [
+          0.736,
+          1.222,
+          1814
+        ],
+        "rifle|c": [
+          0.765,
+          1.116,
+          1148
+        ],
+        "rifle|r": [
+          0.82,
+          1.116,
+          5046
+        ]
+      },
+      "froid_max": {
+        "handgun": [
+          0.669,
+          1.204,
+          1686
+        ],
+        "rifle": [
+          0.763,
+          1.15,
+          6068
+        ]
+      },
+      "froid": {
+        "handgun": [
+          0.599,
+          1.541,
+          2285
+        ],
+        "rifle": [
+          0.817,
+          1.277,
+          6663
+        ]
+      }
+    },
+    "entre_laboratoires": {
+      "rifle": {
+        "ancres": [
+          0.873,
+          1.17,
+          236
+        ],
+        "deux_pentes": [
+          0.821,
+          1.167,
+          154
+        ],
+        "plafond_limite": [
+          0.856,
+          1.029,
+          153
+        ],
+        "ancre_sans_pression": [
+          0.82,
+          1.064,
+          411
+        ],
+        "froid_max": [
+          0.763,
+          1.101,
+          623
+        ],
+        "commun": [
+          0.833,
+          1.116,
+          954
+        ]
+      },
+      "handgun": {
+        "froid": [
+          0.599,
+          1.541,
+          210
+        ]
+      }
+    },
+    "_doc": "Plages de pression de la page (scripts/fit_fourchettes.js ; EnergyModel.fourchettePression) : par situation (deux_pentes, ancres, plafond_limite, ancre_sans_pression par type|r ou type|c, froid_max, froid) et type d arme, [bas, haut, n] : quantiles de P publiée / P calculée qui encadrent la part « niveau » des charges publiées de la validation (l élément testé jamais dans sa référence). Multiplicateurs de la pression affichée. Carabine, situations avec données : la plus large de la plage interne et des plages entre_laboratoires (pressions ADI, autre laboratoire hors calage : commune et par situation).",
+    "_date": "2026-10-17"
   }
 }

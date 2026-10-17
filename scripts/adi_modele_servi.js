@@ -118,6 +118,11 @@ function page(x) {
 const pc = (v) => (100 * v).toFixed(1);
 const st = (e) => `${pc(mean(e)).padStart(5)} / ${pc(Math.sqrt(mean(e.map((v) => v * v)))).padStart(4)} % | sous-estimées >15 % ${pc(e.filter((v) => v < -0.15).length / e.length).padStart(4)} % (une sur ${String(Math.round(e.length / Math.max(1, e.filter((v) => v < -0.15).length))).padStart(3)}) | centile 1 % ${pc(e.slice().sort((a, b) => a - b)[Math.floor(0.01 * e.length)]).padStart(5)} %`;
 const R = L.map((x) => { const y = page(x); return { ...x, ...y, e: y.P / x.Ppub - 1, e0: y.P0 / x.Ppub - 1, ev: y.v * 3.28084 / x.vPub - 1 }; });
+// situation de la page (bloc fourchettes) pour chaque classe de ce script
+const SIT = { 'deux pentes': 'deux_pentes', 'plafond déduit de la limite': 'plafond_limite', 'loi des ancres': 'ancres',
+  'ancre sans pression ni fenêtre': 'ancre_sans_pression', 'à froid, charge maximale estimée': 'froid_max', 'à froid, hors domaine': 'froid' };
+// Lu par fit_fourchettes.js (écart d'un laboratoire à l'autre) : charges et calcul de la page, sans rien afficher.
+if (require.main !== module) { module.exports = { R, SIT }; return; }
 console.log(`ADI, lignes en psi : ${n.lues} lues, ${n.inconnues} cartouche ou poudre inconnue, ${n.doublons} communes au guide et aux données en ligne,`);
 console.log(`  ${n.copies} copies de lignes Hodgdon et ${n.subsoniques} charges subsoniques de carabine écartées ; restent ${L.length} (${L.filter((x) => x.eq).length} sur une poudre rapportée à son équivalent Hodgdon)`);
 console.log('\nPression servie / publiée — biais / écart quadratique ; avant les lois des 16-17 octobre (loi des ancres ou modèle à froid) → servie');
@@ -139,6 +144,19 @@ console.log('\nPoudres ADI de la table, clé ADI (page avant le 2026-10-17) → 
 for (const [n, f] of [['carabine', (x) => x.ca.type === 'rifle'], ['  couples avec données Hodgdon', (x) => x.ca.type === 'rifle' && x.anc], ['  couples sans données', (x) => x.ca.type === 'rifle' && !x.anc]]) {
   const g = eqR.filter(f); if (!g.length) continue;
   console.log(`  ${n} (${couples(g)} couples, ${g.length} charges)\n    pression ${st(g.map((x) => x.eA))}\n          → ${st(g.map((x) => x.e))}\n    vitesse  ${st(g.map((x) => x.evA))}\n          → ${st(g.map((x) => x.ev))}`);
+}
+// Plages de la page (bloc fourchettes, fit_fourchettes.js) : part des pressions ADI dans la plage annoncée (attendu :
+// le niveau du bloc, 80 %), au-dessus de son haut (pression sous-estimée) et sous son bas.
+const dansPlage = R.map((x) => { const s = SIT[x.cls], cle = s === 'ancre_sans_pression' ? x.ca.type + '|' + ((x.pw.Qex && x.pw.Ba) ? 'c' : 'r') : x.ca.type;
+  const f = EM.fourchettePression(COEF, s, cle); return f && { ...x, s, dedans: x.Ppub >= x.P * f.bas && x.Ppub <= x.P * f.haut, dessus: x.Ppub > x.P * f.haut }; }).filter(Boolean);
+if (dansPlage.length) {
+  console.log(`\nPlages de pression de la page (niveau ${COEF.fourchettes.niveau}) : part des pressions ADI dedans, au-dessus du haut`);
+  for (const t of ['rifle', 'handgun']) for (const s of [...new Set(dansPlage.map((x) => x.s))]) {
+    const g = dansPlage.filter((x) => x.ca.type === t && x.s === s); if (g.length < 20) continue;
+    console.log(`  ${(t === 'rifle' ? 'carabine' : 'arme de poing') + ', ' + s}`.padEnd(42) + ` n ${String(g.length).padStart(4)}  dedans ${pc(g.filter((x) => x.dedans).length / g.length).padStart(5)} %, au-dessus ${pc(g.filter((x) => x.dessus).length / g.length).padStart(5)} %`);
+  }
+  const g = dansPlage.filter((x) => x.ca.type === 'rifle');
+  console.log(`  carabine, toutes situations`.padEnd(42) + ` n ${String(g.length).padStart(4)}  dedans ${pc(g.filter((x) => x.dedans).length / g.length).padStart(5)} %, au-dessus ${pc(g.filter((x) => x.dessus).length / g.length).padStart(5)} %`);
 }
 const vit = R.filter((x) => x.eq);
 console.log(`\nVitesse au canon ADI, poudres rapportées à Hodgdon : ${st(vit.map((x) => x.ev))} (n ${vit.length})`);
@@ -164,4 +182,36 @@ if (process.argv.includes('--variantes')) {   // couples de la loi à deux pente
     for (const [n, g] of [['A', (x) => x.P0], ['B', (x) => x.P2], ['√(A·B)', (x) => Math.sqrt(x.P0 * x.P2)], ['max(A, B)', (x) => Math.max(x.P0, x.P2)]])
       console.log(`    ${n.padEnd(10)} ${st(s.map((x) => g(x) / Pp(x) - 1))} (n ${s.length})`);
   }
+}
+if (process.argv.includes('--plages')) {   // plages calées sur ADI (autre laboratoire), validation croisée par couples
+  const qu = (a, q) => { const s = a.slice().sort((u, v) => u - v); return s[Math.min(s.length - 1, Math.floor(q * s.length))]; };
+  const AVEC = ['deux_pentes', 'ancres', 'plafond_limite', 'ancre_sans_pression'];
+  const g = dansPlage.filter((x) => x.ca.type === 'rifle' && AVEC.includes(x.s)), r = (x) => x.Ppub / x.P;
+  console.log(`\nCarabine, couples avec données, rapport P ADI / P calculée : quantiles 10 % ${qu(g.map(r), 0.1).toFixed(3)}, 90 % ${qu(g.map(r), 0.9).toFixed(3)} (n ${g.length})`);
+  for (const s of AVEC) { const h = g.filter((x) => x.s === s); if (h.length >= 20) console.log(`  ${s.padEnd(22)} n ${String(h.length).padStart(4)}  ${qu(h.map(r), 0.1).toFixed(3)} – ${qu(h.map(r), 0.9).toFixed(3)}`); }
+  // validation croisée à 5 groupes de couples : plage commune calée sur 4, couverture sur le 5e
+  const cps = [...new Set(g.map((x) => x.ck + '|' + x.pk))], grp = Object.fromEntries(cps.map((c, i) => [c, (i * 7919) % 5]));
+  let dedans = 0, dessus = 0;
+  for (let f = 0; f < 5; f++) {
+    const cal = g.filter((x) => grp[x.ck + '|' + x.pk] !== f).map(r), b = qu(cal, 0.1), h = qu(cal, 0.9);
+    for (const x of g.filter((y) => grp[y.ck + '|' + y.pk] === f)) { dedans += r(x) >= b && r(x) <= h; dessus += r(x) > h; }
+  }
+  console.log(`  plage commune, validation croisée par couples (${cps.length} couples) : dedans ${pc(dedans / g.length)} %, au-dessus ${pc(dessus / g.length)} %`);
+  // plage par situation : la plus large de la plage interne (bloc servi), de la plage commune et de celle de la
+  // situation, ces deux dernières calées sur les 4 autres groupes de couples
+  const int = (x) => COEF.fourchettes.classes[x.s][x.s === 'ancre_sans_pression' ? 'rifle|' + ((x.pw.Qex && x.pw.Ba) ? 'c' : 'r') : 'rifle'];
+  const cov = {};
+  for (let f = 0; f < 5; f++) {
+    const cal = g.filter((x) => grp[x.ck + '|' + x.pk] !== f), cb = qu(cal.map(r), 0.1), ch = qu(cal.map(r), 0.9);
+    for (const s of AVEC) {
+      const cs = cal.filter((x) => x.s === s).map(r), sb = cs.length >= 20 ? qu(cs, 0.1) : cb, sh = cs.length >= 20 ? qu(cs, 0.9) : ch;
+      for (const x of g.filter((y) => grp[y.ck + '|' + y.pk] === f && y.s === s)) {
+        const b = Math.min(int(x)[0], cb, sb), h = Math.max(int(x)[1], ch, sh), c = (cov[s] = cov[s] || [0, 0, 0]);
+        c[0]++; c[1] += r(x) >= b && r(x) <= h; c[2] += r(x) > h;
+      }
+    }
+  }
+  for (const [s, [n, d, h]] of Object.entries(cov)) console.log(`  par situation, ${s.padEnd(20)} n ${String(n).padStart(4)} : dedans ${pc(d / n)} %, au-dessus ${pc(h / n)} %`);
+  const T3 = Object.values(cov).reduce((a, c) => [a[0] + c[0], a[1] + c[1], a[2] + c[2]], [0, 0, 0]);
+  console.log(`  par situation, ensemble : dedans ${pc(T3[1] / T3[0])} %, au-dessus ${pc(T3[2] / T3[0])} %`);
 }
