@@ -577,6 +577,37 @@ handgun ~20 %, one in twelve; anchor law with pressure, rifle ~9 %, one in thirt
 ~21 %, one in five. Until 2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average
 set by the rifles.
 
+### 3.9 Cold pressure with an estimated maximum charge (2026-10-16)
+
+Without any manufacturer data for the pair, the tool does not know its maximum charge; cold pressure was at 25 % RMS,
+one load in five under-predicted by more than 15 %. The cartridge has published maxima with other powders, the powder
+with other cartridges. `scripts/fit_froid_max.js` fits, on the published maximum loads of the anchors,
+
+$$\ln \phi_{\max} = a_c + b_p + s_{\text{type}}\,(\ln m - \overline{\ln m}_c)$$
+
+(alternating least squares; block `froid_max`: `a`, `b`, `s`, `lm`, and `dom`, the case-volume range of the cartridges
+of the same weapon type where the powder is published). `EnergyModel.chargeMaxEstimee` turns it into a maximum charge,
+**never displayed**: it is not load data, only the reference of `pressionFroidMax`, the two-slope law with the ceiling
+k × limit of § 3.8.
+
+Validated by 10-fold cross-validation over *pairs* (the tested pair never in the fit): maximum charge to 5.4 % (rifles)
+and 11.8 % (handguns). Two safeguards come from a case the validation cannot see, since it only holds published, hence
+suitable, pairs. Accurate 1680, published in small rifle cases and in large straight handgun calibres (.460 S&W), was
+estimated at 45 gr in the .308, which would have *lowered* the cold pressure from 2 535 to 2 011 bar.
+
+- **Domain:** the case volume must lie within those of the same weapon type where the powder is published. This covers
+  5 887 of the 18 993 cold pairs whose powder has an effect.
+- **One-sided:** the page takes the geometric mean with the cold model only to *raise* it, `max(A, √(A·B))`.
+
+| cold, in the domain, bullet held out | cold model | geometric mean | served (one-sided) |
+|---|---|---|---|
+| rifles (6 068) | +0.1 / 19.2 %, 19.1 % under | +0.8 / 14.8 %, 7.5 % | +4.0 / 17.8 %, 6.6 % |
+| handguns (1 686) | +8.8 / 31.9 %, 23.0 % | +6.4 / 22.8 %, 14.4 % | +14.2 / 31.4 %, 11.8 % |
+
+Shooters World and ADI powders have no effect (neither enters the anchors): the independent laboratories stay on the
+cold model, and no out-of-sample laboratory figure exists for this law. Messages: rifle ~18 %, one load in fifteen;
+handgun ~31 %, one in eight.
+
 ## 4. Model unknowns
 
 The model has exactly **two free (calibrated) unknowns**:

@@ -148,6 +148,31 @@ const EnergyModel = {
     return k * plim * Math.pow(C_gr / cRef, this.penteDeuxPentes(coef, type)) * (mono && T.mono > 0 ? T.mono : 1);
   },
 
+  /**
+   * Charge MAXIMALE ESTIMÉE (gr) d'un couple sans données fabricant (bloc froid_max, scripts/fit_froid_max.js,
+   * 2026-10-16) : ln(remplissage à la charge maximale) = a[cartouche] + b[poudre] + s[type]·(ln m − lm[cartouche]),
+   * effets calés sur les maxima publiés des autres couples. null si la cartouche ou la poudre n'a pas d'effet, s'il manque
+   * la densité ou le volume, ou si le volume d'étui sort de ceux où la poudre est publiée pour ce type d'arme (dom :
+   * l'effet poudre est additif, il ignore qu'une poudre rapide plafonne plus tôt dans un grand étui). NE JAMAIS L'AFFICHER : ce n'est pas une donnée de rechargement, seulement le point
+   * de référence de la pression à froid (pressionFroidMax).
+   */
+  chargeMaxEstimee(coef, ck, pk, ca, pw, m_gr) {
+    const F = coef.froid_max;
+    if (!(F && F.a && F.a[ck] != null && F.b && F.b[pk] != null && F.lm && F.lm[ck] != null && ca && pw && pw.pcd > 0 && ca.case_vol_cm3 > 0)) return null;
+    const s = (F.s || {})[ca.type]; if (s == null) return null;
+    // domaine : volume d'étui compris entre ceux des cartouches où la poudre a des maxima publiés (interpolation seule)
+    const dom = F.dom && F.dom[pk + '|' + ca.type]; if (!dom || ca.case_vol_cm3 < dom[0] || ca.case_vol_cm3 > dom[1]) return null;
+    const fill = Math.exp(F.a[ck] + F.b[pk] + s * (Math.log(m_gr) - F.lm[ck]));
+    return fill * ca.case_vol_cm3 * (pw.pcd / 1000) / this.G2KG / 1000;
+  },
+
+  /** Pression à froid rapportée à la charge maximale estimée, plafond k × limite (pressionPlafondLimite) ; null sinon. La
+   *  page en prend la moyenne géométrique avec le modèle à froid, sans jamais descendre sous lui (fit_froid_max.js). */
+  pressionFroidMax(coef, ck, pk, ca, pw, m_gr, C_gr, mono) {
+    const c = this.chargeMaxEstimee(coef, ck, pk, ca, pw, m_gr);
+    return c > 0 ? this.pressionPlafondLimite(coef, ca.pmax_cip_bar, { m: m_gr, cmax: c, cmoy: c }, m_gr, C_gr, ca.type, mono) : null;
+  },
+
   /** Pente γL de la loi à deux pentes pour ce type d'arme (celle du bloc commun à défaut). */
   penteDeuxPentes(coef, type) {
     const D = coef.deux_pentes || {};

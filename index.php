@@ -94,13 +94,17 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    froid 7,0 % (32 609) ; pression à froid inchangée, celle tirée d'une vitesse connue +6 %.
    2026-10-16, loi à deux pentes (scripts/fit_deux_pentes.js), carabine (plus petit maximum de la masse) et arme de poing
    (maximum moyen) : pression avec données fabricant 9,3 %, 2,1 % sous-estimées de plus de 15 %, centile 1 % −23 % ;
-   carabine 7,9 % et 0,6 %, arme de poing 12,5 % et 6,3 % (20,8 % et 19,6 % avant). */ ?>
+   carabine 7,9 % et 0,6 %, arme de poing 12,5 % et 6,3 % (20,8 % et 19,6 % avant).
+   2026-10-16, à froid avec charge maximale estimée (scripts/fit_froid_max.js, validation croisée par couples, variante
+   prudente, domaine de la poudre) : carabine 19,2 → 17,8 %, 19,1 → 6,6 % sous-estimées ; arme de poing 31,9 → 31,4 %,
+   23,0 → 11,8 %. Shooters World et ADI (poudres sans effet estimé) restent sur le modèle à froid : « une sur trois » y tient. */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
 ~7&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
 fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
 qu'indicative&nbsp;: ~9&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;» dont les guides publient la
-pression et la masse de balle (~8&nbsp;% en carabine, ~13&nbsp;% en arme de poing), ~25&nbsp;% à froid.
+pression et la masse de balle (~8&nbsp;% en carabine, ~13&nbsp;% en arme de poing), ~25&nbsp;% à froid
+(~18&nbsp;% en carabine quand la poudre est publiée dans des étuis de taille voisine).
 Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur cinquante avec
 données fabricant (une sur seize en arme de poing), une sur cinq sans — une sur trois pour des fabricants
 dont les données n'ont pas servi au calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
@@ -119,7 +123,7 @@ les données officielles du fabricant.
 ~3% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
 measured velocity. <strong>Pressure</strong> is for indication only: ~9% root-mean-square error for a
 “●” combination whose manuals publish the pressure and the bullet weight (~8% for rifles, ~13% for
-handguns), ~25% uncalibrated. It can be <strong>underestimated</strong>: by more than 15% for one
+handguns), ~25% uncalibrated (~18% for rifles when the powder is published in cases of similar size). It can be <strong>underestimated</strong>: by more than 15% for one
 load in fifty with manufacturer data (one in sixteen for handguns), one in five without — one in three for
 manufacturers whose data were not used in the fit —, and by more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
 charge to the next, real pressure can rise faster than the displayed one (median slope of a rifle charge
@@ -485,7 +489,7 @@ function cvScales(cart,pw,C_gr){
 // Ancres du couple : celle du fabricant (énergie et η_p à un point de référence C, m) et, si
 // l'utilisateur l'a demandé, celle de sa carabine (énergie seule, tirée de ses vitesses).
 // fen : fenêtres par masse du couple (carabines à plafond de pression, loi à deux pentes).
-function anchorsFor(ck,pk){ return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.eeff!=null ? RIFLE : null, fen: STARTM[ck+'|'+pk]||null }; }
+function anchorsFor(ck,pk){ return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.eeff!=null ? RIFLE : null, fen: STARTM[ck+'|'+pk]||null, ck, pk }; }
 // Exposant de la pression sur la vitesse quand la température change : on la traite comme la
 // variation de charge équivalente, P ∝ v^(2γ/(δ+1)) par les lois locales (2 sans elles). C'est
 // une HYPOTHÈSE, faute de mesures de pression en température dans nos données.
@@ -556,7 +560,24 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
       eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax; plafondLimite=true;
     }
   }
-  const loi=deuxPentes?true:plafondLimite?'mix':false;
+  // Couple SANS données fabricant (2026-10-16, fit_froid_max.js) : moyenne géométrique du modèle à froid et de la loi
+  // plafonnée à k × la limite, rapportée à une charge maximale ESTIMÉE (effets cartouche et poudre sur les maxima publiés
+  // des autres couples), qui ne peut que RELEVER le modèle à froid : un couple sans données est souvent une association
+  // que personne ne publie, où une charge estimée trop haute ferait baisser la pression. Validation croisée par couples :
+  // carabine 19,2 → 17,8 %, sous-estimées de plus de 15 % 19,1 → 6,6 % ; arme de poing 31,9 → 31,4 %, 23,0 → 11,8 %.
+  // La charge maximale estimée n'est JAMAIS affichée.
+  // froidMax : couple dans le domaine (message de précision) ; froidRel : pression effectivement relevée (calcul, note).
+  let froidMax=false, froidRel=false;
+  if(!deuxPentes && !plafondLimite && !an.anc && an.ck){
+    const PF=EnergyModel.pressionFroidMax(COEF,an.ck,an.pk,cart,pw,m_gr,C_gr,!!opt.mono);
+    if(PF!=null){
+      froidMax=true;
+      const rV=(CVOL>0&&cart.case_vol_cm3>0&&COEF.local)?cart.case_vol_cm3/CVOL:1;
+      const Pm=Math.sqrt(Pmax*PF*Math.pow(rV,EnergyModel.penteDeuxPentes(COEF,cart.type)));
+      if(Pm>Pmax){ Pmax=Pm; eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax; froidRel=true; }
+    }
+  }
+  const loi=deuxPentes?true:(plafondLimite||froidRel)?'mix':false;
   // Température (réf. 21 °C), sur une vitesse PRÉDITE seulement : vitesse par la sensibilité de
   // Litz, pression par kTempP(). Jusqu'au 2026-10-10, la pression restait celle de 21 °C.
   let tempApplied=false;
@@ -564,7 +585,7 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
     const vT=VelocityModel.tempCorrect(vUser,opt.Tc-21);
     Pmax*=Math.pow(vT/vUser,kTempP(loi,cart.type)); vUser=vT; tempApplied=true;
   }
-  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied,deuxPentes,plafondLimite,loi,win:(deuxPentes||plafondLimite)?win:null};
+  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied,deuxPentes,plafondLimite,froidMax,froidRel,loi,win:(deuxPentes||plafondLimite)?win:null};
 }
 // --- unité de masse du ladder (gr <-> g) ---
 const ladToGr=(v)=> LADUNIT==='g' ? v/GR_G : v;           // saisie (LADUNIT) -> grains
@@ -834,6 +855,9 @@ function calc(){
   // Couple sans pression publiée, plafond tiré de la limite (simulation de fit_deux_pentes.js) : carabine 10,4 %, 0,3 %
   // des charges sous-estimées de plus de 15 % ; arme de poing 19,7 %, 8,2 %.
   const PLIM=poing?[20,'douze','twelve']:[10,'trois cents','three hundred'];
+  // À froid, charge maximale estimée, variante prudente (fit_froid_max.js, validation croisée) : carabine 17,8 %, 6,6 % ;
+  // arme de poing 31,4 %, 11,8 %.
+  const PFRO=poing?[31,'huit','eight']:[18,'quinze','fifteen'];
   const cRefLim=r.win?(poing?r.win.cmoy:r.win.cmax):null;
   let w = r.plafondLimite
     ? T(`Pression indicative (~${PLIM[0]} % d'écart quadratique : données fabricant de ce couple sans pression publiée ; pression moyenne entre celle de l'ancre et un plafond déduit de la limite ${limSrc(cart)} de la cartouche, rapporté à la charge maximale ${poing?'moyenne ':''}publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(cRefLim,'charge')} ; sous-estimée de plus de 15 % pour une charge sur ${PLIM[1]}) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~${PLIM[0]}% RMS error: manufacturer data for this combination give no pressure; mean of the anchor's pressure and a ceiling derived from the cartridge's ${limSrc(cart)} limit, relative to the ${poing?'mean ':''}published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(cRefLim,'charge')}; underestimated by more than 15% for one load in ${PLIM[2]}) — never validate a load on this basis.`)
@@ -849,6 +873,8 @@ function calc(){
     ? (cart.type==='handgun'
       ? T('Pression indicative (~21 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq) — ne jamais valider une charge sur cette base.','Pressure for indication only (~21% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in five) — never validate a load on this basis.')
       : T('Pression indicative (~9 % d\'écart quadratique avec les données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur trente) — ne jamais valider une charge sur cette base.','Pressure for indication only (~9% RMS error with the manufacturer data for this combination; underestimated by more than 15% for one load in thirty) — never validate a load on this basis.'))
+    : r.froidMax
+    ? T(`Pression indicative (~${PFRO[0]} % d'écart quadratique sans données fabricant pour ce couple ; modèle à froid, relevé au besoin vers un plafond déduit de la limite ${limSrc(cart)} de la cartouche, rapporté à une charge maximale estimée d'après les autres poudres de cette cartouche et les autres cartouches de cette poudre, jamais une charge publiée ; sous-estimée de plus de 15 % pour une charge sur ${PFRO[1]}) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~${PFRO[0]}% RMS error without manufacturer data for this combination; uncalibrated model, raised when needed toward a ceiling derived from the cartridge's ${limSrc(cart)} limit, relative to a maximum charge estimated from the other powders of this cartridge and the other cartridges of this powder, never a published charge; underestimated by more than 15% for one load in ${PFRO[2]}) — never validate a load on this basis.`)
     : T('Pression indicative (~25 % d\'écart quadratique sans données fabricant de pression pour ce couple ; sous-estimée de plus de 15 % pour une charge sur cinq, jusqu\'à une sur trois selon le fabricant) — ne jamais valider une charge sur cette base.','Pressure for indication only (~25% RMS error without manufacturer pressure data for this combination; underestimated by more than 15% for one load in five, up to one in three depending on the manufacturer) — never validate a load on this basis.');
   // 16 des 1 700 charges Reload Swiss qui calent le modèle dépassent 110 % (rs_dataset, 2026-10-13).
   if(hasPcd && fill>110) w=T('⚠ Remplissage > 110 % : presque aucune des charges qui calent le modèle ne va si loin, estimation peu fiable.','⚠ Load density > 110%: almost none of the loads the model is fitted on go that far, unreliable estimate.');
@@ -869,7 +895,12 @@ function calc(){
     const D2=(COEF.deux_pentes||{})[cart.type]||{}, pD=nf(((D2.mono||1)-1)*100,1);
     // plafond tiré de la limite : moyenne géométrique des deux facteurs (ancre : E × M.E, η_p ÷ froidP ; plafond : D2.mono)
     const fLim=Math.sqrt((MONO.E||1)*(MONO.froidP||1)*(D2.mono||1)), pL=nf((fLim-1)*100,1);
-    w=(r.plafondLimite
+    // à froid avec charge maximale estimée : η_p ÷ froidP (modèle à froid) et D2.mono (plafond), en moyenne géométrique
+    const fFro=Math.sqrt((MONO.froidP||1)*(D2.mono||1)), pF2=nf((fFro-1)*100,1);
+    if(r.froidRel) w=(fFro>1.005
+        ? T('Balle monolithique : pression majorée de '+pF2+' % (facteurs mesurés sur les guides Hodgdon et Western, arme de poing). ','Monolithic bullet: pressure raised by '+pF2+'% (factors measured on the Hodgdon and Western manuals, handguns). ')
+        : T('Balle monolithique : pas de correction sans données fabricant de pression pour ce couple (aucun écart net mesuré dans ce cas en carabine). ','Monolithic bullet: no correction without manufacturer pressure data for this combination (no clear gap measured in this case for rifles). '))+w;
+    else w=(r.plafondLimite
       ? (fLim>1.005
         ? T('Balle monolithique : pression majorée de '+pL+' % (facteurs mesurés sur les guides Hodgdon et Western, arme de poing). ','Monolithic bullet: pressure raised by '+pL+'% (factors measured on the Hodgdon and Western manuals, handguns). ')
         : T('Balle monolithique : pas de correction notable ici (aucun écart net mesuré sans données fabricant de pression, en carabine). ','Monolithic bullet: no notable correction here (no clear gap measured without manufacturer pressure data, for rifles). '))

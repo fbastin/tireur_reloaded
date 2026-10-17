@@ -101,5 +101,1325 @@
     "plafond_min": 2,
     "_doc": "Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cref)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cref dans les fenêtres par masse de start_charges.local.json : plus petit maximum (ref min, cmax) ou moyenne géométrique des maxima (ref moy, cmoy). Par type : gammaL propre s il est donné (sinon le commun), mono = facteur d une balle monolithique déclarée. plafond_limite (par type) : P max publiée / limite de la cartouche, plafond de la même loi pour un couple ancré sans pression (EnergyModel.pressionPlafondLimite, en moyenne géométrique avec la méthode de l ancre). Types listés seulement ; ailleurs, la loi des ancres.",
     "_date": "2026-10-16"
+  },
+  "froid_max": {
+    "a": {
+      "22 Hornet": -0.0252,
+      "222 Rem.": 0.0044,
+      "22-250 Rem.": -0.1513,
+      "223 Rem.": -0.0555,
+      "243 Win.": -0.2138,
+      "260 Rem.": -0.1561,
+      "270 Win.": -0.259,
+      "270 WSM": -0.2323,
+      "30 R Blaser": -0.2127,
+      "300 AAC BLK": 0.0506,
+      "300 PRC": -0.3063,
+      "300 Win. Mag.": -0.2361,
+      "300 WSM": -0.1872,
+      "30-06 Spring.": -0.1468,
+      "303 British": -0.0679,
+      "30-30 Win.": -0.0582,
+      "308 Win.": -0.0011,
+      "338 Lapua Mag.": -0.2847,
+      "338 Norma Mag.": -0.2988,
+      "338 Win. Mag.": -0.1448,
+      "375 H&H Mag.": -0.0914,
+      "444 Marlin": 0.1149,
+      "45 - 70 Govt.": -0.0899,
+      "5.6 x 50 R Mag.": -0.0383,
+      "6 Norma BR": -0.0391,
+      "6 XC": -0.1788,
+      "6.5 x 47 Lapua": -0.1532,
+      "6.5 x 55 SE": -0.2442,
+      "6.5 Creedmoor": -0.172,
+      "6.5 PRC": -0.2988,
+      "7 x 57": -0.1809,
+      "7 x 64": -0.1695,
+      "7.5 x 55 Swiss": -0.1889,
+      "7.62 x 39": 0.0682,
+      "7.62 x 54 R": -0.1084,
+      "7 -08 Rem.": -0.1379,
+      "7 Rem. Mag.": -0.3552,
+      "8 x 57 IRS": -0.1225,
+      "8 x 57 IS": -0.0749,
+      "8 x 68 S": -0.1949,
+      "9.3 x 62": -0.0362,
+      "9.3 x 64 Brenneke": -0.1109,
+      "9.3 x 74 R": -0.181,
+      "10.3 x 60 R": 0.0271,
+      "357 Magnum": 0.0651,
+      "38 Special": -0.1618,
+      "38 Super Auto": 0.1853,
+      "40 S&W": 0.4266,
+      "44 Rem. Mag.": 0.1063,
+      "45 ACP (Auto)": -0.0195,
+      "45 Colt": -0.1886,
+      "9 mm Browning court": 0.3342,
+      "9 mm Luger": 0.2995,
+      "10 mm Auto": 0.2594,
+      "357 SIG": 0.2649,
+      "357 Maximum": -0.0542,
+      "41 Rem. Mag.": 0.0923,
+      "454 Casull": 0.0778,
+      "460 S&W": 0.0257,
+      "475 Linebaugh": -0.3895,
+      "204 Ruger": 0.0214,
+      "222 Rem. Mag.": 0.0472,
+      "219 Zipper": -0.1485,
+      "224 Valkyrie": -0.0716,
+      "22 Nosler": -0.0772,
+      "220 Swift": -0.1936,
+      "223 WSSM": -0.11,
+      "6mm PPC": 0.0078,
+      "6 mm Creedmoor": -0.1635,
+      "6 mm Remington": -0.163,
+      "240 Weatherby Magnum": -0.1798,
+      "250 Savage": -0.1627,
+      "257 Roberts": -0.2195,
+      "25-06 Remington": -0.3028,
+      "257 Wby. Mag.": -0.3519,
+      "6.5 Grendel": 0.0094,
+      "6.5-284 Norma": -0.2441,
+      "270 Weatherby Magnum": -0.3009,
+      "284 Winchester": -0.2042,
+      "280 Remington": -0.2969,
+      "7mm WSM": -0.2801,
+      "30 Carbine": 0.0787,
+      "300 Savage": -0.0032,
+      "308 Marlin Express": -0.0287,
+      "30 T/C": 0.0046,
+      "300 RCM": -0.0981,
+      "300 Weatherby Magnum": -0.3059,
+      "300 Norma Magnum": -0.3269,
+      "300 Rem. Ultra Mag.": -0.4256,
+      "338-06": -0.1819,
+      "35 Remington": -0.3782,
+      "375 Ruger": -0.139,
+      "458 SOCOM": -0.0065,
+      "458 Winchester Magnum": 0.012,
+      "22 Creedmoor": -0.2386,
+      "6mm ARC": -0.1157,
+      "6.8 Western": -0.2402,
+      "7mm PRC": -0.3529,
+      "7mm Weatherby Magnum": -0.2994,
+      "221 Remington Fireball": -0.0466,
+      "22 PPC-USA": 0.0025,
+      "7 x 57 R": -0.1607,
+      "7 x 65 R": -0.1858,
+      "7mm RUM": -0.4026,
+      "300 Lapua Magnum": -0.2915,
+      "416 Rigby": -0.2739,
+      "7mm BR Remington": -0.073,
+      "9 x 23 Winchester": 0.2869,
+      "45 Winchester Magnum": 0.0121,
+      "50 AE": -0.3611,
+      "6x47 Lapua": -0.0968,
+      "243 Ackley Improved": -0.1895
+    },
+    "b": {
+      "RS30": -0.0473,
+      "RS36": -0.1108,
+      "RS40": -0.034,
+      "RS50": 0.0333,
+      "RS52": 0.0416,
+      "RS60": 0.0955,
+      "RS14": -0.01,
+      "RS62": 0.1515,
+      "RS70": 0.1768,
+      "RS24": -0.3433,
+      "RS76": 0.2822,
+      "RS80": 0.3064,
+      "RS12": -0.5396,
+      "RS20": -0.3036,
+      "Ramshot Competition": -0.5519,
+      "Ramshot Zip": -0.7294,
+      "Accurate Solo 1000": -0.3734,
+      "Accurate No. 2": -0.6047,
+      "Ramshot Silhouette": -0.507,
+      "Ramshot True Blue": -0.6727,
+      "Accurate No. 5": -0.6161,
+      "Accurate No. 7": -0.4577,
+      "Accurate No.9": -0.2773,
+      "Accurate TCM": -0.2599,
+      "Accurate 4100": -0.1541,
+      "Ramshot Enforcer": -0.1512,
+      "Accurate 5744": -0.0778,
+      "Accurate 1680": -0.0019,
+      "Accurate LT-32": -0.055,
+      "Accurate 2015": 0.0082,
+      "Ramshot X-Terminator": -0.0548,
+      "Accurate 2230": -0.0649,
+      "Accurate 2460": -0.0493,
+      "Ramshot TAC": -0.0264,
+      "Accurate 2495": 0.0401,
+      "Accurate 2520": 0.0179,
+      "Accurate LT-30": -0.1785,
+      "Accurate 2200": -0.0495,
+      "Accurate 2700": 0.1263,
+      "Accurate 4064": 0.1081,
+      "Ramshot Big Game": 0.0996,
+      "Ramshot Hunter": 0.1929,
+      "Accurate 4350": 0.2032,
+      "Accurate Magpro": 0.2864,
+      "Ramshot Magnum": 0.2814,
+      "Ramshot LRT": 0.3696,
+      "IMR 8208 XBR": 0.0165,
+      "Hodgdon H4895": -0.0222,
+      "Hodgdon H335": -0.0672,
+      "Hodgdon Benchmark": 0.0196,
+      "Hodgdon H322": -0.0723,
+      "IMR 4198": -0.0322,
+      "Hodgdon H4198": -0.0431,
+      "Hodgdon CFE-223": 0.0276,
+      "Winchester StaBall Match": -0.0402,
+      "Hodgdon BL-C(2)": 0.0064,
+      "Hodgdon Varget": 0.0843,
+      "IMR 4895": 0.0579,
+      "IMR 4064": 0.0787,
+      "IMR 3031": 0.0573,
+      "Hodgdon CFE BLK": -0.0758,
+      "Hodgdon Lil Gun": -0.0401,
+      "Winchester 296": -0.1036,
+      "Hodgdon H110": -0.0853,
+      "IMR 4227": -0.0626,
+      "Accurate 11FS": -0.0998,
+      "Hodgdon H4227": -0.0342,
+      "Hodgdon Titegroup": -0.9445,
+      "Winchester 748": 0.0109,
+      "Winchester StaBall 6.5": 0.1428,
+      "Winchester 760": 0.1075,
+      "Hodgdon H380": 0.1163,
+      "Hodgdon H4350": 0.106,
+      "Hodgdon Hybrid 100V": 0.1315,
+      "Hodgdon Trail Boss": 0.0935,
+      "IMR 4350": 0.1877,
+      "Hodgdon H1000": 0.3266,
+      "Hodgdon H4831, H4831C": 0.2447,
+      "IMR 7828SC": 0.2389,
+      "IMR 4831": 0.2624,
+      "Winchester StaBall HD": 0.3354,
+      "Hodgdon Retumbo": 0.3526,
+      "Hodgdon Leverevolution": 0.1589,
+      "IMR 7828": 0.2522,
+      "Hodgdon H414": 0.1175,
+      "Hodgdon US869": 0.4156,
+      "Hodgdon H50BMG": 0.4108,
+      "Winchester 572": -0.6385,
+      "Winchester Autocomp": -0.7136,
+      "Hodgdon CFE Pistol": -0.4221,
+      "Hodgdon Universal": -0.485,
+      "Winchester 231": -0.8082,
+      "Hodgdon HS-6": -0.5668,
+      "Hodgdon Long Shot": -0.6802,
+      "Hodgdon Hi-Skor 700X": -0.4977,
+      "Hodgdon Hi-Skor 800X": -0.3486,
+      "Winchester WSF Super-Field": -0.618,
+      "Hodgdon Clays": -0.5798,
+      "Winchester WST": -0.5039,
+      "N130": -0.041,
+      "N530": -0.0301,
+      "N135": 0.0312,
+      "N133": 0.0082,
+      "N140": 0.0511,
+      "N110": -0.0764,
+      "N120": -0.0663,
+      "N540": 0.0427,
+      "N150": 0.0466,
+      "N550": 0.1008,
+      "N555": 0.2259,
+      "N160": 0.1935,
+      "N165": 0.2687,
+      "N560": 0.2134,
+      "N565": 0.2494,
+      "N570": 0.2956,
+      "N170": 0.277,
+      "N568": 0.3712,
+      "24N41": 0.308,
+      "20N29": 0.3891,
+      "N105": -0.1518,
+      "N310": -0.6407,
+      "N320": -0.4063,
+      "N32C": -0.1164,
+      "N330": -0.3893,
+      "N340": -0.3616,
+      "N350": -0.3397,
+      "3N37": -0.3645,
+      "3N38": -0.2325,
+      "Norma 200": -0.0182,
+      "Norma 201": 0.0364,
+      "Norma 202": 0.02,
+      "Norma 203B": 0.0568,
+      "Norma URP": 0.1552,
+      "Norma 204": 0.1456,
+      "Norma MRP": 0.2399,
+      "Alliant Reloder 26": 0.2301,
+      "Alliant Power Pro 4000-MR": 0.1959,
+      "Alliant Reloder 23": 0.2682,
+      "Alliant Reloder 22": 0.2546,
+      "Alliant Reloder 19": 0.2406,
+      "Alliant Reloder 17": 0.1354,
+      "Alliant Reloder 16": 0.1838,
+      "IMR 7977": 0.3349,
+      "Alliant Bullseye": -0.5352,
+      "Alliant Unique": -0.3065,
+      "Alliant Power Pistol": -0.4054,
+      "Alliant Blue Dot": -0.197,
+      "Alliant Herco": -0.3066,
+      "Alliant 2400": -0.1448,
+      "Alliant Power Pro 300-MP": -0.051,
+      "Alliant Red Dot": -0.4553,
+      "Alliant Green Dot": -0.4223,
+      "Alliant Reloder 7": -0.0773,
+      "Alliant Reloder 10X": -0.0202,
+      "Alliant Reloder 15": 0.081,
+      "Alliant AR Comp": 0.0467,
+      "Alliant Power Pro 2000-MR": 0.0362,
+      "Alliant Reloder 25": 0.326,
+      "Alliant Reloder 33": 0.3332,
+      "Lovex S011": -0.5387,
+      "Lovex D032": -0.5575,
+      "Lovex S020": -0.4017,
+      "Lovex D036": -0.593,
+      "Lovex D037.1": -0.4155,
+      "Lovex D037.2": -0.2495,
+      "Lovex S015": -0.2701,
+      "Lovex S040": -0.1562,
+      "Lovex S053": -0.0572,
+      "Lovex D063": -0.1733,
+      "Lovex D073.4": -0.0442,
+      "Lovex D073.5": -0.0399,
+      "Lovex D073.6": -0.0093,
+      "Lovex S060": 0.0202,
+      "Lovex S062": 0.1141,
+      "Lovex S065": 0.1503,
+      "Lovex S070": 0.2264,
+      "Lovex S071": 0.2827,
+      "Lovex D060": -0.0606,
+      "Vectan BA 9": -0.3683,
+      "Vectan BA 7 1/2": -0.3076,
+      "Vectan BA 9 1/2": -0.5496,
+      "Vectan BA 6 1/2": 0.0651,
+      "Vectan Tubal 3000": 0.1014,
+      "Vectan SP 10": -0.0424,
+      "Vectan SP 7": -0.0412,
+      "Vectan SP 11": 0.1041,
+      "Vectan SP 9": 0.0767,
+      "Alliant Power Pro Varmit": -0.0009,
+      "IMR 4320": 0.0798,
+      "IMR 4007 SSC": 0.1005,
+      "Hodgdon H4831SC": 0.2091,
+      "IMR 4166": 0.0348,
+      "IMR 4451": 0.1751,
+      "IMR 8133": 0.3751,
+      "Norma 217": 0.3821,
+      "IMR 4955": 0.2259
+    },
+    "s": {
+      "rifle": -0.3135,
+      "handgun": -0.5655
+    },
+    "lm": {
+      "22 Hornet": 3.7724,
+      "222 Rem.": 3.8686,
+      "22-250 Rem.": 3.999,
+      "223 Rem.": 4.0858,
+      "243 Win.": 4.4114,
+      "260 Rem.": 4.8406,
+      "270 Win.": 4.855,
+      "270 WSM": 4.8724,
+      "30 R Blaser": 5.1516,
+      "300 AAC BLK": 4.9892,
+      "300 PRC": 5.2578,
+      "300 Win. Mag.": 5.1636,
+      "300 WSM": 5.1394,
+      "30-06 Spring.": 5.1088,
+      "303 British": 5.0501,
+      "30-30 Win.": 4.9734,
+      "308 Win.": 5.0616,
+      "338 Lapua Mag.": 5.4927,
+      "338 Norma Mag.": 5.567,
+      "338 Win. Mag.": 5.4156,
+      "375 H&H Mag.": 5.5796,
+      "444 Marlin": 5.5413,
+      "45 - 70 Govt.": 5.7852,
+      "5.6 x 50 R Mag.": 3.8971,
+      "6 Norma BR": 4.4452,
+      "6 XC": 4.5633,
+      "6.5 x 47 Lapua": 4.8467,
+      "6.5 x 55 SE": 4.8325,
+      "6.5 Creedmoor": 4.8533,
+      "6.5 PRC": 4.9178,
+      "7 x 57": 5.0158,
+      "7 x 64": 4.9898,
+      "7.5 x 55 Swiss": 5.1418,
+      "7.62 x 39": 4.8332,
+      "7.62 x 54 R": 5.1382,
+      "7 -08 Rem.": 5.0024,
+      "7 Rem. Mag.": 5.0254,
+      "8 x 57 IRS": 5.2016,
+      "8 x 57 IS": 5.217,
+      "8 x 68 S": 5.1811,
+      "9.3 x 62": 5.5466,
+      "9.3 x 64 Brenneke": 5.5369,
+      "9.3 x 74 R": 5.5651,
+      "10.3 x 60 R": 5.4567,
+      "357 Magnum": 4.9824,
+      "38 Special": 4.8679,
+      "38 Super Auto": 4.8167,
+      "40 S&W": 5.0216,
+      "44 Rem. Mag.": 5.4782,
+      "45 ACP (Auto)": 5.2752,
+      "45 Colt": 5.463,
+      "9 mm Browning court": 4.4616,
+      "9 mm Luger": 4.7877,
+      "10 mm Auto": 5.1498,
+      "357 SIG": 4.7633,
+      "357 Maximum": 5.1697,
+      "41 Rem. Mag.": 5.2907,
+      "454 Casull": 5.556,
+      "460 S&W": 5.572,
+      "475 Linebaugh": 5.7974,
+      "204 Ruger": 3.5236,
+      "222 Rem. Mag.": 3.8534,
+      "219 Zipper": 3.9106,
+      "224 Valkyrie": 4.3107,
+      "22 Nosler": 4.1172,
+      "220 Swift": 3.9516,
+      "223 WSSM": 4.058,
+      "6mm PPC": 4.2617,
+      "6 mm Creedmoor": 4.4925,
+      "6 mm Remington": 4.3877,
+      "240 Weatherby Magnum": 4.3235,
+      "250 Savage": 4.614,
+      "257 Roberts": 4.5113,
+      "25-06 Remington": 4.5575,
+      "257 Wby. Mag.": 4.5999,
+      "6.5 Grendel": 4.7037,
+      "6.5-284 Norma": 4.8506,
+      "270 Weatherby Magnum": 4.882,
+      "284 Winchester": 5.002,
+      "280 Remington": 5.0282,
+      "7mm WSM": 4.971,
+      "30 Carbine": 4.6278,
+      "300 Savage": 5.025,
+      "308 Marlin Express": 5.0207,
+      "30 T/C": 5.0215,
+      "300 RCM": 5.1325,
+      "300 Weatherby Magnum": 5.1788,
+      "300 Norma Magnum": 5.3493,
+      "300 Rem. Ultra Mag.": 5.1765,
+      "338-06": 5.3954,
+      "35 Remington": 5.2467,
+      "375 Ruger": 5.6419,
+      "458 SOCOM": 5.8259,
+      "458 Winchester Magnum": 6.0192,
+      "22 Creedmoor": 4.2739,
+      "6mm ARC": 4.5356,
+      "6.8 Western": 4.9614,
+      "7mm PRC": 5.1543,
+      "7mm Weatherby Magnum": 5.0266,
+      "221 Remington Fireball": 3.8172,
+      "22 PPC-USA": 3.9224,
+      "7 x 57 R": 5.0254,
+      "7 x 65 R": 5.0474,
+      "7mm RUM": 5.063,
+      "300 Lapua Magnum": 5.1987,
+      "416 Rigby": 5.987,
+      "7mm BR Remington": 4.9213,
+      "9 x 23 Winchester": 4.7786,
+      "45 Winchester Magnum": 5.3752,
+      "50 AE": 5.7438,
+      "6x47 Lapua": 4.3801,
+      "243 Ackley Improved": 4.3801
+    },
+    "dom": {
+      "RS30|rifle": [
+        0.836,
+        3.316
+      ],
+      "RS36|rifle": [
+        0.836,
+        4.786
+      ],
+      "RS40|rifle": [
+        1.61,
+        5.154
+      ],
+      "RS50|rifle": [
+        1.61,
+        5.154
+      ],
+      "RS52|rifle": [
+        1.61,
+        5.154
+      ],
+      "RS60|rifle": [
+        1.61,
+        5.157
+      ],
+      "RS14|rifle": [
+        1.77,
+        6.389
+      ],
+      "RS62|rifle": [
+        2.172,
+        5.157
+      ],
+      "RS70|rifle": [
+        2.871,
+        6.389
+      ],
+      "RS24|rifle": [
+        1.238,
+        1.77
+      ],
+      "RS76|rifle": [
+        3.948,
+        6.389
+      ],
+      "RS80|rifle": [
+        3.798,
+        6.389
+      ],
+      "RS14|handgun": [
+        1.032,
+        1.837
+      ],
+      "RS30|handgun": [
+        1.12,
+        1.56
+      ],
+      "RS12|handgun": [
+        0.434,
+        1.837
+      ],
+      "RS20|handgun": [
+        0.434,
+        1.837
+      ],
+      "RS24|handgun": [
+        0.563,
+        1.56
+      ],
+      "Ramshot Competition|handgun": [
+        0.434,
+        1.126
+      ],
+      "Ramshot Zip|handgun": [
+        0.434,
+        1.126
+      ],
+      "Accurate Solo 1000|handgun": [
+        0.434,
+        1.126
+      ],
+      "Accurate No. 2|handgun": [
+        0.434,
+        1.126
+      ],
+      "Ramshot Silhouette|handgun": [
+        0.434,
+        1.126
+      ],
+      "Ramshot True Blue|handgun": [
+        0.434,
+        2.163
+      ],
+      "Accurate No. 5|handgun": [
+        0.434,
+        1.404
+      ],
+      "Accurate No. 7|handgun": [
+        0.563,
+        2.163
+      ],
+      "Accurate No.9|handgun": [
+        0.879,
+        3.481
+      ],
+      "Accurate TCM|handgun": [
+        1.12,
+        1.404
+      ],
+      "Accurate 4100|handgun": [
+        1.12,
+        3.481
+      ],
+      "Ramshot Enforcer|handgun": [
+        1.12,
+        3.481
+      ],
+      "Accurate 5744|handgun": [
+        1.404,
+        3.07
+      ],
+      "Accurate 1680|handgun": [
+        1.64,
+        3.07
+      ],
+      "Accurate 5744|rifle": [
+        0.836,
+        5.571
+      ],
+      "Accurate LT-32|rifle": [
+        1.61,
+        4.186
+      ],
+      "Accurate 2015|rifle": [
+        1.331,
+        5.214
+      ],
+      "Ramshot X-Terminator|rifle": [
+        1.331,
+        5.214
+      ],
+      "Accurate 2230|rifle": [
+        1.61,
+        5.214
+      ],
+      "Accurate 2460|rifle": [
+        1.61,
+        5.214
+      ],
+      "Ramshot TAC|rifle": [
+        1.61,
+        5.214
+      ],
+      "Accurate 2495|rifle": [
+        1.786,
+        4.186
+      ],
+      "Accurate 2520|rifle": [
+        1.61,
+        4.597
+      ],
+      "Ramshot Enforcer|rifle": [
+        0.836,
+        2.735
+      ],
+      "Accurate 1680|rifle": [
+        0.836,
+        2.735
+      ],
+      "Accurate LT-30|rifle": [
+        1.238,
+        4.186
+      ],
+      "Accurate 2200|rifle": [
+        1.61,
+        4.186
+      ],
+      "Accurate 2700|rifle": [
+        1.786,
+        5.511
+      ],
+      "Accurate 4064|rifle": [
+        1.786,
+        5.511
+      ],
+      "Ramshot Big Game|rifle": [
+        1.786,
+        5.511
+      ],
+      "Ramshot Hunter|rifle": [
+        2.611,
+        5.571
+      ],
+      "Accurate 4350|rifle": [
+        2.611,
+        5.897
+      ],
+      "Accurate Magpro|rifle": [
+        3.033,
+        7.37
+      ],
+      "Ramshot Magnum|rifle": [
+        3.033,
+        7.37
+      ],
+      "Ramshot LRT|rifle": [
+        3.756,
+        7.37
+      ],
+      "Accurate No.9|rifle": [
+        1.05,
+        1.05
+      ],
+      "Accurate 4100|rifle": [
+        1.05,
+        2.735
+      ],
+      "IMR 8208 XBR|rifle": [
+        1.61,
+        5.157
+      ],
+      "Hodgdon H4895|rifle": [
+        1.61,
+        5.897
+      ],
+      "Hodgdon H335|rifle": [
+        1.61,
+        5.214
+      ],
+      "Hodgdon Benchmark|rifle": [
+        1.61,
+        4.186
+      ],
+      "Hodgdon H322|rifle": [
+        1.238,
+        4.186
+      ],
+      "IMR 4198|rifle": [
+        0.836,
+        4.186
+      ],
+      "Hodgdon H4198|rifle": [
+        0.836,
+        4.186
+      ],
+      "Hodgdon CFE-223|rifle": [
+        1.61,
+        5.154
+      ],
+      "Winchester StaBall Match|rifle": [
+        1.61,
+        4.186
+      ],
+      "Hodgdon BL-C(2)|rifle": [
+        1.61,
+        4.112
+      ],
+      "Hodgdon Varget|rifle": [
+        1.61,
+        5.897
+      ],
+      "IMR 4895|rifle": [
+        1.61,
+        5.897
+      ],
+      "IMR 4064|rifle": [
+        1.61,
+        5.897
+      ],
+      "IMR 3031|rifle": [
+        1.61,
+        4.186
+      ],
+      "Hodgdon CFE BLK|rifle": [
+        0.836,
+        2.735
+      ],
+      "Hodgdon Lil Gun|rifle": [
+        0.836,
+        1.331
+      ],
+      "Winchester 296|rifle": [
+        0.836,
+        1.331
+      ],
+      "Hodgdon H110|rifle": [
+        0.836,
+        1.331
+      ],
+      "IMR 4227|rifle": [
+        0.836,
+        4.186
+      ],
+      "Accurate 11FS|rifle": [
+        0.836,
+        1.238
+      ],
+      "Hodgdon H4227|rifle": [
+        0.836,
+        2.735
+      ],
+      "Accurate No. 2|rifle": [
+        1.804,
+        2.981
+      ],
+      "Hodgdon Titegroup|rifle": [
+        1.804,
+        4.186
+      ],
+      "Winchester 748|rifle": [
+        1.61,
+        5.214
+      ],
+      "Winchester StaBall 6.5|rifle": [
+        1.804,
+        5.154
+      ],
+      "Winchester 760|rifle": [
+        1.804,
+        6.389
+      ],
+      "Hodgdon H380|rifle": [
+        2.107,
+        5.897
+      ],
+      "Hodgdon H4350|rifle": [
+        2.107,
+        6.389
+      ],
+      "Hodgdon Hybrid 100V|rifle": [
+        2.736,
+        6.869
+      ],
+      "Hodgdon Trail Boss|rifle": [
+        1.238,
+        5.897
+      ],
+      "IMR 4350|rifle": [
+        2.611,
+        7.37
+      ],
+      "Hodgdon H1000|rifle": [
+        2.736,
+        7.37
+      ],
+      "Hodgdon H4831, H4831C|rifle": [
+        2.611,
+        7.37
+      ],
+      "IMR 7828SC|rifle": [
+        3.059,
+        7.37
+      ],
+      "IMR 4831|rifle": [
+        2.736,
+        7.37
+      ],
+      "Winchester StaBall HD|rifle": [
+        3.059,
+        7.37
+      ],
+      "Hodgdon Retumbo|rifle": [
+        3.059,
+        7.37
+      ],
+      "Hodgdon Leverevolution|rifle": [
+        2.014,
+        2.307
+      ],
+      "IMR 7828|rifle": [
+        2.995,
+        7.37
+      ],
+      "Hodgdon H414|rifle": [
+        2.107,
+        6.389
+      ],
+      "Hodgdon US869|rifle": [
+        3.948,
+        7.37
+      ],
+      "Hodgdon H50BMG|rifle": [
+        5.75,
+        7.37
+      ],
+      "Hodgdon H110|handgun": [
+        1.12,
+        3.07
+      ],
+      "Hodgdon H4227|handgun": [
+        1.032,
+        3.07
+      ],
+      "IMR 4227|handgun": [
+        1.12,
+        1.837
+      ],
+      "Winchester 296|handgun": [
+        1.12,
+        3.07
+      ],
+      "Hodgdon Lil Gun|handgun": [
+        0.79,
+        3.07
+      ],
+      "Winchester 572|handgun": [
+        0.434,
+        1.837
+      ],
+      "Winchester Autocomp|handgun": [
+        0.434,
+        1.837
+      ],
+      "Hodgdon CFE Pistol|handgun": [
+        0.434,
+        1.837
+      ],
+      "Hodgdon Universal|handgun": [
+        0.434,
+        2.163
+      ],
+      "Winchester 231|handgun": [
+        0.434,
+        1.837
+      ],
+      "Hodgdon Titegroup|handgun": [
+        0.434,
+        2.163
+      ],
+      "Hodgdon HS-6|handgun": [
+        0.434,
+        2.163
+      ],
+      "Hodgdon Long Shot|handgun": [
+        0.434,
+        3.07
+      ],
+      "Hodgdon Hi-Skor 700X|handgun": [
+        0.434,
+        1.837
+      ],
+      "Hodgdon Hi-Skor 800X|handgun": [
+        0.434,
+        1.837
+      ],
+      "Winchester WSF Super-Field|handgun": [
+        0.563,
+        1.126
+      ],
+      "Hodgdon Clays|handgun": [
+        0.563,
+        1.837
+      ],
+      "Winchester WST|handgun": [
+        0.648,
+        1.126
+      ],
+      "Hodgdon Trail Boss|handgun": [
+        1.032,
+        1.032
+      ],
+      "Accurate 11FS|handgun": [
+        1.12,
+        1.56
+      ],
+      "Hodgdon CFE BLK|handgun": [
+        3.07,
+        3.07
+      ],
+      "Hodgdon H4198|handgun": [
+        3.07,
+        3.07
+      ],
+      "N130|rifle": [
+        1.331,
+        5.214
+      ],
+      "N530|rifle": [
+        1.61,
+        5.214
+      ],
+      "N135|rifle": [
+        1.61,
+        5.214
+      ],
+      "N133|rifle": [
+        1.331,
+        5.214
+      ],
+      "N140|rifle": [
+        1.786,
+        5.157
+      ],
+      "N110|rifle": [
+        0.836,
+        3.97
+      ],
+      "N120|rifle": [
+        0.836,
+        5.214
+      ],
+      "N540|rifle": [
+        1.786,
+        5.157
+      ],
+      "N150|rifle": [
+        1.786,
+        5.157
+      ],
+      "N550|rifle": [
+        1.786,
+        5.571
+      ],
+      "N555|rifle": [
+        1.786,
+        5.75
+      ],
+      "N160|rifle": [
+        2.736,
+        7.37
+      ],
+      "N165|rifle": [
+        2.967,
+        7.37
+      ],
+      "N560|rifle": [
+        2.967,
+        7.37
+      ],
+      "N565|rifle": [
+        2.967,
+        6.389
+      ],
+      "N570|rifle": [
+        3.059,
+        7.37
+      ],
+      "N170|rifle": [
+        3.059,
+        7.37
+      ],
+      "N568|rifle": [
+        3.756,
+        6.389
+      ],
+      "24N41|rifle": [
+        3.948,
+        6.389
+      ],
+      "20N29|rifle": [
+        3.948,
+        6.25
+      ],
+      "N105|rifle": [
+        1.238,
+        1.238
+      ],
+      "N310|handgun": [
+        0.434,
+        1.126
+      ],
+      "N320|handgun": [
+        0.434,
+        1.837
+      ],
+      "N32C|handgun": [
+        0.434,
+        1.126
+      ],
+      "N330|handgun": [
+        0.434,
+        1.126
+      ],
+      "N340|handgun": [
+        0.563,
+        1.837
+      ],
+      "N350|handgun": [
+        0.563,
+        2.163
+      ],
+      "3N37|handgun": [
+        0.563,
+        2.163
+      ],
+      "3N38|handgun": [
+        0.563,
+        3.07
+      ],
+      "N105|handgun": [
+        0.563,
+        3.412
+      ],
+      "N110|handgun": [
+        1.12,
+        3.412
+      ],
+      "N120|handgun": [
+        1.64,
+        3.412
+      ],
+      "Norma 200|rifle": [
+        1.61,
+        1.804
+      ],
+      "Norma 201|rifle": [
+        1.794,
+        3.09
+      ],
+      "Norma 202|rifle": [
+        2.107,
+        5.154
+      ],
+      "Norma 203B|rifle": [
+        2.79,
+        5.511
+      ],
+      "Norma URP|rifle": [
+        2.967,
+        5.511
+      ],
+      "Norma 204|rifle": [
+        2.871,
+        5.157
+      ],
+      "Norma MRP|rifle": [
+        3.033,
+        7.37
+      ],
+      "Alliant Reloder 26|rifle": [
+        3.033,
+        7.37
+      ],
+      "Alliant Power Pro 4000-MR|rifle": [
+        3.033,
+        7.37
+      ],
+      "Alliant Reloder 23|rifle": [
+        3.033,
+        5.157
+      ],
+      "Alliant Reloder 22|rifle": [
+        2.736,
+        7.37
+      ],
+      "Alliant Reloder 19|rifle": [
+        2.611,
+        7.37
+      ],
+      "Alliant Reloder 17|rifle": [
+        2.107,
+        5.511
+      ],
+      "Alliant Reloder 16|rifle": [
+        2.107,
+        3.756
+      ],
+      "IMR 7977|rifle": [
+        3.033,
+        6.791
+      ],
+      "Alliant Bullseye|handgun": [
+        0.563,
+        1.837
+      ],
+      "Alliant Unique|handgun": [
+        0.563,
+        1.837
+      ],
+      "Alliant Power Pistol|handgun": [
+        0.563,
+        3.07
+      ],
+      "Alliant Blue Dot|handgun": [
+        0.563,
+        1.56
+      ],
+      "Alliant Herco|handgun": [
+        0.89,
+        1.837
+      ],
+      "Alliant 2400|handgun": [
+        0.879,
+        3.07
+      ],
+      "Alliant Power Pro 300-MP|handgun": [
+        1.12,
+        3.07
+      ],
+      "Alliant Red Dot|handgun": [
+        1.126,
+        1.837
+      ],
+      "Alliant Green Dot|handgun": [
+        1.837,
+        1.837
+      ],
+      "Alliant Power Pro 300-MP|rifle": [
+        0.836,
+        2.735
+      ],
+      "Alliant 2400|rifle": [
+        0.836,
+        1.331
+      ],
+      "Alliant Reloder 7|rifle": [
+        0.836,
+        5.214
+      ],
+      "Alliant Reloder 10X|rifle": [
+        1.61,
+        5.214
+      ],
+      "Alliant Reloder 15|rifle": [
+        1.804,
+        5.511
+      ],
+      "Alliant AR Comp|rifle": [
+        1.804,
+        3.189
+      ],
+      "Alliant Power Pro 2000-MR|rifle": [
+        1.804,
+        4.684
+      ],
+      "Alliant Reloder 25|rifle": [
+        3.189,
+        7.37
+      ],
+      "Alliant Reloder 33|rifle": [
+        5.897,
+        7.37
+      ],
+      "Lovex S011|handgun": [
+        0.434,
+        1.837
+      ],
+      "Lovex D032|handgun": [
+        0.434,
+        1.837
+      ],
+      "Lovex S020|handgun": [
+        0.434,
+        1.56
+      ],
+      "Lovex D036|handgun": [
+        0.434,
+        1.837
+      ],
+      "Lovex D037.1|handgun": [
+        0.563,
+        1.837
+      ],
+      "Lovex D037.2|handgun": [
+        0.879,
+        1.837
+      ],
+      "Lovex S015|handgun": [
+        1.032,
+        1.126
+      ],
+      "Lovex S040|handgun": [
+        1.56,
+        1.837
+      ],
+      "Lovex S040|rifle": [
+        0.836,
+        1.61
+      ],
+      "Lovex S053|rifle": [
+        0.836,
+        1.804
+      ],
+      "Lovex D063|rifle": [
+        0.836,
+        1.804
+      ],
+      "Lovex D073.4|rifle": [
+        1.61,
+        3.97
+      ],
+      "Lovex D073.5|rifle": [
+        1.61,
+        3.97
+      ],
+      "Lovex D073.6|rifle": [
+        1.61,
+        5.099
+      ],
+      "Lovex S060|rifle": [
+        1.804,
+        5.099
+      ],
+      "Lovex S062|rifle": [
+        2.736,
+        5.157
+      ],
+      "Lovex S065|rifle": [
+        2.967,
+        6.389
+      ],
+      "Lovex S070|rifle": [
+        2.967,
+        6.389
+      ],
+      "Lovex S071|rifle": [
+        2.967,
+        6.389
+      ],
+      "Lovex D060|rifle": [
+        1.238,
+        1.238
+      ],
+      "Vectan BA 9|handgun": [
+        0.563,
+        1.837
+      ],
+      "Vectan BA 7 1/2|handgun": [
+        0.79,
+        2.163
+      ],
+      "Vectan BA 9 1/2|handgun": [
+        0.79,
+        1.837
+      ],
+      "Vectan BA 6 1/2|handgun": [
+        1.56,
+        3.412
+      ],
+      "Vectan Tubal 3000|rifle": [
+        1.794,
+        5.214
+      ],
+      "Vectan SP 10|rifle": [
+        1.61,
+        1.61
+      ],
+      "Vectan SP 7|rifle": [
+        1.61,
+        5.214
+      ],
+      "Vectan SP 11|rifle": [
+        2.736,
+        5.154
+      ],
+      "Vectan SP 9|rifle": [
+        2.307,
+        3.97
+      ],
+      "Alliant Power Pro Varmit|rifle": [
+        1.61,
+        2.736
+      ],
+      "IMR 4320|rifle": [
+        1.794,
+        5.157
+      ],
+      "IMR 4007 SSC|rifle": [
+        2.736,
+        2.736
+      ],
+      "Hodgdon H4831SC|rifle": [
+        2.736,
+        7.37
+      ],
+      "IMR 4166|rifle": [
+        1.944,
+        3.189
+      ],
+      "IMR 4451|rifle": [
+        2.871,
+        4.684
+      ],
+      "IMR 8133|rifle": [
+        3.948,
+        5.571
+      ],
+      "Norma 217|rifle": [
+        3.948,
+        7.37
+      ],
+      "IMR 4955|rifle": [
+        2.871,
+        3.948
+      ]
+    },
+    "_doc": "Pression à froid par la charge maximale estimée (scripts/fit_froid_max.js ; EnergyModel.chargeMaxEstimee, pressionFroidMax) : ln(remplissage à la charge maximale) = a[cartouche] + b[poudre] + s[type]·(ln m − lm[cartouche]), sur les maxima publiés des ancres. Coefficients dérivés : la charge maximale estimée n est jamais affichée ni donnée comme charge de rechargement.",
+    "_date": "2026-10-17"
   }
 }
