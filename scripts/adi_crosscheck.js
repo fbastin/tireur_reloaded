@@ -12,6 +12,10 @@
  *
  * Les lignes en CUP servent la vitesse seule — le CUP n'est pas convertible en psi.
  *
+ * Depuis le 2026-10-17, scripts/adi_modele_servi.js rapporte les poudres ADI à leur équivalent Hodgdon (table du
+ * fabricant, bloc « equivalences » de powder_aliases.json) et rejoue le calcul de la page : c'est lui qui teste les
+ * lois servies. Ce script-ci garde les clés ADI.
+ *
  * COPIES. ADI réimprime des données Hodgdon : sur les 341 lignes des couples ancrés, 226 (IMR 8208 XBR,
  * Benchmark) sont identiques (cartouche, poudre, balle, charge, vitesse) à une ligne Hodgdon ou Western,
  * qui nourrissent les ancres. Comparées à ces ancres, elles se comparaient à elles-mêmes : les chiffres

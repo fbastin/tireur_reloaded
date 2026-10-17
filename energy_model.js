@@ -133,6 +133,18 @@ const EnergyModel = {
   },
 
   /**
+   * Pression servie sous la loi à deux pentes : P2 (pressionDeuxPentes), ou la pression PA de la loi des ancres pour la
+   * même charge si elle est plus haute et que le type a ce plancher (deux_pentes[type].plancher === 'ancres' : carabine,
+   * 2026-10-17). La validation d'origine comptait la balle testée dans sa propre fenêtre ; sans elle, et sur les données
+   * ADI (un autre laboratoire), la loi à deux pentes seule sous-estimait plus souvent que la loi des ancres
+   * (scripts/fit_deux_pentes.js, scripts/adi_modele_servi.js).
+   */
+  pressionServieDeuxPentes(coef, type, PA, P2) {
+    const T = ((coef.deux_pentes || {})[type]) || {};
+    return T.plancher === 'ancres' && PA > P2 ? PA : P2;
+  },
+
+  /**
    * Plafond tiré de la LIMITE de la cartouche (bloc deux_pentes.plafond_limite, scripts/fit_deux_pentes.js,
    * 2026-10-16), pour un couple ancré sur des données sans pression : les charges maximales publiées avec pression
    * se tiennent en moyenne à k × la limite (carabine 0,94, arme de poing 0,95 ; dispersion 11 et 18 %). Même loi à

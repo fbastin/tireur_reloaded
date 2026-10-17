@@ -577,6 +577,12 @@ handgun ~20 %, one in twelve; anchor law with pressure, rifle ~9 %, one in thirt
 ~21 %, one in five. Until 2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average
 set by the rifles.
 
+> **Correction, 2026-10-17 (§ 3.10).** The validation above used the window *as served*, which counts the held-out
+> bullet: for most weights it is the only published bullet, so its own maximum charge sets $C_{\max}(m)$ and its
+> maximum load falls on the ceiling by construction. With the window of the *other* bullets of the weight, and on
+> ADI's data, the two-slope law alone does worse than the anchor law for rifles; rifles now get the higher of the
+> two. The figures and messages above are superseded by those of § 3.10.
+
 ### 3.9 Cold pressure with an estimated maximum charge (2026-10-16)
 
 Without any manufacturer data for the pair, the tool does not know its maximum charge; cold pressure was at 25 % RMS,
@@ -605,8 +611,59 @@ estimated at 45 gr in the .308, which would have *lowered* the cold pressure fro
 | handguns (1 686) | +8.8 / 31.9 %, 23.0 % | +6.4 / 22.8 %, 14.4 % | +14.2 / 31.4 %, 11.8 % |
 
 Shooters World and ADI powders have no effect (neither enters the anchors): the independent laboratories stay on the
-cold model, and no out-of-sample laboratory figure exists for this law. Messages: rifle ~18 %, one load in fifteen;
-handgun ~31 %, one in eight.
+cold model. Messages: rifle ~18 %, one load in fifteen; handgun ~31 %, one in eight. ADI's data, with its powders
+carried to their Hodgdon equivalents, test this law out of sample (§ 3.10): rifles 20.8 → 19.4 %, under-predicted by
+more than 15 % 13.0 → 1.9 % (623 loads, 64 pairs).
+
+### 3.10 Independent test on ADI's data; corrected validation (2026-10-17)
+
+**ADI powders carried to their Hodgdon names.** ADI (Thales Australia) states that Hodgdon sells several of its
+powders under its own names, and gives the table (FAQ of 2021-02-24, read in the raw HTML): AR2207 = H4198,
+AR2219 = H322, AR2206H = H4895, AR2208 = Varget, AR2209 = H4350, AR2213SC = H4831SC, AR2217 = H1000,
+AR2225 = Retumbo, AR2218 = H50BMG, besides BM2, Bench Mark 8208 and Trail Boss, already aliased.
+`data/powder_aliases.json` holds it as a separate `equivalences` block (the parsers do not read it; both keys
+keep their own density). ADI enters neither the anchors nor any fit, so its loads, once carried over, test the
+laws the page applies to these pairs. `scripts/adi_modele_servi.js` replays the page's computation (reference
+barrel, 21 °C, monolithic option for the bullets `balle_monolithique.js` recognises) on ADI's loads in psi, guide and
+online data merged, and drops what is not independent: 1 093 copies of a Hodgdon row (same cartridge, powder,
+bullet weight and charge, and same velocity *or* pressure) and 36 subsonic rifle loads (another regime, out of the
+anchors). 1 850 loads remain, 1 275 on a carried-over powder.
+
+**Leak in the two-slope validation.** The window of § 3.8 counted the held-out bullet. For most weights it is the
+only published bullet (.308 Win. + Varget: one bullet for 9 of 11 weights), so its own maximum charge sets
+$C_{\max}(m)$, and its maximum load comes out at the ceiling by construction. On ADI, whose maxima differ from
+Hodgdon's by ±10 % at equal pressure (6.5 Grendel: 5 % less powder; .300 RUM: 9 % less), the law alone
+under-predicts one load in five. `fit_deux_pentes.js` now measures both windows: (1) as served, the case of a user
+whose bullet is the published one; (2) that of the *other* bullets of the weight, for loads whose weight has one
+(another bullet, or other components), which its `--write` guard now uses.
+
+| bias / RMS, share under-predicted by more than 15 % | anchor law | two slopes alone | higher of the two (served, rifles) |
+|---|---|---|---|
+| rifles, window (1) (6 057) | +0.1 / 8.9 %, 3.1 % | +2.4 / 7.9 %, 0.5 % | +4.3 / 9.4 %, 0.4 % |
+| rifles, window (2) (2 074) | −0.8 / 7.3 %, 2.9 % | +3.0 / 10.0 %, 2.7 % | +4.1 / 9.9 %, 1.4 % |
+| rifles, ADI (154 loads, 41 pairs) | −1.5 / 13.3 %, 9.1 % | −2.3 / 15.3 %, 20.8 % | +1.4 / 15.3 %, 8.4 % |
+| handguns, window (1) (2 170) | +2.0 / 20.8 %, 19.7 % | +1.3 / 12.5 %, 6.3 % (served) | +8.0 / 18.5 %, 5.1 % |
+| handguns, window (2) (1 406) | +3.3 / 19.1 %, 16.8 % | +1.9 / 18.9 %, 12.7 % (served) | +7.8 / 21.2 %, 8.7 % |
+
+The geometric mean of the two did best in RMS in-house (7.1 and 7.7 %) but under-predicted one ADI load in seven.
+Rifles therefore get the higher of the two (`deux_pentes.rifle.plancher` = `"ancres"`,
+`EnergyModel.pressionServieDeuxPentes`; charge slope and temperature exponent $\gamma$ when the anchor law wins).
+Handguns keep the two-slope law alone, better than the anchor law with either window; no other laboratory checks it.
+The ceiling from the limit (§ 3.8) holds with window (2): rifles 10.1 → 9.5 %, under-predicted 3.9 → 1.5 %
+(published 0.3 %); handguns 24.3 → 21.5 %, 11.6 → 12.2 % (8.2 % published). On ADI (153 loads, 31 pairs): 14.9 →
+11.4 %, 0.0 → 1.3 %.
+
+All rifle loads with manufacturer pressure data, window (2): 9.9 %, 1.6 % under-predicted (anchor law 7.3 %,
+3.0 %); handguns 18.8 %, 12.6 %. ADI, all rifle pairs with manufacturer data (125 pairs, 954 loads): 13.1 →
+12.8 %, 4.1 → 4.2 % under-predicted, 1st percentile −20 %: the laws of 16–17 October change nothing there, while
+the gap between laboratories (~13 %) exceeds the in-house one. ADI velocity at its own barrel, carried-over powders:
++0.7 / 5.2 %.
+
+The page's messages now quote window (2): two slopes, rifle ~10 %, one load in seventy under-predicted by more than
+15 %, one in twelve against another laboratory's data; handgun ~19 %, one in eight; ceiling from the limit, rifle
+~10 %, one in seventy, handgun ~22 %, one in eight. The banner: ~10 % for rifles, ~19 % for handguns with
+manufacturer pressure data, one rifle load in sixty under-predicted by more than 15 %, one in twenty-five against
+another laboratory's data.
 
 ## 4. Model unknowns
 

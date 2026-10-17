@@ -28,7 +28,21 @@
     "800-X": "Hodgdon Hi-Skor 800X"
   },
 
+  "equivalences": {
+    "_note": "Cle ADI de powders.json -> cle Hodgdon/IMR du MEME produit, selon la table du fabricant (voir _sources, « Table ADI / Hodgdon »). Ce ne sont PAS des alias de libelle : les deux cles restent (densites relevees separement), et les parseurs ne les lisent pas. Lues par scripts/adi_modele_servi.js (test du modele servi sur les donnees ADI). AR2213SC : les donnees ADI portent toutes le libelle « AR2213SC », d'ou la H4831SC.",
+    "ADI AR 2207": "Hodgdon H4198",
+    "ADI AR 2219": "Hodgdon H322",
+    "ADI AR 2206H": "Hodgdon H4895",
+    "ADI AR 2208": "Hodgdon Varget",
+    "ADI AR 2209": "Hodgdon H4350",
+    "ADI AR 2213, AR 2213SC": "Hodgdon H4831SC",
+    "ADI AR 2217": "Hodgdon H1000",
+    "ADI AR 2225": "Hodgdon Retumbo",
+    "ADI AR 2218": "Hodgdon H50BMG"
+  },
+
   "_sources": {
+    "Table ADI / Hodgdon (equivalences)": "ADI (Thales Australia), FAQ « Is Hodgdon propellant the same as ADI propellant? » du 2021-02-24, tableau « ADI / Hodgdon Propellants Equivilents » : Trail Boss = Trail Boss, AR2207 = H4198, AR2219 = H322, BM2 = Benchmark, Bench Mark 8208 = 8208 XBR, AR2206H = H4895, AR2208 = Varget, AR2209 = H4350, AR2213H / AR2213SC = H4831 / H4831SC, AR2217 = H1000, AR2225 = Retumbo, AR2218 = H50BMG. https://www.adiworldclass.com.au/faq-items/is-hodgdon-propellant-the-same-as-adi-propellant/ — tableau relu dans le HTML brut le 2026-10-17 (le 2026-10-08, seules trois lignes avaient ete reportees). Aucun equivalent pour AR2205, AR2206, AR2210, les AP et AS.",
     "Bench Mark 2, Bench Mark 8208 (ADI)": "ADI (Thales Australia), FAQ « Is Hodgdon propellant the same as ADI propellant? » du 2021-02-24 : « ADI export a range of propellant to the US market where they are rebranded by Hodgdon Powder Company » ; table des equivalences : BM2 = Benchmark, Bench Mark 8208 = 8208 XBR (et AR2213SC = H4831SC). https://www.adiworldclass.com.au/faq-items/is-hodgdon-propellant-the-same-as-adi-propellant/ — lu le 2026-10-08 (table lue dans le HTML brut).",
     "LVR (Hodgdon)": "Manuel Hodgdon 2024 (guides/AM24.pdf) : « LVR » dans les tableaux de charges ; la liste de vivacite du meme manuel ne compte qu'une poudre de ce nom, « Hodgdon LEVERevolution ». La cle « Hodgdon Leverevolution » (pcd 920) existait : l'entree « LVR » de _absentes etait fausse.",
     "IMR 7828 SSC (Hodgdon)": "Fiche produit Hodgdon (https://shop.hodgdon.com/imr-7828-ssc, lue le 2026-10-08) : « exactly the same burn rate as standard IMR 7828 and uses the same data », mais « up to 4% more powder space in the case » — densite differente de la 7828 standard. Hodgdon ne vend que deux 7828, la standard et la SSC ; « 7828SC » est l'abreviation des revendeurs pour la Super Short Cut. Identite DEDUITE, non ecrite par le fabricant. « IMR 7828 » sans suffixe reste NON apparie.",

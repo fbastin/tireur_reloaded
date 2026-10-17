@@ -97,17 +97,22 @@ Component database derived from <em>Gordon's Reloading Tool</em> (Gordon †) an
    carabine 7,9 % et 0,6 %, arme de poing 12,5 % et 6,3 % (20,8 % et 19,6 % avant).
    2026-10-16, à froid avec charge maximale estimée (scripts/fit_froid_max.js, validation croisée par couples, variante
    prudente, domaine de la poudre) : carabine 19,2 → 17,8 %, 19,1 → 6,6 % sous-estimées ; arme de poing 31,9 → 31,4 %,
-   23,0 → 11,8 %. Shooters World et ADI (poudres sans effet estimé) restent sur le modèle à froid : « une sur trois » y tient. */ ?>
+   23,0 → 11,8 %. Shooters World et ADI (poudres sans effet estimé) restent sur le modèle à froid : « une sur trois » y tient.
+   2026-10-17, validation corrigée (fit_deux_pentes.js, fenêtre des AUTRES balles de la masse : la balle testée fixait sa
+   propre référence) et données ADI rapportées aux poudres Hodgdon (adi_modele_servi.js) : avec données de pression,
+   carabine 9,9 %, 1,6 % sous-estimées (plancher de la loi des ancres) ; arme de poing 18,8 %, 12,6 % ; ADI, carabine,
+   couples avec données (125 couples, 954 charges) 12,8 %, 4,2 % sous-estimées ; ceux de la loi à deux pentes 15,3 %, 8,4 %. */ ?>
 <div class="vm-banner lang-fr">
 <strong>&#9888; Estimation, pas une donnée de sécurité.</strong> La <strong>vitesse</strong> est donnée à
 ~7&nbsp;% d'écart quadratique à froid, ~3&nbsp;% pour un couple cartouche/poudre marqué «&nbsp;●&nbsp;» (données
 fabricant), et presque exacte avec votre vitesse mesurée. La <strong>pression</strong> n'est
-qu'indicative&nbsp;: ~9&nbsp;% d'écart quadratique pour un couple «&nbsp;●&nbsp;» dont les guides publient la
-pression et la masse de balle (~8&nbsp;% en carabine, ~13&nbsp;% en arme de poing), ~25&nbsp;% à froid
+qu'indicative&nbsp;: ~10&nbsp;% d'écart quadratique en carabine pour un couple «&nbsp;●&nbsp;» dont les guides
+publient la pression et la masse de balle, ~19&nbsp;% en arme de poing, ~25&nbsp;% à froid
 (~18&nbsp;% en carabine quand la poudre est publiée dans des étuis de taille voisine).
-Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur cinquante avec
-données fabricant (une sur seize en arme de poing), une sur cinq sans — une sur trois pour des fabricants
-dont les données n'ont pas servi au calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
+Elle peut être <strong>sous-estimée</strong>&nbsp;: de plus de 15&nbsp;% pour une charge sur soixante en
+carabine avec données fabricant (une sur vingt-cinq face aux données d'un autre laboratoire, une sur huit en
+arme de poing), une sur cinq sans — une sur trois pour des fabricants dont les données n'ont pas servi au
+calage —, et de plus de 35&nbsp;% pour une charge sur cent. Une charge
 réellement au-dessus de la limite C.I.P. peut donc s'afficher «&nbsp;sûre&nbsp;». D'une charge à l'autre,
 la pression réelle peut monter plus vite que celle affichée (pente médiane d'une échelle de charge en
 carabine&nbsp;: 2,8 chez Reload Swiss, 2,35 chez Hodgdon, contre 2,2 ici)&nbsp;: au-delà du maximum publié,
@@ -121,11 +126,12 @@ les données officielles du fabricant.
 <div class="vm-banner lang-en">
 <strong>&#9888; An estimate, not safety data.</strong> <strong>Velocity</strong> is given to ~7% root-mean-square error uncalibrated,
 ~3% for a cartridge/powder combination marked “●” (manufacturer data), and near-exact with your
-measured velocity. <strong>Pressure</strong> is for indication only: ~9% root-mean-square error for a
-“●” combination whose manuals publish the pressure and the bullet weight (~8% for rifles, ~13% for
-handguns), ~25% uncalibrated (~18% for rifles when the powder is published in cases of similar size). It can be <strong>underestimated</strong>: by more than 15% for one
-load in fifty with manufacturer data (one in sixteen for handguns), one in five without — one in three for
-manufacturers whose data were not used in the fit —, and by more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
+measured velocity. <strong>Pressure</strong> is for indication only: ~10% root-mean-square error for rifles
+with a “●” combination whose manuals publish the pressure and the bullet weight, ~19% for handguns, ~25%
+uncalibrated (~18% for rifles when the powder is published in cases of similar size). It can be <strong>underestimated</strong>: by more than 15% for one
+rifle load in sixty with manufacturer data (one in twenty-five against another laboratory's data, one in eight
+for handguns), one in five without — one in three for manufacturers whose data were not used in the fit —, and by
+more than 35% for one load in a hundred. A load that is really above the C.I.P. limit can therefore be displayed as “safe”. From one
 charge to the next, real pressure can rise faster than the displayed one (median slope of a rifle charge
 ladder: 2.8 at Reload Swiss, 2.35 at Hodgdon, against 2.2 here): beyond the published maximum, the gap can
 widen.
@@ -250,7 +256,7 @@ against the manufacturer's official load data.
 <li><strong>avec votre vitesse mesurée</strong> au chronographe (champ ci-dessus)&nbsp;: vitesse <strong>quasi-exacte</strong>.</li>
 </ul>
 <p><strong>&#9888; Ces trois échelons ne valent que pour la vitesse.</strong> La pression reste
-indicative quoi qu'on fournisse (~9&nbsp;% d'écart quadratique avec données fabricant de pression, ~25&nbsp;% sans),
+indicative quoi qu'on fournisse (~10&nbsp;% d'écart quadratique en carabine et ~19&nbsp;% en arme de poing avec données fabricant de pression, ~25&nbsp;% sans),
 parce qu'elle sort d'une <em>autre</em> relation (efficacité
 piézométrique) que la vitesse (efficacité balistique)&nbsp;: le chronographe cale la seconde et
 ne dit rien de la première. Nous l'avons vérifié par trois chemins indépendants, dont la
@@ -285,7 +291,7 @@ charge équivalente.</p>
 <li><strong>with your measured velocity</strong> from a chronograph (field above): <strong>near-exact</strong> velocity.</li>
 </ul>
 <p><strong>&#9888; These three levels apply to velocity only.</strong> Pressure stays
-indicative whatever you provide (~9% root-mean-square error with manufacturer pressure data, ~25% without),
+indicative whatever you provide (~10% root-mean-square error for rifles and ~19% for handguns with manufacturer pressure data, ~25% without),
 because it comes from a <em>different</em> relation (piezometric
 efficiency) than velocity (ballistic efficiency): the chronograph calibrates the latter and
 says nothing about the former. We checked this along three independent paths, including
@@ -540,12 +546,17 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
   // vitesse (prédite ou mesurée) ni de η_p ; η_p affiché = celui qu'elle implique. Volume d'étui saisi : même
   // hypothèse de densité de chargement que cvScales, avec γL. Balle monolithique : PAS de facteur, la charge maximale
   // publiée de la masse porte déjà la construction (fit_deux_pentes.js : +2,1 % sans facteur, +5,2 % avec).
+  // Carabine, depuis le 2026-10-17 : jamais sous la loi des ancres (plancher, EnergyModel.pressionServieDeuxPentes). Sans
+  // la balle testée dans sa fenêtre, et sur les données d'ADI, la loi à deux pentes seule sous-estimait plus souvent.
+  // plancherAncres : la loi des ancres l'emporte (pente de charge γ, note monolithique de l'ancre).
   const win=an.fen?EnergyModel.fenetreMasse(an.fen,m_gr):null;
   const P2=EnergyModel.pressionDeuxPentes(COEF,an.anc,win,m_gr,C_gr,cart.type,!!opt.mono), deuxPentes=P2!=null;
+  let plancherAncres=false;
   if(deuxPentes){
     const rV=(CVOL>0&&cart.case_vol_cm3>0&&COEF.local)?cart.case_vol_cm3/CVOL:1;
-    Pmax=P2*Math.pow(rV,EnergyModel.penteDeuxPentes(COEF,cart.type));
-    eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax;
+    const P2v=P2*Math.pow(rV,EnergyModel.penteDeuxPentes(COEF,cart.type)), Ps=EnergyModel.pressionServieDeuxPentes(COEF,cart.type,Pmax,P2v);
+    if(Ps!==P2v) plancherAncres=true;
+    else { Pmax=P2v; eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax; }
   }
   // Couple ancré sur des données SANS pression publiée (2026-10-16, fit_deux_pentes.js) : moyenne géométrique de la
   // pression de l'ancre (énergie, η_p générique) et de la loi à deux pentes plafonnée à k × la limite de la cartouche
@@ -577,7 +588,7 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
       if(Pm>Pmax){ Pmax=Pm; eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax; froidRel=true; }
     }
   }
-  const loi=deuxPentes?true:(plafondLimite||froidRel)?'mix':false;
+  const loi=deuxPentes?!plancherAncres:(plafondLimite||froidRel)?'mix':false;
   // Température (réf. 21 °C), sur une vitesse PRÉDITE seulement : vitesse par la sensibilité de
   // Litz, pression par kTempP(). Jusqu'au 2026-10-10, la pression restait celle de 21 °C.
   let tempApplied=false;
@@ -585,7 +596,7 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
     const vT=VelocityModel.tempCorrect(vUser,opt.Tc-21);
     Pmax*=Math.pow(vT/vUser,kTempP(loi,cart.type)); vUser=vT; tempApplied=true;
   }
-  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied,deuxPentes,plafondLimite,froidMax,froidRel,loi,win:(deuxPentes||plafondLimite)?win:null};
+  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied,deuxPentes,plancherAncres,plafondLimite,froidMax,froidRel,loi,win:(deuxPentes||plafondLimite)?win:null};
 }
 // --- unité de masse du ladder (gr <-> g) ---
 const ladToGr=(v)=> LADUNIT==='g' ? v/GR_G : v;           // saisie (LADUNIT) -> grains
@@ -847,14 +858,16 @@ function calc(){
   // modèle à froid, « ~25 %, une sur cinq ».
   const PSANS={'rifle|r':[10,'trente','thirty'],'rifle|c':[20,'vingt-cinq','twenty-five'],'handgun|r':[22,'huit','eight'],'handgun|c':[38,'dix','ten']};
   const pSans=(anc && anc.np==null) ? PSANS[cart.type+'|'+((pw.Qex&&pw.Ba)?'c':'r')] : null;
-  // Loi à deux pentes (scripts/fit_deux_pentes.js, 2026-10-16), balle laissée de côté. Carabine, plus petit maximum de la
-  // masse : 7,9 %, biais +2,4 %, 0,5 % des charges sous-estimées de plus de 15 % (6 057 charges ; loi des ancres : 8,9 % et
-  // 3,1 %). Arme de poing, maximum moyen de la masse : 12,5 %, 6,3 % (2 170 charges ; loi des ancres : 20,8 % et 19,7 %).
+  // Loi à deux pentes (scripts/fit_deux_pentes.js), balle laissée de côté, fenêtre des AUTRES balles de la masse (celle
+  // qui comptait la balle elle-même donnait, le 2026-10-16, 7,9 % et 0,5 % en carabine, 12,5 % et 6,3 % en arme de poing).
+  // Carabine, avec le plancher de la loi des ancres (2026-10-17) : 9,9 %, 1,4 % sous-estimées de plus de 15 % ; un autre
+  // laboratoire (ADI, scripts/adi_modele_servi.js) : 15,3 %, 8,4 %. Arme de poing, maximum moyen : 18,9 %, 12,7 %.
   const enU=(gr,u)=> U[u].cur==='g' ? nf(gr*GR_G,2)+' g' : nf(gr,u==='mass'?(gr%1?1:0):2)+' gr';   // masse, charge dans l'unité choisie
   const poing=cart.type==='handgun';
-  // Couple sans pression publiée, plafond tiré de la limite (simulation de fit_deux_pentes.js) : carabine 10,4 %, 0,3 %
-  // des charges sous-estimées de plus de 15 % ; arme de poing 19,7 %, 8,2 %.
-  const PLIM=poing?[20,'douze','twelve']:[10,'trois cents','three hundred'];
+  // Couple sans pression publiée, plafond tiré de la limite (simulation de fit_deux_pentes.js, fenêtre des autres balles de
+  // la masse) : carabine 9,5 %, 1,5 % des charges sous-estimées de plus de 15 % ; arme de poing 21,5 %, 12,2 %. Jusqu'au
+  // 2026-10-17, avec la balle dans sa propre fenêtre : « une sur trois cents », « une sur douze ».
+  const PLIM=poing?[22,'huit','eight']:[10,'soixante-dix','seventy'];
   // À froid, charge maximale estimée, variante prudente (fit_froid_max.js, validation croisée) : carabine 17,8 %, 6,6 % ;
   // arme de poing 31,4 %, 11,8 %.
   const PFRO=poing?[31,'huit','eight']:[18,'quinze','fifteen'];
@@ -862,9 +875,9 @@ function calc(){
   let w = r.plafondLimite
     ? T(`Pression indicative (~${PLIM[0]} % d'écart quadratique : données fabricant de ce couple sans pression publiée ; pression moyenne entre celle de l'ancre et un plafond déduit de la limite ${limSrc(cart)} de la cartouche, rapporté à la charge maximale ${poing?'moyenne ':''}publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(cRefLim,'charge')} ; sous-estimée de plus de 15 % pour une charge sur ${PLIM[1]}) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~${PLIM[0]}% RMS error: manufacturer data for this combination give no pressure; mean of the anchor's pressure and a ceiling derived from the cartridge's ${limSrc(cart)} limit, relative to the ${poing?'mean ':''}published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(cRefLim,'charge')}; underestimated by more than 15% for one load in ${PLIM[2]}) — never validate a load on this basis.`)
     : r.deuxPentes && poing
-    ? T(`Pression indicative (~13 % d'écart quadratique, rapportée à la charge maximale moyenne publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(r.win.cmoy,'charge')} ; sous-estimée de plus de 15 % pour une charge sur seize) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~13% RMS error, relative to the mean published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(r.win.cmoy,'charge')}; underestimated by more than 15% for one load in sixteen) — never validate a load on this basis.`)
+    ? T(`Pression indicative (~19 % d'écart quadratique, rapportée à la charge maximale moyenne publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(r.win.cmoy,'charge')} ; sous-estimée de plus de 15 % pour une charge sur huit, moins si votre balle est l'une de celles publiées) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~19% RMS error, relative to the mean published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(r.win.cmoy,'charge')}; underestimated by more than 15% for one load in eight, less if your bullet is one of those published) — never validate a load on this basis.`)
     : r.deuxPentes
-    ? T(`Pression indicative (~8 % d'écart quadratique, rapportée à la charge maximale publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(r.win.cmax,'charge')} ; sous-estimée de plus de 15 % pour une charge sur deux cents) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~8% RMS error, relative to the published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(r.win.cmax,'charge')}; underestimated by more than 15% for one load in two hundred) — never validate a load on this basis.`)
+    ? T(`Pression indicative (~10 % d'écart quadratique, rapportée à la charge maximale publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(r.win.cmax,'charge')}, sans descendre sous la loi des données fabricant de ce couple ; sous-estimée de plus de 15 % pour une charge sur soixante-dix, une sur douze avec les données d'un autre laboratoire) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~10% RMS error, relative to the published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(r.win.cmax,'charge')}, never below the law of the manufacturer data for this combination; underestimated by more than 15% for one load in seventy, one in twelve against another laboratory's data) — never validate a load on this basis.`)
     : pSans
     ? T(`Pression indicative (~${pSans[0]} % d'écart quadratique : énergie tirée des données fabricant de ce couple, qui ne publient pas la pression, η_p générique ; sous-estimée de plus de 15 % pour une charge sur ${pSans[1]}) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~${pSans[0]}% RMS error: energy from the manufacturer data for this combination, which give no pressure, generic η_p; underestimated by more than 15% for one load in ${pSans[2]}) — never validate a load on this basis.`)
     : (anc && anc.np!=null)
@@ -906,7 +919,7 @@ function calc(){
         : T('Balle monolithique : pas de correction notable ici (aucun écart net mesuré sans données fabricant de pression, en carabine). ','Monolithic bullet: no notable correction here (no clear gap measured without manufacturer pressure data, for rifles). '))
       : r.deuxPentes && D2.mono>0
       ? T('Balle monolithique : pression majorée de '+pD+' % (écart mesuré sous la loi rapportée au maximum moyen de la masse, guides Hodgdon et Western). ','Monolithic bullet: pressure raised by '+pD+'% (gap measured under the law relative to the mean maximum of the weight, Hodgdon and Western manuals). ')
-      : r.deuxPentes
+      : r.deuxPentes && !r.plancherAncres
       ? T('Balle monolithique : la pression est rapportée à la plus petite charge maximale publiée pour cette masse de balle, où comptent déjà les monolithiques publiées ; aucun facteur ajouté. ','Monolithic bullet: pressure is relative to the lowest published maximum charge for this bullet weight, which already includes the published monolithic bullets; no factor added. ')
       : parAncre
       ? T('Balle monolithique : à charge et masse égales, les guides Hodgdon et Western donnent '+pA+' % de pression de plus qu\'avec une balle à noyau ('+(cart.type==='handgun'?'arme de poing':'carabine')+') ; la pression ancrée en tient compte. ','Monolithic bullet: at equal charge and bullet weight, the Hodgdon and Western manuals give '+pA+'% more pressure than with a lead-core bullet ('+(cart.type==='handgun'?'handguns':'rifles')+'); the anchored pressure takes it into account. ')
