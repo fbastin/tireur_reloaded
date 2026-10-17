@@ -107,7 +107,7 @@ function valider(D) {
         const P2 = D ? EM.pressionDeuxPentes({ deux_pentes: D }, anc, win, r.m, r.C, type) : null;
         const P2a = D ? EM.pressionDeuxPentes({ deux_pentes: D }, anc, wA, r.m, r.C, type) : null;
         const servie = (p) => (p != null ? EM.pressionServieDeuxPentes({ deux_pentes: D }, type, (1 + actuel) * r.P, p) / r.P - 1 : actuel);
-        res.push({ src: r.src, max: r.max, type, mono: !!r.mono, dm: ln(r.m) - lm, actuel, servi: servie(P2), deux: P2 != null,
+        res.push({ k, src: r.src, max: r.max, type, mono: !!r.mono, dm: ln(r.m) - lm, actuel, servi: servie(P2), deux: P2 != null,
           autres: wA != null, servi2: servie(P2a), deux2: P2a != null, seule: P2 != null ? P2 / r.P - 1 : actuel, seule2: P2a != null ? P2a / r.P - 1 : actuel });
       }
     }
@@ -179,6 +179,10 @@ else {
     D.handgun.mono = +Math.exp(-mean(moh.map((x) => ln(1 + x.seule)))).toFixed(3);
     const mohA = res.filter((x) => x.type === 'handgun' && x.mono);
     console.log(`  monolithiques d'arme de poing, construction déclarée (ancres × ${MPh} ; deux pentes × ${D.handgun.mono}, facteur mesuré sur ${moh.length} charges)\n    ${st(mohA.map((x) => (1 + x.actuel) * MPh - 1))}\n  → ${st(mohA.map((x) => x.deux ? (1 + x.servi) * D.handgun.mono - 1 : (1 + x.servi) * MPh - 1))}`);
+    // Le facteur est mesuré sur les charges mêmes qu'il corrige : validation croisée par couples (2026-10-17), chaque
+    // couple corrigé par le facteur des autres couples.
+    const cv = moh.map((x) => { const a = moh.filter((y) => y.k !== x.k); return a.length ? (1 + x.seule) * Math.exp(-mean(a.map((y) => ln(1 + y.seule)))) - 1 : null; }).filter((v) => v != null);
+    console.log(`  … loi à deux pentes seule, facteur mesuré sur les mêmes charges / sur les autres couples (${new Set(moh.map((x) => x.k)).size} couples)\n    ${st(moh.map((x) => (1 + x.seule) * D.handgun.mono - 1))}\n    ${st(cv)}`);
   }
   resSansNp = validerSansNp(D);
   console.log('\nCouples ancrés sans pression publiée (simulés) — ancre et η_p générique → moyenne avec le plafond tiré de la limite');

@@ -705,8 +705,18 @@ at most 10.2 % above the top; a common range alone left up to 22 % above.
 
 Colour, percentage of the limit and alerts stay on the central pressure (Fabian's choice); an extra caution appears
 when the top of the range exceeds the limit (the Hodgdon maximum of .308 Win. + Varget, 168 gr, 45 gr: 99 % of the
-limit, top of the range 116 %). Not checked: handgun pairs with data against another laboratory, and rifle cold pairs
-without a powder effect (63 ADI loads, 52 % inside).
+limit, top of the range 116 %). The load ladder does the same: colour on the central pressure, « ⚠ » on the rows whose
+top of range exceeds the limit, and the range in its note. Not checked: handgun pairs with data against another
+laboratory, and rifle cold pairs without a powder effect (63 ADI loads, 52 % inside).
+
+**The same leak elsewhere (same day).** The Hodgdon starting loads of § 3.8 were predicted with the served window,
+which counts their own bullet. With the window of the other bullets of the weight and the served configuration
+(`essai_departs_hodgdon.js`, section 3 bis): rifles +1.9 / 11.6 %, 7.6 % under-predicted by more than 15 % (304
+loads; own window +5.1 / 10.3 %, 1.1 %); handguns +1.1 / 23.3 %, 22.3 % (278; own window 12.8 %, 8.6 %). The starting
+loads therefore do somewhat worse than the maxima, and much worse in handguns: the "as well as the maximum loads" of
+§ 3.8 held only with the leak. The handgun monolithic factor (1.098) was measured on the loads it corrects;
+cross-validated over pairs (each pair corrected by the factor of the others, 115 pairs), 13.6 % and 16.2 % under,
+against 13.5 % and 16.2 % in-sample: no change.
 
 ## 4. Model unknowns
 

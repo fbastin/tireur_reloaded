@@ -13,7 +13,9 @@
  * 2. Estimations groupées (moindres carrés, effets fixes par balle), avec et sans les départs Hodgdon.
  * 3. Validation, balle laissée de côté, sur toutes les charges avec pression, départs Hodgdon compris : modèle
  *    servi (ancres sans départs), mêmes lois avec les départs dans les ancres, lois recalées sans et avec eux.
- * Résultats et décision (rien d'appliqué) : docs/MODEL.md § 3.8.
+ * Résultats et décision (rien d'appliqué) : docs/MODEL.md § 3.8. Section 3 bis (2026-10-17) : fenêtre des AUTRES
+ * balles de la masse, configuration servie ; les départs Hodgdon, carabine 11,6 % et 7,6 % sous-estimés de plus de
+ * 15 %, arme de poing 23,3 % et 22,3 % (avec leur propre balle comme référence : 10,3 % et 1,1 % ; 12,8 % et 8,6 %).
  */
 process.env.ANCRES_DEPARTS_HODGDON = '1';
 const fs = require('fs');
@@ -81,8 +83,14 @@ console.log(`  sans départs Hodgdon  : δ ${sans.L.delta}, γ ${sans.L.gamma}, 
 console.log(`  avec départs Hodgdon  : δ ${avec.L.delta}, γ ${avec.L.gamma}, β ${avec.L.beta}, α ${avec.L.alpha} ; γL ${avec.D.gammaL}, αM ${avec.D.alphaM}`);
 
 // --- 3. Validation, balle laissée de côté ------------------------------------------------------------------------
-// Loi des ancres (L) partout ; loi à deux pentes (D) en carabine quand le plafond (charges maximales des AUTRES
-// balles, deux au moins) et la fenêtre servie de la masse existent — comme la page.
+// Loi des ancres (L) partout ; loi à deux pentes (D) quand le plafond (charges maximales des AUTRES balles, deux au
+// moins) et la fenêtre de la masse existent — comme la page, plancher de la loi des ancres compris (carabine,
+// 2026-10-17). Fenêtre : celle que sert la page, qui compte la balle elle-même (ep), et celle des AUTRES balles de la
+// masse (ep2, charges dont la masse en a une ; null sinon) : jusqu'au 2026-10-17, seule la première était mesurée.
+function fenetreAutres(a, bid, m) {
+  const mx = Object.values(by(a.filter((r) => r.max && r.bid !== bid && Math.abs(r.m - m) < 0.5), (r) => r.bid)).map((x) => Math.max(...x.map((r) => r.C)));
+  return mx.length ? { m, cmax: Math.min(...mx), cmoy: Math.exp(mean(mx.map(ln))), nb: mx.length } : null;
+}
 function valider(L, D, ancresSansDeparts) {
   const res = [];
   for (const [k, a0] of Object.entries(groups)) {
@@ -98,8 +106,10 @@ function valider(L, D, ancresSansDeparts) {
       for (const r of g) {
         if (!(r.np > 0 && r.P > 0) || N0 == null) continue;
         const Ep = E0 * EM.localE(L, r.C, r.m, Math.exp(lc), Math.exp(lm)), Np = N0 * EM.localNp(L, r.C, r.m, Math.exp(lc), Math.exp(lm));
-        const P2 = EM.pressionDeuxPentes({ deux_pentes: D }, anc, EM.fenetreMasse(FEN[k], r.m), r.m, r.C, type);
-        res.push({ src: r.src, max: r.max, depart: !!r.depart, type, ev: Math.sqrt(Ep / r.eeff) - 1, ep: P2 != null ? P2 / r.P - 1 : (Ep / r.eeff) * (r.np / Np) - 1 });
+        const PA = (Ep / r.eeff) * (r.np / Np) * r.P, C2 = { deux_pentes: D };
+        const servie = (w) => { const P2 = EM.pressionDeuxPentes(C2, anc, w, r.m, r.C, type); return (P2 != null ? EM.pressionServieDeuxPentes(C2, type, PA, P2) : PA) / r.P - 1; };
+        const wA = fenetreAutres(a, bid, r.m);
+        res.push({ src: r.src, max: r.max, depart: !!r.depart, type, ev: Math.sqrt(Ep / r.eeff) - 1, ep: servie(EM.fenetreMasse(FEN[k], r.m)), ep2: wA ? servie(wA) : null });
       }
     }
   }
@@ -119,3 +129,6 @@ for (const [s, f] of SOUS) {
   for (const [nom, res] of R) { const x = res.filter(f); console.log(`    ${nom.padEnd(28)} ${st(x.map((y) => y.ep))}`); }
 }
 for (const [nom, res] of R) console.log(`  vitesse, ${nom.padEnd(28)} ${st(res.map((y) => y.ev))}`);
+// fenêtre des autres balles de la masse (configuration servie)
+console.log('\n3 bis. Configuration servie, fenêtre des AUTRES balles de la masse (charges dont la masse en a une)');
+for (const [s, f] of SOUS) { const x = R[0][1].filter((y) => f(y) && y.ep2 != null); if (x.length) console.log(`  ${s.padEnd(30)} ${st(x.map((y) => y.ep2))}`); }
