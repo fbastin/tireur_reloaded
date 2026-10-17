@@ -337,7 +337,7 @@ function applyStaticLang(){
   document.querySelectorAll('[data-en-title]').forEach(o=>{ if(!o.hasAttribute('data-fr-title')) o.setAttribute('data-fr-title',o.title); o.title=T(o.getAttribute('data-fr-title'),o.getAttribute('data-en-title')); });
   document.querySelectorAll('[data-en-placeholder]').forEach(o=>{ if(!o.hasAttribute('data-fr-placeholder')) o.setAttribute('data-fr-placeholder',o.placeholder); o.placeholder=T(o.getAttribute('data-fr-placeholder'),o.getAttribute('data-en-placeholder')); });
 }
-let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, STARTM={}, DIMS={}, RIFLE={eeff:null,n:0}, LAST=null;
+let CAL={}, PWD={}, COEF={}, ANCH={}, BRRANK={}, STARTC={}, STARTM={}, DIMS={}, EQUIV={}, RIFLE={eeff:null,n:0}, LAST=null;
 let CVOL=null, CVOLUNIT='cm3';   // volume utile d'étui saisi (cm³ ; null = valeur nominale de la cartouche)
 let LADUNIT='gr';                // unité de masse des champs du ladder (gr | g)
 let LASTPLOT=null, PLOTBOUND=false;   // dernier graphe (data+layout) pour la vue agrandie
@@ -399,8 +399,10 @@ Promise.all([
   getData('burn_rate_chart.txt').then(r=>r.text()).catch(()=>''),   // classement vitesse de combustion (optionnel)
   getData('start_charges.local.json').then(r=>r.json()).catch(()=>({charges:{}})), // charges de départ (optionnel, live)
   getData('cartridge_dims.json').then(r=>r.json()).catch(()=>({dims:{}})), // cotes pour le schéma (optionnel)
-]).then(([cal,pwd,coef,anc,brTxt,sc,cd])=>{
+  getData('powder_aliases.json').then(r=>r.json()).catch(()=>({})),        // équivalences déclarées par le fabricant (optionnel)
+]).then(([cal,pwd,coef,anc,brTxt,sc,cd,al])=>{
   CAL=cal.calibers; PWD=pwd.powders; COEF=coef; ANCH=anc.anchors||{}; STARTC=sc.charges||{}; STARTM=sc.fenetres_masse||{}; DIMS=cd.dims||{};
+  EQUIV=Object.fromEntries(Object.entries(al.equivalences||{}).filter(([k,v])=>k[0]!=='_'&&PWD[k]&&PWD[v]));
   const cs=document.getElementById('cart');
   const byName=(a,b)=>a.localeCompare(b,'fr',{numeric:true});
   [['Armes longues','Rifles','rifle'],['Armes de poing','Handguns','handgun']].forEach(([label,labelEn,type])=>{
@@ -435,7 +437,7 @@ function populatePowders(defaultSel){
   const byName=(a,b)=>pLabel(a).localeCompare(pLabel(b),'fr',{numeric:true});
   // « ● » = données fabricant pour CE calibre (ancrage et/ou fenêtre de charge ladder).
   const ck=document.getElementById('cart').value;
-  const hasData=(k)=> !!(ANCH[ck+'|'+k] || STARTC[ck+'|'+k]);
+  const hasData=(k)=> !!(ANCH[ck+'|'+cleDonnees(k)] || STARTC[ck+'|'+cleDonnees(k)]);
   const opt=(parent,k)=>{const o=document.createElement('option');o.value=k;o.textContent=(hasData(k)?'● ':'')+pLabel(k);parent.appendChild(o);};
   ps.innerHTML='';
   if(mode==='burn-fast'||mode==='burn-slow'){
@@ -453,7 +455,7 @@ function populatePowders(defaultSel){
 // pré-remplit balle typique + charge de DÉPART (min fabricant réelle) au changement de couple
 function applyStartLoad(){
   RIFLE.eeff=null;                                   // l'ancrage carabine (ladder) est propre au couple -> réinit
-  const sc=STARTC[document.getElementById('cart').value+'|'+document.getElementById('pwd').value];
+  const sc=STARTC[document.getElementById('cart').value+'|'+cleDonnees(document.getElementById('pwd').value)];
   if(sc){
     document.getElementById('m').value = U.mass.cur==='g' ? (sc.m*GR_G).toFixed(2) : sc.m;
     document.getElementById('c').value = U.charge.cur==='g' ? (sc.c*GR_G).toFixed(2) : sc.c;
@@ -495,7 +497,12 @@ function cvScales(cart,pw,C_gr){
 // Ancres du couple : celle du fabricant (énergie et η_p à un point de référence C, m) et, si
 // l'utilisateur l'a demandé, celle de sa carabine (énergie seule, tirée de ses vitesses).
 // fen : fenêtres par masse du couple (carabines à plafond de pression, loi à deux pentes).
-function anchorsFor(ck,pk){ return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.eeff!=null ? RIFLE : null, fen: STARTM[ck+'|'+pk]||null, ck, pk }; }
+// Poudre que son fabricant déclare identique à une autre (ADI → Hodgdon : AR2208 = Varget…, data/powder_aliases.json,
+// bloc equivalences, 2026-10-17) : la page lit les données fabricant et la densité de l'autre clé. Sur les charges d'ADI
+// en carabine (157 couples, scripts/adi_modele_servi.js), clé ADI → clé Hodgdon : pression 24,1 → 17,2 %, sous-estimées de
+// plus de 15 % 7,5 → 2,7 % ; vitesse 7,3 → 5,2 %. Couples où Hodgdon publie : pression 24,8 → 13,1 %, vitesse 7,3 → 3,1 %.
+function cleDonnees(pk){ return EQUIV[pk]||pk; }
+function anchorsFor(ck,pk){ pk=cleDonnees(pk); return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.eeff!=null ? RIFLE : null, fen: STARTM[ck+'|'+pk]||null, ck, pk }; }
 // Exposant de la pression sur la vitesse quand la température change : on la traite comme la
 // variation de charge équivalente, P ∝ v^(2γ/(δ+1)) par les lois locales (2 sans elles). C'est
 // une HYPOTHÈSE, faute de mesures de pression en température dans nos données.
@@ -618,7 +625,7 @@ function toggleLadUnit(){
 // départ absente de nos données (Hodgdon, extrait sans sa colonne de départ). Avant, une balle de 190 gr recevait
 // le maximum de la balle typique (168 gr), plus fort.
 function fenetreLadder(){
-  const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value, cart=CAL[ck];
+  const ck=document.getElementById('cart').value, pk=cleDonnees(document.getElementById('pwd').value), cart=CAL[ck];
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur);
   const wm=cart?EnergyModel.fenetreMasse(STARTM[ck+'|'+pk],m_gr):null;   // carabines et armes de poing à plafond
   return wm || STARTC[ck+'|'+pk] || null;
@@ -661,7 +668,7 @@ function ladderCharges(w){ const out=[]; const n=Math.min(60,Math.floor((w.cmax-
   return out; }
 function renderLadder(){
   const el=document.getElementById('ladTable'); if(!el)return;
-  const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value, cart=CAL[ck], pw=PWD[pk];
+  const ck=document.getElementById('cart').value, pk=document.getElementById('pwd').value, cart=CAL[ck], pw=PWD[cleDonnees(pk)];
   if(!cart||!pw){el.innerHTML='';return;}
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
   const w=ladderWindow();
@@ -787,7 +794,7 @@ function updateCvolPlaceholder(){ const c=CAL[document.getElementById('cart').va
   el.placeholder = isFinite(nom) ? 'nominal '+nom.toFixed(2) : 'nominal'; }   // même mot dans les deux langues
 function lin(coef,feats){return coef.reduce((s,w,i)=>s+w*feats[i],0);}
 function calc(){
-  const cart=CAL[document.getElementById('cart').value], pw=PWD[document.getElementById('pwd').value];
+  const cart=CAL[document.getElementById('cart').value], pw=PWD[cleDonnees(document.getElementById('pwd').value)];
   if(!cart||!pw) return;
   suivreFenetre();
   const m_gr=toGr(+document.getElementById('m').value,U.mass.cur), C_gr=toGr(+document.getElementById('c').value,U.charge.cur), bbl=toMm(+document.getElementById('bbl').value,U.bbl.cur);
@@ -899,6 +906,9 @@ function calc(){
   // Écart du repli, toutes charges publiées (scripts/fit_repli_carabine.js, 2026-10-16) : carabine 5,8 % avec son
   // facteur, arme de poing 10,8 %. La page disait « ~8 % » pour les deux.
   if(viaEeff){ const e=cart.type==='rifle'?6:11; w=T('Poudre sans Qex/Ba connus : vitesse via énergie générique (~'+e+' % d\'écart quadratique). ','Powder without known Qex/Ba: velocity from a generic energy (~'+e+'% root-mean-square error). ')+w; }
+  // Poudre déclarée identique à une autre par son fabricant (cleDonnees) : données et densité sont celles de l'autre clé.
+  { const pkSel=document.getElementById('pwd').value, pkD=cleDonnees(pkSel), nm=(k)=>{const p=PWD[k]||{};return (p.mfg?p.mfg+' ':'')+(p.name||k);};
+    if(pkD!==pkSel) w=T(nm(pkSel)+' : même poudre que la '+nm(pkD)+' selon le fabricant ; l\'estimateur en prend les données fabricant et la densité. ',nm(pkSel)+': the same powder as '+nm(pkD)+' according to the manufacturer; the estimator uses its manufacturer data and density. ')+w; }
   if(ancFlag) w=T('⚠ Données fabricant atypiques pour ce couple (cohérence vitesse/pression Mayer-Hart hors norme : '+anc.mhr.toFixed(0)+' %) : ancrage pression à confirmer. ','⚠ Atypical manufacturer data for this combination (Mayer-Hart velocity/pressure consistency out of range: '+anc.mhr.toFixed(0)+'%): pressure anchoring to be confirmed. ')+w;
   // Balle monolithique (scripts/fit_monolithique.js, 2026-10-15) : sans ce choix, une monolithique d'arme de
   // poing sortait 16 % trop bas en pression ancrée, et plus d'une charge sur deux de plus de 15 %.

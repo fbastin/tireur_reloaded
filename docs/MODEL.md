@@ -659,6 +659,16 @@ All rifle loads with manufacturer pressure data, window (2): 9.9 %, 1.6 % under-
 the gap between laboratories (~13 %) exceeds the in-house one. ADI velocity at its own barrel, carried-over powders:
 +0.7 / 5.2 %.
 
+**Equivalences served (same day).** The page reads the `equivalences` block (`powder_aliases.json`, now with
+ADI BM2, BM8208 and Trail Boss too): an ADI powder of the table takes the manufacturer data, windows and density of
+its Hodgdon key, and the message says so (`cleDonnees` in `index.php`). On ADI's own rifle loads (157 pairs, 1 275
+loads), ADI key → Hodgdon key: pressure +11.5 / 24.1 % → +8.1 / 17.2 %, under-predicted by more than 15 % 7.5 →
+2.7 %; velocity 7.3 → 5.2 %. Pairs that Hodgdon publishes (103): pressure 24.8 → 13.1 %, velocity 7.3 → 3.1 %; the
+others (54) gain through the estimated maximum charge (under-predicted 8.7 → 0.6 %). ADI's « Powder equivalents » page
+(2024) is a chart of similar burning rates across nine makers (AR2208 beside Varget, IMR 4064 and AA 2520): it
+establishes no identity and is not used. ADI publishes no bulk density; for some pairs the two keys disagree (BM2
+980, Benchmark 906 kg/m³), and the page takes the Hodgdon one, consistent with the anchors.
+
 The page's messages now quote window (2): two slopes, rifle ~10 %, one load in seventy under-predicted by more than
 15 %, one in twelve against another laboratory's data; handgun ~19 %, one in eight; ceiling from the limit, rifle
 ~10 %, one in seventy, handgun ~22 %, one in eight. The banner: ~10 % for rifles, ~19 % for handguns with

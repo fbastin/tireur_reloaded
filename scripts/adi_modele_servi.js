@@ -27,6 +27,9 @@
  * loi des ancres (fit_deux_pentes.js) : 15,3 % et une sur douze. Plafond déduit de la limite : 14,9 → 11,4 %, 0 → 1,3 %.
  * À froid, charge maximale estimée : 20,8 → 19,4 %, 13,0 → 1,9 %. Tous les couples avec données : 13,1 → 12,8 %,
  * 4,1 → 4,2 %. Arme de poing : aucune poudre d'ADI n'a d'équivalent Hodgdon publié.
+ * Équivalences servies par la page (même jour) : une poudre ADI de la table y prend les données et la densité de la clé
+ * Hodgdon. Sur ses propres charges, carabine, 157 couples : pression 24,1 → 17,2 %, sous-estimées 7,5 → 2,7 % ; vitesse
+ * 7,3 → 5,2 % ; couples où Hodgdon publie, pression 24,8 → 13,1 %, vitesse 7,3 → 3,1 %.
  *
  * Pression de la page : canon de référence de la cartouche, 21 °C, balle à noyau (option « monolithique » cochée pour
  * les balles que balle_monolithique.js reconnaît), sans volume d'étui mesuré. Lignes en CUP écartées (non convertible).
@@ -83,7 +86,7 @@ for (const f of ['adi_web.local.json', 'adi.local.json']) {
       if (copV.has(b + '|' + Math.round(v)) || copP.has(b + '|' + Math.round(p))) { n.copies++; continue; }
       // carabine sous 340 m/s : autre régime, hors des ancres (build_anchors.js, 2026-10-15) et hors du domaine du modèle
       if (ca.type === 'rifle' && v * 0.3048 < 340) { n.subsoniques++; continue; }
-      L.push({ ck, pk, ca, pw, m: r.bullet_gr, C: c, vPub: v, Ppub: p * PSI, bbl: r.barrel_mm, max, eq: !!EQ[r.powder], mono: estMonolithique(r.bullet_desc) });
+      L.push({ ck, pk, ca, pw, m: r.bullet_gr, C: c, vPub: v, Ppub: p * PSI, bbl: r.barrel_mm, max, eq: !!EQ[r.powder], pkAdi: r.powder, mono: estMonolithique(r.bullet_desc) });
     }
   }
 }
@@ -129,6 +132,14 @@ for (const t of ['rifle', 'handgun']) {
 const anc = R.filter((x) => x.ca.type === 'rifle' && x.anc), couples = (a) => new Set(a.map((x) => x.ck + '|' + x.pk)).size;
 console.log(`carabine, couples avec données fabricant (${couples(anc)} couples, ${anc.length} charges)\n    avant  ${st(anc.map((x) => x.e0))}\n    servie ${st(anc.map((x) => x.e))}`);
 for (const c of CLS) { const g = R.filter((x) => x.cls === c); if (g.length) console.log(`  ${c} : ${couples(g)} couples`); }
+// Ce que la page servait AVANT de lire les équivalences (2026-10-17) : la clé ADI, sa densité, sans données ni effet.
+const eqR = R.filter((x) => x.eq && PWD[x.pkAdi] && PWD[x.pkAdi].pcd > 0).map((x) => {
+  const y = page({ ...x, pk: x.pkAdi, pw: PWD[x.pkAdi] }); return { ...x, eA: y.P / x.Ppub - 1, evA: y.v * 3.28084 / x.vPub - 1 }; });
+console.log('\nPoudres ADI de la table, clé ADI (page avant le 2026-10-17) → clé Hodgdon (page servie)');
+for (const [n, f] of [['carabine', (x) => x.ca.type === 'rifle'], ['  couples avec données Hodgdon', (x) => x.ca.type === 'rifle' && x.anc], ['  couples sans données', (x) => x.ca.type === 'rifle' && !x.anc]]) {
+  const g = eqR.filter(f); if (!g.length) continue;
+  console.log(`  ${n} (${couples(g)} couples, ${g.length} charges)\n    pression ${st(g.map((x) => x.eA))}\n          → ${st(g.map((x) => x.e))}\n    vitesse  ${st(g.map((x) => x.evA))}\n          → ${st(g.map((x) => x.ev))}`);
+}
 const vit = R.filter((x) => x.eq);
 console.log(`\nVitesse au canon ADI, poudres rapportées à Hodgdon : ${st(vit.map((x) => x.ev))} (n ${vit.length})`);
 if (process.argv.includes('--pires')) {   // les plus sous-estimées, par classe
