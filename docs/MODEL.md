@@ -557,8 +557,23 @@ The monolithic factor under this law (`deux_pentes.handgun.mono` = 1.098, geomet
 predicted over 204 loads) replaces the anchor-law 1.253, which over-corrected (+15 %); no factor gave −7.9 %.
 All pressures with manufacturer data: 13.1 → 9.3 %, under-predicted 7.5 → 2.1 %, 1st percentile −35 → −23 %.
 
+**Pairs anchored without published pressure (same day).** 1 356 anchors (Nosler, Vihtavuori, Alliant, Sierra,
+Norma, Hodgdon in CUP) have energy but no $\eta_p$; their pressure used the generic cold $\eta_p$. Their
+windows give the published maxima, not the ceiling. Published maximum pressures sit at a fraction of the
+cartridge's limit (`pmax_cip_bar`): geometric mean 0.941 for rifles, 0.953 for handguns (dispersion 11 and
+18 %; Reload Swiss 0.85, Western 0.97 in rifles). `deux_pentes.plafond_limite` holds these fractions and
+`EnergyModel.pressionPlafondLimite` the two-slope law with that ceiling. Alone it is worse for rifles (simulated
+on the pairs that publish pressure: 11.9 → 15.5 %, though 3.2 → 0.1 % under-predicted); its geometric mean with
+the anchor's pressure beats both: rifles 11.9 → 10.4 %, under-predicted 3.2 → 0.3 %, 1st percentile −23 → −12 %;
+handguns 25.3 → 19.7 %, 12.1 → 8.2 %. The page uses that mean; charge slope and temperature exponent are the mean
+of $\gamma$ and $\gamma_L$. 5 826 more windows are served (12 108 in all, without bullet names, on the user's
+decision). The fraction is measured on the laboratories that publish pressure; for Vihtavuori and Nosler it
+cannot be checked (the Vihtavuori cross-check against the C.I.P. limit, `vv_pressure_crosscheck.js`, found the
+generic $\eta_p$ 8.6 % low at their maxima, which this ceiling corrects in part).
+
 The page's pressure messages follow: two slopes, rifle ~8 %, one load in two hundred under-predicted by
-more than 15 %, handgun ~13 %, one in sixteen; anchor law with pressure, rifle ~9 %, one in thirty, handgun
+more than 15 %, handgun ~13 %, one in sixteen; ceiling from the limit, rifle ~10 %, one in three hundred,
+handgun ~20 %, one in twelve; anchor law with pressure, rifle ~9 %, one in thirty, handgun
 ~21 %, one in five. Until 2026-10-16 the anchor-law message said ~13 %, one in thirteen, for both, an average
 set by the rifles.
 

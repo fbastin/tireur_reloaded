@@ -94,8 +94,12 @@
       "ref": "moy",
       "mono": 1.098
     },
+    "plafond_limite": {
+      "rifle": 0.941,
+      "handgun": 0.953
+    },
     "plafond_min": 2,
-    "_doc": "Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cref)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cref dans les fenêtres par masse de start_charges.local.json : plus petit maximum (ref min, cmax) ou moyenne géométrique des maxima (ref moy, cmoy). Par type : gammaL propre s il est donné (sinon le commun), mono = facteur d une balle monolithique déclarée. Types listés seulement ; ailleurs, la loi des ancres.",
+    "_doc": "Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cref)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cref dans les fenêtres par masse de start_charges.local.json : plus petit maximum (ref min, cmax) ou moyenne géométrique des maxima (ref moy, cmoy). Par type : gammaL propre s il est donné (sinon le commun), mono = facteur d une balle monolithique déclarée. plafond_limite (par type) : P max publiée / limite de la cartouche, plafond de la même loi pour un couple ancré sans pression (EnergyModel.pressionPlafondLimite, en moyenne géométrique avec la méthode de l ancre). Types listés seulement ; ailleurs, la loi des ancres.",
     "_date": "2026-10-16"
   }
 }

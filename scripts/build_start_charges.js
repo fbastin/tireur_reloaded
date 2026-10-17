@@ -11,7 +11,8 @@
  *                                      "nb": <bullets of that weight> } }
  *   fenetres_masse (2026-10-16) : { "<calKey>|<pwdKey>": { "<bullet gr>": { "c": <start gr | null>, "cmax", "nb", "cmoy"? } } }
  *     for pairs of the types of the two-slope law (rifles; handguns, with cmoy) whose anchor carries a pressure
- *     ceiling (anchors.json: pc) — the two-slope pressure law
+ *     ceiling (anchors.json: pc), or has no pressure at all (np absent; ceiling from the cartridge's limit,
+ *     2026-10-16) — the two-slope pressure law
  *     (scripts/fit_deux_pentes.js) and the ladder window of the entered weight. A Hodgdon row without a starting
  *     charge counts for the maximum only: c = null when no bullet of that weight has a start.
  *   Run after build_anchors.js.
@@ -209,7 +210,10 @@ function balles(byBullet0, avecMaxSeul) {
 }
 for (const [k, byBullet0] of Object.entries(groups)) {
   const typ = CAL[k.split('|')[0]] && CAL[k.split('|')[0]].type;
-  if (typ && (DP.types || []).includes(typ) && ANCH[k] && ANCH[k].pc > 0) {
+  // ancre avec plafond de pression (pc), ou ancre SANS pression publiée et cartouche à limite connue (plafond tiré de
+  // la limite, 2026-10-16)
+  const sansNp = ANCH[k] && ANCH[k].np == null && CAL[k.split('|')[0]].pmax_cip_bar > 0 && DP.plafond_limite && DP.plafond_limite[typ] > 0;
+  if (typ && (DP.types || []).includes(typ) && ANCH[k] && (ANCH[k].pc > 0 || sansNp)) {
     const f = {}, moy = (DP[typ] || {}).ref === 'moy';
     for (const [g, w] of Object.entries(balles(byBullet0, true).garde)) {
       const bs = Object.values(w), avecDepart = bs.filter((b) => !b.maxSeul);
@@ -250,6 +254,6 @@ if (CHECK) {
 }
 fs.writeFileSync(d('start_charges.local.json'),
   JSON.stringify({ _doc: 'Charge DÉPART et MAX fabricant pour la balle typique (médiane) par cartouche|poudre ; plusieurs balles de cette masse : le plus petit départ et le plus petit max. LOCAL/gitignored : charges réelles, non redistribuées. Pré-remplissage + fenêtre sûre de la ladder dans l UI.', m: 'balle typique (gr)', c: 'charge de départ (gr)', cmax: 'charge max (gr)', nb: 'balles de cette masse', charges: out,
-    fenetres_masse_doc: 'Couples dont l ancre porte un plafond de pression (loi à deux pentes : carabines, armes de poing) : par masse de balle (gr), plus petite charge de départ (null : aucune balle de cette masse n en publie), plus petite charge maximale (cmax, échelle de charge), nombre de balles ; en arme de poing, moyenne géométrique des maxima (cmoy, pression).',
+    fenetres_masse_doc: 'Couples dont l ancre porte un plafond de pression, ou n a pas de pression publiée (plafond tiré de la limite de la cartouche) — loi à deux pentes, carabines et armes de poing : par masse de balle (gr), plus petite charge de départ (null : aucune balle de cette masse n en publie), plus petite charge maximale (cmax, échelle de charge), nombre de balles ; en arme de poing, moyenne géométrique des maxima (cmoy, pression).',
     fenetres_masse: parMasse }, null, 1));
 console.log(`start charges for ${n} combos, ${nMasses} fenêtres par masse (${Object.keys(parMasse).length} couples) -> data/start_charges.local.json (gitignored) ; balles subsoniques de carabine écartées (couples mixtes) : ${nSub}`);

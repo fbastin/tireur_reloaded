@@ -132,6 +132,22 @@ const EnergyModel = {
       * (mono && T.mono > 0 ? T.mono : 1);
   },
 
+  /**
+   * Plafond tiré de la LIMITE de la cartouche (bloc deux_pentes.plafond_limite, scripts/fit_deux_pentes.js,
+   * 2026-10-16), pour un couple ancré sur des données sans pression : les charges maximales publiées avec pression
+   * se tiennent en moyenne à k × la limite (carabine 0,94, arme de poing 0,95 ; dispersion 11 et 18 %). Même loi à
+   * deux pentes que pressionDeuxPentes, ce plafond remplaçant celui de l'ancre. La page en prend la moyenne
+   * géométrique avec la pression de l'ancre (énergie, η_p générique) : chacune seule fait moins bien. null s'il
+   * manque la limite, la fenêtre ou le coefficient.
+   */
+  pressionPlafondLimite(coef, plim, win, m_gr, C_gr, type, mono) {
+    const D = coef.deux_pentes, k = D && D.plafond_limite && D.plafond_limite[type];
+    if (!(k > 0 && plim > 0 && win && (D.types || []).includes(type))) return null;
+    const T = D[type] || {}, cRef = T.ref === 'moy' ? win.cmoy : win.cmax;
+    if (!(cRef > 0)) return null;
+    return k * plim * Math.pow(C_gr / cRef, this.penteDeuxPentes(coef, type)) * (mono && T.mono > 0 ? T.mono : 1);
+  },
+
   /** Pente γL de la loi à deux pentes pour ce type d'arme (celle du bloc commun à défaut). */
   penteDeuxPentes(coef, type) {
     const D = coef.deux_pentes || {};

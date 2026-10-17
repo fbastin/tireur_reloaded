@@ -28,7 +28,8 @@
 const fs = require('fs');
 const path = require('path');
 const EM = require('../energy_model.js');
-const { groups, CAL } = require('./build_anchors.js');
+const { groups, CAL, PWD } = require('./build_anchors.js');
+const G = 6.479891e-5, GR2G = 0.06479891;
 const d = (f) => path.join(__dirname, '..', 'data', f);
 const COEF = JSON.parse(fs.readFileSync(d('model_coefficients.json'))), L = COEF.local;
 const ln = Math.log, mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
@@ -58,6 +59,14 @@ const gammaL = +pente(by(avecP, (r) => r.k + '#' + r.bid), (r) => ln(r.C), (r) =
 const gammaPoing = +pente(by(avecP.filter((r) => typeDe(r) === 'handgun'), (r) => r.k + '#' + r.bid), (r) => ln(r.C), (r) => ln(r.P)).toFixed(3);
 const alphaM = +pente(by(avecP.filter((r) => r.max), (r) => r.k + '|' + r.src), (r) => ln(r.m), (r) => ln(r.P)).toFixed(3);
 console.log(`γL = d ln P / d ln C à balle donnée : ${gammaL} (arme de poing seule : ${gammaPoing}) ; αM = d ln P_max / d ln m (couple × source) : ${alphaM}`);
+// Plafond tiré de la LIMITE de la cartouche (pmax_cip_bar), pour les couples ancrés sur des données sans pression
+// (2026-10-16) : moyenne géométrique de P max publiée / limite, par type d'arme.
+const limite = (r) => (CAL[r.k.split('|')[0]] || {}).pmax_cip_bar || 0, plafondLimite = {};
+for (const t of TYPES) {
+  const v = avecP.filter((r) => r.max && typeDe(r) === t && limite(r) > 0).map((r) => ln(r.P / limite(r)));
+  if (v.length) plafondLimite[t] = +Math.exp(mean(v)).toFixed(3);
+}
+console.log(`plafond tiré de la limite (P max publiée / limite, moyenne géométrique) : ${JSON.stringify(plafondLimite)}`);
 
 // --- Validation, balle laissée de côté ----------------------------------------------------------------------
 let FEN = null;
@@ -89,13 +98,39 @@ function valider(D) {
 const pc = (v) => (100 * v).toFixed(1);
 const st = (e) => { if (!e.length) return '—'; const s = e.slice().sort((p, q) => p - q);
   return `${pc(mean(e)).padStart(5)} / ${pc(Math.sqrt(mean(e.map((v) => v * v)))).padStart(4)} % (${e.length}) | sous-estimées >15 % ${pc(e.filter((v) => v < -0.15).length / e.length).padStart(4)} % | centile 1 % ${pc(s[Math.floor(0.01 * s.length)]).padStart(5)} %`; };
-const D = { gammaL, alphaM, types: TYPES, rifle: { ref: REF.rifle }, handgun: { gammaL: gammaPoing, ref: REF.handgun } };
+const D = { gammaL, alphaM, types: TYPES, rifle: { ref: REF.rifle }, handgun: { gammaL: gammaPoing, ref: REF.handgun }, plafond_limite: plafondLimite };
 const SOUS = [['tout', () => true], ['carabine', (x) => x.type === 'rifle'], ['  dont loi à deux pentes', (x) => x.type === 'rifle' && x.deux],
   ['  dont loi des ancres (sans plafond ou sans fenêtre)', (x) => x.type === 'rifle' && !x.deux], ['arme de poing', (x) => x.type === 'handgun'],
   ['  dont loi à deux pentes', (x) => x.type === 'handgun' && x.deux], ['  dont loi des ancres', (x) => x.type === 'handgun' && !x.deux],
   ['RS départ', (x) => x.src === 'RS' && !x.max], ['RS max', (x) => x.src === 'RS' && x.max], ['max autres', (x) => x.src !== 'RS' && x.max],
   ['balles lourdes', (x) => x.dm > 0.15], ['balles légères', (x) => x.dm < -0.15]];
-let res = null;
+// Couples ancrés sur des données SANS pression, simulés sur ceux qui la publient (balle laissée de côté) : A = méthode de
+// l'ancre (énergie de l'ancre, η_p générique, comme energyAndEtaP) ; servi = moyenne géométrique de A et de la loi à deux
+// pentes plafonnée à k × la limite (pressionPlafondLimite), quand la fenêtre de la masse et la limite existent.
+function validerSansNp(D) {
+  const res = [];
+  for (const [k, a0] of Object.entries(groups)) {
+    const ck = k.split('|')[0], pw = PWD[k.slice(ck.length + 1)], ca = CAL[ck];
+    if (!(pw && ca && pw.pcd > 0 && ca.case_vol_cm3 > 0)) continue;
+    const a = rowsP(a0), balles = by(a, (r) => r.bid); if (Object.keys(balles).length < 2) continue;
+    const A = Math.PI * (ca.bore_mm / 1000) ** 2 / 4;
+    for (const [bid, g] of Object.entries(balles)) {
+      const autres = a.filter((r) => r.bid !== bid); if (autres.length < 3) continue;
+      const lc = mean(autres.map((r) => ln(r.C))), lm = mean(autres.map((r) => ln(r.m)));
+      const anc = { eeff: Math.exp(mean(autres.map((r) => ln(r.eeff) - L.delta * (ln(r.C) - lc) - L.beta * (ln(r.m) - lm)))), np: null, C: Math.exp(lc), m: Math.exp(lm) };
+      for (const r of g) {
+        if (!(r.np > 0 && r.P > 0)) continue;
+        const ff = (r.C * GR2G / (pw.pcd / 1000)) / ca.case_vol_cm3, Lc = r.eeff * r.C * G / (r.P * 1e5 * r.np * A);
+        const p = EM.energyAndEtaP(COEF, pw, ff, ln(1 + A * Lc / (ca.case_vol_cm3 * 1e-6)), r.m, r.C, anc, null, ca.type);
+        const PA = (p.E / r.eeff) * (r.np / p.np);
+        const PB = EM.pressionPlafondLimite({ deux_pentes: D }, ca.pmax_cip_bar, FEN && EM.fenetreMasse(FEN[k], r.m), r.m, r.C, ca.type);
+        res.push({ type: ca.type, max: r.max, actuel: PA - 1, servi: PB != null ? Math.sqrt(PA * PB / r.P) - 1 : PA - 1, comb: PB != null });
+      }
+    }
+  }
+  return res;
+}
+let res = null, resSansNp = null;
 if (!FEN) console.log('\nValidation impossible : start_charges.local.json sans fenêtres par masse (relancer build_anchors.js puis build_start_charges.js).');
 else {
   res = valider(D);
@@ -114,6 +149,12 @@ else {
     D.handgun.mono = +Math.exp(-mean(moh.map((x) => ln(1 + x.servi)))).toFixed(3);
     const mohA = res.filter((x) => x.type === 'handgun' && x.mono);
     console.log(`  monolithiques d'arme de poing, construction déclarée (ancres × ${MPh} ; deux pentes × ${D.handgun.mono}, facteur mesuré sur ${moh.length} charges)\n    ${st(mohA.map((x) => (1 + x.actuel) * MPh - 1))}\n  → ${st(mohA.map((x) => x.deux ? (1 + x.servi) * D.handgun.mono - 1 : (1 + x.servi) * MPh - 1))}`);
+  }
+  resSansNp = validerSansNp(D);
+  console.log('\nCouples ancrés sans pression publiée (simulés) — ancre et η_p générique → moyenne avec le plafond tiré de la limite');
+  for (const [nom, f] of [['carabine', (x) => x.type === 'rifle'], ['  dont combinés', (x) => x.type === 'rifle' && x.comb], ['  charges maximales', (x) => x.type === 'rifle' && x.max],
+    ['arme de poing', (x) => x.type === 'handgun'], ['  dont combinés', (x) => x.type === 'handgun' && x.comb]]) {
+    const s = resSansNp.filter(f); if (s.length) console.log(`  ${nom}\n    ${st(s.map((x) => x.actuel))}\n  → ${st(s.map((x) => x.servi))}`);
   }
 }
 
@@ -147,8 +188,9 @@ if (process.argv.includes('--variantes')) {
 
 if (process.argv.includes('--write')) {
   const rms = (a) => Math.sqrt(mean(a.map((v) => v * v))), part = (a) => a.filter((v) => v < -0.15).length / a.length;
-  const pire = res && TYPES.filter((t) => { const x = res.filter((y) => y.type === t);
-    return x.length && (rms(x.map((y) => y.servi)) > rms(x.map((y) => y.actuel)) || part(x.map((y) => y.servi)) > part(x.map((y) => y.actuel))); });
+  const degrade = (R, t) => { const x = (R || []).filter((y) => y.type === t);
+    return x.length && (rms(x.map((y) => y.servi)) > rms(x.map((y) => y.actuel)) || part(x.map((y) => y.servi)) > part(x.map((y) => y.actuel))); };
+  const pire = res && TYPES.filter((t) => degrade(res, t)).concat(TYPES.filter((t) => degrade(resSansNp, t)).map((t) => t + ', couples sans pression'));
   if (pire && pire.length && !process.argv.includes('--force')) {
     console.log(`\n-> NON écrit : la loi à deux pentes dégrade la pression (${pire.join(', ')}). --force pour écrire quand même.`);
     process.exitCode = 1;
@@ -157,7 +199,7 @@ if (process.argv.includes('--write')) {
     const anc = COEF.deux_pentes && COEF.deux_pentes.handgun;
     if (D.handgun.mono == null && anc && anc.mono) D.handgun.mono = anc.mono;
     COEF.deux_pentes = { ...D, plafond_min: PLAFOND_MIN,
-      _doc: 'Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cref)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cref dans les fenêtres par masse de start_charges.local.json : plus petit maximum (ref min, cmax) ou moyenne géométrique des maxima (ref moy, cmoy). Par type : gammaL propre s il est donné (sinon le commun), mono = facteur d une balle monolithique déclarée. Types listés seulement ; ailleurs, la loi des ancres.',
+      _doc: 'Loi de pression à deux pentes (scripts/fit_deux_pentes.js ; EnergyModel.pressionDeuxPentes) : P = pc · (m/mpc)^alphaM · (C/Cref)^gammaL, pc et mpc dans les ancres (charges maximales publiées avec pression, plafond_min au moins), Cref dans les fenêtres par masse de start_charges.local.json : plus petit maximum (ref min, cmax) ou moyenne géométrique des maxima (ref moy, cmoy). Par type : gammaL propre s il est donné (sinon le commun), mono = facteur d une balle monolithique déclarée. plafond_limite (par type) : P max publiée / limite de la cartouche, plafond de la même loi pour un couple ancré sans pression (EnergyModel.pressionPlafondLimite, en moyenne géométrique avec la méthode de l ancre). Types listés seulement ; ailleurs, la loi des ancres.',
       _date: new Date().toISOString().slice(0, 10) };
     fs.writeFileSync(d('model_coefficients.json'), JSON.stringify(COEF, null, 2) + '\n');
     console.log(`\n-> bloc \`deux_pentes\` écrit dans data/model_coefficients.json${res ? '' : ' (sans validation : fenêtres par masse absentes)'} ; relancer build_anchors.js puis build_start_charges.js, puis ce script (validation ; --write une seconde fois pour le facteur monolithique de l'arme de poing)`);

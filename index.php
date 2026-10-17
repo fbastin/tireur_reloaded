@@ -491,7 +491,9 @@ function anchorsFor(ck,pk){ return { anc: ANCH[ck+'|'+pk]||null, rifle: RIFLE.ee
 // une HYPOTHÈSE, faute de mesures de pression en température dans nos données.
 // Loi à deux pentes (dp) : la pente de charge est γL (bloc deux_pentes).
 // γL propre à l'arme de poing depuis le 2026-10-16 (EnergyModel.penteDeuxPentes).
-const penteCharge=(dp,type)=> dp&&COEF.deux_pentes ? EnergyModel.penteDeuxPentes(COEF,type) : (COEF.local ? COEF.local.gamma : 1);
+// dp : false = loi des ancres (γ), true = loi à deux pentes (γL), 'mix' = moyenne géométrique des deux pressions (couple
+// sans pression publiée, plafond tiré de la limite) : pente moyenne.
+const penteCharge=(dp,type)=> !COEF.local ? 1 : !(dp&&COEF.deux_pentes) ? COEF.local.gamma : dp==='mix' ? (COEF.local.gamma+EnergyModel.penteDeuxPentes(COEF,type))/2 : EnergyModel.penteDeuxPentes(COEF,type);
 const kTempP=(dp,type)=> COEF.local ? 2*penteCharge(dp,type)/(COEF.local.delta+1) : 2;
 // Pente charge-pression du tableau (γ des lois locales), lue dans les coefficients : écrite en dur dans la note
 // de l'échelle, elle était restée à 1,95 après le recalage du 2026-10-13 (1,99).
@@ -541,14 +543,28 @@ function predict(cart,pw,m_gr,C_gr,bbl,an,opt){
     Pmax=P2*Math.pow(rV,EnergyModel.penteDeuxPentes(COEF,cart.type));
     eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax;
   }
+  // Couple ancré sur des données SANS pression publiée (2026-10-16, fit_deux_pentes.js) : moyenne géométrique de la
+  // pression de l'ancre (énergie, η_p générique) et de la loi à deux pentes plafonnée à k × la limite de la cartouche
+  // (pressionPlafondLimite). Simulé sur les couples qui publient la pression : carabine 11,9 → 10,4 %, sous-estimées de
+  // plus de 15 % 3,2 → 0,3 % ; arme de poing 25,3 → 19,7 %, 12,1 → 8,2 %. Chacune seule fait moins bien.
+  let plafondLimite=false;
+  if(!deuxPentes && an.anc && an.anc.np==null){
+    const PB=EnergyModel.pressionPlafondLimite(COEF,cart.pmax_cip_bar,win,m_gr,C_gr,cart.type,!!opt.mono);
+    if(PB!=null){
+      const rV=(CVOL>0&&cart.case_vol_cm3>0&&COEF.local)?cart.case_vol_cm3/CVOL:1;
+      Pmax=Math.sqrt(Pmax*PB*Math.pow(rV,EnergyModel.penteDeuxPentes(COEF,cart.type)));
+      eta_p=EnergyModel.predictPmax(loadP,vRef,1)/Pmax; plafondLimite=true;
+    }
+  }
+  const loi=deuxPentes?true:plafondLimite?'mix':false;
   // Température (réf. 21 °C), sur une vitesse PRÉDITE seulement : vitesse par la sensibilité de
   // Litz, pression par kTempP(). Jusqu'au 2026-10-10, la pression restait celle de 21 °C.
   let tempApplied=false;
   if(!(opt.vmeas>0) && isFinite(opt.Tc) && opt.Tc!==21){
     const vT=VelocityModel.tempCorrect(vUser,opt.Tc-21);
-    Pmax*=Math.pow(vT/vUser,kTempP(deuxPentes,cart.type)); vUser=vT; tempApplied=true;
+    Pmax*=Math.pow(vT/vUser,kTempP(loi,cart.type)); vUser=vT; tempApplied=true;
   }
-  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied,deuxPentes,win:deuxPentes?win:null};
+  return {v0:vUser,vRef,Pmax,eta_p,fill,pct:cart.pmax_cip_bar?Pmax/cart.pmax_cip_bar*100:null,mode,base,tempApplied,deuxPentes,plafondLimite,loi,win:(deuxPentes||plafondLimite)?win:null};
 }
 // --- unité de masse du ladder (gr <-> g) ---
 const ladToGr=(v)=> LADUNIT==='g' ? v/GR_G : v;           // saisie (LADUNIT) -> grains
@@ -620,8 +636,8 @@ function renderLadder(){
   if(!(w.cmax>w.startG+1e-6&&w.stepG>0)){el.innerHTML='<p class="vm-note">'+w.note+T(' — plage trop étroite (départ ≥ max ou incrément nul).',' — range too narrow (start ≥ max or zero step).')+'</p>';return;}
   const an=anchorsFor(ck,pk), charges=ladderCharges(w), Tc=toC(parseFloat(document.getElementById('temp').value),U.temp.cur);
   let t='<table style="width:100%;border-collapse:collapse;font-size:0.82rem;"><tr style="text-align:right"><th style="text-align:left">'+T('Charge','Charge')+' ('+LADUNIT+')</th><th>v₀ ('+U.v.cur+')</th><th>Pmax ('+U.p.cur+')</th><th>% '+limSrc(cart)+'</th></tr>';
-  let dp=false;                                          // loi à deux pentes sur ces lignes (pente de la note)
-  for(const Cg of charges){ const r=predict(cart,pw,m_gr,Cg,bbl,an,{Tc,mono:isMono()}); if(r.deuxPentes) dp=true;
+  let dp=false;                                          // loi de pression de ces lignes (pente de la note)
+  for(const Cg of charges){ const r=predict(cart,pw,m_gr,Cg,bbl,an,{Tc,mono:isMono()}); if(r.loi) dp=r.loi;
     const col=r.pct==null?'':(r.pct>100?'color:#c0392b;font-weight:600':r.pct>=85?'color:#e67e22':'');
     t+='<tr style="text-align:right;border-top:1px solid var(--color-border);'+col+'"><td style="text-align:left">'+ladDisp(Cg).toFixed(LADUNIT==='gr'?2:3)+'</td><td>'+frMs(r.v0,U.v.cur).toFixed(0)+'</td><td>'+frBar(r.Pmax,U.p.cur).toFixed(0)+'</td><td>'+(r.pct!=null?r.pct.toFixed(0)+'%':'—')+'</td></tr>'; }
   const overTxt = w.over ? ' <strong style="color:#c0392b">'+T('⚠ max saisi ','⚠ entered max ')+ladDisp(w.cmax).toFixed(2)+' '+LADUNIT+T(' &gt; max fabricant ',' &gt; manufacturer max ')+ladDisp(w.mfgMax).toFixed(2)+' '+LADUNIT+T(' — zone NON couverte par les données, danger.',' — range NOT covered by the data, danger.')+'</strong>' : '';
@@ -815,7 +831,13 @@ function calc(){
   // 3,1 %). Arme de poing, maximum moyen de la masse : 12,5 %, 6,3 % (2 170 charges ; loi des ancres : 20,8 % et 19,7 %).
   const enU=(gr,u)=> U[u].cur==='g' ? nf(gr*GR_G,2)+' g' : nf(gr,u==='mass'?(gr%1?1:0):2)+' gr';   // masse, charge dans l'unité choisie
   const poing=cart.type==='handgun';
-  let w = r.deuxPentes && poing
+  // Couple sans pression publiée, plafond tiré de la limite (simulation de fit_deux_pentes.js) : carabine 10,4 %, 0,3 %
+  // des charges sous-estimées de plus de 15 % ; arme de poing 19,7 %, 8,2 %.
+  const PLIM=poing?[20,'douze','twelve']:[10,'trois cents','three hundred'];
+  const cRefLim=r.win?(poing?r.win.cmoy:r.win.cmax):null;
+  let w = r.plafondLimite
+    ? T(`Pression indicative (~${PLIM[0]} % d'écart quadratique : données fabricant de ce couple sans pression publiée ; pression moyenne entre celle de l'ancre et un plafond déduit de la limite ${limSrc(cart)} de la cartouche, rapporté à la charge maximale ${poing?'moyenne ':''}publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(cRefLim,'charge')} ; sous-estimée de plus de 15 % pour une charge sur ${PLIM[1]}) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~${PLIM[0]}% RMS error: manufacturer data for this combination give no pressure; mean of the anchor's pressure and a ceiling derived from the cartridge's ${limSrc(cart)} limit, relative to the ${poing?'mean ':''}published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(cRefLim,'charge')}; underestimated by more than 15% for one load in ${PLIM[2]}) — never validate a load on this basis.`)
+    : r.deuxPentes && poing
     ? T(`Pression indicative (~13 % d'écart quadratique, rapportée à la charge maximale moyenne publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(r.win.cmoy,'charge')} ; sous-estimée de plus de 15 % pour une charge sur seize) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~13% RMS error, relative to the mean published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(r.win.cmoy,'charge')}; underestimated by more than 15% for one load in sixteen) — never validate a load on this basis.`)
     : r.deuxPentes
     ? T(`Pression indicative (~8 % d'écart quadratique, rapportée à la charge maximale publiée pour une balle de ${enU(r.win.m,'mass')}, ${enU(r.win.cmax,'charge')} ; sous-estimée de plus de 15 % pour une charge sur deux cents) — ne jamais valider une charge sur cette base.`,`Pressure for indication only (~8% RMS error, relative to the published maximum charge for a ${enU(r.win.m,'mass')} bullet, ${enU(r.win.cmax,'charge')}; underestimated by more than 15% for one load in two hundred) — never validate a load on this basis.`)
@@ -845,7 +867,13 @@ function calc(){
   if(r.base.mono&&MONO){
     const parAncre=r.base.path==='anchor'&&r.base.npFromAnchor, pA=nf((MONO.P-1)*100,1), pF=nf((MONO.froidP-1)*100,1);
     const D2=(COEF.deux_pentes||{})[cart.type]||{}, pD=nf(((D2.mono||1)-1)*100,1);
-    w=(r.deuxPentes && D2.mono>0
+    // plafond tiré de la limite : moyenne géométrique des deux facteurs (ancre : E × M.E, η_p ÷ froidP ; plafond : D2.mono)
+    const fLim=Math.sqrt((MONO.E||1)*(MONO.froidP||1)*(D2.mono||1)), pL=nf((fLim-1)*100,1);
+    w=(r.plafondLimite
+      ? (fLim>1.005
+        ? T('Balle monolithique : pression majorée de '+pL+' % (facteurs mesurés sur les guides Hodgdon et Western, arme de poing). ','Monolithic bullet: pressure raised by '+pL+'% (factors measured on the Hodgdon and Western manuals, handguns). ')
+        : T('Balle monolithique : pas de correction notable ici (aucun écart net mesuré sans données fabricant de pression, en carabine). ','Monolithic bullet: no notable correction here (no clear gap measured without manufacturer pressure data, for rifles). '))
+      : r.deuxPentes && D2.mono>0
       ? T('Balle monolithique : pression majorée de '+pD+' % (écart mesuré sous la loi rapportée au maximum moyen de la masse, guides Hodgdon et Western). ','Monolithic bullet: pressure raised by '+pD+'% (gap measured under the law relative to the mean maximum of the weight, Hodgdon and Western manuals). ')
       : r.deuxPentes
       ? T('Balle monolithique : la pression est rapportée à la plus petite charge maximale publiée pour cette masse de balle, où comptent déjà les monolithiques publiées ; aucun facteur ajouté. ','Monolithic bullet: pressure is relative to the lowest published maximum charge for this bullet weight, which already includes the published monolithic bullets; no factor added. ')
@@ -855,7 +883,7 @@ function calc(){
         ? T('Balle monolithique : pression majorée de '+pF+' % (écart mesuré sans ancre sur les guides Hodgdon et Western, arme de poing). ','Monolithic bullet: pressure raised by '+pF+'% (gap measured without an anchor on the Hodgdon and Western manuals, handguns). ')
         : T('Balle monolithique : pas de correction sans données fabricant de pression pour ce couple (aucun écart net mesuré dans ce cas en carabine). ','Monolithic bullet: no correction without manufacturer pressure data for this combination (no clear gap measured in this case for rifles). '))+w;
   }
-  if(tempApplied) w=T('Vitesse et pression ajustées à '+Tc.toFixed(0)+' °C (réf. 21 °C) : vitesse par la sensibilité générique de Litz, ~1,8 fps/°C, qui varie selon la poudre ; pression comme pour la variation de charge équivalente (hypothèse, P ∝ v^'+nf(kTempP(r.deuxPentes,cart.type),1)+'). ','Velocity and pressure adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C): velocity by Litz\'s generic sensitivity, ~1.8 fps/°C, which varies with the powder; pressure as for the equivalent change of charge (an assumption, P ∝ v^'+nf(kTempP(r.deuxPentes,cart.type),1)+'). ')+w;
+  if(tempApplied) w=T('Vitesse et pression ajustées à '+Tc.toFixed(0)+' °C (réf. 21 °C) : vitesse par la sensibilité générique de Litz, ~1,8 fps/°C, qui varie selon la poudre ; pression comme pour la variation de charge équivalente (hypothèse, P ∝ v^'+nf(kTempP(r.loi,cart.type),1)+'). ','Velocity and pressure adjusted to '+Tc.toFixed(0)+' °C (ref. 21 °C): velocity by Litz\'s generic sensitivity, ~1.8 fps/°C, which varies with the powder; pressure as for the equivalent change of charge (an assumption, P ∝ v^'+nf(kTempP(r.loi,cart.type),1)+'). ')+w;
   const bRatio=travel/refTravel;
   if(bRatio<0.6||bRatio>1.7) w=T('⚠ Canon très éloigné de la longueur de référence ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+') : mise à l\'échelle de v₀ extrapolée ('+loiFr+'), à confirmer au chronographe. ','⚠ Barrel far from the reference length ('+nf(frMm(refBbl_mm,U.bbl.cur),U.bbl.cur==='in'?1:0)+' '+U.bbl.cur+'): v₀ scaling extrapolated ('+loiEn+'), confirm with a chronograph. ')+w;
   document.getElementById('warn').textContent=w;
