@@ -6,7 +6,7 @@
   "ecarts": {
     "22 Hornet|lyman": "Lyman retient surtout des poudres vives d'arme de poing (2400, H110 à charge modérée) : remplissage bas, pas une erreur. Examiné le 2026-10-13.",
     "45 - 70 Govt.|western": "Section de pression standard (28 000 psi), entrée dans les données le 2026-10-17 quand import_western.js a séparé le sous-titre de pression du nom de la cartouche : uniquement des poudres rapides (LT-30, 2200, X-Terminator, 2230, 2015, 5744), remplissage médian 0,62 à 0,82 selon la poudre. Pas une erreur. Examiné le 2026-10-17.",
-    "243 Win.|western": "Western ne publie que des poudres lentes et denses (Hunter, Magnum, Magpro), données identiques à celles de Hodgdon : remplissage haut, pas une erreur. Examiné le 2026-10-13.",
+    "243 Win.|western": "Western ne publie que des poudres lentes et denses (Hunter, Magnum, Magpro), données identiques à celles de Hodgdon : remplissage haut, pas une erreur. Examiné le 2026-10-13. Le 2026-10-17 : 1,03 contre 0,91, écart de 0,12 pile, plus signalé depuis les densités Lee ; gardé, car il repassera le seuil au moindre mouvement des données.",
     "7 Rem. Mag.|lovex": "Lovex emploie des poudres plus vives ; tableaux identiques dans les éditions 2013 et 2019. Examiné le 2026-10-12.",
     "7mm WSM|adi": "ADI publie des maxima à poudre vive (AR2206H, AR2208) ; vitesses et pressions cohérentes (100 grains, 57,5 grains d'AR2206H, 3 590 fps, 62 500 psi). Examiné le 2026-10-13."
   },

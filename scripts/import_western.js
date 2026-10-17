@@ -91,7 +91,9 @@ for (const line of lines) {
     if (prev && !isData(prev)) cart = SUBHEAD.test(prev) && prev2 && !isData(prev2) ? `${title(prev2)} ${title(prev)}` : title(prev);
     prev2 = prev; prev = line; continue;
   }
-  if (/^(ACCURATE|RAMSHOT)/.test(d) && !SIX.test(d)) { powder = line.trim().replace(/\s{2,}/g, ' '); prev2 = prev; prev = line; continue; }
+  // « RAMSHOT TAC (continued) » : suite d'un tableau sur la colonne ou la page suivante, même poudre (365 lignes). Les
+  // consommateurs ôtaient déjà les parenthèses ; un décompte par nom exact les comptait comme une autre poudre (2026-10-17).
+  if (/^(ACCURATE|RAMSHOT)/.test(d) && !SIX.test(d)) { powder = line.trim().replace(/\s{2,}/g, ' ').replace(/\s*\(continued\)$/i, ''); prev2 = prev; prev = line; continue; }
   const m = d.match(SIX), bm = d.match(/^(\d{1,3})/);
   if (m && bm && cart) {
     const bullet = +bm[1];
