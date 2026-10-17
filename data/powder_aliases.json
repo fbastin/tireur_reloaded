@@ -21,6 +21,7 @@
     "Bench Mark 2": "Hodgdon Benchmark",
     "Bench Mark 8208": "IMR 8208 XBR",
     "LVR": "Hodgdon Leverevolution",
+    "Suprform": "Hodgdon Superformance",
     "IMR 7828 SSC": "IMR 7828SC",
     "IMR 7828SSC": "IMR 7828SC",
     "WSF": "Winchester WSF Super-Field",
@@ -50,6 +51,7 @@
     "Page ADI « Powder equivalents » (NON utilisee)": "https://www.adiworldclass.com.au/powder-equivalents/ (modifiee le 2024-12-12, lue le 2026-10-17) : tableau de poudres de VIVACITE VOISINE chez neuf fabricants (AR2208 sur la ligne de Varget, IMR 4064, AA 2520 ; AP70N sur celle d'Universal et d'Unique ; AR2205 sur celle de H4227 / H110). Ce n'est pas une table d'identite : elle ne fonde aucune equivalence. Seule la FAQ ci-dessus (« rebranded by Hodgdon ») le fait.",
     "Bench Mark 2, Bench Mark 8208 (ADI)": "ADI (Thales Australia), FAQ « Is Hodgdon propellant the same as ADI propellant? » du 2021-02-24 : « ADI export a range of propellant to the US market where they are rebranded by Hodgdon Powder Company » ; table des equivalences : BM2 = Benchmark, Bench Mark 8208 = 8208 XBR (et AR2213SC = H4831SC). https://www.adiworldclass.com.au/faq-items/is-hodgdon-propellant-the-same-as-adi-propellant/ — lu le 2026-10-08 (table lue dans le HTML brut).",
     "LVR (Hodgdon)": "Manuel Hodgdon 2024 (guides/AM24.pdf) : « LVR » dans les tableaux de charges ; la liste de vivacite du meme manuel ne compte qu'une poudre de ce nom, « Hodgdon LEVERevolution ». La cle « Hodgdon Leverevolution » (pcd 920) existait : l'entree « LVR » de _absentes etait fausse.",
+    "Suprform (Hodgdon)": "Manuel Hodgdon 2024 (guides/AM24.pdf) : « Suprform » dans les tableaux de charges (.223, .22-250…) ; la liste de vivacite du meme manuel ne compte qu'une poudre de ce nom, « Hodgdon SUPERFORMANCE » (rang 137), decrite p. 63 (« another of the spherical powders »). Pose le 2026-10-17, quand la cle « Hodgdon Superformance » a recu la densite mesuree par Lee (DENSITES_LEE de scripts/import_catalog.js) : jusque-la, ses 65 charges etaient ecartees faute de densite, puis faute d'alias.",
     "IMR 7828 SSC (Hodgdon)": "Fiche produit Hodgdon (https://shop.hodgdon.com/imr-7828-ssc, lue le 2026-10-08) : « exactly the same burn rate as standard IMR 7828 and uses the same data », mais « up to 4% more powder space in the case » — densite differente de la 7828 standard. Hodgdon ne vend que deux 7828, la standard et la SSC ; « 7828SC » est l'abreviation des revendeurs pour la Super Short Cut. Identite DEDUITE, non ecrite par le fabricant. « IMR 7828 » sans suffixe reste NON apparie.",
     "Hodgdon Lil Gun (densite)": "Pas d'alias : le libelle s'apparie deja, il manquait la densite. pcd 956 posee dans CORRECTIONS de scripts/import_catalog.js, avec sa provenance (fichiers communautaires GRT, valeur QuickLOAD).",
     "WSF, 700-X, 800-X (Hodgdon, Lyman)": "Libelles des manuels ; la cle les contient comme composant (« Winchester WSF Super-Field », « Hodgdon Hi-Skor 700X »/« 800X », au tiret pres). Poses le 2026-10-13, quand ces poudres ont recu une densite (DENSITES_NOSLER de scripts/import_catalog.js). Le catalogue a deux entrees pour la 700-X (« Hodgdon Hi-Skor 700X » et « IMR IMR 700X ») et pour la 800-X : l alias va a celle qui porte la densite.",
@@ -62,12 +64,8 @@
   },
 
   "_sans_densite": {
-    "_note": "Entrees PRESENTES dans powders.json mais sans densite apparente (pcd). Un alias n'y changerait rien : sans pcd, le taux de remplissage — variable des deux regressions — n'est pas calculable. Il leur faut une densite SOURCEE ; ne pas en inventer. Recherche du 2026-10-08 : aucun fabricant ne publie ces valeurs ; la FDS Hodgdon des poudres spheriques (2022) donne « Bulk density 0.5 - 1 (g/cc) » pour toute la gamme. Superformance : 1011 dans un fichier communautaire GRT marque « Experimental », non retenu. Le 2026-10-13, Hybrid 100V, Autocomp, Competition, US869, WST, WSF et 700-X ont recu la densite implicite des fiches Nosler (DENSITES_NOSLER de scripts/import_catalog.js) et sortent de cette liste.",
-    "Accurate Nitro 100NF": 48,
-    "Hodgdon Titewad": 10,
-    "Winchester 244": 151,
-    "Hodgdon Superformance": 65,
-    "ADI AR 2206": 3
+    "_note": "Entrees PRESENTES dans powders.json mais sans densite apparente (pcd). Un alias n'y changerait rien : sans pcd, le taux de remplissage — variable des deux regressions — n'est pas calculable. Il leur faut une densite SOURCEE ; ne pas en inventer. Recherche du 2026-10-08 : aucun fabricant ne publie ces valeurs ; la FDS Hodgdon des poudres spheriques (2022) donne « Bulk density 0.5 - 1 (g/cc) » pour toute la gamme. Superformance : 1011 dans un fichier communautaire GRT marque « Experimental », non retenu. Le 2026-10-13, Hybrid 100V, Autocomp, Competition, US869, WST, WSF et 700-X ont recu la densite implicite des fiches Nosler (DENSITES_NOSLER de scripts/import_catalog.js) et sortent de cette liste. Le 2026-10-17, Titewad, Winchester 244, Superformance et ADI AR 2206 ont recu la mesure au doseur de Lee Precision (DENSITES_LEE du meme script) et en sortent. Reste la Nitro 100NF : Lee ne liste qu'une « A NITRO100 », sans dire laquelle des deux.",
+    "Accurate Nitro 100NF": 48
   },
 
   "_absentes": {

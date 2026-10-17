@@ -43,7 +43,24 @@ const rows = !src ? [] :
  * Chaque entrée porte sa raison ET sa source, la valeur d'une constante ne valant
  * que ce que vaut sa provenance.
  */
+// Densités du catalogue que deux mesures tierces INDÉPENDANTES contredisent ensemble (2026-10-17, scripts/lee_vmd.py) :
+// la densité implicite des fiches Nosler et la table VMD de Lee (doseur), concordantes à 2 % près, à 8 % ou plus du
+// catalogue. Valeur posée : leur moyenne. Aucune n'est une valeur du fabricant de la poudre (Hodgdon et Accurate n'en
+// publient pas) ; sur les poudres dont le fabricant publie la densité, Lee mesure 2,7 % plus bas en médiane.
+const LEE_NOSLER = (pcd, lee, nos, cat) => ({
+  fields: { pcd, pcd_src: `Moyenne de deux mesures tierces concordantes : Nosler ${nos} (densité implicite de ses fiches) et `
+    + `Lee ${lee} (table VMD du 2024-01-08, doseur) ; le catalogue donnait ${cat}. Pas une valeur du fabricant de la poudre.` },
+  why: `Densité du catalogue (${cat}) contredite par deux mesures tierces indépendantes et concordantes : Nosler ${nos} `
+    + `(densité implicite de ses fiches) et Lee ${lee} (table VMD, doseur). Moyenne des deux.`,
+  src: 'Nosler, fiches de rechargement (scripts/nosler_fiches.py, relevé du 2026-10-13) ; Lee Precision, « Powder '
+    + 'VMD\'s », https://leeprecision.com/files/instruct/VMD.pdf (VMD 1-8-24, lu le 2026-10-17, scripts/lee_vmd.py). '
+    + 'Posée le 2026-10-17.',
+});
 const CORRECTIONS = {
+  'Accurate LT-30': LEE_NOSLER(862, 864, 861, 980),
+  'Hodgdon CFE Pistol': LEE_NOSLER(856, 859, 852, 638),
+  'Hodgdon Long Shot': LEE_NOSLER(792, 786, 797, 940),
+  'Hodgdon Titegroup': LEE_NOSLER(756, 764, 747, 817),
   'IMR 4320': {
     fields: { base: 'Single', type: 'Extruded', pcd: 900 },
     why: 'Le catalogue la donne « Double / Spherical » et sans densité. L\'IMR 4320 '
@@ -217,9 +234,6 @@ const DENSITES_VV = {
  */
 const DENSITES_NOSLER = [
   // [clé, g/cm³, fiches, lignes, champs d'une clé créée (ou null), remarque]
-  ['Hodgdon Hybrid 100V', 0.971, 21, 63, null, 'Douteuse : Hodgdon marque comprimées 78 de ses 156 charges maximales, '
-    + 'au remplissage médian de 0,91 avec cette densité ; l\'étalon des marques « comprimée » la place 11,3 % plus bas '
-    + '(scripts/etalon_comprime.py, 2026-10-13). Grains « semispherical/semiextruded » selon Hodgdon ; aucune densité publiée trouvée.'],
   ['Winchester Autocomp', 0.850, 11, 33],
   ['Winchester WSF Super-Field', 0.750, 5, 15],
   ['Winchester WST', 0.525, 4, 12],
@@ -240,6 +254,54 @@ const DENSITES_NOSLER = [
   ['Hodgdon H4831SC', 0.960, 52, 156, { mfg: 'Hodgdon', name: 'H4831SC', type: 'Extruded' }],
   ['Accurate 2015', 0.880, 27, 81, { mfg: 'Accurate', name: '2015' }],
 ];
+
+/**
+ * DENSITES_LEE — densité apparente mesurée par Lee Precision au doseur, pour les poudres qui n'en ont aucune
+ * ailleurs (ni catalogue, ni fabricant, ni Nosler). Table « Powder VMD's » (volume en cm³ d'un grain de poudre),
+ * https://leeprecision.com/files/instruct/VMD.pdf, fichier « VMD 1-8-24 » lu le 2026-10-17 ; densité = 0,06479891 / VMD.
+ *
+ * Ce n'est pas une valeur du fabricant de la poudre. Sur les 34 poudres dont le fabricant publie la densité
+ * (Vihtavuori, Shooters World), Lee mesure 2,7 % plus bas en médiane (moitié centrale −4 % à −1 %, extrêmes −6 % et
+ * +1 %) : un doseur tasse moins la poudre (scripts/lee_vmd.py). Elle comble un manque, comme DENSITES_NOSLER, et ne
+ * remplace jamais une densité existante. Lee donne parfois une même valeur à plusieurs poudres d'une gamme (Vectan SP 3
+ * et SP 8 : 0,0682 ; Tubal 7000 et 8000 : 0,0704) : mesure de gamme, plutôt que poudre par poudre.
+ * Libellés de Lee rapportés aux clés de la base : table LIBELLES de scripts/lee_vmd.py.
+ */
+const DENSITES_LEE = [
+  // [clé, VMD (cm³/grain), libellé de Lee]
+  ['ADI AR 2206', 0.0714, 'ADI AR2206'], ['ADI AS50N', 0.1208, 'ADI AS50'], ['Alliant 410', 0.0804, 'ALNT 410'],
+  ['Alliant American Select', 0.1341, 'AMER-SELECT'], ['Alliant Reloder 12', 0.0691, 'RELODER12'],
+  ['Alliant Steel', 0.1063, 'ALLIANT STEEL'], ['Hodgdon International', 0.1266, 'INTERNATIONAL'],
+  ['Hodgdon PB', 0.1205, 'IMR PB'], ['Hodgdon Superformance', 0.0658, 'H-SUPRFORM'], ['Hodgdon Titewad', 0.1300, 'TITEWAD'],
+  ['IMR SR 4756', 0.1100, 'SR4756'], ['IMR SR 7625', 0.1046, 'SR7625'], ['Vectan SP 3', 0.0682, 'VEC SP3'],
+  ['Vectan SP 8', 0.0682, 'VEC SP8'], ['Vectan Tubal 7000', 0.0704, 'VEC TU7000'], ['Vectan Tubal 8000', 0.0704, 'VEC TU8000'],
+  ['Winchester 244', 0.0788, 'WIN 244 (deux lignes chez Lee, 0,0789 et 0,0787 : moyenne)'], ['Winchester Supreme 780', 0.0684, 'SUPRM780'],
+  ['Winchester WMR', 0.0718, 'WIN MAG RIFLE'], ['Winchester WSH Super-Handicap', 0.0859, 'WIN SUPER HANDI'],
+  // Hybrid 100V : jusqu'au 2026-10-17, densité implicite Nosler 0,971, déjà jugée douteuse (Hodgdon marque comprimées 78
+  // de ses 156 charges maximales, au remplissage médian de 0,91 avec elle ; l'étalon des marques « comprimée » la plaçait
+  // 11,3 % plus bas, scripts/etalon_comprime.py). Lee mesure 893 : la seule mesure directe l'emporte.
+  ['Hodgdon Hybrid 100V', 0.0726, 'HYBRID100'],
+];
+
+function appliquerDensitesLee(pj) {
+  let n = 0;
+  for (const [k, vmd, libelle] of DENSITES_LEE) {
+    const e = pj.powders[k];
+    if (!e) { console.warn(`  ⚠ densité Lee sans cible : ${k}`); continue; }
+    // une valeur Nosler retirée de DENSITES_NOSLER (Hybrid 100V) reste dans powders.json : Lee la remplace
+    const nosOrpheline = String(e.pcd_src || '').startsWith('Nosler') && !DENSITES_NOSLER.some(([kn]) => kn === k);
+    if (e.pcd && !String(e.pcd_src || '').startsWith('Lee') && !nosOrpheline) {
+      console.warn(`  ⚠ ${k} a désormais une densité (${e.pcd}) : la valeur Lee n'est plus posée`);
+      continue;
+    }
+    e.pcd = Math.round(64.79891 / vmd);
+    e.pcd_src = `Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « ${libelle} » ${vmd} cm³ `
+      + `par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les `
+      + `fabricants qui publient la leur, en médiane.`;
+    n++;
+  }
+  console.log(`  densités Lee posées : ${n}`);
+}
 
 function appliquerDensitesNosler(pj) {
   let n = 0;
@@ -324,8 +386,9 @@ for (const c of rows) {
 appliquerCorrections(pj, catalog);
 appliquerConfirmations(pj);
 appliquerDensitesNosler(pj);
+appliquerDensitesLee(pj);
 
-pj._doc = 'Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : provenance de la densite, soit une source fabricant qui la confirme (Shooters World, Vihtavuori : bloc CONFIRMATIONS et DENSITES_VV du meme script), soit, quand elle commence par « Nosler », la densite implicite des fiches Nosler, posee faute d autre valeur (bloc DENSITES_NOSLER).';
+pj._doc = 'Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : provenance de la densite, soit une source fabricant qui la confirme (Shooters World, Vihtavuori : bloc CONFIRMATIONS et DENSITES_VV du meme script), soit, quand elle commence par « Nosler », la densite implicite des fiches Nosler, posee faute d autre valeur (bloc DENSITES_NOSLER), soit, quand elle commence par « Lee », la mesure au doseur de Lee Precision, posee faute d autre valeur (bloc DENSITES_LEE).';
 pj.powders = Object.fromEntries(Object.keys(pj.powders).sort().map((k) => [k, pj.powders[k]]));
 fs.writeFileSync(d('powders.json'), JSON.stringify(pj, null, 2) + '\n');
 

@@ -77,7 +77,11 @@ product name). `pcd_src`, when present, says where the density comes from: a pow
 maker's published value that confirms it (Shooters World, Vihtavuori), or, when it starts
 with « Nosler », the density implied by Nosler's load-data sheets, set only where no other
 value exists (`DENSITES_NOSLER` in `scripts/import_catalog.js`; Nosler's table runs 1 to 14 %
-below Vihtavuori's own values, within ±2 % of the catalogue for half the other powders).
+below Vihtavuori's own values, within ±2 % of the catalogue for half the other powders), or, when it
+starts with « Lee », the density Lee Precision measures with its powder measures (« Powder VMD's »
+table, `DENSITES_LEE`, set only where no other value exists; 2.7 % below the makers' published
+values in median). Four catalogue values contradicted by both Nosler and Lee carry the mean of
+the two (`CORRECTIONS`, `scripts/lee_vmd.py`).
 
 ### `model_coefficients.json`
 

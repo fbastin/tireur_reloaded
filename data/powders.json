@@ -1,5 +1,5 @@
 {
-  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : provenance de la densite, soit une source fabricant qui la confirme (Shooters World, Vihtavuori : bloc CONFIRMATIONS et DENSITES_VV du meme script), soit, quand elle commence par « Nosler », la densite implicite des fiches Nosler, posee faute d autre valeur (bloc DENSITES_NOSLER).",
+  "_doc": "Constantes poudres. Chemin principal: Qex (kJ/kg)+Ba+pcd. Repli: pcd seul (ou rien) -> modele e_eff. Champs factuels supplementaires (base, type, energy_Jg, name, mfg) stockes pour usage futur. energy_Jg = colonne energie source (J/g) au sens INCOHERENT (force ~900-1200 OU chaleur explosion ~3700-4500) -> a verifier, PAS un Qex. Catalogue complet (avec notes) local: data/powders_catalog.local.json. Sources: GRT (.propellant) + ammoreference.com (donnees factuelles), plus les surcharges assumees du bloc CORRECTIONS de scripts/import_catalog.js (chacune avec sa raison et sa provenance). pcd_src : provenance de la densite, soit une source fabricant qui la confirme (Shooters World, Vihtavuori : bloc CONFIRMATIONS et DENSITES_VV du meme script), soit, quand elle commence par « Nosler », la densite implicite des fiches Nosler, posee faute d autre valeur (bloc DENSITES_NOSLER), soit, quand elle commence par « Lee », la mesure au doseur de Lee Precision, posee faute d autre valeur (bloc DENSITES_LEE).",
   "powders": {
     "20N29": {
       "mfg": "Vihtavuori",
@@ -111,7 +111,9 @@
     "ADI AR 2206": {
       "mfg": "ADI",
       "name": "AR 2206",
-      "base": "Single"
+      "base": "Single",
+      "pcd": 908,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « ADI AR2206 » 0.0714 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "ADI AR 2206H": {
       "mfg": "ADI",
@@ -197,7 +199,9 @@
       "mfg": "ADI",
       "name": "AS50N",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 536,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « ADI AS50 » 0.1208 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "ADI AS85N": {
       "mfg": "ADI",
@@ -411,7 +415,8 @@
       "base": "Single",
       "type": "Extruded",
       "energy_Jg": 1027,
-      "pcd": 980
+      "pcd": 862,
+      "pcd_src": "Moyenne de deux mesures tierces concordantes : Nosler 861 (densité implicite de ses fiches) et Lee 864 (table VMD du 2024-01-08, doseur) ; le catalogue donnait 980. Pas une valeur du fabricant de la poudre."
     },
     "Accurate LT-32": {
       "mfg": "Accurate",
@@ -522,7 +527,9 @@
       "mfg": "Alliant",
       "name": "410",
       "base": "Double",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 806,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « ALNT 410 » 0.0804 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Alliant AR Comp": {
       "mfg": "Alliant",
@@ -535,7 +542,9 @@
       "mfg": "Alliant",
       "name": "American Select",
       "base": "Double",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 483,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « AMER-SELECT » 0.1341 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Alliant BE-86": {
       "mfg": "Alliant",
@@ -664,7 +673,9 @@
     },
     "Alliant Reloder 12": {
       "mfg": "Alliant",
-      "name": "Reloder 12"
+      "name": "Reloder 12",
+      "pcd": 938,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « RELODER12 » 0.0691 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Alliant Reloder 15": {
       "Qex": 3990,
@@ -763,7 +774,9 @@
       "mfg": "Alliant",
       "name": "Steel",
       "base": "Double",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 610,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « ALLIANT STEEL » 0.1063 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Alliant Unique": {
       "mfg": "Alliant",
@@ -978,7 +991,8 @@
       "base": "Double",
       "type": "Spherical",
       "energy_Jg": 932,
-      "pcd": 638
+      "pcd": 856,
+      "pcd_src": "Moyenne de deux mesures tierces concordantes : Nosler 852 (densité implicite de ses fiches) et Lee 859 (table VMD du 2024-01-08, doseur) ; le catalogue donnait 638. Pas une valeur du fabricant de la poudre."
     },
     "Hodgdon CFE-223": {
       "mfg": "Hodgdon",
@@ -1168,8 +1182,8 @@
       "name": "Hybrid 100V",
       "base": "Double",
       "type": "Extruded",
-      "pcd": 971,
-      "pcd_src": "Nosler, fiches de rechargement en ligne : densité implicite (charge / (densité de chargement × capacité en eau)), médiane de 63 lignes sur 21 fiches, relevé du 2026-10-13. Table de Nosler, pas une valeur du fabricant de la poudre. Douteuse : Hodgdon marque comprimées 78 de ses 156 charges maximales, au remplissage médian de 0,91 avec cette densité ; l'étalon des marques « comprimée » la place 11,3 % plus bas (scripts/etalon_comprime.py, 2026-10-13). Grains « semispherical/semiextruded » selon Hodgdon ; aucune densité publiée trouvée."
+      "pcd": 893,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « HYBRID100 » 0.0726 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Hodgdon IMR 800X": {
       "mfg": "Hodgdon",
@@ -1181,7 +1195,9 @@
       "mfg": "Hodgdon",
       "name": "International",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 512,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « INTERNATIONAL » 0.1266 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Hodgdon Leverevolution": {
       "mfg": "Hodgdon",
@@ -1202,13 +1218,16 @@
       "name": "Long Shot",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 940
+      "pcd": 792,
+      "pcd_src": "Moyenne de deux mesures tierces concordantes : Nosler 797 (densité implicite de ses fiches) et Lee 786 (table VMD du 2024-01-08, doseur) ; le catalogue donnait 940. Pas une valeur du fabricant de la poudre."
     },
     "Hodgdon PB": {
       "mfg": "Hodgdon",
       "name": "PB",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 538,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « IMR PB » 0.1205 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Hodgdon Perfect Pattern": {
       "mfg": "Hodgdon",
@@ -1228,20 +1247,25 @@
       "mfg": "Hodgdon",
       "name": "Superformance",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 985,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « H-SUPRFORM » 0.0658 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Hodgdon Titegroup": {
       "mfg": "Hodgdon",
       "name": "Titegroup",
       "base": "Double",
       "type": "Spherical",
-      "pcd": 817
+      "pcd": 756,
+      "pcd_src": "Moyenne de deux mesures tierces concordantes : Nosler 747 (densité implicite de ses fiches) et Lee 764 (table VMD du 2024-01-08, doseur) ; le catalogue donnait 817. Pas une valeur du fabricant de la poudre."
     },
     "Hodgdon Titewad": {
       "mfg": "Hodgdon",
       "name": "Titewad",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 498,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « TITEWAD » 0.13 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Hodgdon Trail Boss": {
       "mfg": "Hodgdon",
@@ -1453,13 +1477,17 @@
       "mfg": "IMR",
       "name": "SR 4756",
       "base": "Single",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 589,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « SR4756 » 0.11 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "IMR SR 7625": {
       "mfg": "IMR",
       "name": "SR 7625",
       "base": "Single",
-      "type": "Flake"
+      "type": "Flake",
+      "pcd": 619,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « SR7625 » 0.1046 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "IMR Target": {
       "mfg": "IMR",
@@ -3101,7 +3129,9 @@
       "mfg": "Vectan",
       "name": "SP 3",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 950,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « VEC SP3 » 0.0682 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Vectan SP 7": {
       "mfg": "Vectan",
@@ -3115,7 +3145,9 @@
       "mfg": "Vectan",
       "name": "SP 8",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 950,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « VEC SP8 » 0.0682 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Vectan SP 9": {
       "mfg": "Vectan",
@@ -3147,13 +3179,17 @@
       "mfg": "Vectan",
       "name": "Tubal 7000",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 920,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « VEC TU7000 » 0.0704 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Vectan Tubal 8000": {
       "mfg": "Vectan",
       "name": "Tubal 8000",
       "base": "Single",
-      "type": "Extruded"
+      "type": "Extruded",
+      "pcd": 920,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « VEC TU8000 » 0.0704 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Winchester 230": {
       "mfg": "Winchester",
@@ -3172,7 +3208,9 @@
       "mfg": "Winchester",
       "name": "244",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 822,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « WIN 244 (deux lignes chez Lee, 0,0789 et 0,0787 : moyenne) » 0.0788 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Winchester 296": {
       "mfg": "Winchester",
@@ -3244,7 +3282,9 @@
       "mfg": "Winchester",
       "name": "Supreme 780",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 947,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « SUPRM780 » 0.0684 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Winchester WAA Lite": {
       "mfg": "Winchester",
@@ -3262,7 +3302,9 @@
       "mfg": "Winchester",
       "name": "WMR",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 902,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « WIN MAG RIFLE » 0.0718 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Winchester WSF Super-Field": {
       "mfg": "Winchester",
@@ -3276,7 +3318,9 @@
       "mfg": "Winchester",
       "name": "WSH Super-Handicap",
       "base": "Double",
-      "type": "Spherical"
+      "type": "Spherical",
+      "pcd": 754,
+      "pcd_src": "Lee Precision, table « Powder VMD's » du 2024-01-08 (lue le 2026-10-17) : « WIN SUPER HANDI » 0.0859 cm³ par grain, mesure au doseur. Pas une valeur du fabricant de la poudre : Lee mesure 2,7 % plus bas que les fabricants qui publient la leur, en médiane."
     },
     "Winchester WST": {
       "mfg": "Winchester",

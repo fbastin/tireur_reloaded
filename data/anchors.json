@@ -1,6 +1,6 @@
 {
  "_doc": "Ancrages par cartouche|poudre (coef DÉRIVÉS : E_eff J/kg et η_p au point de référence C (charge, gr) et m (balle, gr), moyennes géométriques des charges du couple ramenées à ce point par les lois locales de model_coefficients.json ; n charges). Affinent la prédiction quand le couple est connu (~5% vs ~10% à froid). Pas de données brutes (EULA). Sources : Reload Swiss + Accurate/Ramshot (v0+Pmax) ; Vihtavuori (VITESSE seule -> np absent, l UI replie sur η_p global). Nosler (fiches en ligne, VITESSE seule, carabines, en complément : seulement là où les autres sources réunissent moins de trois charges ; nosler=true sur ces ancres). mhr = résidu vitesse Mayer-Hart du groupe (% ; cohérence thermochimique du couple v0/Pmax, poudres à Qex) ; mhflag=true si atypique (>2σ) → couple fabricant à vérifier, ancrage pression moins fiable. Charges de balles monolithiques ramenées à une balle à noyau (bloc monolithique de model_coefficients.json). pc, mpc (carabines) : pression (bar) et masse (gr) moyennes des charges maximales publiées avec pression, plafond de la loi à deux pentes (bloc deux_pentes).",
- "_date": "2026-10-16",
+ "_date": "2026-10-17",
  "anchors": {
   "22 Hornet|RS30": {
    "eeff": 1072032,
@@ -6272,6 +6272,16 @@
    "pc": 3681,
    "mpc": 61.8
   },
+  "22-250 Rem.|Hodgdon Superformance": {
+   "eeff": 1140616,
+   "n": 3,
+   "C": 42.16,
+   "m": 64.2,
+   "np": 0.5113,
+   "pc": 4253,
+   "mpc": 64.2,
+   "mhr": 2.9
+  },
   "22-250 Rem.|IMR 4350": {
    "eeff": 1044836,
    "n": 20,
@@ -6387,6 +6397,16 @@
    "np": 0.4895,
    "pc": 4214,
    "mpc": 74.7
+  },
+  "22 Creedmoor|Hodgdon Superformance": {
+   "eeff": 1108576,
+   "n": 7,
+   "C": 41.97,
+   "m": 74.7,
+   "np": 0.5102,
+   "pc": 4203,
+   "mpc": 74.7,
+   "mhr": 3
   },
   "22 Creedmoor|Ramshot Hunter": {
    "eeff": 1073744,
@@ -6662,6 +6682,16 @@
    "pc": 4099,
    "mpc": 103.2
   },
+  "6 mm Creedmoor|Hodgdon Superformance": {
+   "eeff": 1260639,
+   "n": 6,
+   "C": 44.38,
+   "m": 105.6,
+   "np": 0.4764,
+   "pc": 4164,
+   "mpc": 105.6,
+   "mhr": 1
+  },
   "6 mm Creedmoor|Hodgdon H1000": {
    "eeff": 1110532,
    "n": 5,
@@ -6774,6 +6804,16 @@
    "C": 39.18,
    "m": 63.2,
    "np": 0.4212
+  },
+  "243 Win.|Hodgdon Superformance": {
+   "eeff": 1069179,
+   "n": 4,
+   "C": 50.13,
+   "m": 72.3,
+   "np": 0.5217,
+   "pc": 3990,
+   "mpc": 72.3,
+   "mhr": 4.2
   },
   "243 Win.|Winchester StaBall 6.5": {
    "eeff": 1174490,
@@ -6965,6 +7005,16 @@
    "np": 0.4561,
    "pc": 4257,
    "mpc": 78.8
+  },
+  "6 mm Remington|Hodgdon Superformance": {
+   "eeff": 1102246,
+   "n": 5,
+   "C": 52.56,
+   "m": 73.8,
+   "np": 0.543,
+   "pc": 4205,
+   "mpc": 73.8,
+   "mhr": 2.5
   },
   "6 mm Remington|Hodgdon H4350": {
    "eeff": 1120492,
@@ -7510,6 +7560,16 @@
    "pc": 4135,
    "mpc": 142.2
   },
+  "6.5 Creedmoor|Hodgdon Superformance": {
+   "eeff": 1270481,
+   "n": 5,
+   "C": 44.63,
+   "m": 146.5,
+   "np": 0.4506,
+   "pc": 4184,
+   "mpc": 146.5,
+   "mhr": 2.1
+  },
   "6.5 Creedmoor|Hodgdon H4831, H4831C": {
    "eeff": 1194031,
    "n": 5,
@@ -7628,6 +7688,16 @@
    "pc": 4124,
    "mpc": 145.8
   },
+  "260 Rem.|Hodgdon Superformance": {
+   "eeff": 1257598,
+   "n": 3,
+   "C": 44.6,
+   "m": 146.6,
+   "np": 0.4322,
+   "pc": 4112,
+   "mpc": 146.6,
+   "mhr": 3.1
+  },
   "260 Rem.|IMR 4831": {
    "eeff": 1249218,
    "n": 4,
@@ -7719,6 +7789,16 @@
    "np": 0.4876,
    "pc": 4357,
    "mpc": 140.6
+  },
+  "6.8 Western|Hodgdon Superformance": {
+   "eeff": 1218157,
+   "n": 9,
+   "C": 60.05,
+   "m": 140.6,
+   "np": 0.5031,
+   "pc": 4347,
+   "mpc": 140.6,
+   "mhr": 0.5
   },
   "6.8 Western|Ramshot Hunter": {
    "eeff": 1160339,
@@ -8812,6 +8892,16 @@
    "m": 132.6,
    "np": 0.4353
   },
+  "30-06 Spring.|Hodgdon Superformance": {
+   "eeff": 1240151,
+   "n": 5,
+   "C": 61.86,
+   "m": 164.6,
+   "np": 0.4693,
+   "pc": 3962,
+   "mpc": 164.6,
+   "mhr": 1.4
+  },
   "30-06 Spring.|Winchester StaBall 6.5": {
    "eeff": 1304139,
    "n": 11,
@@ -8888,6 +8978,16 @@
    "C": 60.83,
    "m": 209.2,
    "np": 0.4349
+  },
+  "300 WSM|Hodgdon Superformance": {
+   "eeff": 1290485,
+   "n": 3,
+   "C": 71.64,
+   "m": 159.8,
+   "np": 0.5102,
+   "pc": 4360,
+   "mpc": 159.8,
+   "mhr": -0.7
   },
   "300 WSM|Winchester StaBall 6.5": {
    "eeff": 1293292,
@@ -10034,6 +10134,15 @@
    "pc": 1349,
    "mpc": 66.6
   },
+  "9 mm Browning court|Winchester 244": {
+   "eeff": 1199106,
+   "n": 8,
+   "C": 3.68,
+   "m": 76.1,
+   "np": 0.4186,
+   "pc": 1375,
+   "mpc": 76.1
+  },
   "9 mm Browning court|Winchester 231": {
    "eeff": 1120277,
    "n": 8,
@@ -10094,6 +10203,15 @@
    "np": 0.3695,
    "pc": 2259,
    "mpc": 104.6
+  },
+  "9 mm Luger|Winchester 244": {
+   "eeff": 1556891,
+   "n": 15,
+   "C": 4.52,
+   "m": 104.2,
+   "np": 0.391,
+   "pc": 2271,
+   "mpc": 104.2
   },
   "9 mm Luger|Winchester 231": {
    "eeff": 1390158,
@@ -10210,6 +10328,15 @@
    "m": 125.9,
    "np": 0.3047
   },
+  "38 Super Auto|Winchester 244": {
+   "eeff": 1571008,
+   "n": 7,
+   "C": 5.58,
+   "m": 125.9,
+   "np": 0.3526,
+   "pc": 2392,
+   "mpc": 125.9
+  },
   "38 Super Auto|Hodgdon Lil Gun": {
    "eeff": 841756,
    "n": 6,
@@ -10251,6 +10378,15 @@
    "np": 0.288,
    "pc": 1179,
    "mpc": 100.9
+  },
+  "38 Special|Winchester 244": {
+   "eeff": 1216490,
+   "n": 19,
+   "C": 5.03,
+   "m": 114.3,
+   "np": 0.3064,
+   "pc": 1193,
+   "mpc": 114.3
   },
   "38 Special|Winchester 231": {
    "eeff": 1162984,
@@ -10364,6 +10500,15 @@
    "pc": 2646,
    "mpc": 110.3
   },
+  "357 SIG|Winchester 244": {
+   "eeff": 1487377,
+   "n": 10,
+   "C": 6.77,
+   "m": 113.1,
+   "np": 0.513,
+   "pc": 2661,
+   "mpc": 113.1
+  },
   "357 SIG|Winchester 231": {
    "eeff": 1379671,
    "n": 5,
@@ -10433,6 +10578,15 @@
    "C": 6.11,
    "m": 145.8,
    "np": 0.4399
+  },
+  "357 Magnum|Winchester 244": {
+   "eeff": 1245905,
+   "n": 8,
+   "C": 5.72,
+   "m": 150.5,
+   "np": 0.3042,
+   "pc": 2029,
+   "mpc": 150.5
   },
   "357 Magnum|Hodgdon Titegroup": {
    "eeff": 1408858,
@@ -10548,6 +10702,15 @@
    "pc": 2246,
    "mpc": 142
   },
+  "40 S&W|Winchester 244": {
+   "eeff": 1568946,
+   "n": 16,
+   "C": 5.65,
+   "m": 142,
+   "np": 0.3981,
+   "pc": 2272,
+   "mpc": 142
+  },
   "40 S&W|Winchester 231": {
    "eeff": 1448670,
    "n": 15,
@@ -10648,6 +10811,15 @@
    "pc": 2419,
    "mpc": 171.5
   },
+  "10 mm Auto|Winchester 244": {
+   "eeff": 1697467,
+   "n": 4,
+   "C": 6.45,
+   "m": 171.5,
+   "np": 0.3714,
+   "pc": 2442,
+   "mpc": 171.5
+  },
   "10 mm Auto|Winchester 231": {
    "eeff": 1607764,
    "n": 4,
@@ -10701,6 +10873,15 @@
    "np": 0.452,
    "pc": 2421,
    "mpc": 209.9
+  },
+  "44 Rem. Mag.|Winchester 244": {
+   "eeff": 1763625,
+   "n": 6,
+   "C": 9.41,
+   "m": 254.1,
+   "np": 0.2891,
+   "pc": 2238,
+   "mpc": 254.1
   },
   "44 Rem. Mag.|Winchester 231": {
    "eeff": 1661559,
@@ -10799,6 +10980,15 @@
    "np": 0.4016,
    "pc": 1381,
    "mpc": 142.8
+  },
+  "45 ACP (Auto)|Winchester 244": {
+   "eeff": 1328106,
+   "n": 10,
+   "C": 6.28,
+   "m": 160.3,
+   "np": 0.3835,
+   "pc": 1367,
+   "mpc": 160.3
   },
   "45 ACP (Auto)|Hodgdon Titegroup": {
    "eeff": 1387946,
@@ -10920,6 +11110,15 @@
    "C": 7.63,
    "m": 232.6,
    "np": 0.4553
+  },
+  "45 Colt|Winchester 244": {
+   "eeff": 1050905,
+   "n": 4,
+   "C": 7.18,
+   "m": 249.9,
+   "np": 0.4432,
+   "pc": 908,
+   "mpc": 249.9
   },
   "45 Colt|Hodgdon Titegroup": {
    "eeff": 1296683,

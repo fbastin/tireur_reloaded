@@ -1184,6 +1184,25 @@ which is the property they were chosen for.
 > them under ADI powder names before any alias (AR2208 for Varget…). ADI does not feed the anchors,
 > but `adi_crosscheck.js` therefore partly re-tests Hodgdon data, and any pooled count across
 > guides must drop these copies (the wiki medians now do).
+>
+> **Bulk densities measured by Lee, 2026-10-17.** Lee Precision publishes, for its powder
+> measures, the volume one grain of each powder takes (« Powder VMD's », file of 2024-01-08;
+> density = 0.06479891 / VMD). `scripts/lee_vmd.py` maps 190 of its 203 labels to the base. Against
+> the 34 powders whose maker publishes the density (Vihtavuori, Shooters World), Lee reads 2.7 % low
+> in median (central half −4 to −1 %): a measure packs less. 32 of the 117 other catalogue values
+> sit within 0.5 % of Lee, which is probably their source. Three uses: (1) 21 powders without any
+> density get Lee's (`DENSITES_LEE`, never replacing a value), among them Winchester 244,
+> Superformance (« Suprform » in Hodgdon's tables, alias from the same manual), Titewad, Reloder 12,
+> and Hybrid 100V, whose Nosler value (971) was already doubtful (Lee 893); 248 Hodgdon and ADI loads
+> enter the data, 21 anchors are added, none changes. (2) Where catalogue and Nosler differ by more
+> than 8 %, Lee sides with the catalogue for the Vihtavuori powders (the maker's value) and with
+> Nosler, within 2 %, for Accurate LT-30, CFE Pistol, Long Shot and Titegroup: these four take the
+> mean of Nosler and Lee (`CORRECTIONS`; CFE Pistol 638 → 856, its fill was shown 34 % too high).
+> (3) The ADI / Hodgdon twins: Lee measures AR2208 at 894 and Varget at 886, consistent with one
+> product; nothing supports BM2's 980 (Benchmark: Lee 906, Nosler 925), a value the page no longer
+> reads. Effects: anchored pressure, bullet held out, 13.1 → 13.2 % on 8 467 loads (148 more);
+> cold pressure with an estimated maximum, rifles 17.8 → 17.6 %, handguns 31.4 → 30.8 %; published
+> maxima above the red fill threshold 0.4 → 0.3 %.
 
 The anchored-vs-cold gap (6.1 % vs 9.0 %) reproduces on independent data, on a small sample
 (25 couples — ADI's powders are mostly unanchored by construction).
